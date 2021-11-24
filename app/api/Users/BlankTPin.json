@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/layouts/main.ejs",
+      "linkedForm": "formBlankTPIN"
+    },
+    "$_POST": [
+      {
+        "type": "number",
+        "fieldName": "user_tpin",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "user_tpin"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "update",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "m_users",
+                "column": "user_tpin",
+                "type": "text",
+                "value": "{{$_POST.user_tpin}}"
+              }
+            ],
+            "table": "m_users",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "id",
+                  "field": "id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "column": "id"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "u_status",
+                  "field": "u_status",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "1",
+                  "data": {
+                    "column": "u_status"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "UPDATE m_users\nSET user_tpin = :P1 /* {{$_POST.user_tpin}} */\nWHERE id = :P2 /* {{identity}} */ AND u_status = '1'",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.user_tpin}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{identity}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "output": true
+      }
+    ]
+  }
+}

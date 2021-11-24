@@ -1,0 +1,36 @@
+{
+  "name": "securityUserLogin",
+  "module": "auth",
+  "action": "provider",
+  "options": {
+    "secret": "uYQ6pKxJLqVmbiq",
+    "provider": "Database",
+    "connection": "postgres_gcpServer",
+    "path": "/dashboard",
+    "users": {
+      "table": "m_users",
+      "identity": "id",
+      "username": "user_mobile",
+      "password": "password"
+    },
+    "permissions": {
+      "write": {
+        "table": "m_users",
+        "identity": "id",
+        "conditions": [
+          {
+            "column": "u_status",
+            "operator": "=",
+            "value": "1"
+          }
+        ]
+      }
+    }
+  },
+  "meta": [
+    {
+      "name": "identity",
+      "type": "text"
+    }
+  ]
+}

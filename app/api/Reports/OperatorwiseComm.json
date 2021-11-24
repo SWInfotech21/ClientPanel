@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "fromdate"
+      },
+      {
+        "type": "text",
+        "name": "todate"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "CommReport",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "query": "select distinct trt.op_id, m_op.operator_name, count(trt.id) as tr_count, SUM(trt.amount::int) as total, sum(trt.comm_amt::float) as comm_amt_total, \nsum(trt.charge_amt::float) as charge_amt_total\nfrom tt_recharge_trans trt \ninner join m_operator AS m_op ON (m_op.id = trt.op_id AND m_op.service_id = trt.service_id) \nWHERE trt.tr_date  >= @fromdate AND trt.tr_date  <= @todate AND trt.user_id = @user_id\ngroup by trt.op_id, m_op.operator_name;",
+            "params": [
+              {
+                "name": "@fromdate",
+                "value": "{{$_GET.fromdate}}",
+                "test": "2021-10-28 00:00:00"
+              },
+              {
+                "name": "@todate",
+                "value": "{{$_GET.todate}}",
+                "test": "2021-11-28 23:59:59.999"
+              },
+              {
+                "name": "@user_id",
+                "value": "{{identity}}",
+                "test": "3"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "op_id",
+            "type": "number"
+          },
+          {
+            "name": "operator_name",
+            "type": "text"
+          },
+          {
+            "name": "tr_count",
+            "type": "text"
+          },
+          {
+            "name": "total",
+            "type": "text"
+          },
+          {
+            "name": "comm_amt_total",
+            "type": "number"
+          },
+          {
+            "name": "charge_amt_total",
+            "type": "number"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "dashboard.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "login.ejs": {
+    "layoutPage": "",
+    "description": ""
+  },
+  "signup.ejs": {
+    "layoutPage": "",
+    "description": ""
+  },
+  "recharge.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "recharge-history.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "search-transactions.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "paymet-load.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "payment-debit.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "commision-report.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "operatorwise-comm.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "statement.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "commision.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "users.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "user.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "manage-users.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "credits.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "security-update.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "my-profile.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "login-history.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "paymnt.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "payment.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  }
+}

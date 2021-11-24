@@ -1,0 +1,3438 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/recharge.ejs",
+      "linkedForm": "formMobileRecharge"
+    },
+    "$_POST": [
+      {
+        "type": "number",
+        "fieldName": "mobile_number",
+        "options": {
+          "rules": {}
+        },
+        "name": "mobile_number"
+      },
+      {
+        "type": "number",
+        "fieldName": "recharge_amount",
+        "options": {
+          "rules": {}
+        },
+        "name": "recharge_amount"
+      },
+      {
+        "type": "text",
+        "fieldName": "mob_op_val",
+        "name": "mob_op_val"
+      },
+      {
+        "type": "text",
+        "fieldName": "mobile_tpin",
+        "options": {
+          "rules": {}
+        },
+        "name": "mobile_tpin"
+      },
+      {
+        "type": "text",
+        "fieldName": "op_code",
+        "options": {
+          "rules": {}
+        },
+        "name": "op_code"
+      },
+      {
+        "type": "number",
+        "name": "service_id"
+      },
+      {
+        "type": "number",
+        "name": "api_id"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
+      },
+      {
+        "type": "text",
+        "name": "user_number"
+      },
+      {
+        "type": "text",
+        "name": "details"
+      },
+      {
+        "type": "text",
+        "name": "opening_balance"
+      },
+      {
+        "type": "text",
+        "name": "amount"
+      },
+      {
+        "type": "text",
+        "name": "comm_per"
+      },
+      {
+        "type": "text",
+        "name": "comm_val"
+      },
+      {
+        "type": "text",
+        "name": "comm_amt"
+      },
+      {
+        "type": "text",
+        "name": "other_charge"
+      },
+      {
+        "type": "text",
+        "name": "charge_per"
+      },
+      {
+        "type": "text",
+        "name": "charge_amt"
+      },
+      {
+        "type": "text",
+        "name": "net_amt"
+      },
+      {
+        "type": "text",
+        "name": "closing_balance"
+      },
+      {
+        "type": "text",
+        "name": "tr_mode"
+      },
+      {
+        "type": "text",
+        "name": "tr_type"
+      },
+      {
+        "type": "text",
+        "name": "status"
+      },
+      {
+        "type": "text",
+        "name": "tr_id"
+      },
+      {
+        "type": "text",
+        "name": "reason"
+      },
+      {
+        "type": "text",
+        "name": "api_logs"
+      },
+      {
+        "type": "text",
+        "name": "is_processed"
+      },
+      {
+        "type": "text",
+        "name": "operator_ref"
+      },
+      {
+        "type": "text",
+        "name": "api_ref"
+      },
+      {
+        "type": "text",
+        "name": "revert_trans"
+      },
+      {
+        "type": "text",
+        "name": "ip_address"
+      },
+      {
+        "type": "number",
+        "name": "api_response_id"
+      },
+      {
+        "type": "text",
+        "name": "process_mode"
+      },
+      {
+        "type": "text",
+        "name": "live"
+      },
+      {
+        "type": "datetime",
+        "name": "tr_date"
+      },
+      {
+        "type": "datetime",
+        "name": "updated_on"
+      },
+      {
+        "type": "number",
+        "name": "transaction_by"
+      },
+      {
+        "type": "text",
+        "name": "extra1"
+      },
+      {
+        "type": "text",
+        "name": "extra2"
+      },
+      {
+        "type": "text",
+        "name": "extra3"
+      },
+      {
+        "type": "text",
+        "name": "old_balance"
+      },
+      {
+        "type": "text",
+        "name": "new_balance"
+      },
+      {
+        "type": "text",
+        "name": "transaction_type"
+      },
+      {
+        "type": "text",
+        "name": "crdr_type"
+      },
+      {
+        "type": "text",
+        "name": "pay_ref_id"
+      },
+      {
+        "type": "text",
+        "name": "remarks"
+      },
+      {
+        "type": "number",
+        "name": "created_by"
+      },
+      {
+        "type": "datetime",
+        "name": "created_on"
+      },
+      {
+        "type": "number",
+        "name": "updated_by"
+      },
+      {
+        "type": "number",
+        "name": "deleted_by"
+      },
+      {
+        "type": "datetime",
+        "name": "deleted_on"
+      },
+      {
+        "type": "text",
+        "name": "balance_amt"
+      },
+      {
+        "type": "number",
+        "name": "id"
+      },
+      {
+        "type": "text",
+        "name": "dtcommper"
+      },
+      {
+        "type": "text",
+        "name": "dtcommval"
+      },
+      {
+        "type": "text",
+        "name": "dtcommamt"
+      },
+      {
+        "type": "text",
+        "name": "dtchargeper"
+      },
+      {
+        "type": "text",
+        "name": "dtchargeval"
+      },
+      {
+        "type": "text",
+        "name": "dtchargeamt"
+      },
+      {
+        "type": "text",
+        "name": "mdtcommper"
+      },
+      {
+        "type": "text",
+        "name": "mdtcommval"
+      },
+      {
+        "type": "text",
+        "name": "mdtcommamt"
+      },
+      {
+        "type": "text",
+        "name": "mdtchargeper"
+      },
+      {
+        "type": "text",
+        "name": "mdtchargeval"
+      },
+      {
+        "type": "text",
+        "name": "mdtchargeamt"
+      },
+      {
+        "type": "text",
+        "name": "netamt"
+      }
+    ],
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "REMOTE_ADDR"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "SubmitTime",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{NOW}}"
+        }
+      },
+      {
+        "name": "WalletBalCheck",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_users",
+                "column": "user_tpin"
+              },
+              {
+                "table": "m_users",
+                "column": "user_fname"
+              },
+              {
+                "table": "m_users",
+                "column": "user_mobile"
+              },
+              {
+                "table": "m_users",
+                "column": "balance_amt"
+              },
+              {
+                "table": "m_users",
+                "column": "scheme_id"
+              },
+              {
+                "table": "m_users",
+                "column": "created_by",
+                "alias": "retailer_creator_id"
+              }
+            ],
+            "table": {
+              "name": "m_users"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_users.id",
+                  "field": "m_users.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "m_users",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT user_tpin, user_fname, user_mobile, balance_amt, scheme_id, created_by AS retailer_creator_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "user_tpin",
+            "type": "text"
+          },
+          {
+            "name": "user_fname",
+            "type": "text"
+          },
+          {
+            "name": "user_mobile",
+            "type": "text"
+          },
+          {
+            "name": "balance_amt",
+            "type": "text"
+          },
+          {
+            "name": "scheme_id",
+            "type": "text"
+          },
+          {
+            "name": "retailer_creator_id",
+            "type": "number"
+          }
+        ],
+        "outputType": "array",
+        "type": "dbconnector_select"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{WalletBalCheck[0].balance_amt.toNumber() >= $_POST.recharge_amount.toNumber()}}",
+          "then": {
+            "steps": {
+              "name": "",
+              "module": "core",
+              "action": "condition",
+              "options": {
+                "if": "{{WalletBalCheck[0].user_tpin == $_POST.mobile_tpin}}",
+                "then": {
+                  "steps": [
+                    {
+                      "name": "TransactionId",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{NOW.md5(123456).substr(1, 9)}}"
+                      },
+                      "output": true
+                    },
+                    {
+                      "name": "GetAdmin",
+                      "module": "dbconnector",
+                      "action": "single",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "m_users",
+                              "column": "id",
+                              "alias": "admin_id"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "user_id",
+                              "alias": "admin_user_id"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "user_fname",
+                              "alias": "admin_name"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "user_mobile",
+                              "alias": "admin_mobile"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "balance_amt",
+                              "alias": "admin_balance_amt"
+                            }
+                          ],
+                          "table": {
+                            "name": "m_users"
+                          },
+                          "joins": [],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "m_users.user_type",
+                                "field": "m_users.user_type",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": 0,
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "user_type",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT id AS admin_id, user_id AS admin_user_id, user_fname AS admin_name, user_mobile AS admin_mobile, balance_amt AS admin_balance_amt\nFROM m_users\nWHERE user_type = 0",
+                          "params": []
+                        }
+                      },
+                      "output": true,
+                      "meta": [
+                        {
+                          "name": "admin_id",
+                          "type": "text"
+                        },
+                        {
+                          "name": "admin_user_id",
+                          "type": "text"
+                        },
+                        {
+                          "name": "admin_name",
+                          "type": "text"
+                        },
+                        {
+                          "name": "admin_mobile",
+                          "type": "text"
+                        },
+                        {
+                          "name": "admin_balance_amt",
+                          "type": "text"
+                        }
+                      ],
+                      "outputType": "object"
+                    },
+                    {
+                      "name": "GetOPCode",
+                      "module": "dbconnector",
+                      "action": "select",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "t_op_api",
+                              "column": "code"
+                            },
+                            {
+                              "table": "m_operator",
+                              "column": "service_id"
+                            },
+                            {
+                              "table": "m_api",
+                              "column": "id",
+                              "alias": "api_tbl_id"
+                            }
+                          ],
+                          "table": {
+                            "name": "t_op_api"
+                          },
+                          "joins": [
+                            {
+                              "table": "m_api",
+                              "column": "*",
+                              "alias": "m_api",
+                              "type": "LEFT",
+                              "clauses": {
+                                "condition": "AND",
+                                "rules": [
+                                  {
+                                    "table": "m_api",
+                                    "column": "id",
+                                    "operator": "equal",
+                                    "value": {
+                                      "table": "t_op_api",
+                                      "column": "api_id"
+                                    },
+                                    "operation": "="
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "table": "m_operator",
+                              "column": "*",
+                              "alias": "m_operator",
+                              "type": "LEFT",
+                              "clauses": {
+                                "condition": "AND",
+                                "rules": [
+                                  {
+                                    "table": "m_operator",
+                                    "column": "id",
+                                    "operator": "equal",
+                                    "value": {
+                                      "table": "t_op_api",
+                                      "column": "op_id"
+                                    },
+                                    "operation": "="
+                                  }
+                                ]
+                              }
+                            }
+                          ],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "t_op_api.op_id",
+                                "field": "t_op_api.op_id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{$_POST.op_code}}",
+                                "data": {
+                                  "table": "t_op_api",
+                                  "column": "op_id",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "m_api.api_code",
+                                "field": "m_api.api_code",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "{{'SN'}}",
+                                "data": {
+                                  "table": "m_api",
+                                  "column": "api_code",
+                                  "type": "text"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT t_op_api.code, m_operator.service_id, m_api.id AS api_tbl_id\nFROM t_op_api\nLEFT JOIN m_api AS m_api ON (m_api.id = t_op_api.api_id) LEFT JOIN m_operator AS m_operator ON (m_operator.id = t_op_api.op_id)\nWHERE t_op_api.op_id = :P1 /* {{$_POST.op_code}} */ AND m_api.api_code = :P2 /* {{'SN'}} */",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{$_POST.op_code}}"
+                            },
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P2",
+                              "value": "{{'SN'}}"
+                            }
+                          ]
+                        }
+                      },
+                      "output": true,
+                      "meta": [
+                        {
+                          "name": "code",
+                          "type": "text"
+                        },
+                        {
+                          "name": "service_id",
+                          "type": "number"
+                        },
+                        {
+                          "name": "api_tbl_id",
+                          "type": "text"
+                        }
+                      ],
+                      "outputType": "array",
+                      "type": "dbconnector_select"
+                    },
+                    {
+                      "name": "GetCommision",
+                      "module": "dbconnector",
+                      "action": "select",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "m_commission",
+                              "column": "comm_per"
+                            },
+                            {
+                              "table": "m_commission",
+                              "column": "comm_val"
+                            },
+                            {
+                              "table": "m_commission",
+                              "column": "service_charge_per"
+                            },
+                            {
+                              "table": "m_commission",
+                              "column": "service_charge_val"
+                            }
+                          ],
+                          "table": {
+                            "name": "m_commission"
+                          },
+                          "joins": [],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "m_commission.operator_id",
+                                "field": "m_commission.operator_id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{$_POST.op_code}}",
+                                "data": {
+                                  "table": "m_commission",
+                                  "column": "operator_id",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "m_commission.api_id",
+                                "field": "m_commission.api_id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{GetOPCode[0].api_tbl_id}}",
+                                "data": {
+                                  "table": "m_commission",
+                                  "column": "api_id",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "m_commission.scheme_id",
+                                "field": "m_commission.scheme_id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{WalletBalCheck[0].scheme_id}}",
+                                "data": {
+                                  "table": "m_commission",
+                                  "column": "scheme_id",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "m_commission.is_active",
+                                "field": "m_commission.is_active",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": 1,
+                                "data": {
+                                  "table": "m_commission",
+                                  "column": "is_active",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT comm_per, comm_val, service_charge_per, service_charge_val\nFROM m_commission\nWHERE operator_id = :P1 /* {{$_POST.op_code}} */ AND api_id = :P2 /* {{GetOPCode[0].api_tbl_id}} */ AND scheme_id = :P3 /* {{WalletBalCheck[0].scheme_id}} */ AND is_active = 1",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{$_POST.op_code}}"
+                            },
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P2",
+                              "value": "{{GetOPCode[0].api_tbl_id}}"
+                            },
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P3",
+                              "value": "{{WalletBalCheck[0].scheme_id}}"
+                            }
+                          ]
+                        }
+                      },
+                      "output": true,
+                      "type": "dbconnector_select",
+                      "meta": [
+                        {
+                          "name": "comm_per",
+                          "type": "text"
+                        },
+                        {
+                          "name": "comm_val",
+                          "type": "text"
+                        },
+                        {
+                          "name": "service_charge_per",
+                          "type": "text"
+                        },
+                        {
+                          "name": "service_charge_val",
+                          "type": "text"
+                        }
+                      ],
+                      "outputType": "array"
+                    },
+                    {
+                      "name": "GetRTCreator",
+                      "module": "dbconnector",
+                      "action": "single",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "m_users",
+                              "column": "user_type",
+                              "alias": "rt_creator_user_type"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "balance_amt",
+                              "alias": "rt_creator_bal_amt"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "scheme_id",
+                              "alias": "rt_creator_scheme"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "user_id",
+                              "alias": "rt_creator_user_id"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "user_fname",
+                              "alias": "rt_creator_name"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "user_mobile",
+                              "alias": "rt_creator_mobile"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "created_by",
+                              "alias": "dt_creator_id"
+                            }
+                          ],
+                          "table": {
+                            "name": "m_users"
+                          },
+                          "joins": [],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "m_users.id",
+                                "field": "m_users.id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{WalletBalCheck[0].retailer_creator_id}}",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "id",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT user_type AS rt_creator_user_type, balance_amt AS rt_creator_bal_amt, scheme_id AS rt_creator_scheme, user_id AS rt_creator_user_id, user_fname AS rt_creator_name, user_mobile AS rt_creator_mobile, created_by AS dt_creator_id\nFROM m_users\nWHERE id = :P1 /* {{WalletBalCheck[0].retailer_creator_id}} */",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{WalletBalCheck[0].retailer_creator_id}}"
+                            }
+                          ]
+                        }
+                      },
+                      "output": true,
+                      "meta": [
+                        {
+                          "name": "rt_creator_user_type",
+                          "type": "number"
+                        },
+                        {
+                          "name": "rt_creator_bal_amt",
+                          "type": "text"
+                        },
+                        {
+                          "name": "rt_creator_scheme",
+                          "type": "text"
+                        },
+                        {
+                          "name": "rt_creator_user_id",
+                          "type": "text"
+                        },
+                        {
+                          "name": "rt_creator_name",
+                          "type": "text"
+                        },
+                        {
+                          "name": "rt_creator_mobile",
+                          "type": "text"
+                        },
+                        {
+                          "name": "dt_creator_id",
+                          "type": "number"
+                        }
+                      ],
+                      "outputType": "object"
+                    },
+                    {
+                      "name": "MobileNum",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{$_POST.mobile_number}}"
+                      },
+                      "output": true,
+                      "disabled": true
+                    },
+                    {
+                      "name": "amount",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{$_POST.recharge_amount}}"
+                      },
+                      "output": true,
+                      "disabled": true
+                    },
+                    {
+                      "name": "NewOPCode",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{GetOPCode[0].code.toNumber()}}"
+                      },
+                      "output": true,
+                      "disabled": true
+                    },
+                    {
+                      "name": "api",
+                      "module": "api",
+                      "action": "send",
+                      "options": {
+                        "url": "http://www.sonakshiworld.com/apiservice.asmx/Recharge",
+                        "params": {
+                          "apiToken": "{{'a88ccb6aa2a14eaf8eaa1f112c3ff690'}}",
+                          "mn": "{{$_POST.mobile_number}}",
+                          "op": "{{GetOPCode[0].code.toNumber()}}",
+                          "amt": "{{$_POST.recharge_amount}}",
+                          "reqid": "{{TransactionId}}",
+                          "field1": "",
+                          "field2": ""
+                        },
+                        "passErrors": false,
+                        "schema": []
+                      },
+                      "output": true,
+                      "meta": [
+                        {
+                          "type": "text",
+                          "name": "data"
+                        },
+                        {
+                          "type": "object",
+                          "name": "headers",
+                          "sub": [
+                            {
+                              "type": "text",
+                              "name": "access-control-allow-headers"
+                            },
+                            {
+                              "type": "text",
+                              "name": "access-control-allow-origin"
+                            },
+                            {
+                              "type": "text",
+                              "name": "cache-control"
+                            },
+                            {
+                              "type": "text",
+                              "name": "content-encoding"
+                            },
+                            {
+                              "type": "text",
+                              "name": "content-length"
+                            },
+                            {
+                              "type": "text",
+                              "name": "content-type"
+                            },
+                            {
+                              "type": "text",
+                              "name": "date"
+                            },
+                            {
+                              "type": "text",
+                              "name": "server"
+                            },
+                            {
+                              "type": "text",
+                              "name": "vary"
+                            },
+                            {
+                              "type": "text",
+                              "name": "x-aspnet-version"
+                            },
+                            {
+                              "type": "text",
+                              "name": "x-powered-by"
+                            }
+                          ]
+                        }
+                      ],
+                      "outputType": "object"
+                    },
+                    {
+                      "name": "xml",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{api.data.xmlToJSON()}}",
+                        "key": "xml"
+                      },
+                      "output": true
+                    },
+                    {
+                      "name": "CommAmt",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{($_POST.recharge_amount.toNumber()*GetCommision[0].comm_per.toNumber()/100)+GetCommision[0].comm_val.toNumber()}}"
+                      },
+                      "output": true
+                    },
+                    {
+                      "name": "ChargeAmt",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{($_POST.recharge_amount.toNumber()*GetCommision[0].service_charge_per.toNumber()/100)+GetCommision[0].service_charge_val.toNumber()}}"
+                      },
+                      "output": true
+                    },
+                    {
+                      "name": "NetAmt",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{$_POST.recharge_amount.toNumber() -CommAmt.toNumber() +ChargeAmt.toNumber()}}"
+                      },
+                      "output": true
+                    },
+                    {
+                      "name": "ClosingBalance",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{WalletBalCheck[0].balance_amt.toNumber() - NetAmt.toNumber()}}"
+                      },
+                      "output": true
+                    },
+                    {
+                      "name": "AdminClosingBal",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{GetAdmin.admin_balance_amt.toNumber()+ChargeAmt.toNumber()}}"
+                      },
+                      "output": true
+                    },
+                    {
+                      "name": "apiResponseTime",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{NOW.dateDiff('seconds', SubmitTime)}}"
+                      },
+                      "output": true
+                    },
+                    {
+                      "name": "apidata",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{api.data}}"
+                      },
+                      "disabled": true
+                    },
+                    {
+                      "name": "",
+                      "module": "core",
+                      "action": "condition",
+                      "options": {
+                        "if": "{{GetRTCreator.rt_creator_user_type == 2}}",
+                        "then": {
+                          "steps": [
+                            {
+                              "name": "CommChFrDT",
+                              "module": "dbconnector",
+                              "action": "single",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "SELECT",
+                                  "columns": [
+                                    {
+                                      "table": "m_commission",
+                                      "column": "comm_per",
+                                      "alias": "dt_comm_per"
+                                    },
+                                    {
+                                      "table": "m_commission",
+                                      "column": "comm_val",
+                                      "alias": "dt_comm_val"
+                                    },
+                                    {
+                                      "table": "m_commission",
+                                      "column": "service_charge_per",
+                                      "alias": "dt_charge_per"
+                                    },
+                                    {
+                                      "table": "m_commission",
+                                      "column": "service_charge_val",
+                                      "alias": "dt_charge_val"
+                                    }
+                                  ],
+                                  "table": {
+                                    "name": "m_commission"
+                                  },
+                                  "joins": [],
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "m_commission.operator_id",
+                                        "field": "m_commission.operator_id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{$_POST.op_code}}",
+                                        "data": {
+                                          "table": "m_commission",
+                                          "column": "operator_id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      },
+                                      {
+                                        "id": "m_commission.api_id",
+                                        "field": "m_commission.api_id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{GetOPCode[0].api_tbl_id}}",
+                                        "data": {
+                                          "table": "m_commission",
+                                          "column": "api_id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      },
+                                      {
+                                        "id": "m_commission.scheme_id",
+                                        "field": "m_commission.scheme_id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{WalletBalCheck[0].retailer_creator_id}}",
+                                        "data": {
+                                          "table": "m_commission",
+                                          "column": "scheme_id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "SELECT comm_per AS dt_comm_per, comm_val AS dt_comm_val, service_charge_per AS dt_charge_per, service_charge_val AS dt_charge_val\nFROM m_commission\nWHERE operator_id = :P1 /* {{$_POST.op_code}} */ AND api_id = :P2 /* {{GetOPCode[0].api_tbl_id}} */ AND scheme_id = :P3 /* {{WalletBalCheck[0].retailer_creator_id}} */",
+                                  "params": [
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P1",
+                                      "value": "{{$_POST.op_code}}"
+                                    },
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P2",
+                                      "value": "{{GetOPCode[0].api_tbl_id}}"
+                                    },
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P3",
+                                      "value": "{{WalletBalCheck[0].retailer_creator_id}}"
+                                    }
+                                  ]
+                                }
+                              },
+                              "output": true,
+                              "meta": [
+                                {
+                                  "name": "dt_comm_per",
+                                  "type": "text"
+                                },
+                                {
+                                  "name": "dt_comm_val",
+                                  "type": "text"
+                                },
+                                {
+                                  "name": "dt_charge_per",
+                                  "type": "text"
+                                },
+                                {
+                                  "name": "dt_charge_val",
+                                  "type": "text"
+                                }
+                              ],
+                              "outputType": "object"
+                            },
+                            {
+                              "name": "DtCommPer",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{CommChFrDT.dt_comm_per}}"
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtCommVal",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{CommChFrDT.dt_comm_val}}"
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtCommAmtVirtual",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{($_POST$_POST.recharge_amount.toNumber()*DtCommPer.toNumber()/100)+DtCommVal.toNumber()}}"
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtCommAmt",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{DtCommAmtVirtual.toNumber()-CommAmt.toNumber()}}"
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtChargePer",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{CommChFrDT.dt_charge_per}}"
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtChargeVal",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{CommChFrDT.dt_charge_val}}"
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtChargeAmtVirtual",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{($_POST.recharge_amount.toNumber()*CommChFrDT.dt_charge_per/100)+CommChFrDT.dt_charge_val.toNumber()}}"
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtChargeAmt",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{DtChargeAmtVirtual.toNumber()-ChargeAmt.toNumber()}}"
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtNetAmt",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{DtComAmt.toNumber()-DtChargeAmt.toNumber()}}"
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtClosingBal",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{GetRTCreator.rt_creator_bal_amt.toNumber()+DtComAmt.toNumber()-DtChargeAmt.toNumber()}}"
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "AdminClosingBal",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{AdminClosingBal.toNumber()+DtChargeAmt.toNumber()}}"
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "GetDTCreator",
+                              "module": "dbconnector",
+                              "action": "single",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "SELECT",
+                                  "columns": [
+                                    {
+                                      "table": "m_users",
+                                      "column": "user_type",
+                                      "alias": "dt_creator_user_type"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "balance_amt",
+                                      "alias": "dt_creator_bal_amt"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "scheme_id",
+                                      "alias": "dt_creator_scheme"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "user_id",
+                                      "alias": "dt_creator_user_id"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "user_fname",
+                                      "alias": "dt_creator_name"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "user_mobile",
+                                      "alias": "dt_creator_mobile"
+                                    }
+                                  ],
+                                  "table": {
+                                    "name": "m_users"
+                                  },
+                                  "joins": [],
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "m_users.id",
+                                        "field": "m_users.id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{GetRTCreator.dt_creator_id}}",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "SELECT user_type AS dt_creator_user_type, balance_amt AS dt_creator_bal_amt, scheme_id AS dt_creator_scheme, user_id AS dt_creator_user_id, user_fname AS dt_creator_name, user_mobile AS dt_creator_mobile\nFROM m_users\nWHERE id = :P1 /* {{GetRTCreator.dt_creator_id}} */",
+                                  "params": [
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P1",
+                                      "value": "{{GetRTCreator.dt_creator_id}}"
+                                    }
+                                  ]
+                                }
+                              },
+                              "output": true,
+                              "meta": [
+                                {
+                                  "name": "dt_creator_user_type",
+                                  "type": "number"
+                                },
+                                {
+                                  "name": "dt_creator_bal_amt",
+                                  "type": "text"
+                                },
+                                {
+                                  "name": "dt_creator_scheme",
+                                  "type": "text"
+                                },
+                                {
+                                  "name": "dt_creator_user_id",
+                                  "type": "text"
+                                },
+                                {
+                                  "name": "dt_creator_name",
+                                  "type": "text"
+                                },
+                                {
+                                  "name": "dt_creator_mobile",
+                                  "type": "text"
+                                }
+                              ],
+                              "outputType": "object"
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{GetDTCreator.dt_creator_user_type ==3}}",
+                                "then": {
+                                  "steps": [
+                                    {
+                                      "name": "CommChFrMDT",
+                                      "module": "dbconnector",
+                                      "action": "single",
+                                      "options": {
+                                        "connection": "postgres_gcpServer",
+                                        "sql": {
+                                          "type": "SELECT",
+                                          "columns": [
+                                            {
+                                              "table": "m_commission",
+                                              "column": "comm_per",
+                                              "alias": "mdt_comm_per"
+                                            },
+                                            {
+                                              "table": "m_commission",
+                                              "column": "comm_val",
+                                              "alias": "mdt_comm_val"
+                                            },
+                                            {
+                                              "table": "m_commission",
+                                              "column": "service_charge_per",
+                                              "alias": "mdt_charge_per"
+                                            },
+                                            {
+                                              "table": "m_commission",
+                                              "column": "service_charge_val",
+                                              "alias": "mdt_charge_val"
+                                            }
+                                          ],
+                                          "table": {
+                                            "name": "m_commission"
+                                          },
+                                          "joins": [],
+                                          "wheres": {
+                                            "condition": "AND",
+                                            "rules": [
+                                              {
+                                                "id": "m_commission.operator_id",
+                                                "field": "m_commission.operator_id",
+                                                "type": "double",
+                                                "operator": "equal",
+                                                "value": "{{$_POST.op_code}}",
+                                                "data": {
+                                                  "table": "m_commission",
+                                                  "column": "operator_id",
+                                                  "type": "number"
+                                                },
+                                                "operation": "="
+                                              },
+                                              {
+                                                "id": "m_commission.api_id",
+                                                "field": "m_commission.api_id",
+                                                "type": "double",
+                                                "operator": "equal",
+                                                "value": "{{GetOPCode[0].api_tbl_id}}",
+                                                "data": {
+                                                  "table": "m_commission",
+                                                  "column": "api_id",
+                                                  "type": "number"
+                                                },
+                                                "operation": "="
+                                              },
+                                              {
+                                                "id": "m_commission.scheme_id",
+                                                "field": "m_commission.scheme_id",
+                                                "type": "double",
+                                                "operator": "equal",
+                                                "value": "{{GetDTCreator.dt_creator_scheme}}",
+                                                "data": {
+                                                  "table": "m_commission",
+                                                  "column": "scheme_id",
+                                                  "type": "number"
+                                                },
+                                                "operation": "="
+                                              }
+                                            ],
+                                            "conditional": null,
+                                            "valid": true
+                                          },
+                                          "query": "SELECT comm_per AS mdt_comm_per, comm_val AS mdt_comm_val, service_charge_per AS mdt_charge_per, service_charge_val AS mdt_charge_val\nFROM m_commission\nWHERE operator_id = :P1 /* {{$_POST.op_code}} */ AND api_id = :P2 /* {{GetOPCode[0].api_tbl_id}} */ AND scheme_id = :P3 /* {{GetDTCreator.dt_creator_scheme}} */",
+                                          "params": [
+                                            {
+                                              "operator": "equal",
+                                              "type": "expression",
+                                              "name": ":P1",
+                                              "value": "{{$_POST.op_code}}"
+                                            },
+                                            {
+                                              "operator": "equal",
+                                              "type": "expression",
+                                              "name": ":P2",
+                                              "value": "{{GetOPCode[0].api_tbl_id}}"
+                                            },
+                                            {
+                                              "operator": "equal",
+                                              "type": "expression",
+                                              "name": ":P3",
+                                              "value": "{{GetDTCreator.dt_creator_scheme}}"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "output": true,
+                                      "meta": [
+                                        {
+                                          "name": "mdt_comm_per",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "mdt_comm_val",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "mdt_charge_per",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "mdt_charge_val",
+                                          "type": "text"
+                                        }
+                                      ],
+                                      "outputType": "object"
+                                    },
+                                    {
+                                      "name": "MdtCommPer",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{CommChFrMDT.mdt_comm_per}}"
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtCommVal",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{CommChFrMDT.mdt_comm_val}}"
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtComAmtVirtual",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{($_POST.recharge_amount.toNumber()*MdtCommPer.toNumber()/100)+CommChFrMDT.mdt_comm_val.toNumber()}}"
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtComAmt",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{MdtComAmtVirtual.toNumber()-DtChargeAmtVirtual.toNumber()}}"
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtChargePer",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{CommChFrMDT.mdt_charge_per}}"
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtChargeVal",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{CommChFrMDT.mdt_charge_val}}"
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtChargeAmtVirtual",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{($_POST.recharge_amount.toNumber()*MdtChargePer.toNumber()/100)+MdtChargeVal.toNumber()}}"
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtChargeAmt",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{MdtChargeAmtVirtual.toNumber()-DtChargeAmtVirtual.toNumber()}}"
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtNetAmt",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{MdtComAmt.toNumber() - MdtChargeAmt.toNumber()}}"
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtClosingBal",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{GetDTCreator.dt_creator_bal_amt.toNumber()+MdtNetAmt.toNumber()}}"
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "AdminClosingBal",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{AdminClosingBal.toNumber()+MdtChargeAmt.toNumber()}}"
+                                      },
+                                      "output": true
+                                    }
+                                  ]
+                                },
+                                "else": {
+                                  "steps": [
+                                    {
+                                      "name": "MdtCommPer",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": 0
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtCommVal",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": 0
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtComAmt",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": 0
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtChargePer",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": 0
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtChargeVal",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": 0
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtNetAmt",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": 0
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtChargeAmt",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": 0
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtClosingBal",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": 0
+                                      },
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "AdminClosingBal",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{AdminClosingBal}}"
+                                      },
+                                      "output": true
+                                    }
+                                  ]
+                                }
+                              },
+                              "outputType": "boolean",
+                              "output": true
+                            }
+                          ]
+                        },
+                        "else": {
+                          "steps": [
+                            {
+                              "name": "DtCommPer",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtCommVal",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtCommAmt",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtChargePer",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtChargeVal",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtChargeAmt",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "DtNetAmt",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "MdtCommPer",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "MdtCommVal",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "MdtComAmt",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "MdtChargePer",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "MdtChargeVal",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "MdtChargeAmt",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "MdtNetAmt",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": 0
+                              },
+                              "output": true
+                            },
+                            {
+                              "name": "AdminClosingBal",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{AdminClosingBal}}"
+                              },
+                              "output": true
+                            }
+                          ]
+                        }
+                      },
+                      "outputType": "boolean"
+                    },
+                    {
+                      "name": "AdminNetAmt",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{ChargeAmt.toNumber()+DtChargeAmt.toNumber()+MdtChargeAmt.toNumber()}}"
+                      }
+                    },
+                    {
+                      "name": "RechTrans",
+                      "module": "dbupdater",
+                      "action": "insert",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "insert",
+                          "values": [
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "op_id",
+                              "type": "number",
+                              "value": "{{$_POST.op_code}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "service_id",
+                              "type": "number",
+                              "value": "{{GetOPCode[0].service_id}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "api_id",
+                              "type": "number",
+                              "value": "{{GetOPCode[0].api_tbl_id}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "user_id",
+                              "type": "number",
+                              "value": "{{identity}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "user_number",
+                              "type": "text",
+                              "value": "{{xml.Result.mn[0]}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "details",
+                              "type": "text",
+                              "value": "{{WalletBalCheck[0].user_fname}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "opening_balance",
+                              "type": "text",
+                              "value": "{{WalletBalCheck[0].balance_amt}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "amount",
+                              "type": "text",
+                              "value": "{{$_POST.recharge_amount}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "comm_per",
+                              "type": "text",
+                              "value": "{{GetCommision[0].comm_per}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "comm_val",
+                              "type": "text",
+                              "value": "{{GetCommision[0].comm_val}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "comm_amt",
+                              "type": "text",
+                              "value": "{{CommAmt}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "other_charge",
+                              "type": "text",
+                              "value": "{{GetCommision[0].service_charge_val}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "charge_per",
+                              "type": "text",
+                              "value": "{{GetCommision[0].service_charge_per}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "charge_amt",
+                              "type": "text",
+                              "value": "{{ChargeAmt}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "net_amt",
+                              "type": "text",
+                              "value": "{{NetAmt}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "closing_balance",
+                              "type": "text",
+                              "value": "{{ClosingBalance}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "tr_mode",
+                              "type": "text",
+                              "value": "{{'API'}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "tr_type",
+                              "type": "text",
+                              "value": "{{'Cash'}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "status",
+                              "type": "text",
+                              "value": "{{xml.Result.status[0]}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "tr_id",
+                              "type": "text",
+                              "value": "{{TransactionId}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "reason",
+                              "type": "text",
+                              "value": "{{'Recharge of Rs. '+$_POST.recharge_amount+' to '+$_POST.mobile_number+' by '+WalletBalCheck[0].user_fname+' | '+WalletBalCheck[0].user_mobile}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "api_logs",
+                              "type": "text",
+                              "value": "{{'SN'}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "is_processed",
+                              "type": "text",
+                              "value": "{{xml.Result.apirefid[0]}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "operator_ref",
+                              "type": "text",
+                              "value": "{{xml.Result.remark[0]}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "api_ref",
+                              "type": "text",
+                              "value": "{{xml.Result.field1[0]}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "revert_trans",
+                              "type": "text",
+                              "value": "0"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "ip_address",
+                              "type": "text",
+                              "value": "{{$_SERVER.REMOTE_ADDR}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "api_response_id",
+                              "type": "number",
+                              "value": "{{apiResponseTime}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "process_mode",
+                              "type": "text",
+                              "value": "{{'A2C'}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "live",
+                              "type": "text",
+                              "value": "{{apiResponseTime > 10? 'Push' : 'Live'}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "tr_date",
+                              "type": "datetime",
+                              "value": "{{NOW}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "transaction_by",
+                              "type": "number",
+                              "value": "{{identity}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "extra1",
+                              "type": "text",
+                              "value": "{{xml.Result.ec[0]}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "dtcommper",
+                              "type": "text",
+                              "value": "{{DtCommPer}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "dtcommval",
+                              "type": "text",
+                              "value": "{{DtCommVal}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "dtcommamt",
+                              "type": "text",
+                              "value": "{{DtCommAmt}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "dtchargeper",
+                              "type": "text",
+                              "value": "{{DtChargePer}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "dtchargeval",
+                              "type": "text",
+                              "value": "{{DtChargeVal}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "dtchargeamt",
+                              "type": "text",
+                              "value": "{{DtChargeAmt}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "mdtcommper",
+                              "type": "text",
+                              "value": "{{MdtCommPer}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "mdtcommval",
+                              "type": "text",
+                              "value": "{{MdtCommVal}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "mdtcommamt",
+                              "type": "text",
+                              "value": "{{MdtComAmt}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "mdtchargeper",
+                              "type": "text",
+                              "value": "{{MdtChargePer}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "mdtchargeval",
+                              "type": "text",
+                              "value": "{{MdtChargeVal}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "mdtchargeamt",
+                              "type": "text",
+                              "value": "{{MdtChargeAmt}}"
+                            },
+                            {
+                              "table": "tt_recharge_trans",
+                              "column": "extra3",
+                              "type": "text",
+                              "value": "{{xml.Result.balance[0]}}"
+                            }
+                          ],
+                          "table": "tt_recharge_trans",
+                          "returning": "id",
+                          "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, opening_balance, amount, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, tr_mode, tr_type, status, tr_id, reason, api_logs, is_processed, operator_ref, api_ref, revert_trans, ip_address, api_response_id, process_mode, live, tr_date, transaction_by, extra1, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, extra3) VALUES (:P1 /* {{$_POST.op_code}} */, :P2 /* {{GetOPCode[0].service_id}} */, :P3 /* {{GetOPCode[0].api_tbl_id}} */, :P4 /* {{identity}} */, :P5 /* {{xml.Result.mn[0]}} */, :P6 /* {{WalletBalCheck[0].user_fname}} */, :P7 /* {{WalletBalCheck[0].balance_amt}} */, :P8 /* {{$_POST.recharge_amount}} */, :P9 /* {{GetCommision[0].comm_per}} */, :P10 /* {{GetCommision[0].comm_val}} */, :P11 /* {{CommAmt}} */, :P12 /* {{GetCommision[0].service_charge_val}} */, :P13 /* {{GetCommision[0].service_charge_per}} */, :P14 /* {{ChargeAmt}} */, :P15 /* {{NetAmt}} */, :P16 /* {{ClosingBalance}} */, :P17 /* {{'API'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{xml.Result.status[0]}} */, :P20 /* {{TransactionId}} */, :P21 /* {{'Recharge of Rs. '+$_POST.recharge_amount+' to '+$_POST.mobile_number+' by '+WalletBalCheck[0].user_fname+' | '+WalletBalCheck[0].user_mobile}} */, :P22 /* {{'SN'}} */, :P23 /* {{xml.Result.apirefid[0]}} */, :P24 /* {{xml.Result.remark[0]}} */, :P25 /* {{xml.Result.field1[0]}} */, '0', :P26 /* {{$_SERVER.REMOTE_ADDR}} */, :P27 /* {{apiResponseTime}} */, :P28 /* {{'A2C'}} */, :P29 /* {{apiResponseTime > 10? 'Push' : 'Live'}} */, :P30 /* {{NOW}} */, :P31 /* {{identity}} */, :P32 /* {{xml.Result.ec[0]}} */, :P33 /* {{DtCommPer}} */, :P34 /* {{DtCommVal}} */, :P35 /* {{DtCommAmt}} */, :P36 /* {{DtChargePer}} */, :P37 /* {{DtChargeVal}} */, :P38 /* {{DtChargeAmt}} */, :P39 /* {{MdtCommPer}} */, :P40 /* {{MdtCommVal}} */, :P41 /* {{MdtComAmt}} */, :P42 /* {{MdtChargePer}} */, :P43 /* {{MdtChargeVal}} */, :P44 /* {{MdtChargeAmt}} */, :P45 /* {{xml.Result.balance[0]}} */)",
+                          "params": [
+                            {
+                              "name": ":P1",
+                              "type": "expression",
+                              "value": "{{$_POST.op_code}}"
+                            },
+                            {
+                              "name": ":P2",
+                              "type": "expression",
+                              "value": "{{GetOPCode[0].service_id}}"
+                            },
+                            {
+                              "name": ":P3",
+                              "type": "expression",
+                              "value": "{{GetOPCode[0].api_tbl_id}}"
+                            },
+                            {
+                              "name": ":P4",
+                              "type": "expression",
+                              "value": "{{identity}}"
+                            },
+                            {
+                              "name": ":P5",
+                              "type": "expression",
+                              "value": "{{xml.Result.mn[0]}}"
+                            },
+                            {
+                              "name": ":P6",
+                              "type": "expression",
+                              "value": "{{WalletBalCheck[0].user_fname}}"
+                            },
+                            {
+                              "name": ":P7",
+                              "type": "expression",
+                              "value": "{{WalletBalCheck[0].balance_amt}}"
+                            },
+                            {
+                              "name": ":P8",
+                              "type": "expression",
+                              "value": "{{$_POST.recharge_amount}}"
+                            },
+                            {
+                              "name": ":P9",
+                              "type": "expression",
+                              "value": "{{GetCommision[0].comm_per}}"
+                            },
+                            {
+                              "name": ":P10",
+                              "type": "expression",
+                              "value": "{{GetCommision[0].comm_val}}"
+                            },
+                            {
+                              "name": ":P11",
+                              "type": "expression",
+                              "value": "{{CommAmt}}"
+                            },
+                            {
+                              "name": ":P12",
+                              "type": "expression",
+                              "value": "{{GetCommision[0].service_charge_val}}"
+                            },
+                            {
+                              "name": ":P13",
+                              "type": "expression",
+                              "value": "{{GetCommision[0].service_charge_per}}"
+                            },
+                            {
+                              "name": ":P14",
+                              "type": "expression",
+                              "value": "{{ChargeAmt}}"
+                            },
+                            {
+                              "name": ":P15",
+                              "type": "expression",
+                              "value": "{{NetAmt}}"
+                            },
+                            {
+                              "name": ":P16",
+                              "type": "expression",
+                              "value": "{{ClosingBalance}}"
+                            },
+                            {
+                              "name": ":P17",
+                              "type": "expression",
+                              "value": "{{'API'}}"
+                            },
+                            {
+                              "name": ":P18",
+                              "type": "expression",
+                              "value": "{{'Cash'}}"
+                            },
+                            {
+                              "name": ":P19",
+                              "type": "expression",
+                              "value": "{{xml.Result.status[0]}}"
+                            },
+                            {
+                              "name": ":P20",
+                              "type": "expression",
+                              "value": "{{TransactionId}}"
+                            },
+                            {
+                              "name": ":P21",
+                              "type": "expression",
+                              "value": "{{'Recharge of Rs. '+$_POST.recharge_amount+' to '+$_POST.mobile_number+' by '+WalletBalCheck[0].user_fname+' | '+WalletBalCheck[0].user_mobile}}"
+                            },
+                            {
+                              "name": ":P22",
+                              "type": "expression",
+                              "value": "{{'SN'}}"
+                            },
+                            {
+                              "name": ":P23",
+                              "type": "expression",
+                              "value": "{{xml.Result.apirefid[0]}}"
+                            },
+                            {
+                              "name": ":P24",
+                              "type": "expression",
+                              "value": "{{xml.Result.remark[0]}}"
+                            },
+                            {
+                              "name": ":P25",
+                              "type": "expression",
+                              "value": "{{xml.Result.field1[0]}}"
+                            },
+                            {
+                              "name": ":P26",
+                              "type": "expression",
+                              "value": "{{$_SERVER.REMOTE_ADDR}}"
+                            },
+                            {
+                              "name": ":P27",
+                              "type": "expression",
+                              "value": "{{apiResponseTime}}"
+                            },
+                            {
+                              "name": ":P28",
+                              "type": "expression",
+                              "value": "{{'A2C'}}"
+                            },
+                            {
+                              "name": ":P29",
+                              "type": "expression",
+                              "value": "{{apiResponseTime > 10? 'Push' : 'Live'}}"
+                            },
+                            {
+                              "name": ":P30",
+                              "type": "expression",
+                              "value": "{{NOW}}"
+                            },
+                            {
+                              "name": ":P31",
+                              "type": "expression",
+                              "value": "{{identity}}"
+                            },
+                            {
+                              "name": ":P32",
+                              "type": "expression",
+                              "value": "{{xml.Result.ec[0]}}"
+                            },
+                            {
+                              "name": ":P33",
+                              "type": "expression",
+                              "value": "{{DtCommPer}}"
+                            },
+                            {
+                              "name": ":P34",
+                              "type": "expression",
+                              "value": "{{DtCommVal}}"
+                            },
+                            {
+                              "name": ":P35",
+                              "type": "expression",
+                              "value": "{{DtCommAmt}}"
+                            },
+                            {
+                              "name": ":P36",
+                              "type": "expression",
+                              "value": "{{DtChargePer}}"
+                            },
+                            {
+                              "name": ":P37",
+                              "type": "expression",
+                              "value": "{{DtChargeVal}}"
+                            },
+                            {
+                              "name": ":P38",
+                              "type": "expression",
+                              "value": "{{DtChargeAmt}}"
+                            },
+                            {
+                              "name": ":P39",
+                              "type": "expression",
+                              "value": "{{MdtCommPer}}"
+                            },
+                            {
+                              "name": ":P40",
+                              "type": "expression",
+                              "value": "{{MdtCommVal}}"
+                            },
+                            {
+                              "name": ":P41",
+                              "type": "expression",
+                              "value": "{{MdtComAmt}}"
+                            },
+                            {
+                              "name": ":P42",
+                              "type": "expression",
+                              "value": "{{MdtChargePer}}"
+                            },
+                            {
+                              "name": ":P43",
+                              "type": "expression",
+                              "value": "{{MdtChargeVal}}"
+                            },
+                            {
+                              "name": ":P44",
+                              "type": "expression",
+                              "value": "{{MdtChargeAmt}}"
+                            },
+                            {
+                              "name": ":P45",
+                              "type": "expression",
+                              "value": "{{xml.Result.balance[0]}}"
+                            }
+                          ]
+                        }
+                      },
+                      "meta": [
+                        {
+                          "name": "identity",
+                          "type": "text"
+                        },
+                        {
+                          "name": "affected",
+                          "type": "number"
+                        }
+                      ],
+                      "output": true
+                    },
+                    {
+                      "name": "DrBalanceRT",
+                      "module": "dbupdater",
+                      "action": "insert",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "insert",
+                          "values": [
+                            {
+                              "table": "tt_balance",
+                              "column": "user_id",
+                              "type": "number",
+                              "value": "{{identity}}"
+                            },
+                            {
+                              "table": "tt_balance",
+                              "column": "old_balance",
+                              "type": "text",
+                              "value": "{{WalletBalCheck[0].balance_amt}}"
+                            },
+                            {
+                              "table": "tt_balance",
+                              "column": "amount",
+                              "type": "text",
+                              "value": "{{$_POST.recharge_amount}}"
+                            },
+                            {
+                              "table": "tt_balance",
+                              "column": "new_balance",
+                              "type": "text",
+                              "value": "{{ClosingBalance}}"
+                            },
+                            {
+                              "table": "tt_balance",
+                              "column": "transaction_type",
+                              "type": "text",
+                              "value": "{{'Recharge'}}"
+                            },
+                            {
+                              "table": "tt_balance",
+                              "column": "tr_date",
+                              "type": "text",
+                              "value": "{{NOW}}"
+                            },
+                            {
+                              "table": "tt_balance",
+                              "column": "ip_address",
+                              "type": "text",
+                              "value": "{{$_SERVER.REMOTE_ADDR}}"
+                            },
+                            {
+                              "table": "tt_balance",
+                              "column": "crdr_type",
+                              "type": "text",
+                              "value": "{{'Debit'}}"
+                            },
+                            {
+                              "table": "tt_balance",
+                              "column": "pay_ref_id",
+                              "type": "text",
+                              "value": "{{RechTrans.identity}}"
+                            },
+                            {
+                              "table": "tt_balance",
+                              "column": "remarks",
+                              "type": "text",
+                              "value": "{{'Number: '+$_POST.mobile_number+' | Amount:\\n '+$_POST.recharge_amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision[0].comm_per+' | Comm Val: '+GetCommision[0].comm_val+' | Charge Per: '+GetCommision[0].service_charge_per+' | Charge Val: '+GetCommision[0].service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+NetAmt}}"
+                            },
+                            {
+                              "table": "tt_balance",
+                              "column": "created_by",
+                              "type": "number",
+                              "value": "{{identity}}"
+                            },
+                            {
+                              "table": "tt_balance",
+                              "column": "created_on",
+                              "type": "datetime",
+                              "value": "{{NOW}}"
+                            },
+                            {
+                              "table": "tt_balance",
+                              "column": "netamt",
+                              "type": "text",
+                              "value": "{{NetAmt}}"
+                            }
+                          ],
+                          "table": "tt_balance",
+                          "returning": "id",
+                          "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt) VALUES (:P1 /* {{identity}} */, :P2 /* {{WalletBalCheck[0].balance_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{ClosingBalance}} */, :P5 /* {{'Recharge'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_POST.mobile_number+' | Amount:\\n '+$_POST.recharge_amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision[0].comm_per+' | Comm Val: '+GetCommision[0].comm_val+' | Charge Per: '+GetCommision[0].service_charge_per+' | Charge Val: '+GetCommision[0].service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+NetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{NetAmt}} */)",
+                          "params": [
+                            {
+                              "name": ":P1",
+                              "type": "expression",
+                              "value": "{{identity}}"
+                            },
+                            {
+                              "name": ":P2",
+                              "type": "expression",
+                              "value": "{{WalletBalCheck[0].balance_amt}}"
+                            },
+                            {
+                              "name": ":P3",
+                              "type": "expression",
+                              "value": "{{$_POST.recharge_amount}}"
+                            },
+                            {
+                              "name": ":P4",
+                              "type": "expression",
+                              "value": "{{ClosingBalance}}"
+                            },
+                            {
+                              "name": ":P5",
+                              "type": "expression",
+                              "value": "{{'Recharge'}}"
+                            },
+                            {
+                              "name": ":P6",
+                              "type": "expression",
+                              "value": "{{NOW}}"
+                            },
+                            {
+                              "name": ":P7",
+                              "type": "expression",
+                              "value": "{{$_SERVER.REMOTE_ADDR}}"
+                            },
+                            {
+                              "name": ":P8",
+                              "type": "expression",
+                              "value": "{{'Debit'}}"
+                            },
+                            {
+                              "name": ":P9",
+                              "type": "expression",
+                              "value": "{{RechTrans.identity}}"
+                            },
+                            {
+                              "name": ":P10",
+                              "type": "expression",
+                              "value": "{{'Number: '+$_POST.mobile_number+' | Amount:\\n '+$_POST.recharge_amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision[0].comm_per+' | Comm Val: '+GetCommision[0].comm_val+' | Charge Per: '+GetCommision[0].service_charge_per+' | Charge Val: '+GetCommision[0].service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+NetAmt}}"
+                            },
+                            {
+                              "name": ":P11",
+                              "type": "expression",
+                              "value": "{{identity}}"
+                            },
+                            {
+                              "name": ":P12",
+                              "type": "expression",
+                              "value": "{{NOW}}"
+                            },
+                            {
+                              "name": ":P13",
+                              "type": "expression",
+                              "value": "{{NetAmt}}"
+                            }
+                          ]
+                        }
+                      },
+                      "meta": [
+                        {
+                          "name": "identity",
+                          "type": "text"
+                        },
+                        {
+                          "name": "affected",
+                          "type": "number"
+                        }
+                      ],
+                      "output": true
+                    },
+                    {
+                      "name": "TrUserUpdateRT",
+                      "module": "dbupdater",
+                      "action": "update",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "update",
+                          "values": [
+                            {
+                              "table": "m_users",
+                              "column": "balance_amt",
+                              "type": "text",
+                              "value": "{{ClosingBalance}}"
+                            }
+                          ],
+                          "table": "m_users",
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "id",
+                                "field": "id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{identity}}",
+                                "data": {
+                                  "column": "id"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{ClosingBalance}} */\nWHERE id = :P2 /* {{identity}} */",
+                          "params": [
+                            {
+                              "name": ":P1",
+                              "type": "expression",
+                              "value": "{{ClosingBalance}}"
+                            },
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P2",
+                              "value": "{{identity}}"
+                            }
+                          ]
+                        }
+                      },
+                      "meta": [
+                        {
+                          "name": "affected",
+                          "type": "number"
+                        }
+                      ],
+                      "output": true
+                    },
+                    {
+                      "name": "AdminCharAmt",
+                      "module": "dbupdater",
+                      "action": "insert",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "insert",
+                          "values": [
+                            {
+                              "table": "t_charge_cal",
+                              "column": "user_id",
+                              "type": "number",
+                              "value": "{{GetAdmin.admin_id}}"
+                            },
+                            {
+                              "table": "t_charge_cal",
+                              "column": "old_balance",
+                              "type": "text",
+                              "value": "{{GetAdmin.admin_balance_amt}}"
+                            },
+                            {
+                              "table": "t_charge_cal",
+                              "column": "amount",
+                              "type": "text",
+                              "value": "{{$_POST.recharge_amount}}"
+                            },
+                            {
+                              "table": "t_charge_cal",
+                              "column": "netamt",
+                              "type": "text",
+                              "value": "{{AdminNetAmt}}"
+                            },
+                            {
+                              "table": "t_charge_cal",
+                              "column": "new_balance",
+                              "type": "text",
+                              "value": "{{AdminClosingBal}}"
+                            },
+                            {
+                              "table": "t_charge_cal",
+                              "column": "transaction_type",
+                              "type": "text",
+                              "value": "{{'Recharge Charge'}}"
+                            },
+                            {
+                              "table": "t_charge_cal",
+                              "column": "tr_date",
+                              "type": "text",
+                              "value": "{{NOW}}"
+                            },
+                            {
+                              "table": "t_charge_cal",
+                              "column": "ip_address",
+                              "type": "text",
+                              "value": "{{$_SERVER.REMOTE_ADDR}}"
+                            },
+                            {
+                              "table": "t_charge_cal",
+                              "column": "crdr_type",
+                              "type": "text",
+                              "value": "{{'Credit'}}"
+                            },
+                            {
+                              "table": "t_charge_cal",
+                              "column": "pay_ref_id",
+                              "type": "number",
+                              "value": "{{RechTrans.identity}}"
+                            },
+                            {
+                              "table": "t_charge_cal",
+                              "column": "remarks",
+                              "type": "text",
+                              "value": "{{'Number: '+WalletBalCheck[0].user_mobile+' | Amount: '+$_POST.recharge_amount+' | Charge Credit | Ref. Id: '+RechTrans.identity+' | Comm Per: ('+GetCommision[0].comm_per+' - '+DtCommPer+' - '+MdtCommPer+' ) | Comm Val: ( '+GetCommision[0].comm_val+' - '+DtCommVal+' - '+MdtCommVal+' ) | Charge Per: ( '+GetCommision[0].service_charge_per+' - '+DtChargePer+' - '+MdtChargePer+' ) | Charge Val: ( '+GetCommision[0].service_charge_val+' - '+DtChargeVal+' - '+MdtChargeVal+' ) | GST: 00.00 | TDS: 00.00 | Net Ch. Amt. ( '+ChargeAmt+' - '+DtChargeAmt+' - '+MdtChargeAmt+' )'}}"
+                            },
+                            {
+                              "table": "t_charge_cal",
+                              "column": "created_by",
+                              "type": "number",
+                              "value": "{{identity}}"
+                            },
+                            {
+                              "table": "t_charge_cal",
+                              "column": "created_on",
+                              "type": "datetime",
+                              "value": "{{NOW}}"
+                            }
+                          ],
+                          "table": "t_charge_cal",
+                          "returning": "id",
+                          "query": "INSERT INTO t_charge_cal\n(user_id, old_balance, amount, netamt, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on) VALUES (:P1 /* {{GetAdmin.admin_id}} */, :P2 /* {{GetAdmin.admin_balance_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{AdminNetAmt}} */, :P5 /* {{AdminClosingBal}} */, :P6 /* {{'Recharge Charge'}} */, :P7 /* {{NOW}} */, :P8 /* {{$_SERVER.REMOTE_ADDR}} */, :P9 /* {{'Credit'}} */, :P10 /* {{RechTrans.identity}} */, :P11 /* {{'Number: '+WalletBalCheck[0].user_mobile+' | Amount: '+$_POST.recharge_amount+' | Charge Credit | Ref. Id: '+RechTrans.identity+' | Comm Per: ('+GetCommision[0].comm_per+' - '+DtCommPer+' - '+MdtCommPer+' ) | Comm Val: ( '+GetCommision[0].comm_val+' - '+DtCommVal+' - '+MdtCommVal+' ) | Charge Per: ( '+GetCommision[0].service_charge_per+' - '+DtChargePer+' - '+MdtChargePer+' ) | Charge Val: ( '+GetCommision[0].service_charge_val+' - '+DtChargeVal+' - '+MdtChargeVal+' ) | GST: 00.00 | TDS: 00.00 | Net Ch. Amt. ( '+ChargeAmt+' - '+DtChargeAmt+' - '+MdtChargeAmt+' )'}} */, :P12 /* {{identity}} */, :P13 /* {{NOW}} */)",
+                          "params": [
+                            {
+                              "name": ":P1",
+                              "type": "expression",
+                              "value": "{{GetAdmin.admin_id}}"
+                            },
+                            {
+                              "name": ":P2",
+                              "type": "expression",
+                              "value": "{{GetAdmin.admin_balance_amt}}"
+                            },
+                            {
+                              "name": ":P3",
+                              "type": "expression",
+                              "value": "{{$_POST.recharge_amount}}"
+                            },
+                            {
+                              "name": ":P4",
+                              "type": "expression",
+                              "value": "{{AdminNetAmt}}"
+                            },
+                            {
+                              "name": ":P5",
+                              "type": "expression",
+                              "value": "{{AdminClosingBal}}"
+                            },
+                            {
+                              "name": ":P6",
+                              "type": "expression",
+                              "value": "{{'Recharge Charge'}}"
+                            },
+                            {
+                              "name": ":P7",
+                              "type": "expression",
+                              "value": "{{NOW}}"
+                            },
+                            {
+                              "name": ":P8",
+                              "type": "expression",
+                              "value": "{{$_SERVER.REMOTE_ADDR}}"
+                            },
+                            {
+                              "name": ":P9",
+                              "type": "expression",
+                              "value": "{{'Credit'}}"
+                            },
+                            {
+                              "name": ":P10",
+                              "type": "expression",
+                              "value": "{{RechTrans.identity}}"
+                            },
+                            {
+                              "name": ":P11",
+                              "type": "expression",
+                              "value": "{{'Number: '+WalletBalCheck[0].user_mobile+' | Amount: '+$_POST.recharge_amount+' | Charge Credit | Ref. Id: '+RechTrans.identity+' | Comm Per: ('+GetCommision[0].comm_per+' - '+DtCommPer+' - '+MdtCommPer+' ) | Comm Val: ( '+GetCommision[0].comm_val+' - '+DtCommVal+' - '+MdtCommVal+' ) | Charge Per: ( '+GetCommision[0].service_charge_per+' - '+DtChargePer+' - '+MdtChargePer+' ) | Charge Val: ( '+GetCommision[0].service_charge_val+' - '+DtChargeVal+' - '+MdtChargeVal+' ) | GST: 00.00 | TDS: 00.00 | Net Ch. Amt. ( '+ChargeAmt+' - '+DtChargeAmt+' - '+MdtChargeAmt+' )'}}"
+                            },
+                            {
+                              "name": ":P12",
+                              "type": "expression",
+                              "value": "{{identity}}"
+                            },
+                            {
+                              "name": ":P13",
+                              "type": "expression",
+                              "value": "{{NOW}}"
+                            }
+                          ]
+                        }
+                      },
+                      "meta": [
+                        {
+                          "name": "identity",
+                          "type": "text"
+                        },
+                        {
+                          "name": "affected",
+                          "type": "number"
+                        }
+                      ],
+                      "output": true
+                    },
+                    {
+                      "name": "AdminClosingBalUserUp",
+                      "module": "dbupdater",
+                      "action": "update",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "update",
+                          "values": [
+                            {
+                              "table": "m_users",
+                              "column": "balance_amt",
+                              "type": "text",
+                              "value": "{{AdminClosingBal}}"
+                            }
+                          ],
+                          "table": "m_users",
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "id",
+                                "field": "id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{GetAdmin.admin_id}}",
+                                "data": {
+                                  "column": "id"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{AdminClosingBal}} */\nWHERE id = :P2 /* {{GetAdmin.admin_id}} */",
+                          "params": [
+                            {
+                              "name": ":P1",
+                              "type": "expression",
+                              "value": "{{AdminClosingBal}}"
+                            },
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P2",
+                              "value": "{{GetAdmin.admin_id}}"
+                            }
+                          ]
+                        }
+                      },
+                      "meta": [
+                        {
+                          "name": "affected",
+                          "type": "number"
+                        }
+                      ],
+                      "output": true
+                    },
+                    {
+                      "name": "",
+                      "module": "core",
+                      "action": "condition",
+                      "options": {
+                        "if": "{{GetRTCreator.rt_creator_user_type == 2}}",
+                        "then": {
+                          "steps": [
+                            {
+                              "name": "DtBalance",
+                              "module": "dbupdater",
+                              "action": "insert",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "insert",
+                                  "values": [
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "user_id",
+                                      "type": "number",
+                                      "value": "{{WalletBalCheck[0].retailer_creator_id}}"
+                                    },
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "old_balance",
+                                      "type": "text",
+                                      "value": "{{GetRTCreator.rt_creator_bal_amt}}"
+                                    },
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "amount",
+                                      "type": "text",
+                                      "value": "{{$_POST.recharge_amount}}"
+                                    },
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "netamt",
+                                      "type": "text",
+                                      "value": "{{DtNetAmt}}"
+                                    },
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "new_balance",
+                                      "type": "text",
+                                      "value": "{{DtClosingBal}}"
+                                    },
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "transaction_type",
+                                      "type": "text",
+                                      "value": "{{'Recharge Comm'}}"
+                                    },
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "tr_date",
+                                      "type": "text",
+                                      "value": "{{NOW}}"
+                                    },
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "ip_address",
+                                      "type": "text",
+                                      "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                    },
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "crdr_type",
+                                      "type": "text",
+                                      "value": "{{'Credit'}}"
+                                    },
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "pay_ref_id",
+                                      "type": "number",
+                                      "value": "{{RechTrans.identity}}"
+                                    },
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "remarks",
+                                      "type": "text",
+                                      "value": "{{'Number: '+GetRTCreator.rt_creator_mobile+' | Amount:\\n '+$_POST.recharge_amount+' | Charge Credit | Ref. Id: '+RechTrans.identity+' | Comm Per: '+CommChFrDT.dt_comm_per+' | Comm Val: '+CommChFrDT.dt_comm_val+' | Charge Per:\\n '+CommChFrDT.dt_charge_per+' | Charge Val: '+CommChFrDT.dt_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+DtNetAmt}}"
+                                    },
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "created_by",
+                                      "type": "number",
+                                      "value": "{{identity}}"
+                                    },
+                                    {
+                                      "table": "t_charge_cal",
+                                      "column": "created_on",
+                                      "type": "datetime",
+                                      "value": "{{NOW}}"
+                                    }
+                                  ],
+                                  "table": "t_charge_cal",
+                                  "returning": "id",
+                                  "query": "INSERT INTO t_charge_cal\n(user_id, old_balance, amount, netamt, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on) VALUES (:P1 /* {{WalletBalCheck[0].retailer_creator_id}} */, :P2 /* {{GetRTCreator.rt_creator_bal_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{DtNetAmt}} */, :P5 /* {{DtClosingBal}} */, :P6 /* {{'Recharge Comm'}} */, :P7 /* {{NOW}} */, :P8 /* {{$_SERVER.REMOTE_ADDR}} */, :P9 /* {{'Credit'}} */, :P10 /* {{RechTrans.identity}} */, :P11 /* {{'Number: '+GetRTCreator.rt_creator_mobile+' | Amount:\\n '+$_POST.recharge_amount+' | Charge Credit | Ref. Id: '+RechTrans.identity+' | Comm Per: '+CommChFrDT.dt_comm_per+' | Comm Val: '+CommChFrDT.dt_comm_val+' | Charge Per:\\n '+CommChFrDT.dt_charge_per+' | Charge Val: '+CommChFrDT.dt_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+DtNetAmt}} */, :P12 /* {{identity}} */, :P13 /* {{NOW}} */)",
+                                  "params": [
+                                    {
+                                      "name": ":P1",
+                                      "type": "expression",
+                                      "value": "{{WalletBalCheck[0].retailer_creator_id}}"
+                                    },
+                                    {
+                                      "name": ":P2",
+                                      "type": "expression",
+                                      "value": "{{GetRTCreator.rt_creator_bal_amt}}"
+                                    },
+                                    {
+                                      "name": ":P3",
+                                      "type": "expression",
+                                      "value": "{{$_POST.recharge_amount}}"
+                                    },
+                                    {
+                                      "name": ":P4",
+                                      "type": "expression",
+                                      "value": "{{DtNetAmt}}"
+                                    },
+                                    {
+                                      "name": ":P5",
+                                      "type": "expression",
+                                      "value": "{{DtClosingBal}}"
+                                    },
+                                    {
+                                      "name": ":P6",
+                                      "type": "expression",
+                                      "value": "{{'Recharge Comm'}}"
+                                    },
+                                    {
+                                      "name": ":P7",
+                                      "type": "expression",
+                                      "value": "{{NOW}}"
+                                    },
+                                    {
+                                      "name": ":P8",
+                                      "type": "expression",
+                                      "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                    },
+                                    {
+                                      "name": ":P9",
+                                      "type": "expression",
+                                      "value": "{{'Credit'}}"
+                                    },
+                                    {
+                                      "name": ":P10",
+                                      "type": "expression",
+                                      "value": "{{RechTrans.identity}}"
+                                    },
+                                    {
+                                      "name": ":P11",
+                                      "type": "expression",
+                                      "value": "{{'Number: '+GetRTCreator.rt_creator_mobile+' | Amount:\\n '+$_POST.recharge_amount+' | Charge Credit | Ref. Id: '+RechTrans.identity+' | Comm Per: '+CommChFrDT.dt_comm_per+' | Comm Val: '+CommChFrDT.dt_comm_val+' | Charge Per:\\n '+CommChFrDT.dt_charge_per+' | Charge Val: '+CommChFrDT.dt_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+DtNetAmt}}"
+                                    },
+                                    {
+                                      "name": ":P12",
+                                      "type": "expression",
+                                      "value": "{{identity}}"
+                                    },
+                                    {
+                                      "name": ":P13",
+                                      "type": "expression",
+                                      "value": "{{NOW}}"
+                                    }
+                                  ]
+                                }
+                              },
+                              "meta": [
+                                {
+                                  "name": "identity",
+                                  "type": "text"
+                                },
+                                {
+                                  "name": "affected",
+                                  "type": "number"
+                                }
+                              ],
+                              "output": true
+                            },
+                            {
+                              "name": "DtUserBal",
+                              "module": "dbupdater",
+                              "action": "update",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "update",
+                                  "values": [
+                                    {
+                                      "table": "m_users",
+                                      "column": "balance_amt",
+                                      "type": "text",
+                                      "value": "{{DtClosingBal}}"
+                                    }
+                                  ],
+                                  "table": "m_users",
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "id",
+                                        "field": "id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{WalletBalCheck[0].retailer_creator_id}}",
+                                        "data": {
+                                          "column": "id"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{DtClosingBal}} */\nWHERE id = :P2 /* {{WalletBalCheck[0].retailer_creator_id}} */",
+                                  "params": [
+                                    {
+                                      "name": ":P1",
+                                      "type": "expression",
+                                      "value": "{{DtClosingBal}}"
+                                    },
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P2",
+                                      "value": "{{WalletBalCheck[0].retailer_creator_id}}"
+                                    }
+                                  ]
+                                }
+                              },
+                              "meta": [
+                                {
+                                  "name": "affected",
+                                  "type": "number"
+                                }
+                              ],
+                              "output": true
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{GetDTCreator.dt_creator_user_type == 3}}",
+                                "then": {
+                                  "steps": [
+                                    {
+                                      "name": "MdtBalance",
+                                      "module": "dbupdater",
+                                      "action": "insert",
+                                      "options": {
+                                        "connection": "postgres_gcpServer",
+                                        "sql": {
+                                          "type": "insert",
+                                          "values": [
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "user_id",
+                                              "type": "number",
+                                              "value": "{{GetRTCreator.dt_creator_id}}"
+                                            },
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "old_balance",
+                                              "type": "text",
+                                              "value": "{{GetDTCreator.dt_creator_bal_amt}}"
+                                            },
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "amount",
+                                              "type": "text",
+                                              "value": "{{$_POST.recharge_amount}}"
+                                            },
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "netamt",
+                                              "type": "text",
+                                              "value": "{{MdtNetAmt}}"
+                                            },
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "new_balance",
+                                              "type": "text",
+                                              "value": "{{MdtClosingBal}}"
+                                            },
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "transaction_type",
+                                              "type": "text",
+                                              "value": "{{'Recharge Comm'}}"
+                                            },
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "tr_date",
+                                              "type": "text",
+                                              "value": "{{NOW}}"
+                                            },
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "ip_address",
+                                              "type": "text",
+                                              "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                            },
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "crdr_type",
+                                              "type": "text",
+                                              "value": "{{'Credit'}}"
+                                            },
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "pay_ref_id",
+                                              "type": "number",
+                                              "value": "{{RechTrans.identity}}"
+                                            },
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "remarks",
+                                              "type": "text",
+                                              "value": "{{'Number: '+GetRTCreator.rt_creator_mobile+' | Amount:\\n '+MdtNetAmt+' | Charge Credit | Ref. Id: '+RechTrans.identity+' | Comm Per: '+MdtCommPer+' | Comm Val: '+MdtCommVal+' | Charge Per: '+MdtChargePer+' | Charge Val: '+MdtChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+MdtNetAmt}}"
+                                            },
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "created_by",
+                                              "type": "number",
+                                              "value": "{{identity}}"
+                                            },
+                                            {
+                                              "table": "t_charge_cal",
+                                              "column": "created_on",
+                                              "type": "datetime",
+                                              "value": "{{NOW}}"
+                                            }
+                                          ],
+                                          "table": "t_charge_cal",
+                                          "returning": "id",
+                                          "query": "INSERT INTO t_charge_cal\n(user_id, old_balance, amount, netamt, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on) VALUES (:P1 /* {{GetRTCreator.dt_creator_id}} */, :P2 /* {{GetDTCreator.dt_creator_bal_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{MdtNetAmt}} */, :P5 /* {{MdtClosingBal}} */, :P6 /* {{'Recharge Comm'}} */, :P7 /* {{NOW}} */, :P8 /* {{$_SERVER.REMOTE_ADDR}} */, :P9 /* {{'Credit'}} */, :P10 /* {{RechTrans.identity}} */, :P11 /* {{'Number: '+GetRTCreator.rt_creator_mobile+' | Amount:\\n '+MdtNetAmt+' | Charge Credit | Ref. Id: '+RechTrans.identity+' | Comm Per: '+MdtCommPer+' | Comm Val: '+MdtCommVal+' | Charge Per: '+MdtChargePer+' | Charge Val: '+MdtChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+MdtNetAmt}} */, :P12 /* {{identity}} */, :P13 /* {{NOW}} */)",
+                                          "params": [
+                                            {
+                                              "name": ":P1",
+                                              "type": "expression",
+                                              "value": "{{GetRTCreator.dt_creator_id}}"
+                                            },
+                                            {
+                                              "name": ":P2",
+                                              "type": "expression",
+                                              "value": "{{GetDTCreator.dt_creator_bal_amt}}"
+                                            },
+                                            {
+                                              "name": ":P3",
+                                              "type": "expression",
+                                              "value": "{{$_POST.recharge_amount}}"
+                                            },
+                                            {
+                                              "name": ":P4",
+                                              "type": "expression",
+                                              "value": "{{MdtNetAmt}}"
+                                            },
+                                            {
+                                              "name": ":P5",
+                                              "type": "expression",
+                                              "value": "{{MdtClosingBal}}"
+                                            },
+                                            {
+                                              "name": ":P6",
+                                              "type": "expression",
+                                              "value": "{{'Recharge Comm'}}"
+                                            },
+                                            {
+                                              "name": ":P7",
+                                              "type": "expression",
+                                              "value": "{{NOW}}"
+                                            },
+                                            {
+                                              "name": ":P8",
+                                              "type": "expression",
+                                              "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                            },
+                                            {
+                                              "name": ":P9",
+                                              "type": "expression",
+                                              "value": "{{'Credit'}}"
+                                            },
+                                            {
+                                              "name": ":P10",
+                                              "type": "expression",
+                                              "value": "{{RechTrans.identity}}"
+                                            },
+                                            {
+                                              "name": ":P11",
+                                              "type": "expression",
+                                              "value": "{{'Number: '+GetRTCreator.rt_creator_mobile+' | Amount:\\n '+MdtNetAmt+' | Charge Credit | Ref. Id: '+RechTrans.identity+' | Comm Per: '+MdtCommPer+' | Comm Val: '+MdtCommVal+' | Charge Per: '+MdtChargePer+' | Charge Val: '+MdtChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+MdtNetAmt}}"
+                                            },
+                                            {
+                                              "name": ":P12",
+                                              "type": "expression",
+                                              "value": "{{identity}}"
+                                            },
+                                            {
+                                              "name": ":P13",
+                                              "type": "expression",
+                                              "value": "{{NOW}}"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "meta": [
+                                        {
+                                          "name": "identity",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "affected",
+                                          "type": "number"
+                                        }
+                                      ],
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "MdtUserAmtUp",
+                                      "module": "dbupdater",
+                                      "action": "update",
+                                      "options": {
+                                        "connection": "postgres_gcpServer",
+                                        "sql": {
+                                          "type": "update",
+                                          "values": [
+                                            {
+                                              "table": "m_users",
+                                              "column": "balance_amt",
+                                              "type": "text",
+                                              "value": "{{MdtClosingBal}}"
+                                            }
+                                          ],
+                                          "table": "m_users",
+                                          "wheres": {
+                                            "condition": "AND",
+                                            "rules": [
+                                              {
+                                                "id": "id",
+                                                "field": "id",
+                                                "type": "double",
+                                                "operator": "equal",
+                                                "value": "{{GetRTCreator.dt_creator_id}}",
+                                                "data": {
+                                                  "column": "id"
+                                                },
+                                                "operation": "="
+                                              }
+                                            ],
+                                            "conditional": null,
+                                            "valid": true
+                                          },
+                                          "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{MdtClosingBal}} */\nWHERE id = :P2 /* {{GetRTCreator.dt_creator_id}} */",
+                                          "params": [
+                                            {
+                                              "name": ":P1",
+                                              "type": "expression",
+                                              "value": "{{MdtClosingBal}}"
+                                            },
+                                            {
+                                              "operator": "equal",
+                                              "type": "expression",
+                                              "name": ":P2",
+                                              "value": "{{GetRTCreator.dt_creator_id}}"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "meta": [
+                                        {
+                                          "name": "affected",
+                                          "type": "number"
+                                        }
+                                      ],
+                                      "output": true
+                                    }
+                                  ]
+                                }
+                              },
+                              "outputType": "boolean"
+                            }
+                          ]
+                        }
+                      },
+                      "outputType": "boolean"
+                    },
+                    {
+                      "name": "Success",
+                      "module": "core",
+                      "action": "response",
+                      "options": {
+                        "status": 200,
+                        "data": "Recharge Successful"
+                      }
+                    }
+                  ]
+                },
+                "else": {
+                  "steps": {
+                    "name": "ResponseTPIN",
+                    "module": "core",
+                    "action": "response",
+                    "options": {
+                      "status": 401,
+                      "data": "TPIN mismatched"
+                    }
+                  }
+                }
+              },
+              "outputType": "boolean"
+            }
+          },
+          "else": {
+            "steps": {
+              "name": "ResponseBalance",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 401,
+                "data": "You do not have sufficient wallet balance!"
+              }
+            }
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
+}

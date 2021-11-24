@@ -1,0 +1,85 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="searchtransactions" appConnect="local" components="{dmxStateManagement:{},dmxDataTraversal:{},dmxBootstrap5TableGenerator:{},dmxFormatter:{}}" -->
+<meta name="ac:route" content="/search-transactions">
+<script is="dmx-flow" id="flowSearchTrans" type="text/dmx-flow">
+    {
+    condition: {
+        if: "{{selectType.value && inpsearch.value}}",
+        then: {
+            steps: {
+            run: {action: "{{scSearchTrans.load({})}}"}
+            }
+        }
+    }
+}
+</script>
+<dmx-query-manager id="qm"></dmx-query-manager>
+<dmx-serverconnect id="scSearchTrans" url="api/Reports/SearchTrans" noload dmx-param:offset="qm.data.offset" dmx-param:sort="qm.data.sort" dmx-param:dir="qm.data.dir" dmx-param:inpsearch="inpsearch.value" dmx-param:type="selectType.value"></dmx-serverconnect>
+<dmx-data-view id="dvSearchtrans" dmx-bind:data="scSearchTrans.data.SearchTrans.data" filter="pay_ref_id" page="100" dmx-bind:page="qm.data.offset"></dmx-data-view>
+<dmx-data-detail id="ddSrarchTrans" dmx-bind:data="dvSearchtrans.data" key="id">
+</dmx-data-detail>
+<dmx-value id="varFilter" dmx-bind:value="0"></dmx-value>
+
+<div class="row align-items-center justify-content-between px-4 mb-3 sd-secondary-header mx-0">
+    <div class="col-12 col-md-auto me-auto ps-4">
+        <h1 class="ms-md-1 mt-md-3 text-dark fs-2 sd-fw-800 d-flex align-items-center">
+            Transaction Search
+            <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scPatients.state.executing"></span>
+        </h1>
+    </div>
+    <div class="col-auto order-2 order-md-1 d-flex align-items-center justify-content-start justify-content-md-center px-0 px-lg-2">
+        <label>Search Type:</label>
+        <select id="selectType" name="selectType" required="">
+            <option value="">Select</option>
+            <option value="1">Mobile Number</option>
+            <option value="2">Order Id</option>
+        </select>
+        &emsp;<label>Search Field:</label><input type="text" name="inpsearch" id="inpsearch" class="w-50" required="">
+
+        &emsp;<button id="btnFilter" class="btn btn-primary btn-sm" dmx-on:click="flowSearchTrans.run(); varFilter.setValue(1)">Search</button>
+    </div>
+    <div class="col-auto order-1 order-md-3 d-flex align-items-center justify-content-center">
+        <form id="formSearchUser" class="sd-search-form">
+            <div class="d-flex justify-content-end mb-3 mb-lg-0 mb-md-0">
+                <input type="text" class="form-control sd-search-input rounded-pill" id="Search" name="Search" placeholder="Search">
+                <span class="bg-transparent btn position-absolute px-1 py-1"><i class="fas fa-search mb-1 mb-xl-0"></i></span>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="container px-4" id="SearchReport" dmx-show="varFilter.value == 1">
+    <div class="card">
+        <div class="card-header sw-bg-col-primary">
+            <b>Search Output</b>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th class="sorting" dmx-on:click="qm.set('sort','id');qm.set('dir',qm.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.sort=='id' && qm.data.dir == 'asc'" dmx-class:sorting_desc="qm.data.sort=='id' && qm.data.dir == 'desc'">Tr. Id</th>
+                            <th class="sorting" dmx-on:click="qm.set('sort','service_name+' | '+dvSearchtrans');qm.set('dir',qm.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.sort=='service_name+' | '+dvSearchtrans' && qm.data.dir == 'asc'" dmx-class:sorting_desc="qm.data.sort=='service_name+' | '+dvSearchtrans' && qm.data.dir == 'desc'">Description</th>
+                            <th class="sorting" dmx-on:click="qm.set('sort','user_number');qm.set('dir',qm.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.sort=='user_number' && qm.data.dir == 'asc'" dmx-class:sorting_desc="qm.data.sort=='user_number' && qm.data.dir == 'desc'">User number</th>
+                            <th class="sorting" dmx-on:click="qm.set('sort','amount');qm.set('dir',qm.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.sort=='amount' && qm.data.dir == 'asc'" dmx-class:sorting_desc="qm.data.sort=='amount' && qm.data.dir == 'desc'">Amount</th>
+                            <th class="sorting" dmx-on:click="qm.set('sort','net_amt');qm.set('dir',qm.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.sort=='net_amt' && qm.data.dir == 'asc'" dmx-class:sorting_desc="qm.data.sort=='net_amt' && qm.data.dir == 'desc'">Dr/Cr Amt</th>
+                            <th class="sorting" dmx-on:click="qm.set('sort','closing_balance');qm.set('dir',qm.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.sort=='closing_balance' && qm.data.dir == 'asc'" dmx-class:sorting_desc="qm.data.sort=='closing_balance' && qm.data.dir == 'desc'">Balance</th>
+                            <th class="sorting" dmx-on:click="qm.set('sort','status');qm.set('dir',qm.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.sort=='status' && qm.data.dir == 'asc'" dmx-class:sorting_desc="qm.data.sort=='status' && qm.data.dir == 'desc'">Status</th>
+                            <th class="sorting" dmx-on:click="qm.set('sort','tr_date');qm.set('dir',qm.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.sort=='tr_date' && qm.data.dir == 'asc'" dmx-class:sorting_desc="qm.data.sort=='tr_date' && qm.data.dir == 'desc'">Tr date</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="scSearchTrans.data.SearchTrans.data" id="tableRepeat1" dmx-state="qm" dmx-sort="sort" dmx-order="dir">
+                        <tr>
+                            <td dmx-text="id"></td>
+                            <td dmx-text="service_name+' | '+operator_name"></td>
+                            <td dmx-text="user_number"></td>
+                            <td dmx-text="amount.toNumber().toFixed(2)"></td>
+                            <td dmx-text="net_amt.toNumber().toFixed(2)"></td>
+                            <td dmx-text="closing_balance.toNumber().toFixed(2)"></td>
+                            <td class="fw-bold" dmx-text="status" dmx-class:text-success="status == 'SUCCESS'" dmx-class:text-warning="status == 'PENDING'" dmx-class:text-danger="status == 'FAILURE'" dmx-class:text-primary="status == 'REFUND'"></td>
+                            <td dmx-text="tr_date.formatDate('dd-MM-yyyy hh:mm:ss A')"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

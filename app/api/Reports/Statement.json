@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "fromdate"
+      },
+      {
+        "type": "text",
+        "name": "todate"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "StatementReport",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "query": "select tb.old_balance, tb.netamt, tb.new_balance, tb.tr_date, tb.crdr_type, tb.pay_ref_id, tb.remarks,m_op.operator_name, \nms.service_name, trt.status \nfrom tt_balance tb \nleft join tt_recharge_trans as trt on (trt.id = tb.pay_ref_id::int)\nINNER JOIN m_operator AS m_op ON (m_op.id = trt.op_id AND m_op.service_id = trt.service_id) \nINNER JOIN m_service AS ms ON (ms.id = trt.service_id) \nwhere tb.user_id = @user_id and tb.tr_date>= @fromdate and tb.tr_date  <= @todate;",
+            "params": [
+              {
+                "name": "@user_id",
+                "value": "{{identity}}",
+                "test": "1"
+              },
+              {
+                "name": "@fromdate",
+                "value": "{{$_GET.fromdate}}",
+                "test": "2021-10-28 00:00:00"
+              },
+              {
+                "name": "@todate",
+                "value": "{{$_GET.todate}}",
+                "test": "2021-10-28 23:59:59.999"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [],
+        "outputType": "array"
+      }
+    ]
+  }
+}

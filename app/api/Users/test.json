@@ -1,0 +1,28 @@
+[
+  {
+    "name": "value",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "{{NOW.formatDate(\"sshhmm\")}}"
+    },
+    "output": true
+  },
+  {
+    "name": "api",
+    "module": "api",
+    "action": "send",
+    "options": {
+      "url": "http://mobicomm.dove-sms.com//submitsms.jsp",
+      "params": {
+        "user": "{{'BucksPay'}}",
+        "key": "{{'71ae0664a8XX'}}",
+        "mobile": "{{7002852528}}",
+        "message": "{{'otp='+value}}",
+        "senderid": "{{'BUCKSP'}}",
+        "accusage": "6"
+      }
+    },
+    "output": true
+  }
+]

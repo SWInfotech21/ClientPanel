@@ -1,0 +1,297 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="recharge" appConnect="local" components="{dmxValidator:{}}" -->
+<dmx-serverconnect id="scOperator" url="api/Operator/OperatorFetch" noload></dmx-serverconnect>
+<meta name="ac:route" content="/recharge">
+<style>
+    .nav-pills .nav-link {
+        border: 1px solid #e4e4e4;
+        //padding: 0.8rem 0.5rem;
+    }
+
+    .nav-pills-info .nav-link {
+        color: #004877;
+    }
+</style>
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12 col-lg-8 col-xl-7 col-sm-12 col-12 pd-xs-0">
+            <div class="card minhRechage">
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3 col-sm-3 col-12">
+                                <ul class="nav nav-pills vertical-tab nav-pills-info" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="home-tab-vertical" data-toggle="tab" href="#tab_1" role="tab" aria-controls="home-2" aria-selected="false">
+
+
+                                            <img src="/assets/images/icons/m2.svg" class="r-img" style="width: 50px;" />
+                                            <br />
+                                            <span>MOBILE</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="profile-tab-vertical" data-toggle="tab" href="#tab_2" role="tab" aria-controls="profile-2" aria-selected="false">
+
+
+                                            <img src="/assets/images/icons/m3.svg" class="r-img" style="width: 50px;" />
+                                            <br />
+                                            <span>DTH</span>
+                                        </a>
+                                    </li>
+                                    <!--li class="nav-item">
+                                        <a class="nav-link " id="contact-tab-vertical" data-toggle="tab" href="#tab_3" role="tab" aria-controls="contact-2" aria-selected="true">
+
+
+                                            <img src="/assets/images/icons/m1.svg" class="r-img" style="width: 50px;" />
+
+
+                                            <br />
+                                            <span>POSTPAID</span>
+                                        </a>
+                                    </li-->
+                                </ul>
+                            </div>
+                            <!-- Nav tabs -->
+                            <!-- Tab panes -->
+                            <div class="col-md-9 col-sm-9 col-lg-9 col-12">
+                                <div class="tab-content tab-content-vertical">
+                                    <div class="tab-pane active" id="tab_1">
+
+                                        <h4 class="card-title rehead">Mobile Recharge</h4>
+                                        <form method="post" id="formMobileRecharge" is="dmx-serverconnect-form" method="post" action="api/Recharge/MobRechSingAPI" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('Recharge of Rs. '+formMobileRecharge.rechargeAmount.value+' successful to '+formMobileRecharge.mobileNumber.value); formMobileRecharge.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
+                                            <div class="row">
+                                                <div class="col-12 pd-lg-0">
+                                                    <div class="form-group mg-t-0">
+                                                        <label>Mobile Number (+91)</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="fa-mobile-alt fas"></i></span>
+                                                            </div>
+                                                            <input type="number" name="mobile_number" id="mobileNumber" class="form-control formtext" placeholder="10 DIGIT NUMBER" maxlength="10" required="" title="Enter Mobile Number" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid mobile number." />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 pd-lg-0">
+                                                    <div class="form-group mg-t-15">
+                                                        <label>Amount</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="icon fas fa-rupee-sign"></i></span>
+                                                            </div>
+                                                            <input type="number" name="recharge_amount" class="form-control" id="rechargeAmount" placeholder="ENTER AMOUNT" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount." />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-12 pd-lg-0">
+                                                    <div class="form-group mg-t-15">
+                                                        <label>Operator</label>
+                                                        <input readonly="readonly" id="mob_op_val" style="display: none;" type="text">
+                                                        <div class="inputText" id="mob_op_div">
+                                                            <select type="text" class="form-control" id="inp_opname" name="op_code" aria-describedby="inp_opname_help" placeholder="Enter Operator Name" maxlength="50" data-msg-required="Operator Name is required." dmx-on:click="scOperator.load({})" dmx-bind:options="scOperator.data.OperatorFetch.data" optiontext="operator_name" optionvalue="op_id">
+                                                                <option value="">Select</option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 pd-lg-0">
+                                                    <div class="form-group">
+                                                        <label>TPIN</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="icon fa fa-edit"></i></span>
+                                                            </div>
+
+                                                            <input type="password" name="mobile_tpin" class="form-control" id="mobileTPIN" placeholder="ENTER TPIN" maxlength="4" required="" title="Enter TPIN" autofocus="" autocomplete="new-password" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 pd-lg-0">
+                                                    <div class="" id="mob_button">
+                                                        <button type="submit" class="btn btn-primary pull-left" dmx-bind:disabled="state.executing" id="btnmrecharge">Recharge<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane" id="tab_2">
+                                        <form action="/Recharge/DTH" method="post">
+                                            <h4 class="card-title">DTH Recharge</h4>
+                                            <div action="javascript:void(0)" onsubmit="Recharge('dth');" class="row" id="dth_rch" name="dth_rch">
+                                                <!-- ====================== -->
+                                                <div class="col-md-12 col-sm-12 col-lg-12 col-12 col-xl-12 pd-lg-0">
+                                                    <div class="form-group mg-t-0">
+                                                        <label>Subscriber ID</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="mdi mdi-cellphone-android"></i></span>
+                                                            </div>
+                                                            <input autocomplete="off" class="formtext form-control" id="DTHNumber" maxlength="20" name="DTHNumber" onkeypress="return ValidateNumber(event);" placeholder="SUBSCRIBER-ID" required="required" type="text" value="" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12 col-12 pd-lg-0">
+                                                    <div class="form-group mg-t-15">
+                                                        <label>Amount</label>
+
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="icon fas fa-rupee-sign"></i></span>
+                                                            </div>
+                                                            <input autocomplete="off" class="form-control" id="DTHAmount" maxlength="4" name="DTHAmount" onkeypress="return ValidateNumber(event);" placeholder="ENTER AMOUNT" required="required" type="text" value="" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12 col-12 pd-lg-0">
+                                                    <div class="form-group mg-t-15">
+                                                        <label>Operator</label>
+                                                        <select class="form-control select-opt" id="ddldthOP" name="ddldthOP" required="required">
+                                                            <option value="">Select</option>
+                                                            <option value="198">AIRTEL DTH</option>
+                                                            <option value="138">BIG TV</option>
+                                                            <option value="141">DISH TV</option>
+                                                            <option value="136">SUN DIRECT</option>
+                                                            <option value="137">TATA SKY</option>
+                                                            <option value="139">VIDEOCON DTH</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12 col-lg-12 col-12 col-xl-12 pd-lg-0">
+                                                    <div class="form-group">
+                                                        <label>TPIN</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"> <i class="icon fa fa-edit"></i></span>
+                                                            </div>
+                                                            <input type="password" class="form-control" name="dthTPIN" id="dthTPIN" placeholder="ENTER TPIN" maxlength="4" onkeypress="return ValidateNumber(event);" required="" title="Enter TPIN" autofocus="" autocomplete="new-password" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12 col-lg-12 col-12 col-xl-12 pd-lg-0">
+                                                    <div class="">
+                                                        <button class="btn btn-primary pull-left" onclick="return dthvalidation();">Recharge </button>
+                                                    </div>
+                                                </div>
+                                                <!-- ====================== -->
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!--div class="tab-pane" id="tab_3">
+    <form action="/Recharge/PostP" method="post">
+        <h4 class="card-title">PostPaid Recharge</h4>
+        <div action="javascript:void(0)" onsubmit="Recharge('bil');" class="row" id="bil_rch" name="bil_rch">
+                                                
+    <div class="col-md-12 col-sm-12 col-lg-12 col-12 col-xl-12 pd-lg-0">
+                                                    <div class="form-group mg-t-0">
+                                                        <label>PostPaid Number</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="mdi mdi-cellphone-android"></i></span>
+                                                            </div>
+
+                                                            <input autocomplete="off" class="form-control" id="PPNumber" maxlength="20" name="PPNumber" onkeypress="return ValidateNumber(event);" placeholder="POST-PAID NUMBER" required="required" type="text" value="" />
+
+                                                        </div>
+                                                    </div>
+</div>
+<div class="col-md-12 col-sm-12 col-lg-12 col-xl-12 col-12 pd-lg-0">
+                                                    <div class="form-group mg-t-15">
+                                                        <label>Amount</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="icon fa fa-inr"></i></span>
+                                                            </div>
+
+                                                            <input autocomplete="off" class="form-control" id="PPAmount" maxlength="4" name="PPAmount" onkeypress="return ValidateNumber(event);" placeholder="ENTER AMOUNT" required="required" type="text" value="" />
+
+                                                        </div>
+                                                    </div>
+</div>
+<div class="col-md-12 col-sm-12 col-lg-12 col-xl-12 col-12 pd-lg-0">
+                                                    <div class="form-group mg-t-15">
+                                                        <label>Operator</label>
+                                                        <select class="form-control select-opt" id="ddlppOP" name="ddlppOP" required="required">
+                                                            <option value="">Select</option>
+                                                            <option value="161">AIRTEL LANDLINE</option>
+                                                            <option value="160">BSNL LANDLINE</option>
+                                                            <option value="220">Home Credit</option>
+                                                            <option value="162">MTNL LANDLINE</option>
+                                                            <option value="157">POSTPAID AIRCEL</option>
+                                                            <option value="150">POSTPAID AIRTEL</option>
+                                                            <option value="156">POSTPAID BSNL</option>
+                                                            <option value="153">POSTPAID DOCOMO</option>
+                                                            <option value="151">POSTPAID IDEA</option>
+                                                            <option value="152">POSTPAID INDICOM</option>
+                                                            <option value="154">POSTPAID JIO</option>
+                                                            <option value="163">POSTPAID TIKONA</option>
+                                                            <option value="155">POSTPAID VODAFONE</option>
+                                                        </select>
+
+                                                    </div>
+</div>
+<div class="col-md-12 col-sm-12 col-lg-12 col-12 col-xl-12 pd-lg-0" id="ppacno" style="display: none">
+                                                    <div class="form-group mg-t-15">
+                                                        <label>Account Number</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="icon fa fa-inr"></i></span>
+                                                            </div>
+
+                                                            <input autocomplete="off" class="form-control" id="PPAccountno" maxlength="4" name="PPAccountno" onkeypress="return ValidateNumber(event);" placeholder="Account Number(Refer Your Bill)" type="text" value="" />
+
+                                                        </div>
+                                                    </div>
+</div>
+<div class="col-md-12 col-sm-12 col-lg-12 col-12 col-xl-12 pd-lg-0">
+                                                    <div class="form-group mg-t-15">
+                                                        <label>TPIN</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="icon fa fa-inr"></i></span>
+                                                            </div>
+                                                            <input type="password" class="form-control" name="postpaidTPIN" id="postpaidTPIN" placeholder="ENTER TPIN" maxlength="4" onkeypress="return ValidateNumber(event);" required="" title="Enter TPIN" autofocus="" autocomplete="new-password" />
+
+                                                        </div>
+                                                    </div>
+</div>
+<div class="col-md-12 col-sm-12 col-lg-12 col-12 col-xl-12 pd-lg-0" id="bil_button">
+                                                    <div class="">
+                                                        <button class="btn btn-primary" onclick="return ppvalidation();">Recharge </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div-->
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-5 col-lg-4 col-md-12 col-sm-12 col-12 pd-xs-0">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <img src="/assets/images/Recharge-Banner1.png" class="img-fluid" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+    </div>
+</div>

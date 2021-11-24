@@ -1,0 +1,98 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "page": "index",
+      "routeType": "page",
+      "layout": "main"
+    },
+    {
+      "path": "/dashboard",
+      "page": "dashboard",
+      "layout": "main"
+    },
+    {
+      "path": "/login",
+      "page": "login"
+    },
+    {
+      "path": "/signup",
+      "page": "signup"
+    },
+    {
+      "path": "/Recharge/index",
+      "page": "Recharge/index",
+      "layout": "main"
+    },
+    {
+      "path": "/recharge",
+      "page": "recharge",
+      "layout": "main"
+    },
+    {
+      "path": "/recharge-history",
+      "page": "recharge-history",
+      "layout": "main"
+    },
+    {
+      "path": "/search-transactions",
+      "page": "search-transactions",
+      "layout": "main"
+    },
+    {
+      "path": "/paymet-load",
+      "page": "paymet-load",
+      "layout": "main"
+    },
+    {
+      "path": "/payment-debit",
+      "page": "payment-debit",
+      "layout": "main"
+    },
+    {
+      "path": "/operatorwise-comm",
+      "page": "operatorwise-comm",
+      "layout": "main"
+    },
+    {
+      "path": "/statement",
+      "page": "statement",
+      "layout": "main"
+    },
+    {
+      "path": "/commision",
+      "page": "commision",
+      "layout": "main"
+    },
+    {
+      "path": "/users",
+      "page": "users",
+      "layout": "main"
+    },
+    {
+      "path": "/credits",
+      "page": "credits",
+      "layout": "main"
+    },
+    {
+      "path": "/security-update",
+      "page": "security-update",
+      "layout": "main"
+    },
+    {
+      "path": "/my-profile",
+      "page": "my-profile",
+      "layout": "main"
+    },
+    {
+      "path": "/login-history",
+      "page": "login-history",
+      "layout": "main"
+    },
+    {
+      "path": "/payment",
+      "page": "payment",
+      "layout": "main"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="credits" appConnect="local" -->
+<meta name="ac:route" content="/credits">
+
+<script is="dmx-flow" id="flowFetchUser" type="text/dmx-flow">
+    {
+    condition: {
+    if: "{{(formAddCredit.UserTypeSelf.value)}}",
+    then: {
+    steps: {
+    run: {action: "{{scUserSchemPrio.load({})}}"}
+    }
+    }
+    }
+    }
+</script>
+<dmx-serverconnect id="scUserSchemPrio" url="api/Scheme/FetchSchPrioUser" dmx-param:user_type="formAddCredit.UserTypeSelf.value" noload></dmx-serverconnect>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="mt-4">Wallet Credits</h1>
+
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Credits</li>
+            </ol>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <form is="dmx-serverconnect-form" id="formAddCredit" method="post" action="api/Transactions/CreditAdd" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="formAddCredit.data ? scNotif.success('New Credit Successfully Added') : scNotif.success('Credit Updated');formAddCredit.reset(); scCommision.load({});" dmx-on:error="scNotif.warning('An error occurred'); ">
+                    <div class="row">
+                        <div class="col-12 col-lg-2 p-2">
+                            <label>User Type</label>
+                            <select id="UserTypeSelf" name="user_type" class="form-control form-select col-12 px-2" dmx-on:changed="flowFetchUser.run()" required="">
+                                <option value="">Select</option>
+                                <option value="2" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 1">DT</option>
+                                <option value="3" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 2">RT</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-lg-7 p-2">
+                            <label>Select User</label>
+                            <select type="text" class="form-control form-select" id="inp_target_user" name="target_user_id" aria-describedby="inp_target_user_help" dmx-bind:options="scUserSchemPrio.data.UserDetails" optiontext="user_mobile+' - '+user_id+' - '+user_fname+' :: Current Balance = Rs. '+balance_amt" optionvalue="id" required="">
+                                <!--  -->
+                                <option value="">Select</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-lg-3 p-2">
+                            <label>Credit Amount</label>
+                            <input type="number" id="credit_amount" name="credit_amount" class="form-control" placeholder="E.g: 100" required="">
+                        </div>
+                        <!-- <div class="col-12 col-md-3 p-2">
+                                <label>Current Balance</label>
+                                <b>{{scUserSchemPrio.data.UserDetails[0].balance_amt}}</b>
+                            </div> -->
+                        <div class="col-12 col-lg-2 p-2">
+                            <label>{{scLoginUser.data.LoginUserInfo.user_type == 1 ? 'MDT': 'DT'}} TPIN</label>
+                            <input type="number" id="tpin" name="tpin" class="form-control" placeholder="E.g: 1452" required="">
+                        </div>
+                        <div class="col-12 col-lg-7 p-2">
+                            <label>Comments/ Remarks</label>
+                            <input type="text" id="comment" name="comment" class="form-control" placeholder="Add any note (optional)">
+                        </div>
+                        <div class="col-4 p-0 ms-3">
+                            <button id="btn1" class="btn btn-info mt-md-4" type="submit" dmx-bind:disabled="state.executing" dmx-on:click="scAdminTrans.load()">Credit<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

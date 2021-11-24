@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "for_user_type"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "user_value",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_GET.for_user_type}}"
+        },
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{$_GET.for_user_type}}",
+          "then": {
+            "steps": [
+              {
+                "name": "custom",
+                "module": "dbupdater",
+                "action": "custom",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "query": "select distinct 'scheme_names',\n   unnest(array[tsu.scheme1, tsu.scheme2, tsu.scheme3, tsu.scheme4]) AS \"scheme_id\",\n   unnest(array[ms.scheme_name , ms2.scheme_name, ms3.scheme_name, ms4.scheme_name]) AS \"scheme_names\"\nFROM t_scheme_user tsu\n   left join m_scheme ms on ms.id = tsu.scheme1 \n   left join m_scheme ms2 on ms2.id = tsu.scheme2  \n   left join m_scheme ms3 on ms3.id = tsu.scheme3 \n   left join m_scheme ms4 on ms4.id = tsu.scheme4 \nwhere tsu.user_id = @user_id and tsu.for_user_type = @for_user_type  and 'scheme_id' is not null\norder by \"scheme_names\" ASC;",
+                    "params": [
+                      {
+                        "name": "@user_id",
+                        "value": "{{identity}}",
+                        "test": "2"
+                      },
+                      {
+                        "name": "@for_user_type",
+                        "value": "{{$_GET.for_user_type}}",
+                        "test": "2"
+                      }
+                    ]
+                  }
+                },
+                "output": true,
+                "meta": [
+                  {
+                    "name": "?column?",
+                    "type": "text"
+                  },
+                  {
+                    "name": "scheme_id",
+                    "type": "number"
+                  },
+                  {
+                    "name": "scheme_names",
+                    "type": "text"
+                  }
+                ],
+                "outputType": "array"
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{$_GET.for_user_type == 2}}",
+                  "then": {
+                    "steps": {
+                      "name": "GetRtScheme",
+                      "module": "dbupdater",
+                      "action": "custom",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "query": "select distinct 'scheme_names',\n   unnest(array[tsu.scheme1, tsu.scheme2, tsu.scheme3, tsu.scheme4]) AS \"scheme_id\",\n   unnest(array[ms.scheme_name , ms2.scheme_name, ms3.scheme_name, ms4.scheme_name]) AS \"scheme_names\"\nFROM t_scheme_user tsu\n   left join m_scheme ms on ms.id = tsu.scheme1 \n   left join m_scheme ms2 on ms2.id = tsu.scheme2  \n   left join m_scheme ms3 on ms3.id = tsu.scheme3 \n   left join m_scheme ms4 on ms4.id = tsu.scheme4 \nwhere tsu.user_id = @user_id and tsu.for_user_type = 3  and 'scheme_id' is not null\norder by \"scheme_names\" ASC;",
+                          "params": [
+                            {
+                              "name": "@user_id",
+                              "value": "{{identity}}",
+                              "test": "2"
+                            }
+                          ]
+                        }
+                      },
+                      "output": true,
+                      "meta": [],
+                      "outputType": "array"
+                    }
+                  }
+                },
+                "outputType": "boolean"
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="operatorwisecomm" appConnect="local" -->
+<meta name="ac:route" content="/operatorwise-comm">
+<script is="dmx-flow" id="flowPaymentLoad" type="text/dmx-flow">{
+  condition: {
+    if: "{{fromDate.value && toDate.value}}",
+    then: {
+      steps: {
+        run: {action: "{{scOperatorwiseComm.load({})}}"}
+      }
+    }
+  }
+}</script>
+<dmx-value id="varFilter" dmx-bind:value="0"></dmx-value>
+
+<dmx-serverconnect id="scOperatorwiseComm" url="api/Reports/OperatorwiseComm" noload dmx-param:fromdate="fromDate.value+' 00:00:00'" dmx-param:todate="toDate.value+' 23:59:59.999'"></dmx-serverconnect>
+<!-- +' 00:00:00'  +' 23:59:59.999' -->
+
+<div class="row align-items-center justify-content-between px-4 mb-3 sd-secondary-header mx-0">
+    <div class="col-12 col-md-auto me-auto ps-4">
+        <h1 class="ms-md-1 mt-md-3 text-dark fs-2 sd-fw-800 d-flex align-items-center">
+            Operator-wise Commision
+            <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scOperatorwiseComm.state.executing"></span>
+        </h1>
+    </div>
+    <div class="col-auto order-2 order-md-1 d-flex align-items-center justify-content-start justify-content-md-center px-0 px-lg-2">
+        <label>From Date:</label><input type="date" name="fromdate" id="fromDate" class="w-25" required="">
+        &emsp;<label>To Date:</label><input type="date" name="todate" id="toDate" class="w-25" required="">
+        &emsp;<button id="btnFilter" class="btn btn-primary btn-sm" dmx-on:click="flowPaymentLoad.run(); varFilter.setValue(1)">Search</button>
+    </div>
+    <div class="col-auto order-1 order-md-3 d-flex align-items-center justify-content-center">
+        <form id="formSearchUser" class="sd-search-form">
+            <div class="d-flex justify-content-end mb-3 mb-lg-0 mb-md-0">
+                <input type="text" class="form-control sd-search-input rounded-pill" id="Search" name="Search" placeholder="Search">
+                <span class="bg-transparent btn position-absolute px-1 py-1"><i class="fas fa-search mb-1 mb-xl-0"></i></span>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="container px-4" id="AccontSummery" dmx-show="varFilter.value == 1">
+    <div class="card">
+        <div class="card-header sw-bg-col-primary">
+            <b>Commission Report</b>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th>Sl. No.</th>
+                            <th>Operator Name</th>
+                            <th>Tr. Count</th>
+                            <th>Total Amount</th>
+                            <th>Total Commision</th>
+                            <th>Toatl Charge</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" dmx-generator="bs5table" id="tableRepeat1" dmx-bind:repeat="scOperatorwiseComm.data.CommReport">
+                        <tr>
+                            <td>{{$index+1}}</td>
+                            <td dmx-text="operator_name"></td>
+                            <td dmx-text="tr_count"></td>
+                            <td dmx-text="total"></td>
+                            <td dmx-text="comm_amt_total"></td>
+                            <td dmx-text="charge_amt_total"></td>
+
+                        </tr>
+                    </tbody>
+                    <tfooter>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th>Total Tr. Count: {{scOperatorwiseComm.data.CommReport.sum(`tr_count`)}}</th>
+                            <th>Total Amount: {{scOperatorwiseComm.data.CommReport.sum(`total`)}} /-</th>
+                            <th>Total Comm. Amt.: {{scOperatorwiseComm.data.CommReport.sum(`comm_amt_total`)}} /-</th>
+                            <th>Total Charge Amt.: {{scOperatorwiseComm.data.CommReport.sum(`charge_amt_total`)}} /-</th>
+                        </tr>
+                    </tfooter>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

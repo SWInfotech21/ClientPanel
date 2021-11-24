@@ -1,0 +1,13 @@
+{
+  "name": "api",
+  "module": "api",
+  "action": "send",
+  "options": {
+    "url": "https://api.razorpay.com/v1/contacts",
+    "params": {
+      "key_id": "{{'rzp_live_l00ueWiF7Tejgo'}}",
+      "key_secret": "{{'M7nUDUGVKsGRRPcDUlWGneCW'}}"
+    }
+  },
+  "output": true
+}
