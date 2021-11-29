@@ -283,8 +283,8 @@
         "output": true,
         "meta": [
           {
-            "name": "u_no",
-            "type": "text"
+            "type": "number",
+            "name": "u_no"
           }
         ],
         "outputType": "object"
@@ -295,7 +295,9 @@
         "action": "setvalue",
         "options": {
           "value": "{{$_POST.user_type == 1 ? 'MD10' : $_POST.user_type == 2 ? 'DT20' : $_POST.user_type == 3 ? 'RT30' : 'UN40'}}"
-        }
+        },
+        "meta": [],
+        "outputType": "text"
       },
       {
         "name": "UniqueID",
@@ -303,7 +305,9 @@
         "action": "setvalue",
         "options": {
           "value": "{{User+SequenceNo.u_no.sum('1')}}"
-        }
+        },
+        "meta": [],
+        "outputType": "text"
       },
       {
         "name": "",
@@ -656,7 +660,9 @@
                 "options": {
                   "value": "{{NOW.md5(123456).substr(1, 9)}}"
                 },
-                "output": true
+                "output": true,
+                "meta": [],
+                "outputType": "text"
               },
               {
                 "name": "AddUser",

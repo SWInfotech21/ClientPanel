@@ -1,0 +1,159 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/login.ejs",
+      "linkedForm": "ResetPass"
+    },
+    "$_POST": [
+      {
+        "type": "number",
+        "fieldName": "otp",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            },
+            "core:number": {}
+          }
+        },
+        "name": "otp"
+      },
+      {
+        "type": "text",
+        "fieldName": "newpassword",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "newpassword"
+      }
+    ],
+    "$_SESSION": [
+      {
+        "type": "text",
+        "name": "mobile_session"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "condition",
+      "options": {
+        "if": "{{$_SESSION.otp_session==$_POST.otp}}",
+        "then": {
+          "steps": {
+            "name": "PasswordUpdate",
+            "module": "dbupdater",
+            "action": "update",
+            "options": {
+              "connection": "postgres_gcpServer",
+              "sql": {
+                "type": "update",
+                "values": [
+                  {
+                    "table": "m_users",
+                    "column": "password",
+                    "type": "text",
+                    "value": "{{$_POST.newpassword.sha256(NOW)}}"
+                  },
+                  {
+                    "table": "m_users",
+                    "column": "salt",
+                    "type": "text",
+                    "value": "{{NOW}}"
+                  },
+                  {
+                    "table": "m_users",
+                    "column": "blank1",
+                    "type": "text",
+                    "value": "{{$_POST.newpassword}}"
+                  },
+                  {
+                    "table": "m_users",
+                    "column": "updated_on",
+                    "type": "datetime",
+                    "value": "{{NOW}}"
+                  }
+                ],
+                "table": "m_users",
+                "wheres": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "id": "user_mobile",
+                      "field": "user_mobile",
+                      "type": "string",
+                      "operator": "equal",
+                      "value": "{{$_SESSION.mobile_session}}",
+                      "data": {
+                        "column": "user_mobile"
+                      },
+                      "operation": "="
+                    }
+                  ],
+                  "conditional": null,
+                  "valid": true
+                },
+                "query": "UPDATE m_users\nSET password = :P1 /* {{$_POST.newpassword.sha256(NOW)}} */, salt = :P2 /* {{NOW}} */, blank1 = :P3 /* {{$_POST.newpassword}} */, updated_on = :P4 /* {{NOW}} */\nWHERE user_mobile = :P5 /* {{$_SESSION.mobile_session}} */",
+                "params": [
+                  {
+                    "name": ":P1",
+                    "type": "expression",
+                    "value": "{{$_POST.newpassword.sha256(NOW)}}"
+                  },
+                  {
+                    "name": ":P2",
+                    "type": "expression",
+                    "value": "{{NOW}}"
+                  },
+                  {
+                    "name": ":P3",
+                    "type": "expression",
+                    "value": "{{$_POST.newpassword}}"
+                  },
+                  {
+                    "name": ":P4",
+                    "type": "expression",
+                    "value": "{{NOW}}"
+                  },
+                  {
+                    "operator": "equal",
+                    "type": "expression",
+                    "name": ":P5",
+                    "value": "{{$_SESSION.mobile_session}}"
+                  }
+                ]
+              }
+            },
+            "meta": [
+              {
+                "name": "affected",
+                "type": "number"
+              }
+            ],
+            "output": false
+          }
+        },
+        "else": {
+          "steps": {
+            "name": "ResponseOTPMismatched",
+            "module": "core",
+            "action": "response",
+            "options": {
+              "status": 403,
+              "data": "OTP mismatched"
+            },
+            "output": true
+          }
+        }
+      },
+      "outputType": "boolean",
+      "output": false
+    }
+  }
+}

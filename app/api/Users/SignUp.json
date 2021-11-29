@@ -1,0 +1,155 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/signup.ejs"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "mobile"
+      },
+      {
+        "type": "text",
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "fname"
+      },
+      {
+        "type": "text",
+        "name": "address"
+      },
+      {
+        "type": "text",
+        "name": "mpassword"
+      },
+      {
+        "type": "text",
+        "name": "salt"
+      },
+      {
+        "type": "text",
+        "name": "usertype_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "insert",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "postgres_gcpServer",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "m_signup",
+              "column": "mobile",
+              "type": "text",
+              "value": "{{$_POST.mobile}}"
+            },
+            {
+              "table": "m_signup",
+              "column": "email",
+              "type": "text",
+              "value": "{{$_POST.email}}"
+            },
+            {
+              "table": "m_signup",
+              "column": "fname",
+              "type": "text",
+              "value": "{{$_POST.fname}}"
+            },
+            {
+              "table": "m_signup",
+              "column": "address",
+              "type": "text",
+              "value": "{{$_POST.address}}"
+            },
+            {
+              "table": "m_signup",
+              "column": "mpassword",
+              "type": "text",
+              "value": "{{$_POST.mpassword.sha256(NOW)}}"
+            },
+            {
+              "table": "m_signup",
+              "column": "salt",
+              "type": "text",
+              "value": "{{NOW}}"
+            },
+            {
+              "table": "m_signup",
+              "column": "usertype_id",
+              "type": "text",
+              "value": "{{$_POST.usertype_id}}"
+            },
+            {
+              "table": "m_signup",
+              "column": "created_on",
+              "type": "datetime",
+              "value": "{{NOW}}"
+            }
+          ],
+          "table": "m_signup",
+          "query": "INSERT INTO m_signup\n(mobile, email, fname, address, mpassword, salt, usertype_id, created_on) VALUES (:P1 /* {{$_POST.mobile}} */, :P2 /* {{$_POST.email}} */, :P3 /* {{$_POST.fname}} */, :P4 /* {{$_POST.address}} */, :P5 /* {{$_POST.mpassword.sha256(NOW)}} */, :P6 /* {{NOW}} */, :P7 /* {{$_POST.usertype_id}} */, :P8 /* {{NOW}} */)",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.mobile}}"
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.email}}"
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.fname}}"
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_POST.address}}"
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{$_POST.mpassword.sha256(NOW)}}"
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{NOW}}"
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.usertype_id}}"
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{NOW}}"
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ],
+      "output": true
+    }
+  }
+}

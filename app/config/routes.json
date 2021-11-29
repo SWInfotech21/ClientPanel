@@ -16,8 +16,9 @@
       "page": "login"
     },
     {
-      "path": "/signup",
-      "page": "signup"
+      "path": "/signup1",
+      "page": "signup1",
+      "layout": "main"
     },
     {
       "path": "/Recharge/index",
@@ -93,6 +94,10 @@
       "path": "/payment",
       "page": "payment",
       "layout": "main"
+    },
+    {
+      "path": "/signup",
+      "page": "signup"
     }
   ]
 }

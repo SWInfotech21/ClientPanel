@@ -1208,5 +1208,6 @@ dmx.config({
       ],
       "outputType": "array"
     }
-  }
+  },
+  "login": {}
 });

@@ -7,10 +7,6 @@
     "layoutPage": "",
     "description": ""
   },
-  "signup.ejs": {
-    "layoutPage": "",
-    "description": ""
-  },
   "recharge.ejs": {
     "layoutPage": "main",
     "description": ""
@@ -81,6 +77,14 @@
   },
   "payment.ejs": {
     "layoutPage": "main",
+    "description": ""
+  },
+  "signup1.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "signup.ejs": {
+    "layoutPage": "",
     "description": ""
   }
 }

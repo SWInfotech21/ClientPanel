@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "$_SESSION": [
+      {
+        "type": "number",
+        "fieldName": "otp_session",
+        "name": "otp_session"
+      },
+      {
+        "type": "text",
+        "name": "mobile_session"
+      }
+    ]
+  },
+  "exec": {}
+}
