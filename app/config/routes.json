@@ -4,7 +4,8 @@
       "path": "/",
       "page": "index",
       "routeType": "page",
-      "layout": ""
+      "layout": "main",
+      "exec": "/api/Users/UserAccess"
     },
     {
       "path": "/dashboard",
