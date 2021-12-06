@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="credits" appConnect="local" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="credits" appConnect="local" components="{dmxBootstrap5Navigation:{}}" -->
 <meta name="ac:route" content="/credits">
 
 <script is="dmx-flow" id="flowFetchUser" type="text/dmx-flow">
@@ -25,7 +25,7 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <form is="dmx-serverconnect-form" id="formAddCredit" method="post" action="api/Transactions/CreditAdd" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="formAddCredit.data ? scNotif.success('New Credit Successfully Added') : scNotif.success('Credit Updated');formAddCredit.reset(); scCommision.load({});" dmx-on:error="scNotif.warning('An error occurred'); ">
+                <form is="dmx-serverconnect-form" id="formAddCredit" method="post" action="api/Transactions/CreditAdd" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="formAddCredit.data ? scNotif.success('New Credit Successfully Added') : scNotif.success('Credit Updated');formAddCredit.reset();scLoginUser.load()" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(content.formAddCredit.lastError.response)">
                     <div class="row">
                         <div class="col-12 col-lg-2 p-2">
                             <label>User Type</label>

@@ -325,7 +325,9 @@
         "action": "setvalue",
         "options": {
           "value": "{{NOW}}"
-        }
+        },
+        "meta": [],
+        "outputType": "text"
       },
       {
         "name": "WalletBalCheck",
@@ -400,28 +402,28 @@
         "output": true,
         "meta": [
           {
-            "name": "user_tpin",
-            "type": "text"
+            "type": "text",
+            "name": "user_tpin"
           },
           {
-            "name": "user_fname",
-            "type": "text"
+            "type": "text",
+            "name": "user_fname"
           },
           {
-            "name": "user_mobile",
-            "type": "text"
+            "type": "text",
+            "name": "user_mobile"
           },
           {
-            "name": "balance_amt",
-            "type": "text"
+            "type": "text",
+            "name": "balance_amt"
           },
           {
-            "name": "scheme_id",
-            "type": "text"
+            "type": "number",
+            "name": "scheme_id"
           },
           {
-            "name": "retailer_creator_id",
-            "type": "number"
+            "type": "number",
+            "name": "retailer_creator_id"
           }
         ],
         "outputType": "array",
@@ -449,7 +451,9 @@
                       "options": {
                         "value": "{{NOW.md5(123456).substr(1, 9)}}"
                       },
-                      "output": true
+                      "output": true,
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "GetAdmin",
@@ -517,24 +521,24 @@
                       "output": true,
                       "meta": [
                         {
-                          "name": "admin_id",
-                          "type": "text"
+                          "type": "number",
+                          "name": "admin_id"
                         },
                         {
-                          "name": "admin_user_id",
-                          "type": "text"
+                          "type": "text",
+                          "name": "admin_user_id"
                         },
                         {
-                          "name": "admin_name",
-                          "type": "text"
+                          "type": "text",
+                          "name": "admin_name"
                         },
                         {
-                          "name": "admin_mobile",
-                          "type": "text"
+                          "type": "text",
+                          "name": "admin_mobile"
                         },
                         {
-                          "name": "admin_balance_amt",
-                          "type": "text"
+                          "type": "text",
+                          "name": "admin_balance_amt"
                         }
                       ],
                       "outputType": "object"
@@ -662,16 +666,16 @@
                       "output": true,
                       "meta": [
                         {
-                          "name": "code",
-                          "type": "text"
+                          "type": "text",
+                          "name": "code"
                         },
                         {
-                          "name": "service_id",
-                          "type": "number"
+                          "type": "number",
+                          "name": "service_id"
                         },
                         {
-                          "name": "api_tbl_id",
-                          "type": "text"
+                          "type": "number",
+                          "name": "api_tbl_id"
                         }
                       ],
                       "outputType": "array",
@@ -793,20 +797,20 @@
                       "type": "dbconnector_select",
                       "meta": [
                         {
-                          "name": "comm_per",
-                          "type": "text"
+                          "type": "text",
+                          "name": "comm_per"
                         },
                         {
-                          "name": "comm_val",
-                          "type": "text"
+                          "type": "text",
+                          "name": "comm_val"
                         },
                         {
-                          "name": "service_charge_per",
-                          "type": "text"
+                          "type": "text",
+                          "name": "service_charge_per"
                         },
                         {
-                          "name": "service_charge_val",
-                          "type": "text"
+                          "type": "text",
+                          "name": "service_charge_val"
                         }
                       ],
                       "outputType": "array"
@@ -894,32 +898,32 @@
                       "output": true,
                       "meta": [
                         {
-                          "name": "rt_creator_user_type",
-                          "type": "number"
+                          "type": "number",
+                          "name": "rt_creator_user_type"
                         },
                         {
-                          "name": "rt_creator_bal_amt",
-                          "type": "text"
+                          "type": "text",
+                          "name": "rt_creator_bal_amt"
                         },
                         {
-                          "name": "rt_creator_scheme",
-                          "type": "text"
+                          "type": "number",
+                          "name": "rt_creator_scheme"
                         },
                         {
-                          "name": "rt_creator_user_id",
-                          "type": "text"
+                          "type": "text",
+                          "name": "rt_creator_user_id"
                         },
                         {
-                          "name": "rt_creator_name",
-                          "type": "text"
+                          "type": "text",
+                          "name": "rt_creator_name"
                         },
                         {
-                          "name": "rt_creator_mobile",
-                          "type": "text"
+                          "type": "text",
+                          "name": "rt_creator_mobile"
                         },
                         {
-                          "name": "dt_creator_id",
-                          "type": "number"
+                          "type": "number",
+                          "name": "dt_creator_id"
                         }
                       ],
                       "outputType": "object"
@@ -932,7 +936,9 @@
                         "value": "{{$_POST.mobile_number}}"
                       },
                       "output": true,
-                      "disabled": true
+                      "disabled": true,
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "amount",
@@ -942,7 +948,9 @@
                         "value": "{{$_POST.recharge_amount}}"
                       },
                       "output": true,
-                      "disabled": true
+                      "disabled": true,
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "NewOPCode",
@@ -952,7 +960,9 @@
                         "value": "{{GetOPCode[0].code.toNumber()}}"
                       },
                       "output": true,
-                      "disabled": true
+                      "disabled": true,
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "api",
@@ -961,7 +971,7 @@
                       "options": {
                         "url": "http://www.sonakshiworld.com/apiservice.asmx/Recharge",
                         "params": {
-                          "apiToken": "{{'a88ccb6aa2a14eaf8eaa1f112c3ff690'}}",
+                          "apiToken": "{{'c7ccddb22d7e494cbf29df6a8d7ccba5'}}",
                           "mn": "{{$_POST.mobile_number}}",
                           "op": "{{GetOPCode[0].code.toNumber()}}",
                           "amt": "{{$_POST.recharge_amount}}",
@@ -1039,7 +1049,9 @@
                         "value": "{{api.data.xmlToJSON()}}",
                         "key": "xml"
                       },
-                      "output": true
+                      "output": true,
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "CommAmt",
@@ -1048,7 +1060,9 @@
                       "options": {
                         "value": "{{($_POST.recharge_amount.toNumber()*GetCommision[0].comm_per.toNumber()/100)+GetCommision[0].comm_val.toNumber()}}"
                       },
-                      "output": true
+                      "output": true,
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "ChargeAmt",
@@ -1057,7 +1071,9 @@
                       "options": {
                         "value": "{{($_POST.recharge_amount.toNumber()*GetCommision[0].service_charge_per.toNumber()/100)+GetCommision[0].service_charge_val.toNumber()}}"
                       },
-                      "output": true
+                      "output": true,
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "NetAmt",
@@ -1066,7 +1082,9 @@
                       "options": {
                         "value": "{{$_POST.recharge_amount.toNumber() -CommAmt.toNumber() +ChargeAmt.toNumber()}}"
                       },
-                      "output": true
+                      "output": true,
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "ClosingBalance",
@@ -1075,7 +1093,9 @@
                       "options": {
                         "value": "{{WalletBalCheck[0].balance_amt.toNumber() - NetAmt.toNumber()}}"
                       },
-                      "output": true
+                      "output": true,
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "AdminClosingBal",
@@ -1084,7 +1104,9 @@
                       "options": {
                         "value": "{{GetAdmin.admin_balance_amt.toNumber()+ChargeAmt.toNumber()}}"
                       },
-                      "output": true
+                      "output": true,
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "apiResponseTime",
@@ -1093,7 +1115,9 @@
                       "options": {
                         "value": "{{NOW.dateDiff('seconds', SubmitTime)}}"
                       },
-                      "output": true
+                      "output": true,
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "apidata",
@@ -1102,7 +1126,9 @@
                       "options": {
                         "value": "{{api.data}}"
                       },
-                      "disabled": true
+                      "disabled": true,
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "",
@@ -1218,20 +1244,20 @@
                               "output": true,
                               "meta": [
                                 {
-                                  "name": "dt_comm_per",
-                                  "type": "text"
+                                  "type": "text",
+                                  "name": "dt_comm_per"
                                 },
                                 {
-                                  "name": "dt_comm_val",
-                                  "type": "text"
+                                  "type": "text",
+                                  "name": "dt_comm_val"
                                 },
                                 {
-                                  "name": "dt_charge_per",
-                                  "type": "text"
+                                  "type": "text",
+                                  "name": "dt_charge_per"
                                 },
                                 {
-                                  "name": "dt_charge_val",
-                                  "type": "text"
+                                  "type": "text",
+                                  "name": "dt_charge_val"
                                 }
                               ],
                               "outputType": "object"
@@ -1243,7 +1269,9 @@
                               "options": {
                                 "value": "{{CommChFrDT.dt_comm_per}}"
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtCommVal",
@@ -1252,7 +1280,9 @@
                               "options": {
                                 "value": "{{CommChFrDT.dt_comm_val}}"
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtCommAmtVirtual",
@@ -1261,7 +1291,9 @@
                               "options": {
                                 "value": "{{($_POST$_POST.recharge_amount.toNumber()*DtCommPer.toNumber()/100)+DtCommVal.toNumber()}}"
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtCommAmt",
@@ -1270,7 +1302,9 @@
                               "options": {
                                 "value": "{{DtCommAmtVirtual.toNumber()-CommAmt.toNumber()}}"
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtChargePer",
@@ -1279,7 +1313,9 @@
                               "options": {
                                 "value": "{{CommChFrDT.dt_charge_per}}"
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtChargeVal",
@@ -1288,7 +1324,9 @@
                               "options": {
                                 "value": "{{CommChFrDT.dt_charge_val}}"
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtChargeAmtVirtual",
@@ -1297,7 +1335,9 @@
                               "options": {
                                 "value": "{{($_POST.recharge_amount.toNumber()*CommChFrDT.dt_charge_per/100)+CommChFrDT.dt_charge_val.toNumber()}}"
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtChargeAmt",
@@ -1306,7 +1346,9 @@
                               "options": {
                                 "value": "{{DtChargeAmtVirtual.toNumber()-ChargeAmt.toNumber()}}"
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtNetAmt",
@@ -1315,7 +1357,9 @@
                               "options": {
                                 "value": "{{DtComAmt.toNumber()-DtChargeAmt.toNumber()}}"
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtClosingBal",
@@ -1324,7 +1368,9 @@
                               "options": {
                                 "value": "{{GetRTCreator.rt_creator_bal_amt.toNumber()+DtComAmt.toNumber()-DtChargeAmt.toNumber()}}"
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "AdminClosingBal",
@@ -1333,7 +1379,9 @@
                               "options": {
                                 "value": "{{AdminClosingBal.toNumber()+DtChargeAmt.toNumber()}}"
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "GetDTCreator",
@@ -1413,28 +1461,28 @@
                               "output": true,
                               "meta": [
                                 {
-                                  "name": "dt_creator_user_type",
-                                  "type": "number"
+                                  "type": "number",
+                                  "name": "dt_creator_user_type"
                                 },
                                 {
-                                  "name": "dt_creator_bal_amt",
-                                  "type": "text"
+                                  "type": "text",
+                                  "name": "dt_creator_bal_amt"
                                 },
                                 {
-                                  "name": "dt_creator_scheme",
-                                  "type": "text"
+                                  "type": "number",
+                                  "name": "dt_creator_scheme"
                                 },
                                 {
-                                  "name": "dt_creator_user_id",
-                                  "type": "text"
+                                  "type": "text",
+                                  "name": "dt_creator_user_id"
                                 },
                                 {
-                                  "name": "dt_creator_name",
-                                  "type": "text"
+                                  "type": "text",
+                                  "name": "dt_creator_name"
                                 },
                                 {
-                                  "name": "dt_creator_mobile",
-                                  "type": "text"
+                                  "type": "text",
+                                  "name": "dt_creator_mobile"
                                 }
                               ],
                               "outputType": "object"
@@ -1553,20 +1601,20 @@
                                       "output": true,
                                       "meta": [
                                         {
-                                          "name": "mdt_comm_per",
-                                          "type": "text"
+                                          "type": "text",
+                                          "name": "mdt_comm_per"
                                         },
                                         {
-                                          "name": "mdt_comm_val",
-                                          "type": "text"
+                                          "type": "text",
+                                          "name": "mdt_comm_val"
                                         },
                                         {
-                                          "name": "mdt_charge_per",
-                                          "type": "text"
+                                          "type": "text",
+                                          "name": "mdt_charge_per"
                                         },
                                         {
-                                          "name": "mdt_charge_val",
-                                          "type": "text"
+                                          "type": "text",
+                                          "name": "mdt_charge_val"
                                         }
                                       ],
                                       "outputType": "object"
@@ -1578,7 +1626,9 @@
                                       "options": {
                                         "value": "{{CommChFrMDT.mdt_comm_per}}"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtCommVal",
@@ -1587,7 +1637,9 @@
                                       "options": {
                                         "value": "{{CommChFrMDT.mdt_comm_val}}"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtComAmtVirtual",
@@ -1596,7 +1648,9 @@
                                       "options": {
                                         "value": "{{($_POST.recharge_amount.toNumber()*MdtCommPer.toNumber()/100)+CommChFrMDT.mdt_comm_val.toNumber()}}"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtComAmt",
@@ -1605,7 +1659,9 @@
                                       "options": {
                                         "value": "{{MdtComAmtVirtual.toNumber()-DtChargeAmtVirtual.toNumber()}}"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtChargePer",
@@ -1614,7 +1670,9 @@
                                       "options": {
                                         "value": "{{CommChFrMDT.mdt_charge_per}}"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtChargeVal",
@@ -1623,7 +1681,9 @@
                                       "options": {
                                         "value": "{{CommChFrMDT.mdt_charge_val}}"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtChargeAmtVirtual",
@@ -1632,7 +1692,9 @@
                                       "options": {
                                         "value": "{{($_POST.recharge_amount.toNumber()*MdtChargePer.toNumber()/100)+MdtChargeVal.toNumber()}}"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtChargeAmt",
@@ -1641,7 +1703,9 @@
                                       "options": {
                                         "value": "{{MdtChargeAmtVirtual.toNumber()-DtChargeAmtVirtual.toNumber()}}"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtNetAmt",
@@ -1650,7 +1714,9 @@
                                       "options": {
                                         "value": "{{MdtComAmt.toNumber() - MdtChargeAmt.toNumber()}}"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtClosingBal",
@@ -1659,7 +1725,9 @@
                                       "options": {
                                         "value": "{{GetDTCreator.dt_creator_bal_amt.toNumber()+MdtNetAmt.toNumber()}}"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "AdminClosingBal",
@@ -1668,7 +1736,9 @@
                                       "options": {
                                         "value": "{{AdminClosingBal.toNumber()+MdtChargeAmt.toNumber()}}"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     }
                                   ]
                                 },
@@ -1681,7 +1751,9 @@
                                       "options": {
                                         "value": 0
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtCommVal",
@@ -1690,7 +1762,9 @@
                                       "options": {
                                         "value": 0
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtComAmt",
@@ -1699,7 +1773,9 @@
                                       "options": {
                                         "value": 0
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtChargePer",
@@ -1708,7 +1784,9 @@
                                       "options": {
                                         "value": 0
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtChargeVal",
@@ -1717,7 +1795,9 @@
                                       "options": {
                                         "value": 0
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtNetAmt",
@@ -1726,7 +1806,9 @@
                                       "options": {
                                         "value": 0
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtChargeAmt",
@@ -1735,7 +1817,9 @@
                                       "options": {
                                         "value": 0
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "MdtClosingBal",
@@ -1744,7 +1828,9 @@
                                       "options": {
                                         "value": 0
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     },
                                     {
                                       "name": "AdminClosingBal",
@@ -1753,7 +1839,9 @@
                                       "options": {
                                         "value": "{{AdminClosingBal}}"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "meta": [],
+                                      "outputType": "text"
                                     }
                                   ]
                                 }
@@ -1772,7 +1860,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtCommVal",
@@ -1781,7 +1871,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtCommAmt",
@@ -1790,7 +1882,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtChargePer",
@@ -1799,7 +1893,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtChargeVal",
@@ -1808,7 +1904,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtChargeAmt",
@@ -1817,7 +1915,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "DtNetAmt",
@@ -1826,7 +1926,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "MdtCommPer",
@@ -1835,7 +1937,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "MdtCommVal",
@@ -1844,7 +1948,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "MdtComAmt",
@@ -1853,7 +1959,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "MdtChargePer",
@@ -1862,7 +1970,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "MdtChargeVal",
@@ -1871,7 +1981,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "MdtChargeAmt",
@@ -1880,7 +1992,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "MdtNetAmt",
@@ -1889,7 +2003,9 @@
                               "options": {
                                 "value": 0
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             },
                             {
                               "name": "AdminClosingBal",
@@ -1898,7 +2014,9 @@
                               "options": {
                                 "value": "{{AdminClosingBal}}"
                               },
-                              "output": true
+                              "output": true,
+                              "meta": [],
+                              "outputType": "text"
                             }
                           ]
                         }
@@ -1911,7 +2029,9 @@
                       "action": "setvalue",
                       "options": {
                         "value": "{{ChargeAmt.toNumber()+DtChargeAmt.toNumber()+MdtChargeAmt.toNumber()}}"
-                      }
+                      },
+                      "meta": [],
+                      "outputType": "text"
                     },
                     {
                       "name": "RechTrans",

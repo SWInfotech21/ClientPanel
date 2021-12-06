@@ -35,7 +35,9 @@
           "value": "{{$_GET.for_user_type}}"
         },
         "output": true,
-        "disabled": true
+        "disabled": true,
+        "meta": [],
+        "outputType": "text"
       },
       {
         "name": "",
@@ -57,7 +59,7 @@
                       {
                         "name": "@user_id",
                         "value": "{{identity}}",
-                        "test": "2"
+                        "test": "17"
                       },
                       {
                         "name": "@for_user_type",
@@ -98,7 +100,7 @@
                       "options": {
                         "connection": "postgres_gcpServer",
                         "sql": {
-                          "query": "select distinct 'scheme_names',\n   unnest(array[tsu.scheme1, tsu.scheme2, tsu.scheme3, tsu.scheme4]) AS \"scheme_id\",\n   unnest(array[ms.scheme_name , ms2.scheme_name, ms3.scheme_name, ms4.scheme_name]) AS \"scheme_names\"\nFROM t_scheme_user tsu\n   left join m_scheme ms on ms.id = tsu.scheme1 \n   left join m_scheme ms2 on ms2.id = tsu.scheme2  \n   left join m_scheme ms3 on ms3.id = tsu.scheme3 \n   left join m_scheme ms4 on ms4.id = tsu.scheme4 \nwhere tsu.user_id = @user_id and tsu.for_user_type = 3  and 'scheme_id' is not null\norder by \"scheme_names\" ASC;",
+                          "query": "select distinct 'scheme_names',\n   unnest(array[tsu.scheme1, tsu.scheme2, tsu.scheme3, tsu.scheme4]) AS \"scheme_id\",\n   unnest(array[ms.scheme_name , ms2.scheme_name, ms3.scheme_name, ms4.scheme_name]) AS \"scheme_names\"\nFROM t_scheme_user tsu\n   left join m_scheme ms on ms.id = tsu.scheme1 \n   left join m_scheme ms2 on ms2.id = tsu.scheme2  \n   left join m_scheme ms3 on ms3.id = tsu.scheme3 \n   left join m_scheme ms4 on ms4.id = tsu.scheme4 \nwhere tsu.user_id = @user_id and tsu.for_user_type = 3 and 'scheme_id' is not null\norder by \"scheme_names\" ASC;",
                           "params": [
                             {
                               "name": "@user_id",
