@@ -30,6 +30,19 @@
         "meta": []
       },
       {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
         "name": "update",
         "module": "dbupdater",
         "action": "update",

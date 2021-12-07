@@ -4287,6 +4287,7 @@ input[type=button].btn-block {
   border-radius: 1rem;
   -webkit-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  -moz-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
   -moz-appearance: none;
@@ -4295,6 +4296,7 @@ input[type=button].btn-block {
 @media (prefers-reduced-motion: reduce) {
   .custom-range::-moz-range-thumb {
     -webkit-transition: none;
+    -moz-transition: none;
     transition: none;
   }
 }
@@ -4321,6 +4323,7 @@ input[type=button].btn-block {
   border-radius: 1rem;
   -webkit-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  -ms-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
   appearance: none;
@@ -4328,6 +4331,7 @@ input[type=button].btn-block {
 @media (prefers-reduced-motion: reduce) {
   .custom-range::-ms-thumb {
     -webkit-transition: none;
+    -ms-transition: none;
     transition: none;
   }
 }
@@ -6929,7 +6933,9 @@ button.bg-dark:focus {
 .bg-transparent {
   background-color: transparent !important;
 }
-
+.sw-border-radius{
+    border-radius :5px;
+}
 .border {
   border: 1px solid #dee2e6 !important;
 }
@@ -8442,7 +8448,7 @@ button.bg-dark:focus {
   z-index: 1030;
 }
 
-@supports ((position: -webkit-sticky) or (position: sticky)) {
+@supports (position: sticky) {
   .sticky-top {
     position: -webkit-sticky;
     position: sticky;

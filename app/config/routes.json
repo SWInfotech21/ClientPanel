@@ -5,13 +5,13 @@
       "page": "index",
       "routeType": "page",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/RedirectBlank"
     },
     {
       "path": "/dashboard",
       "page": "dashboard",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     },
     {
       "path": "/login",
@@ -31,94 +31,104 @@
       "path": "/recharge",
       "page": "recharge",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/PageForRT"
     },
     {
       "path": "/recharge-history",
       "page": "recharge-history",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     },
     {
       "path": "/search-transactions",
       "page": "search-transactions",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     },
     {
       "path": "/paymet-load",
       "page": "paymet-load",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     },
     {
       "path": "/payment-debit",
       "page": "payment-debit",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     },
     {
       "path": "/operatorwise-comm",
       "page": "operatorwise-comm",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     },
     {
       "path": "/statement",
       "page": "statement",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     },
     {
       "path": "/commision",
       "page": "commision",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     },
     {
       "path": "/users",
       "page": "users",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/PagesFrDTMDT"
     },
     {
       "path": "/credits",
       "page": "credits",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/PagesFrDTMDT"
     },
     {
       "path": "/security-update",
       "page": "security-update",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     },
     {
       "path": "/my-profile",
       "page": "my-profile",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     },
     {
       "path": "/login-history",
       "page": "login-history",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     },
     {
       "path": "/payment",
       "page": "payment",
       "layout": "main",
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     },
     {
       "path": "/signup",
       "page": "signup"
+    },
+    {
+      "path": "/recharge1",
+      "page": "recharge1",
+      "layout": "main",
+      "exec": "/api/PageAccess/PageForRT"
+    },
+    {
+      "path": "/403-forbidden",
+      "page": "403-forbidden"
     }
   ],
   "layouts": {
     "main": {
-      "exec": "/api/Users/UserAccess"
+      "exec": "/api/PageAccess/UserAccess"
     }
   }
 }

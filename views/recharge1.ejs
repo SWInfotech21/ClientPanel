@@ -1,0 +1,85 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="recharge1" appConnect="local" components="{dmxBootstrap5Navigation:{}}" -->
+<meta name="ac:route" content="/recharge1">
+<dmx-serverconnect id="scOperator" url="api/Operator/OperatorFetch" noload></dmx-serverconnect>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-6 col-12">
+            <ul class="nav nav-pills mb-3 px-2" id="pills-tab" role="tablist">
+                <li class="nav-item border sw-border-radius col-4 px-0" role="presentation">
+                    <button class="nav-link active w-100 h6 mb-0" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Mobile</button>
+                </li>
+                <li class="nav-item border sw-border-radius col-4 px-0" role="presentation">
+                    <button class="nav-link w-100 h6 mb-0" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">DTH</button>
+                </li>
+                <li class="nav-item border sw-border-radius col-4 px-0" role="presentation">
+                    <button class="nav-link w-100 h6 mb-0" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Pre-Paid</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <h4 class="mb-4">Mobile Recharge</h4>
+                    <div class="row">
+                        <form id="formMobileRecharge" method="post" action="api/Recharge/MobRechSingAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success('Recharge of Rs. '+formMobileRecharge.rechargeAmount.value+' successful to '+formMobileRecharge.mobileNumber.value); formMobileRecharge.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
+                            <div class="row">
+                                <div class="form-group"> <label class="text-monospace">Mobile Number (+91)</label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text bg-primary text-light">
+                                                <i class="fas fa-mobile-alt"></i>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" id="inpMobile" name="mobile_number" placeholder="Enter Mobile No." maxlength="10" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
+                                    </div>
+                                </div>
+
+                                <div class="form-group"> <label class="text-monospace">Amount (in Rs.)</label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text bg-primary text-light">
+                                                <i class="fas fa-rupee-sign"></i>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" id="inpAmount" name="recharge_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
+                                    </div>
+                                </div>
+                                <div class="form-group"> <label class="text-monospace">Operator</label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text bg-primary text-light">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                        </div>
+                                        <select type="text" class="form-control form-select" id="inp_opname" name="op_code" aria-describedby="inp_opname_help" placeholder="Enter Operator Name" maxlength="50" data-msg-required="Operator Name is required." dmx-on:click="scOperator.load({})" dmx-bind:options="scOperator.data.OperatorFetch.data" optiontext="operator_name" optionvalue="op_id">
+                                            <option value="">Select Operator</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group"> <label class="text-monospace">T-PIN</label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text bg-primary text-light">
+                                                <i class="fas fa-edit"></i>
+                                            </div>
+                                        </div>
+                                        <input type="number" class="form-control" id="mobileTPIN" name="mobile_tpin" placeholder="Enter T-Pin" maxlength="10" required="" title="Enter T-Pin" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid t-pin." maxlength="4">
+                                    </div>
+                                </div>
+                                <div class="col"><button type="submit" class="btn btn-primary pull-left" dmx-bind:disabled="state.executing" id="btnmrecharge">Recharge<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
+
+                            </div>
+                        </form>
+                    </div>
+
+
+                </div>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    DTH
+                </div>
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">Prepaid.</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+        </div>
+    </div>
+</div>

@@ -30,6 +30,19 @@
   "exec": {
     "steps": [
       {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
         "name": "identity",
         "module": "auth",
         "action": "identify",
@@ -271,60 +284,60 @@
                   "type": "array",
                   "sub": [
                     {
-                      "name": "user_number",
-                      "type": "text"
+                      "type": "text",
+                      "name": "user_number"
                     },
                     {
-                      "name": "opening_balance",
-                      "type": "text"
+                      "type": "text",
+                      "name": "opening_balance"
                     },
                     {
-                      "name": "amount",
-                      "type": "text"
+                      "type": "text",
+                      "name": "amount"
                     },
                     {
-                      "name": "net_amt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "net_amt"
                     },
                     {
-                      "name": "closing_balance",
-                      "type": "text"
+                      "type": "text",
+                      "name": "closing_balance"
                     },
                     {
-                      "name": "status",
-                      "type": "text"
+                      "type": "text",
+                      "name": "status"
                     },
                     {
-                      "name": "id",
-                      "type": "text"
+                      "type": "number",
+                      "name": "id"
                     },
                     {
-                      "name": "tr_date",
-                      "type": "datetime"
+                      "type": "datetime",
+                      "name": "tr_date"
                     },
                     {
-                      "name": "comm_amt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "comm_amt"
                     },
                     {
-                      "name": "charge_amt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "charge_amt"
                     },
                     {
-                      "name": "tr_type",
-                      "type": "text"
+                      "type": "text",
+                      "name": "tr_type"
                     },
                     {
-                      "name": "reason",
-                      "type": "text"
+                      "type": "text",
+                      "name": "reason"
                     },
                     {
-                      "name": "operator_name",
-                      "type": "text"
+                      "type": "text",
+                      "name": "operator_name"
                     },
                     {
-                      "name": "service_name",
-                      "type": "text"
+                      "type": "text",
+                      "name": "service_name"
                     }
                   ]
                 }
@@ -559,60 +572,60 @@
                   "type": "array",
                   "sub": [
                     {
-                      "name": "user_number",
-                      "type": "text"
+                      "type": "text",
+                      "name": "user_number"
                     },
                     {
-                      "name": "opening_balance",
-                      "type": "text"
+                      "type": "text",
+                      "name": "opening_balance"
                     },
                     {
-                      "name": "amount",
-                      "type": "text"
+                      "type": "text",
+                      "name": "amount"
                     },
                     {
-                      "name": "net_amt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "net_amt"
                     },
                     {
-                      "name": "closing_balance",
-                      "type": "text"
+                      "type": "text",
+                      "name": "closing_balance"
                     },
                     {
-                      "name": "status",
-                      "type": "text"
+                      "type": "text",
+                      "name": "status"
                     },
                     {
-                      "name": "id",
-                      "type": "text"
+                      "type": "number",
+                      "name": "id"
                     },
                     {
-                      "name": "tr_date",
-                      "type": "datetime"
+                      "type": "datetime",
+                      "name": "tr_date"
                     },
                     {
-                      "name": "comm_amt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "comm_amt"
                     },
                     {
-                      "name": "charge_amt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "charge_amt"
                     },
                     {
-                      "name": "tr_type",
-                      "type": "text"
+                      "type": "text",
+                      "name": "tr_type"
                     },
                     {
-                      "name": "reason",
-                      "type": "text"
+                      "type": "text",
+                      "name": "reason"
                     },
                     {
-                      "name": "operator_name",
-                      "type": "text"
+                      "type": "text",
+                      "name": "operator_name"
                     },
                     {
-                      "name": "service_name",
-                      "type": "text"
+                      "type": "text",
+                      "name": "service_name"
                     }
                   ]
                 }

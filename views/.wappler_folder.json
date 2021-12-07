@@ -90,5 +90,13 @@
   "index.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "recharge1.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "403-forbidden.ejs": {
+    "layoutPage": "",
+    "description": ""
   }
 }

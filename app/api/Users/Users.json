@@ -22,6 +22,19 @@
   "exec": {
     "steps": [
       {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
         "name": "identity",
         "module": "auth",
         "action": "identify",
@@ -274,100 +287,100 @@
             "type": "array",
             "sub": [
               {
-                "name": "id",
-                "type": "text"
+                "type": "number",
+                "name": "id"
               },
               {
-                "name": "user_id",
-                "type": "text"
+                "type": "text",
+                "name": "user_id"
               },
               {
-                "name": "user_fname",
-                "type": "text"
+                "type": "text",
+                "name": "user_fname"
               },
               {
-                "name": "user_lname",
-                "type": "text"
+                "type": "text",
+                "name": "user_lname"
               },
               {
-                "name": "user_mobile",
-                "type": "text"
+                "type": "text",
+                "name": "user_mobile"
               },
               {
-                "name": "user_email",
-                "type": "text"
+                "type": "text",
+                "name": "user_email"
               },
               {
-                "name": "user_type",
-                "type": "number"
+                "type": "number",
+                "name": "user_type"
               },
               {
-                "name": "md_id",
-                "type": "text"
+                "type": "text",
+                "name": "md_id"
               },
               {
-                "name": "ds_id",
-                "type": "text"
+                "type": "text",
+                "name": "ds_id"
               },
               {
-                "name": "u_status",
-                "type": "text"
+                "type": "text",
+                "name": "u_status"
               },
               {
-                "name": "user_tpin",
-                "type": "text"
+                "type": "text",
+                "name": "user_tpin"
               },
               {
-                "name": "scheme_id",
-                "type": "text"
+                "type": "number",
+                "name": "scheme_id"
               },
               {
-                "name": "balance_amt",
-                "type": "text"
+                "type": "text",
+                "name": "balance_amt"
               },
               {
-                "name": "aeps_balance",
-                "type": "text"
+                "type": "text",
+                "name": "aeps_balance"
               },
               {
-                "name": "aadhar_no",
-                "type": "text"
+                "type": "text",
+                "name": "aadhar_no"
               },
               {
-                "name": "pan_no",
-                "type": "text"
+                "type": "text",
+                "name": "pan_no"
               },
               {
-                "name": "address",
-                "type": "text"
+                "type": "text",
+                "name": "address"
               },
               {
-                "name": "pin",
-                "type": "text"
+                "type": "text",
+                "name": "pin"
               },
               {
-                "name": "state",
-                "type": "text"
+                "type": "text",
+                "name": "state"
               },
               {
-                "name": "district",
-                "type": "text"
+                "type": "text",
+                "name": "district"
               },
               {
-                "name": "scheme0",
-                "type": "number"
+                "type": "number",
+                "name": "scheme0"
               },
               {
-                "name": "scheme1",
-                "type": "number"
+                "type": "number",
+                "name": "scheme1"
               },
               {
-                "name": "scheme2",
-                "type": "number"
+                "type": "number",
+                "name": "scheme2"
               },
               {
-                "name": "scheme3",
-                "type": "number"
+                "type": "number",
+                "name": "scheme3"
               }
             ]
           }

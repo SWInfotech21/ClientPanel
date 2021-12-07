@@ -30,6 +30,19 @@
   "exec": {
     "steps": [
       {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
         "name": "identity",
         "module": "auth",
         "action": "identify",
@@ -285,40 +298,40 @@
             "type": "array",
             "sub": [
               {
-                "name": "id",
-                "type": "text"
+                "type": "number",
+                "name": "id"
               },
               {
-                "name": "opening_balance",
-                "type": "text"
+                "type": "text",
+                "name": "opening_balance"
               },
               {
-                "name": "amount",
-                "type": "text"
+                "type": "text",
+                "name": "amount"
               },
               {
-                "name": "closing_balance",
-                "type": "text"
+                "type": "text",
+                "name": "closing_balance"
               },
               {
-                "name": "reason",
-                "type": "text"
+                "type": "text",
+                "name": "reason"
               },
               {
-                "name": "tr_date",
-                "type": "datetime"
+                "type": "datetime",
+                "name": "tr_date"
               },
               {
-                "name": "tr_by",
-                "type": "text"
+                "type": "text",
+                "name": "tr_by"
               },
               {
-                "name": "tr_by_mobile",
-                "type": "text"
+                "type": "text",
+                "name": "tr_by_mobile"
               },
               {
-                "name": "operator_name",
-                "type": "text"
+                "type": "text",
+                "name": "operator_name"
               }
             ]
           }

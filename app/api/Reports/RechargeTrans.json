@@ -38,6 +38,19 @@
   "exec": {
     "steps": [
       {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
         "name": "identity",
         "module": "auth",
         "action": "identify",
@@ -467,140 +480,140 @@
                         "type": "array",
                         "sub": [
                           {
-                            "name": "table_id",
-                            "type": "text"
+                            "type": "number",
+                            "name": "table_id"
                           },
                           {
-                            "name": "pay_ref_id",
-                            "type": "number"
+                            "type": "number",
+                            "name": "pay_ref_id"
                           },
                           {
-                            "name": "ac_holder_user_id",
-                            "type": "number"
+                            "type": "number",
+                            "name": "ac_holder_user_id"
                           },
                           {
-                            "name": "old_balance",
-                            "type": "text"
+                            "type": "text",
+                            "name": "old_balance"
                           },
                           {
-                            "name": "amount",
-                            "type": "text"
+                            "type": "text",
+                            "name": "amount"
                           },
                           {
-                            "name": "new_balance",
-                            "type": "text"
+                            "type": "text",
+                            "name": "new_balance"
                           },
                           {
-                            "name": "transaction_type",
-                            "type": "text"
+                            "type": "text",
+                            "name": "transaction_type"
                           },
                           {
-                            "name": "tr_date",
-                            "type": "text"
+                            "type": "text",
+                            "name": "tr_date"
                           },
                           {
-                            "name": "crdr_type",
-                            "type": "text"
+                            "type": "text",
+                            "name": "crdr_type"
                           },
                           {
-                            "name": "remarks",
-                            "type": "text"
+                            "type": "text",
+                            "name": "remarks"
                           },
                           {
-                            "name": "transaction_by",
-                            "type": "number"
+                            "type": "number",
+                            "name": "transaction_by"
                           },
                           {
-                            "name": "recharge_number",
-                            "type": "text"
+                            "type": "text",
+                            "name": "recharge_number"
                           },
                           {
-                            "name": "comm_amt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "comm_amt"
                           },
                           {
-                            "name": "charge_amt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "charge_amt"
                           },
                           {
-                            "name": "tr_mode",
-                            "type": "text"
+                            "type": "text",
+                            "name": "tr_mode"
                           },
                           {
-                            "name": "tr_type",
-                            "type": "text"
+                            "type": "text",
+                            "name": "tr_type"
                           },
                           {
-                            "name": "status",
-                            "type": "text"
+                            "type": "text",
+                            "name": "status"
                           },
                           {
-                            "name": "tr_id",
-                            "type": "text"
+                            "type": "text",
+                            "name": "tr_id"
                           },
                           {
-                            "name": "operator_ref",
-                            "type": "text"
+                            "type": "text",
+                            "name": "operator_ref"
                           },
                           {
-                            "name": "api_ref",
-                            "type": "text"
+                            "type": "text",
+                            "name": "api_ref"
                           },
                           {
-                            "name": "dtcommamt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "dtcommamt"
                           },
                           {
-                            "name": "dtchargeamt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "dtchargeamt"
                           },
                           {
-                            "name": "mdtcommamt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "mdtcommamt"
                           },
                           {
-                            "name": "mdtchargeamt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "mdtchargeamt"
                           },
                           {
-                            "name": "operator_name",
-                            "type": "text"
+                            "type": "text",
+                            "name": "operator_name"
                           },
                           {
-                            "name": "service_name",
-                            "type": "text"
+                            "type": "text",
+                            "name": "service_name"
                           },
                           {
-                            "name": "parent_id",
-                            "type": "number"
+                            "type": "number",
+                            "name": "parent_id"
                           },
                           {
-                            "name": "parent_fname",
-                            "type": "text"
+                            "type": "text",
+                            "name": "parent_fname"
                           },
                           {
-                            "name": "parent_mobile",
-                            "type": "text"
+                            "type": "text",
+                            "name": "parent_mobile"
                           },
                           {
-                            "name": "user_fname",
-                            "type": "text"
+                            "type": "text",
+                            "name": "user_fname"
                           },
                           {
-                            "name": "user_mobile",
-                            "type": "text"
+                            "type": "text",
+                            "name": "user_mobile"
                           },
                           {
-                            "name": "netamt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "netamt"
                           },
                           {
-                            "name": "api_response_id",
-                            "type": "number"
+                            "type": "number",
+                            "name": "api_response_id"
                           },
                           {
-                            "name": "api_name",
-                            "type": "text"
+                            "type": "text",
+                            "name": "api_name"
                           }
                         ]
                       }
@@ -1034,140 +1047,140 @@
                         "type": "array",
                         "sub": [
                           {
-                            "name": "table_id",
-                            "type": "text"
+                            "type": "number",
+                            "name": "table_id"
                           },
                           {
-                            "name": "pay_ref_id",
-                            "type": "number"
+                            "type": "number",
+                            "name": "pay_ref_id"
                           },
                           {
-                            "name": "ac_holder_user_id",
-                            "type": "number"
+                            "type": "number",
+                            "name": "ac_holder_user_id"
                           },
                           {
-                            "name": "old_balance",
-                            "type": "text"
+                            "type": "text",
+                            "name": "old_balance"
                           },
                           {
-                            "name": "amount",
-                            "type": "text"
+                            "type": "text",
+                            "name": "amount"
                           },
                           {
-                            "name": "new_balance",
-                            "type": "text"
+                            "type": "text",
+                            "name": "new_balance"
                           },
                           {
-                            "name": "transaction_type",
-                            "type": "text"
+                            "type": "text",
+                            "name": "transaction_type"
                           },
                           {
-                            "name": "tr_date",
-                            "type": "text"
+                            "type": "text",
+                            "name": "tr_date"
                           },
                           {
-                            "name": "crdr_type",
-                            "type": "text"
+                            "type": "text",
+                            "name": "crdr_type"
                           },
                           {
-                            "name": "remarks",
-                            "type": "text"
+                            "type": "text",
+                            "name": "remarks"
                           },
                           {
-                            "name": "transaction_by",
-                            "type": "number"
+                            "type": "number",
+                            "name": "transaction_by"
                           },
                           {
-                            "name": "recharge_number",
-                            "type": "text"
+                            "type": "text",
+                            "name": "recharge_number"
                           },
                           {
-                            "name": "comm_amt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "comm_amt"
                           },
                           {
-                            "name": "charge_amt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "charge_amt"
                           },
                           {
-                            "name": "tr_mode",
-                            "type": "text"
+                            "type": "text",
+                            "name": "tr_mode"
                           },
                           {
-                            "name": "tr_type",
-                            "type": "text"
+                            "type": "text",
+                            "name": "tr_type"
                           },
                           {
-                            "name": "status",
-                            "type": "text"
+                            "type": "text",
+                            "name": "status"
                           },
                           {
-                            "name": "tr_id",
-                            "type": "text"
+                            "type": "text",
+                            "name": "tr_id"
                           },
                           {
-                            "name": "operator_ref",
-                            "type": "text"
+                            "type": "text",
+                            "name": "operator_ref"
                           },
                           {
-                            "name": "api_ref",
-                            "type": "text"
+                            "type": "text",
+                            "name": "api_ref"
                           },
                           {
-                            "name": "dtcommamt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "dtcommamt"
                           },
                           {
-                            "name": "dtchargeamt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "dtchargeamt"
                           },
                           {
-                            "name": "mdtcommamt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "mdtcommamt"
                           },
                           {
-                            "name": "mdtchargeamt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "mdtchargeamt"
                           },
                           {
-                            "name": "operator_name",
-                            "type": "text"
+                            "type": "text",
+                            "name": "operator_name"
                           },
                           {
-                            "name": "service_name",
-                            "type": "text"
+                            "type": "text",
+                            "name": "service_name"
                           },
                           {
-                            "name": "parent_id",
-                            "type": "number"
+                            "type": "number",
+                            "name": "parent_id"
                           },
                           {
-                            "name": "parent_fname",
-                            "type": "text"
+                            "type": "text",
+                            "name": "parent_fname"
                           },
                           {
-                            "name": "parent_mobile",
-                            "type": "text"
+                            "type": "text",
+                            "name": "parent_mobile"
                           },
                           {
-                            "name": "user_fname",
-                            "type": "text"
+                            "type": "text",
+                            "name": "user_fname"
                           },
                           {
-                            "name": "user_mobile",
-                            "type": "text"
+                            "type": "text",
+                            "name": "user_mobile"
                           },
                           {
-                            "name": "netamt",
-                            "type": "text"
+                            "type": "text",
+                            "name": "netamt"
                           },
                           {
-                            "name": "api_response_id",
-                            "type": "number"
+                            "type": "number",
+                            "name": "api_response_id"
                           },
                           {
-                            "name": "api_name",
-                            "type": "text"
+                            "type": "text",
+                            "name": "api_name"
                           }
                         ]
                       }
@@ -1549,140 +1562,140 @@
                   "type": "array",
                   "sub": [
                     {
-                      "name": "table_id",
-                      "type": "text"
+                      "type": "number",
+                      "name": "table_id"
                     },
                     {
-                      "name": "pay_ref_id",
-                      "type": "number"
+                      "type": "number",
+                      "name": "pay_ref_id"
                     },
                     {
-                      "name": "ac_holder_user_id",
-                      "type": "number"
+                      "type": "number",
+                      "name": "ac_holder_user_id"
                     },
                     {
-                      "name": "old_balance",
-                      "type": "text"
+                      "type": "text",
+                      "name": "old_balance"
                     },
                     {
-                      "name": "amount",
-                      "type": "text"
+                      "type": "text",
+                      "name": "amount"
                     },
                     {
-                      "name": "new_balance",
-                      "type": "text"
+                      "type": "text",
+                      "name": "new_balance"
                     },
                     {
-                      "name": "transaction_type",
-                      "type": "text"
+                      "type": "text",
+                      "name": "transaction_type"
                     },
                     {
-                      "name": "tr_date",
-                      "type": "text"
+                      "type": "text",
+                      "name": "tr_date"
                     },
                     {
-                      "name": "crdr_type",
-                      "type": "text"
+                      "type": "text",
+                      "name": "crdr_type"
                     },
                     {
-                      "name": "remarks",
-                      "type": "text"
+                      "type": "text",
+                      "name": "remarks"
                     },
                     {
-                      "name": "transaction_by",
-                      "type": "number"
+                      "type": "number",
+                      "name": "transaction_by"
                     },
                     {
-                      "name": "recharge_number",
-                      "type": "text"
+                      "type": "text",
+                      "name": "recharge_number"
                     },
                     {
-                      "name": "comm_amt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "comm_amt"
                     },
                     {
-                      "name": "charge_amt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "charge_amt"
                     },
                     {
-                      "name": "tr_mode",
-                      "type": "text"
+                      "type": "text",
+                      "name": "tr_mode"
                     },
                     {
-                      "name": "tr_type",
-                      "type": "text"
+                      "type": "text",
+                      "name": "tr_type"
                     },
                     {
-                      "name": "status",
-                      "type": "text"
+                      "type": "text",
+                      "name": "status"
                     },
                     {
-                      "name": "tr_id",
-                      "type": "text"
+                      "type": "text",
+                      "name": "tr_id"
                     },
                     {
-                      "name": "operator_ref",
-                      "type": "text"
+                      "type": "text",
+                      "name": "operator_ref"
                     },
                     {
-                      "name": "api_ref",
-                      "type": "text"
+                      "type": "text",
+                      "name": "api_ref"
                     },
                     {
-                      "name": "dtcommamt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "dtcommamt"
                     },
                     {
-                      "name": "dtchargeamt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "dtchargeamt"
                     },
                     {
-                      "name": "mdtcommamt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "mdtcommamt"
                     },
                     {
-                      "name": "mdtchargeamt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "mdtchargeamt"
                     },
                     {
-                      "name": "operator_name",
-                      "type": "text"
+                      "type": "text",
+                      "name": "operator_name"
                     },
                     {
-                      "name": "service_name",
-                      "type": "text"
+                      "type": "text",
+                      "name": "service_name"
                     },
                     {
-                      "name": "parent_id",
-                      "type": "number"
+                      "type": "number",
+                      "name": "parent_id"
                     },
                     {
-                      "name": "parent_fname",
-                      "type": "text"
+                      "type": "text",
+                      "name": "parent_fname"
                     },
                     {
-                      "name": "parent_mobile",
-                      "type": "text"
+                      "type": "text",
+                      "name": "parent_mobile"
                     },
                     {
-                      "name": "user_fname",
-                      "type": "text"
+                      "type": "text",
+                      "name": "user_fname"
                     },
                     {
-                      "name": "user_mobile",
-                      "type": "text"
+                      "type": "text",
+                      "name": "user_mobile"
                     },
                     {
-                      "name": "netamt",
-                      "type": "text"
+                      "type": "text",
+                      "name": "netamt"
                     },
                     {
-                      "name": "api_response_id",
-                      "type": "number"
+                      "type": "number",
+                      "name": "api_response_id"
                     },
                     {
-                      "name": "api_name",
-                      "type": "text"
+                      "type": "text",
+                      "name": "api_name"
                     }
                   ]
                 }

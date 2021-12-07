@@ -1,0 +1,23 @@
+[
+  {
+    "name": "",
+    "module": "auth",
+    "action": "restrict",
+    "options": {
+      "provider": "security",
+      "permissions": [
+        "write"
+      ],
+      "loginUrl": "/login",
+      "forbiddenUrl": "/403-forbidden"
+    }
+  },
+  {
+    "name": "Login",
+    "module": "core",
+    "action": "redirect",
+    "options": {
+      "url": "/login"
+    }
+  }
+]

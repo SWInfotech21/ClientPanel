@@ -32,6 +32,19 @@
         "meta": []
       },
       {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
         "name": "Commision",
         "module": "dbconnector",
         "action": "paged",
@@ -236,36 +249,36 @@
             "type": "array",
             "sub": [
               {
-                "name": "op_id",
-                "type": "text"
+                "type": "number",
+                "name": "op_id"
               },
               {
-                "name": "operator_name",
-                "type": "text"
+                "type": "text",
+                "name": "operator_name"
               },
               {
-                "name": "service_name",
-                "type": "text"
+                "type": "text",
+                "name": "service_name"
               },
               {
-                "name": "scheme_id",
-                "type": "number"
+                "type": "number",
+                "name": "scheme_id"
               },
               {
-                "name": "comm_per",
-                "type": "text"
+                "type": "text",
+                "name": "comm_per"
               },
               {
-                "name": "comm_val",
-                "type": "text"
+                "type": "text",
+                "name": "comm_val"
               },
               {
-                "name": "service_charge_per",
-                "type": "text"
+                "type": "text",
+                "name": "service_charge_per"
               },
               {
-                "name": "service_charge_val",
-                "type": "text"
+                "type": "text",
+                "name": "service_charge_val"
               }
             ]
           }
