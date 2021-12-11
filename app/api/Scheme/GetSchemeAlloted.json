@@ -41,18 +41,6 @@
         "meta": []
       },
       {
-        "name": "user_value",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{$_GET.for_user_type}}"
-        },
-        "output": true,
-        "disabled": true,
-        "meta": [],
-        "outputType": "text"
-      },
-      {
         "name": "",
         "module": "core",
         "action": "condition",
