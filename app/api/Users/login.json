@@ -71,7 +71,7 @@
               "name": "m_users"
             },
             "joins": [],
-            "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_POST.Mobile}} */ AND u_status = '1' AND user_type > 0",
+            "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_POST.Mobile}} */ AND u_status = '1' AND user_type BETWEEN 1 AND 3",
             "params": [
               {
                 "operator": "equal",
@@ -113,14 +113,17 @@
                   "id": "m_users.user_type",
                   "field": "m_users.user_type",
                   "type": "double",
-                  "operator": "greater",
-                  "value": 0,
+                  "operator": "between",
+                  "value": [
+                    1,
+                    3
+                  ],
                   "data": {
                     "table": "m_users",
                     "column": "user_type",
                     "type": "number"
                   },
-                  "operation": ">"
+                  "operation": "BETWEEN"
                 }
               ],
               "conditional": null,
