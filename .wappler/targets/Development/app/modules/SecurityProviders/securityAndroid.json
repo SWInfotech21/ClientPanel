@@ -1,0 +1,35 @@
+{
+  "name": "securityAndroid",
+  "module": "auth",
+  "action": "provider",
+  "options": {
+    "secret": "PvV4UZ7nf2oUSin",
+    "provider": "Database",
+    "connection": "postgres_gcpServer",
+    "users": {
+      "table": "m_users",
+      "identity": "id",
+      "username": "blank1",
+      "password": "password"
+    },
+    "permissions": {
+      "read": {
+        "table": "m_users",
+        "identity": "id",
+        "conditions": [
+          {
+            "column": "u_status",
+            "operator": "=",
+            "value": "1"
+          }
+        ]
+      }
+    }
+  },
+  "meta": [
+    {
+      "name": "identity",
+      "type": "text"
+    }
+  ]
+}

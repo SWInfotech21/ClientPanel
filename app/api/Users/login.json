@@ -437,26 +437,15 @@
             ]
           },
           "else": {
-            "steps": [
-              {
-                "name": "LoginRes403",
-                "module": "core",
-                "action": "response",
-                "options": {
-                  "status": 403,
-                  "data": "User does not exists or user inactive, Please contact technical support team"
-                }
-              },
-              {
-                "name": "Login",
-                "module": "core",
-                "action": "redirect",
-                "options": {
-                  "url": "/login"
-                },
-                "disabled": true
+            "steps": {
+              "name": "LoginRes403",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 403,
+                "data": "User does not exists or user inactive, Please contact technical support team"
               }
-            ]
+            }
           }
         },
         "outputType": "boolean",
