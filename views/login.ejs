@@ -1,3 +1,4 @@
+<!-- Wappler include fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="login" appConnect="local" -->
 <!doctype html>
 <html>
 
@@ -8,11 +9,9 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="bootstrap/5/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="fontawesome5/css/all.min.css" />
-    <!-- <link rel="stylesheet" href="../public/css/style.css" /> -->
+    <script src="http://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/SignUp.css" />
     <link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
-    <script src="js/jquery-3.5.1.min.js"></script>
     <script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
     <script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
     <script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
@@ -23,7 +22,7 @@
 
 
 
-<body is="dmx-app" id="login" class="bg-primary">
+<body is="dmx-app" id="login" class="container">
 
     <dmx-session-manager id="sessionLogin"></dmx-session-manager>
     <dmx-cookie-manager id="cookiesLogin"></dmx-cookie-manager>
@@ -34,106 +33,128 @@
     <dmx-notifications id="Notification" newest-on-top="true">
 
     </dmx-notifications>
-    <!-- header class="text-center">
-        <div class="p-3">
-            <a href="#" internal><img src="assets/images/swinfotech.png" alt="SW Infotech" width="100" height="100" class="img-fluid img-thumbnail align-self-center"></a>
-        </div>
-    </header -->
-    <div class="container-fluid py-3 bg-gray-200 text-info">
-        <div class="sd-login mx-2 mx-md-0">
-            <div class="row align-items-center justify-content-center w-auto h-100">
-                <div class="col-12 d-flex justify-content-center">
-
-                    <div id="crLogin" is="dmx-if" dmx-bind:condition="varLogin.value=='Login' ">
-                        <div class="card sd-login-card">
-                            <div class="card-header">
-                                <h3 class="text-center font-weight-light my-4">Login</h3>
-                            </div>
-                            <div class="card-body px-5">
-                                <p class="px-1 mb-3 sd-fs-12 sd-fw-500 text-black">Enter your credentials below</p>
-                                <form id="formLogin" is="dmx-serverconnect-form" method="post" action="api/Users/login" dmx-on:success="browser1.goto('dashboard')" dmx-on:unauthorized="varInvalidLogin.setValue(1);formLogin.reset;" dmx-on:forbidden="Notification.danger(lastError.response)">
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text border-1 border-end-0 bg-transparent"><i class="fa fa-user"></i></span>
-                                        <input type="number" class="border-1 border-start-0 form-control" id="Mobile" name="Mobile" placeholder="6666666666">
-                                    </div>
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text border-1 border-end-0 bg-transparent"><i class="fa fa-lock"></i></span>
-                                        <input type="password" class="border-1 border-start-0 form-control" id="" name="Password" placeholder="Password" required="" data-msg-required="Please enter your password">
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" value="1" id="inputRemember" name="remember">
-                                        <label class="form-check-label" for="inputRemember">Keep me logged in</label>
-                                    </div>
-                                    <p class="mb-4 sd-fs-12 sd-fw-500 text-center text-danger mb-4" dmx-hide="!varInvalidLogin.value">Invalid email or password. Try again.
-                                    </p>
-                                    <p class="mb-4 sd-fs-12 sd-fw-500 text-center text-danger mb-4" dmx-hide="!varCountUser.value">User Already Exists. Please Try again.
-                                    </p>
-                                    <button id="submitLogin" class="btn btn-primary text-white w-100 mt-2 mb-3" type="submit" dmx-bind:disabled="state.executing">LogIn<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span>
-                                    </button>
-                                </form>
-                            </div>
-                            <div class="card-footer text-center">
-                                <div class="small"><a href="#" class="d-flex justify-content-center sd-fs-12 sd-fw-500 text-primary" internal data-bs-toggle="button" dmx-on:click="varLogin.setValue('ForgotPass')">Forgot password?</a></div>
-                                <div class="small"><a href="signup">Need an account? Sign up!</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="crForgotPassword" is="dmx-if" dmx-bind:condition="varLogin.value == 'ForgotPass'">
-                        <div class="card sd-login-card">
-                            <div class="card-header">
-                                <h3 class="text-center font-weight-light my-4">Reset Password</h3>
-                            </div>
-                            <div class="card-body p-5">
-                                <p class="px-1 mb-4 sd-fs-18 sd-fw-500 text-black">Don’t worry, happens to the best of us</p>
-                                <form id="formForgotPass" is="dmx-serverconnect-form" method="post" action="api/Users/PassSendOTP" dmx-on:success="varLogin.setValue('OTPSent')" dmx-on:unauthorized="Notification.warning(lastError.response+' | '+lastError.response)" dmx-on:error="Notification.warning(lastError.response)" dmx-on:forbidden="Notification.warning(lastError.response)">
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text border-1 border-end-0 bg-transparent"><i class="fa fa-user"></i></span>
-                                        <input type="text" class="border-1 border-start-0 form-control" id="txtMobileForgotPass" name="forgot_mobile" placeholder="Registered Mobile No." required>
-                                    </div>
-                                    <button id="submitResetPass" class="btn btn-primary text-white w-100 my-4" type="submit" dmx-bind:disabled="state.executing">Send OTP<span class="spinner-border spinner-border-sm ms-2" role="status" dmx-show="state.executing"></span>
-                                    </button>
-                                </form>
-                            </div>
-                            <div class="card-footer text-center">
-                                <div class="small"><a href="#" class="d-flex justify-content-center sd-fs-12 sd-fw-500 text-primary" internal data-bs-toggle="button" dmx-on:click="varLogin.setValue('Login')">Back to Login</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="crRecoverPassword" is="dmx-if" dmx-bind:condition="varLogin.value == 'OTPSent'">
-                        <div class="card sd-login-card">
-                            <div class="card-body p-5">
-                                <h1 class="sd-fs-45 sd-fw-500 text-black mb-4">You're Almost There!</h1>
-                                <p class="px-1 mb-5 sd-fs-18 sd-fw-500 text-black">If an account exists in our system with this mobile no, you will get an sms for OTP verification.</p>
-                                <form id="ResetPass" is="dmx-serverconnect-form" method="post" action="api/Users/OTPBasedResetPass" dmx-on:success="varLogin.setValue('NewPassword')" dmx-on:unauthorized="Notification.warning(lastError.response+' | '+lastError.response)" dmx-on:error="Notification.warning(lastError.response)" dmx-on:forbidden="Notification.warning(lastError.response)">
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text border-1 border-end-0 bg-transparent"><i class="fas fa-sms"></i></span>
-                                        <input type="number" class="border-1 border-start-0 form-control" id="txtOTP" name="otp" placeholder="Enter OTP sent to Mobile" required>
-                                    </div>
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text border-1 border-end-0 bg-transparent"><i class="fas fa-lock"></i></span>
-                                        <input type="text" class="border-1 border-start-0 form-control" id="txtNewPassword" name="newpassword" placeholder="Enter New Password" required>
-                                    </div>
-                                    <button id="submitNewPass" class="btn btn-primary text-white w-100 my-4" type="submit" dmx-bind:disabled="state.executing">Submit<span class="spinner-border spinner-border-sm ms-2" role="status" dmx-show="state.executing"></span>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="NewPassword" is="dmx-if" dmx-bind:condition="varLogin.value == 'NewPassword'">
-                        <div class="card sd-login-card">
-                            <div class="card-body p-5">
-                                <h1 class="sd-fs-45 sd-fw-500 text-black mb-4">New Password Set Successful!</h1>
-                                <a href="login">
-                                    <p class="px-1 mb-5 sd-fs-18 sd-fw-500 text-black">Back to Login</p>
-                                </a>
-
-                            </div>
-                        </div>
-                    </div>
+    <div class="forms-container">
+        <div class="signin-signup">
+            <!--Sign in form-->
+            <form id="formLogin" class="sign-in-form" is="dmx-serverconnect-form" method="post" action="api/Users/login" dmx-on:success="browser1.goto('dashboard')" dmx-on:unauthorized="varInvalidLogin.setValue(1);formLogin.reset;" dmx-on:forbidden="Notification.danger(lastError.response)">
+                <h2 class="title">Log In</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="number" class="form-control" id="Mobile" name="Mobile" placeholder="6666666666">
                 </div>
-            </div>
+                <!-- <div class="input-field">
+                    <i class="fas fa-mobile"></i>
+                    <input type="text" placeholder="Mobile">
+                </div> -->
+
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" class="form-control" id="" name="Password" placeholder="Password" required="" data-msg-required="Please enter your password">
+                </div>
+                <p class="mb-4 sd-fs-12 sd-fw-500 text-center text-danger mb-4" dmx-hide="!varInvalidLogin.value">Invalid email or password. Try again.
+                </p>
+                <p class="mb-4 sd-fs-12 sd-fw-500 text-center text-danger mb-4" dmx-hide="!varCountUser.value">User Already Exists. Please Try again.
+                </p>
+                <button id="submitLogin" class="btn btn-primary text-white w-100 mt-2 mb-3 solid" type="submit" dmx-bind:disabled="state.executing">LogIn<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span>
+                </button>
+                <p class="social-text">Or sign in with social platforms</p>
+                <div class="social-media">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </form>
+
+            <!--sign up form-->
+            <form is="dmx-serverconnect-form" method="post" class="sign-up-form" action="api/Users/SignUp" dmx-on:success="browser1.goto('signup')" dmx-on:unauthorized="formLogin.reset;" dmx-on:forbidden="Notification.danger('Please try again!')">
+                <h2 class="title">Sign up</h2>
+                <div class="input-field">
+                    <i class="fa fa-user-friends"></i>
+                    <select type="text" class=" form-control" id="user_type" name="usertype_id" required="true" autocomplete="off">
+                        <option value="1">MDT</option>
+                        <option value="2">DT</option>
+                        <option value="3">RT</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" class="form-control" id="user_name" name="fname" placeholder="Enter user name" required="true">
+                </div>
+
+                <div class="input-field">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" class="form-control" id="Email" name="email" placeholder="Enter Email Id" required="true" autofocus="true">
+                </div>
+
+                <div class="input-field">
+                    <i class="fas fa-mobile-alt"></i>
+                    <input type="number" class="form-control" id="MobileNo" name="mobile" placeholder="10 digit Mobile Number" required="true">
+                </div>
+
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" class="form-control" id="password" name="mpassword" placeholder="Enter Password" required="true" autofocus="true">
+                </div>
+
+                <div class="input-field">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address" required="true" autofocus="true">
+                </div>
+
+                <input type="submit" value="Sign Up" class="btn solid">
+
+                <p class="social-text">Or Sign up with social platforms</p>
+                <div class="social-media">
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
+
+    <div class="panels-container">
+        <div class="panel left-panel">
+            <div class="content">
+                <h3>Don't have an account?</h3>
+                <p>Signup here to be a business partner (Master Distributor or Distributor or Retailer)</p>
+                <button class="btn transparent" id="sign-up-btn">Sign Up</button>
+            </div>
+
+            <img src="assets/images/log.svg" class="image" alt="">
+        </div>
+
+        <div class="panel right-panel">
+            <div class="content">
+                <h3>Already a member/ user?</h3>
+                <p>Login here as Master Distributor or Distributor or Retailer</p>
+                <button class="btn transparent" id="sign-in-btn">Sign in</button>
+            </div>
+
+            <img src="assets/images/register.svg" class="image" alt="">
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+
     <script src="bootstrap/5/js/bootstrap.bundle.min.js"></script>
 </body>
 

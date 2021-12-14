@@ -30,11 +30,10 @@
       "name": "Development",
       "remoteURL": "http://localhost:3000/",
       "access": "local",
-      "localFolder": "file:///F:/swi/RetailerPanel"
+      "localFolder": ""
     }
   ],
   "activeTarget": "Development",
   "projectType": "web",
-  "npmInstall": true,
   "activeGitRemote": "RetailerPanel"
 }

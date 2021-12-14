@@ -3,10 +3,6 @@
     "layoutPage": "main",
     "description": ""
   },
-  "login.ejs": {
-    "layoutPage": "",
-    "description": ""
-  },
   "recharge.ejs": {
     "layoutPage": "main",
     "description": ""
@@ -96,6 +92,14 @@
     "description": ""
   },
   "403-forbidden.ejs": {
+    "layoutPage": "",
+    "description": ""
+  },
+  "login1.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "login.ejs": {
     "layoutPage": "",
     "description": ""
   }

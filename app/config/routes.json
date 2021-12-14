@@ -14,8 +14,9 @@
       "exec": "/api/PageAccess/UserAccess"
     },
     {
-      "path": "/login",
-      "page": "login"
+      "path": "/login1",
+      "page": "login1",
+      "layout": "main"
     },
     {
       "path": "/signup1",
@@ -124,6 +125,10 @@
     {
       "path": "/403-forbidden",
       "page": "403-forbidden"
+    },
+    {
+      "path": "/login",
+      "page": "login"
     }
   ],
   "layouts": {
