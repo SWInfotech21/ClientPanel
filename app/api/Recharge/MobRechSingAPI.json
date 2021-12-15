@@ -969,7 +969,7 @@
                       "module": "api",
                       "action": "send",
                       "options": {
-                        "url": "http://www.sonakshiworld.com/apiservice.asmx/Recharge",
+                        "url": "https://www.sonakshiworld.com/apiservice.asmx/Recharge",
                         "params": {
                           "apiToken": "{{'c7ccddb22d7e494cbf29df6a8d7ccba5'}}",
                           "mn": "{{$_POST.mobile_number}}",
