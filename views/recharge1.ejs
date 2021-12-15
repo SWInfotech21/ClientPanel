@@ -16,7 +16,7 @@
                 </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <div class="tab-pane fade show active px-2" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                     <h4 class="mb-4">Mobile Recharge</h4>
                     <div class="row">
                         <form id="formMobileRecharge" method="post" action="api/Recharge/MobRechSingAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success('Recharge of Rs. '+formMobileRecharge.rechargeAmount.value+' successful to '+formMobileRecharge.mobileNumber.value); formMobileRecharge.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
@@ -73,7 +73,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="tab-pane fade px-2" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <h4 class="mb-4">DTH Recharge</h4>
                     <div class="row">
                         <form id="formDTHRecharge" method="post" action="#" is="dmx-serverconnect-form" dmx-on:success="scNotif.success('DTH Recharge of Rs. '+formDTHRecharge.rechargeAmount.value+' successful to '+formDTHRecharge.mobileNumber.value); formDTHRecharge.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formDTHRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formDTHRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formDTHRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formDTHRecharge.lastError.response)">
@@ -130,7 +130,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">Prepaid.</div>
+                <div class="tab-pane fade px-2" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">Prepaid.</div>
             </div>
         </div>
         <div class="col-md-6 col-12">
