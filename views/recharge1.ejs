@@ -20,54 +20,56 @@
                     <h4 class="mb-4">Mobile Recharge</h4>
                     <div class="row">
                         <form id="formMobileRecharge" method="post" action="api/Recharge/MobRechSingAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success('Recharge of Rs. '+formMobileRecharge.rechargeAmount.value+' successful to '+formMobileRecharge.mobileNumber.value); formMobileRecharge.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
-                            <div class="row">
-                                <div class="form-group"> <label class="text-monospace">Mobile Number (+91)</label>
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text bg-primary text-light">
-                                                <i class="fas fa-mobile-alt"></i>
-                                            </div>
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">Mobile No. (+91)</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-mobile-alt"></i>
                                         </div>
-                                        <input type="number" class="form-control" id="inpMobile" name="mobile_number" placeholder="Enter Mobile No." maxlength="10" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
                                     </div>
+                                    <input type="number" class="form-control" id="inpMobile" name="mobile_number" placeholder="Enter Mobile No." maxlength="10" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
                                 </div>
-
-                                <div class="form-group"> <label class="text-monospace">Amount (in Rs.)</label>
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text bg-primary text-light">
-                                                <i class="fas fa-rupee-sign"></i>
-                                            </div>
-                                        </div>
-                                        <input type="number" class="form-control" id="inpAmount" name="recharge_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
-                                    </div>
-                                </div>
-                                <div class="form-group"> <label class="text-monospace">Operator</label>
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text bg-primary text-light">
-                                                <i class="fas fa-check"></i>
-                                            </div>
-                                        </div>
-                                        <select type="text" class="form-control form-select" id="inp_opname" name="op_code" aria-describedby="inp_opname_help" placeholder="Enter Operator Name" maxlength="50" data-msg-required="Operator Name is required." dmx-on:click="scOperator.load({})" dmx-bind:options="scOperator.data.OperatorFetch.data" optiontext="operator_name" optionvalue="op_id">
-                                            <option value="">Select Operator</option>
-
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group"> <label class="text-monospace">T-PIN</label>
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text bg-primary text-light">
-                                                <i class="fas fa-edit"></i>
-                                            </div>
-                                        </div>
-                                        <input type="number" class="form-control" id="mobileTPIN" name="mobile_tpin" placeholder="Enter T-Pin" maxlength="10" required="" title="Enter T-Pin" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid t-pin." maxlength="4">
-                                    </div>
-                                </div>
-                                <div class="col"><button type="submit" class="btn btn-primary pull-left" dmx-bind:disabled="state.executing" id="btnmrecharge">Recharge<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
-
                             </div>
+
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">Amount (in Rs.)</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-rupee-sign"></i>
+                                        </div>
+                                    </div>
+                                    <input type="number" class="form-control" id="inpAmount" name="recharge_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">Operator</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                    </div>
+                                    <select type="text" class="form-control form-select" id="inp_opname" name="op_code" aria-describedby="inp_opname_help" placeholder="Enter Operator Name" maxlength="50" data-msg-required="Operator Name is required." dmx-on:click="scOperator.load({})" dmx-bind:options="scOperator.data.OperatorFetch.data" optiontext="operator_name" optionvalue="op_id">
+                                        <option value="">Select Operator</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">T-PIN</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                    </div>
+                                    <input type="number" class="form-control" id="mobileTPIN" name="mobile_tpin" placeholder="Enter T-Pin" maxlength="10" required="" title="Enter T-Pin" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid t-pin." maxlength="4">
+                                </div>
+                            </div>
+                            <div class="col"><button type="submit" class="btn btn-primary pull-left" dmx-bind:disabled="state.executing" id="btnmrecharge">Recharge<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
+
                         </form>
                     </div>
 
