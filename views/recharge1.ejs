@@ -72,11 +72,63 @@
 
                         </form>
                     </div>
-
-
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                    DTH
+                    <h4 class="mb-4">DTH Recharge</h4>
+                    <div class="row">
+                        <form id="formDTHRecharge" method="post" action="#" is="dmx-serverconnect-form" dmx-on:success="scNotif.success('DTH Recharge of Rs. '+formDTHRecharge.rechargeAmount.value+' successful to '+formDTHRecharge.mobileNumber.value); formDTHRecharge.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formDTHRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formDTHRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formDTHRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formDTHRecharge.lastError.response)">
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">Subscriber ID</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-user-alt"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control" id="inpSubscriber" name="subscriber_id" placeholder="Enter Subscriber Id" maxlength="20" required="" title="Enter Subscriber Id" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid Subscriber Id">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">Amount (in Rs.)</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-rupee-sign"></i>
+                                        </div>
+                                    </div>
+                                    <input type="number" class="form-control" id="inpDTHAmount" name="dth_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">Operator</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                    </div>
+                                    <select type="text" class="form-control form-select" id="inp_dth_opname" name="dth_op_code" aria-describedby="inp_opname_help" placeholder="Enter Operator Name" maxlength="50" data-msg-required="Operator Name is required." dmx-on:click="scOperator.load({})" dmx-bind:options="scOperator.data.OperatorFetch.data" optiontext="operator_name" optionvalue="op_id">
+                                        <option value="">Select Operator</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">T-PIN</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                    </div>
+                                    <input type="number" class="form-control" id="dthTPIN" name="dth_tpin" placeholder="Enter T-Pin" maxlength="10" required="" title="Enter T-Pin" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid t-pin." maxlength="4">
+                                </div>
+                            </div>
+                            <div class="col"><button type="submit" class="btn btn-primary pull-left" dmx-bind:disabled="state.executing" id="btndthrecharge">Recharge<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
+
+                        </form>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">Prepaid.</div>
             </div>
