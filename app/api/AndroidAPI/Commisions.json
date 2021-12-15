@@ -24,6 +24,220 @@
   "exec": {
     "steps": [
       {
+        "name": "Commision",
+        "module": "dbconnector",
+        "action": "paged",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_operator",
+                "column": "id",
+                "alias": "op_id"
+              },
+              {
+                "table": "m_operator",
+                "column": "operator_name"
+              },
+              {
+                "table": "ms",
+                "column": "service_name"
+              },
+              {
+                "table": "mc",
+                "column": "scheme_id"
+              },
+              {
+                "table": "mc",
+                "column": "comm_per"
+              },
+              {
+                "table": "mc",
+                "column": "comm_val"
+              },
+              {
+                "table": "mc",
+                "column": "service_charge_per"
+              },
+              {
+                "table": "mc",
+                "column": "service_charge_val"
+              }
+            ],
+            "table": {
+              "name": "m_operator"
+            },
+            "joins": [
+              {
+                "table": "m_service",
+                "column": "*",
+                "alias": "ms",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "ms",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "m_operator",
+                        "column": "service_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                }
+              },
+              {
+                "table": "m_commission",
+                "column": "*",
+                "alias": "mc",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "mc",
+                      "column": "operator_id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "m_operator",
+                        "column": "id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                }
+              },
+              {
+                "table": "m_users",
+                "column": "*",
+                "alias": "mu",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "mu",
+                      "column": "scheme_id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "mc",
+                        "column": "scheme_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                }
+              }
+            ],
+            "orders": [
+              {
+                "table": "m_operator",
+                "column": "operator_name",
+                "direction": "DESC",
+                "recid": 1
+              }
+            ],
+            "query": "SELECT m_operator.id AS op_id, m_operator.operator_name, ms.service_name, mc.scheme_id, mc.comm_per, mc.comm_val, mc.service_charge_per, mc.service_charge_val\nFROM m_operator\nINNER JOIN m_service AS ms ON (ms.id = m_operator.service_id) LEFT JOIN m_commission AS mc ON (mc.operator_id = m_operator.id) LEFT JOIN m_users AS mu ON (mu.scheme_id = mc.scheme_id)\nORDER BY m_operator.operator_name DESC",
+            "params": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "offset",
+            "type": "number"
+          },
+          {
+            "name": "limit",
+            "type": "number"
+          },
+          {
+            "name": "total",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "type": "object",
+            "sub": [
+              {
+                "name": "offset",
+                "type": "object",
+                "sub": [
+                  {
+                    "name": "first",
+                    "type": "number"
+                  },
+                  {
+                    "name": "prev",
+                    "type": "number"
+                  },
+                  {
+                    "name": "next",
+                    "type": "number"
+                  },
+                  {
+                    "name": "last",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "current",
+                "type": "number"
+              },
+              {
+                "name": "total",
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "name": "data",
+            "type": "array",
+            "sub": [
+              {
+                "type": "number",
+                "name": "op_id"
+              },
+              {
+                "type": "text",
+                "name": "operator_name"
+              },
+              {
+                "type": "text",
+                "name": "service_name"
+              },
+              {
+                "type": "number",
+                "name": "scheme_id"
+              },
+              {
+                "type": "text",
+                "name": "comm_per"
+              },
+              {
+                "type": "text",
+                "name": "comm_val"
+              },
+              {
+                "type": "text",
+                "name": "service_charge_per"
+              },
+              {
+                "type": "text",
+                "name": "service_charge_val"
+              }
+            ]
+          }
+        ],
+        "outputType": "object"
+      },
+      {
         "name": "getSalt",
         "module": "dbconnector",
         "action": "single",
@@ -141,7 +355,8 @@
             "name": "ds_id"
           }
         ],
-        "outputType": "object"
+        "outputType": "object",
+        "disabled": true
       },
       {
         "name": "",
@@ -336,7 +551,7 @@
                                   "if": "{{identity}}",
                                   "then": {
                                     "steps": {
-                                      "name": "Commision",
+                                      "name": "Commision_copy",
                                       "module": "dbconnector",
                                       "action": "paged",
                                       "options": {
@@ -638,7 +853,8 @@
           }
         },
         "outputType": "boolean",
-        "output": false
+        "output": false,
+        "disabled": true
       }
     ]
   }
