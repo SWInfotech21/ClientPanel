@@ -146,7 +146,7 @@
             "params": []
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "name": "offset",
@@ -236,6 +236,50 @@
           }
         ],
         "outputType": "object"
+      },
+      {
+        "name": "get",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{Commision.data}}"
+        },
+        "meta": [
+          {
+            "name": "op_id",
+            "type": "number"
+          },
+          {
+            "name": "operator_name",
+            "type": "text"
+          },
+          {
+            "name": "service_name",
+            "type": "text"
+          },
+          {
+            "name": "scheme_id",
+            "type": "number"
+          },
+          {
+            "name": "comm_per",
+            "type": "text"
+          },
+          {
+            "name": "comm_val",
+            "type": "text"
+          },
+          {
+            "name": "service_charge_per",
+            "type": "text"
+          },
+          {
+            "name": "service_charge_val",
+            "type": "text"
+          }
+        ],
+        "outputType": "array",
+        "output": true
       },
       {
         "name": "getSalt",
