@@ -235,7 +235,8 @@
             ]
           }
         ],
-        "outputType": "object"
+        "outputType": "object",
+        "disabled": true
       },
       {
         "name": "get",
@@ -279,7 +280,8 @@
           }
         ],
         "outputType": "array",
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "getSalt",
@@ -595,7 +597,7 @@
                                   "if": "{{identity}}",
                                   "then": {
                                     "steps": {
-                                      "name": "Commision_copy",
+                                      "name": "Commision",
                                       "module": "dbconnector",
                                       "action": "paged",
                                       "options": {
