@@ -401,8 +401,7 @@
             "name": "ds_id"
           }
         ],
-        "outputType": "object",
-        "disabled": true
+        "outputType": "object"
       },
       {
         "name": "",
@@ -899,8 +898,7 @@
           }
         },
         "outputType": "boolean",
-        "output": false,
-        "disabled": true
+        "output": false
       }
     ]
   }

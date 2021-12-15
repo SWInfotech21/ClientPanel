@@ -214,80 +214,80 @@
             "type": "array",
             "sub": [
               {
-                "name": "op_id",
-                "type": "text"
+                "type": "number",
+                "name": "op_id"
               },
               {
-                "name": "operator_name",
-                "type": "text"
+                "type": "text",
+                "name": "operator_name"
               },
               {
-                "name": "service_id",
-                "type": "number"
+                "type": "number",
+                "name": "service_id"
               },
               {
-                "name": "api_code",
-                "type": "text"
+                "type": "text",
+                "name": "api_code"
               },
               {
-                "name": "operator_code",
-                "type": "text"
+                "type": "text",
+                "name": "operator_code"
               },
               {
-                "name": "status",
-                "type": "number"
+                "type": "number",
+                "name": "status"
               },
               {
-                "name": "operator_type",
-                "type": "text"
+                "type": "text",
+                "name": "operator_type"
               },
               {
-                "name": "is_validate",
-                "type": "number"
+                "type": "number",
+                "name": "is_validate"
               },
               {
-                "name": "is_bbps",
-                "type": "number"
+                "type": "number",
+                "name": "is_bbps"
               },
               {
-                "name": "is_partial",
-                "type": "number"
+                "type": "number",
+                "name": "is_partial"
               },
               {
-                "name": "min_amount",
-                "type": "number"
+                "type": "number",
+                "name": "min_amount"
               },
               {
-                "name": "max_amount",
-                "type": "text"
+                "type": "text",
+                "name": "max_amount"
               },
               {
-                "name": "min_length",
-                "type": "number"
+                "type": "number",
+                "name": "min_length"
               },
               {
-                "name": "max_length",
-                "type": "number"
+                "type": "number",
+                "name": "max_length"
               },
               {
-                "name": "allow_type",
-                "type": "text"
+                "type": "text",
+                "name": "allow_type"
               },
               {
-                "name": "created_on",
-                "type": "datetime"
+                "type": "datetime",
+                "name": "created_on"
               },
               {
-                "name": "created_by",
-                "type": "number"
+                "type": "number",
+                "name": "created_by"
               },
               {
-                "name": "service_name",
-                "type": "text"
+                "type": "text",
+                "name": "service_name"
               },
               {
-                "name": "service_type",
-                "type": "text"
+                "type": "text",
+                "name": "service_type"
               }
             ]
           }
