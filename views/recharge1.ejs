@@ -1,6 +1,6 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="recharge1" appConnect="local" components="{dmxBootstrap5Navigation:{}}" -->
 <meta name="ac:route" content="/recharge1">
-<dmx-serverconnect id="scOperator" url="api/Operator/OperatorFetch" noload></dmx-serverconnect>
+<dmx-serverconnect id="scOperator" url="api/Operator/MobileOpFetch" noload></dmx-serverconnect>
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-6 col-12">
@@ -51,7 +51,7 @@
                                             <i class="fas fa-check"></i>
                                         </div>
                                     </div>
-                                    <select type="text" class="form-control form-select" id="inp_opname" name="op_code" aria-describedby="inp_opname_help" placeholder="Enter Operator Name" maxlength="50" data-msg-required="Operator Name is required." dmx-on:click="scOperator.load({})" dmx-bind:options="scOperator.data.OperatorFetch.data" optiontext="operator_name" optionvalue="op_id">
+                                    <select type="text" class="form-control form-select" id="inp_opname" name="op_code" aria-describedby="inp_opname_help" placeholder="Enter Operator Name" maxlength="50" data-msg-required="Operator Name is required." dmx-on:click="scOperator.load({})" dmx-bind:options="content.scOperator.data.OperatorFetch" optiontext="operator_name" optionvalue="op_id">
                                         <option value="">Select Operator</option>
 
                                     </select>
@@ -108,7 +108,7 @@
                                             <i class="fas fa-check"></i>
                                         </div>
                                     </div>
-                                    <select type="text" class="form-control form-select" id="inp_dth_opname" name="dth_op_code" aria-describedby="inp_opname_help" placeholder="Enter Operator Name" maxlength="50" data-msg-required="Operator Name is required." dmx-on:click="scOperator.load({})" dmx-bind:options="scOperator.data.OperatorFetch.data" optiontext="operator_name" optionvalue="op_id">
+                                    <select type="text" class="form-control form-select" id="inp_dth_opname" name="dth_op_code" aria-describedby="inp_opname_help" placeholder="Enter Operator Name" maxlength="50" data-msg-required="Operator Name is required." dmx-on:click="scOperator.load({})" dmx-bind:options="content.scOperator.data.OperatorFetch" optiontext="operator_name" optionvalue="op_id">
                                         <option value="">Select Operator</option>
 
                                     </select>

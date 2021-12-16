@@ -18,6 +18,11 @@
           "schema": "public"
         }
       },
+      "cc_pageaccess": {
+        "db": {
+          "schema": "public"
+        }
+      },
       "m_api": {
         "db": {
           "schema": "public"
@@ -136,6 +141,16 @@
               "nullable": true
             }
           }
+        }
+      },
+      "m_api_forward": {
+        "db": {
+          "schema": "public"
+        }
+      },
+      "m_api_users": {
+        "db": {
+          "schema": "public"
         }
       },
       "m_bank": {
@@ -325,7 +340,7 @@
               "nullable": true
             }
           },
-          "is_bbps": {
+          "is_gst": {
             "db": {
               "type": "integer",
               "primary": false,
@@ -339,7 +354,7 @@
               "nullable": true
             }
           },
-          "is_partial": {
+          "is_tds": {
             "db": {
               "type": "integer",
               "primary": false,

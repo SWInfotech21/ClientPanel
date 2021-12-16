@@ -78,14 +78,6 @@
               },
               {
                 "table": "m_operator",
-                "column": "is_bbps"
-              },
-              {
-                "table": "m_operator",
-                "column": "is_partial"
-              },
-              {
-                "table": "m_operator",
                 "column": "min_amount"
               },
               {
@@ -119,6 +111,14 @@
               {
                 "table": "op_service",
                 "column": "service_type"
+              },
+              {
+                "table": "m_operator",
+                "column": "is_tds"
+              },
+              {
+                "table": "m_operator",
+                "column": "is_gst"
               }
             ],
             "table": {
@@ -155,7 +155,7 @@
                 "recid": 1
               }
             ],
-            "query": "SELECT m_operator.id AS op_id, m_operator.operator_name, m_operator.service_id, m_operator.api_code, m_operator.operator_code, m_operator.status, m_operator.operator_type, m_operator.is_validate, m_operator.is_bbps, m_operator.is_partial, m_operator.min_amount, m_operator.max_amount, m_operator.min_length, m_operator.max_length, m_operator.allow_type, m_operator.created_on, m_operator.created_by, op_service.service_name, op_service.service_type\nFROM m_operator\nINNER JOIN m_service AS op_service ON (op_service.id = m_operator.service_id)\nORDER BY m_operator.operator_name ASC",
+            "query": "SELECT m_operator.id AS op_id, m_operator.operator_name, m_operator.service_id, m_operator.api_code, m_operator.operator_code, m_operator.status, m_operator.operator_type, m_operator.is_validate, m_operator.min_amount, m_operator.max_amount, m_operator.min_length, m_operator.max_length, m_operator.allow_type, m_operator.created_on, m_operator.created_by, op_service.service_name, op_service.service_type, m_operator.is_tds, m_operator.is_gst\nFROM m_operator\nINNER JOIN m_service AS op_service ON (op_service.id = m_operator.service_id)\nORDER BY m_operator.operator_name ASC",
             "params": []
           }
         },
@@ -247,14 +247,6 @@
               },
               {
                 "type": "number",
-                "name": "is_bbps"
-              },
-              {
-                "type": "number",
-                "name": "is_partial"
-              },
-              {
-                "type": "number",
                 "name": "min_amount"
               },
               {
@@ -288,6 +280,14 @@
               {
                 "type": "text",
                 "name": "service_type"
+              },
+              {
+                "type": "number",
+                "name": "is_tds"
+              },
+              {
+                "type": "number",
+                "name": "is_gst"
               }
             ]
           }
