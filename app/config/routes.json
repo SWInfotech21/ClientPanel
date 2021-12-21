@@ -29,12 +29,6 @@
       "layout": "main"
     },
     {
-      "path": "/recharge",
-      "page": "recharge",
-      "layout": "main",
-      "exec": "/api/PageAccess/PageForRT"
-    },
-    {
       "path": "/recharge-history",
       "page": "recharge-history",
       "layout": "main",
@@ -117,8 +111,8 @@
       "page": "signup"
     },
     {
-      "path": "/recharge1",
-      "page": "recharge1",
+      "path": "/recharge",
+      "page": "recharge",
       "layout": "main",
       "exec": "/api/PageAccess/PageForRT"
     },
