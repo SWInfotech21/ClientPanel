@@ -3998,7 +3998,8 @@
                                                 "status": 403,
                                                 "data": "Recharge Failed"
                                               },
-                                              "output": true
+                                              "output": true,
+                                              "disabled": true
                                             }
                                           ]
                                         }
