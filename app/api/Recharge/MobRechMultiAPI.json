@@ -3142,6 +3142,16 @@
                                               "disabled": true
                                             },
                                             {
+                                              "name": "ResSuccess",
+                                              "module": "core",
+                                              "action": "response",
+                                              "options": {
+                                                "status": 403,
+                                                "data": "Recharge Success"
+                                              },
+                                              "output": true
+                                            },
+                                            {
                                               "name": "",
                                               "module": "core",
                                               "action": "condition",
@@ -3978,6 +3988,16 @@
                                                   "type": "number"
                                                 }
                                               ],
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "ResFailed",
+                                              "module": "core",
+                                              "action": "response",
+                                              "options": {
+                                                "status": 403,
+                                                "data": "Recharge Failed"
+                                              },
                                               "output": true
                                             }
                                           ]
