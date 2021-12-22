@@ -3146,10 +3146,11 @@
                                               "module": "core",
                                               "action": "response",
                                               "options": {
-                                                "status": 403,
+                                                "status": 200,
                                                 "data": "Recharge Success"
                                               },
-                                              "output": true
+                                              "output": true,
+                                              "disabled": true
                                             },
                                             {
                                               "name": "",
