@@ -89,6 +89,17 @@
   "exec": {
     "steps": [
       {
+        "name": "reqid",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_GET.reqid}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
         "name": "getSalt",
         "module": "dbconnector",
         "action": "single",
@@ -1476,11 +1487,22 @@
                                                               "output": false
                                                             },
                                                             {
-                                                              "name": "apistatus",
+                                                              "name": "stat",
                                                               "module": "core",
                                                               "action": "setvalue",
                                                               "options": {
                                                                 "value": "{{xml.Result.status[0]}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "apistatus",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{stat == 'SUCCESS' ? 'SUCCESS' : stat == 'PENDING' ? 'PENDING' : 'FAILED'}}"
                                                               },
                                                               "meta": [],
                                                               "outputType": "text",

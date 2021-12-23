@@ -1,0 +1,263 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/recharge.ejs",
+      "linkedForm": "formMobileRecharge"
+    },
+    "$_GET": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "userid"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "token"
+      }
+    ],
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "REMOTE_ADDR"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "getSalt",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_api_token",
+                "column": "ip_address"
+              },
+              {
+                "table": "t_api_token",
+                "column": "salt",
+                "alias": "getSaltvalue"
+              }
+            ],
+            "table": {
+              "name": "t_api_token"
+            },
+            "joins": [],
+            "query": "SELECT ip_address, salt AS getSaltvalue\nFROM t_api_token\nWHERE user_id = :P1 /* {{$_GET.userid}} */ AND api_token = :P2 /* {{$_GET.token}} */ AND status = 1",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.userid}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.token}}"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "t_api_token.user_id",
+                  "field": "t_api_token.user_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.userid}}",
+                  "data": {
+                    "table": "t_api_token",
+                    "column": "user_id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "t_api_token.api_token",
+                  "field": "t_api_token.api_token",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.token}}",
+                  "data": {
+                    "table": "t_api_token",
+                    "column": "api_token",
+                    "type": "text"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "t_api_token.status",
+                  "field": "t_api_token.status",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "t_api_token",
+                    "column": "status",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "text",
+            "name": "ip_address"
+          },
+          {
+            "type": "text",
+            "name": "getSaltvalue"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "UserIP",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_SERVER.REMOTE_ADDR}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": false
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{getSalt.ip_address}}",
+          "then": {
+            "steps": {
+              "name": "",
+              "module": "core",
+              "action": "condition",
+              "options": {
+                "if": "{{getSalt.ip_address == UserIP}}",
+                "then": {
+                  "steps": {
+                    "name": "ApiBalance",
+                    "module": "dbconnector",
+                    "action": "single",
+                    "options": {
+                      "connection": "postgres_gcpServer",
+                      "sql": {
+                        "type": "SELECT",
+                        "columns": [
+                          {
+                            "table": "m_users",
+                            "column": "balance_amt"
+                          }
+                        ],
+                        "table": {
+                          "name": "m_users"
+                        },
+                        "joins": [],
+                        "wheres": {
+                          "condition": "AND",
+                          "rules": [
+                            {
+                              "id": "m_users.id",
+                              "field": "m_users.id",
+                              "type": "double",
+                              "operator": "equal",
+                              "value": "{{$_GET.userid}}",
+                              "data": {
+                                "table": "m_users",
+                                "column": "id",
+                                "type": "number"
+                              },
+                              "operation": "="
+                            },
+                            {
+                              "id": "m_users.u_status",
+                              "field": "m_users.u_status",
+                              "type": "string",
+                              "operator": "equal",
+                              "value": "1",
+                              "data": {
+                                "table": "m_users",
+                                "column": "u_status",
+                                "type": "text"
+                              },
+                              "operation": "="
+                            }
+                          ],
+                          "conditional": null,
+                          "valid": true
+                        },
+                        "query": "SELECT balance_amt\nFROM m_users\nWHERE id = :P1 /* {{$_GET.userid}} */ AND u_status = '1'",
+                        "params": [
+                          {
+                            "operator": "equal",
+                            "type": "expression",
+                            "name": ":P1",
+                            "value": "{{$_GET.userid}}"
+                          }
+                        ]
+                      }
+                    },
+                    "output": true,
+                    "meta": [
+                      {
+                        "type": "text",
+                        "name": "balance_amt"
+                      }
+                    ],
+                    "outputType": "object"
+                  }
+                },
+                "else": {
+                  "steps": {
+                    "name": "ResUnauth",
+                    "module": "core",
+                    "action": "response",
+                    "options": {
+                      "status": 401,
+                      "data": "Unauthorized user with IP {{UserIP}}"
+                    }
+                  }
+                }
+              },
+              "outputType": "boolean"
+            }
+          },
+          "else": {
+            "steps": {
+              "name": "ResUnauth",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 401,
+                "data": "Unauthorized Access!"
+              }
+            }
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
+}
