@@ -9,6 +9,41 @@
         "type": "text",
         "options": {
           "rules": {
+            "core:required": {},
+            "core:maxlength": {
+              "param": 10
+            },
+            "core:number": {}
+          }
+        },
+        "name": "account"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {},
+            "core:maxlength": {
+              "param": 5
+            },
+            "core:number": {}
+          }
+        },
+        "name": "amount"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "op"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
             "core:required": {}
           }
         },
@@ -22,6 +57,26 @@
           }
         },
         "name": "token"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {},
+            "core:minlength": {
+              "param": 5
+            }
+          }
+        },
+        "name": "reqid"
+      },
+      {
+        "type": "text",
+        "name": "option1"
+      },
+      {
+        "type": "text",
+        "name": "option2"
       }
     ],
     "$_SERVER": [
@@ -33,6 +88,17 @@
   },
   "exec": {
     "steps": [
+      {
+        "name": "reqid",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_GET.reqid}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
       {
         "name": "getSalt",
         "module": "dbconnector",
@@ -48,6 +114,10 @@
               },
               {
                 "table": "t_api_token",
+                "column": "call_back_url"
+              },
+              {
+                "table": "t_api_token",
                 "column": "salt",
                 "alias": "getSaltvalue"
               }
@@ -56,7 +126,7 @@
               "name": "t_api_token"
             },
             "joins": [],
-            "query": "SELECT ip_address, salt AS getSaltvalue\nFROM t_api_token\nWHERE user_id = :P1 /* {{$_GET.userid}} */ AND api_token = :P2 /* {{$_GET.token}} */ AND status = 1",
+            "query": "SELECT ip_address, call_back_url, salt AS getSaltvalue\nFROM t_api_token\nWHERE user_id = :P1 /* {{$_GET.userid}} */ AND api_token = :P2 /* {{$_GET.token}} */ AND status = 1",
             "params": [
               {
                 "operator": "equal",
@@ -127,6 +197,10 @@
           },
           {
             "type": "text",
+            "name": "call_back_url"
+          },
+          {
+            "type": "text",
             "name": "getSaltvalue"
           }
         ],
@@ -159,87 +233,33 @@
                 "then": {
                   "steps": [
                     {
-                      "name": "ApiBalance",
-                      "module": "dbconnector",
-                      "action": "single",
+                      "name": "apisn",
+                      "module": "api",
+                      "action": "send",
                       "options": {
-                        "connection": "postgres_gcpServer",
-                        "sql": {
-                          "type": "SELECT",
-                          "columns": [
-                            {
-                              "table": "m_users",
-                              "column": "balance_amt",
-                              "aggregate": ""
-                            }
-                          ],
-                          "table": {
-                            "name": "m_users"
-                          },
-                          "joins": [],
-                          "wheres": {
-                            "condition": "AND",
-                            "rules": [
-                              {
-                                "id": "m_users.id",
-                                "field": "m_users.id",
-                                "type": "double",
-                                "operator": "equal",
-                                "value": "{{$_GET.userid}}",
-                                "data": {
-                                  "table": "m_users",
-                                  "column": "id",
-                                  "type": "number"
-                                },
-                                "operation": "="
-                              },
-                              {
-                                "id": "m_users.u_status",
-                                "field": "m_users.u_status",
-                                "type": "string",
-                                "operator": "equal",
-                                "value": "1",
-                                "data": {
-                                  "table": "m_users",
-                                  "column": "u_status",
-                                  "type": "text"
-                                },
-                                "operation": "="
-                              }
-                            ],
-                            "conditional": null,
-                            "valid": true
-                          },
-                          "query": "SELECT balance_amt\nFROM m_users\nWHERE id = :P1 /* {{$_GET.userid}} */ AND u_status = '1'",
-                          "params": [
-                            {
-                              "operator": "equal",
-                              "type": "expression",
-                              "name": ":P1",
-                              "value": "{{$_GET.userid}}"
-                            }
-                          ]
+                        "url": "https://www.sonakshiworld.com/apiservice.asmx/Recharge",
+                        "params": {
+                          "apiToken": "{{GetOpAPICodeFwrd.api_password}}",
+                          "mn": "{{$_GET.account}}",
+                          "op": "{{GetOpAPICodeFwrd.api_code2}}",
+                          "amt": "{{$_GET.amount}}",
+                          "reqid": "{{$_GET.reqid}}",
+                          "field1": "",
+                          "field2": ""
                         }
                       },
-                      "output": false,
-                      "meta": [
-                        {
-                          "type": "text",
-                          "name": "balance_amt"
-                        }
-                      ],
-                      "outputType": "object"
+                      "output": false
                     },
                     {
-                      "name": "apibalance",
+                      "name": "xml",
                       "module": "core",
                       "action": "setvalue",
                       "options": {
-                        "value": "{{ApiBalance.balance_amt.toNumber().currency('', '.', ',', 3)}}"
+                        "value": "{{apisn.data.xmlToJSON()}}"
                       },
                       "meta": [],
                       "outputType": "text",
-                      "output": true
+                      "output": false
                     }
                   ]
                 },
