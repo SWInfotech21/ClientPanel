@@ -861,48 +861,81 @@ dmx.config({
     "tableRepeat1": {
       "meta": [
         {
-          "name": "$index",
-          "type": "number"
+          "type": "number",
+          "name": "op_id"
         },
         {
-          "name": "$key",
-          "type": "text"
+          "type": "text",
+          "name": "operator_name"
         },
         {
-          "name": "$value",
-          "type": "object"
+          "type": "text",
+          "name": "service_name"
         },
         {
-          "name": "op_id",
-          "type": "text"
+          "type": "number",
+          "name": "scheme_id"
         },
         {
-          "name": "operator_name",
-          "type": "text"
+          "type": "text",
+          "name": "comm_per"
         },
         {
-          "name": "service_name",
-          "type": "text"
+          "type": "text",
+          "name": "comm_val"
         },
         {
-          "name": "scheme_id",
-          "type": "number"
+          "type": "text",
+          "name": "service_charge_per"
         },
         {
-          "name": "comm_per",
-          "type": "text"
+          "type": "text",
+          "name": "service_charge_val"
         },
         {
-          "name": "comm_val",
-          "type": "text"
+          "type": "text",
+          "name": "our_code"
+        }
+      ],
+      "outputType": "array"
+    },
+    "repeatCommisionList": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "op_id"
         },
         {
-          "name": "service_charge_per",
-          "type": "text"
+          "type": "text",
+          "name": "operator_name"
         },
         {
-          "name": "service_charge_val",
-          "type": "text"
+          "type": "text",
+          "name": "service_name"
+        },
+        {
+          "type": "number",
+          "name": "scheme_id"
+        },
+        {
+          "type": "text",
+          "name": "comm_per"
+        },
+        {
+          "type": "text",
+          "name": "comm_val"
+        },
+        {
+          "type": "text",
+          "name": "service_charge_per"
+        },
+        {
+          "type": "text",
+          "name": "service_charge_val"
+        },
+        {
+          "type": "text",
+          "name": "our_code"
         }
       ],
       "outputType": "array"
@@ -1209,5 +1242,82 @@ dmx.config({
       "outputType": "array"
     }
   },
-  "login": {}
+  "login": {},
+  "apitoken": {
+    "tableRepeat1": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "ip_address"
+        },
+        {
+          "type": "text",
+          "name": "call_back_url"
+        },
+        {
+          "type": "text",
+          "name": "api_token"
+        },
+        {
+          "type": "number",
+          "name": "status"
+        }
+      ],
+      "outputType": "array"
+    },
+    "ddFetchToken": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "ip_address"
+        },
+        {
+          "type": "text",
+          "name": "call_back_url"
+        },
+        {
+          "type": "text",
+          "name": "api_token"
+        },
+        {
+          "type": "number",
+          "name": "status"
+        }
+      ],
+      "outputType": "array"
+    },
+    "dvFetchToken": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "ip_address"
+        },
+        {
+          "type": "text",
+          "name": "call_back_url"
+        },
+        {
+          "type": "text",
+          "name": "api_token"
+        },
+        {
+          "type": "number",
+          "name": "status"
+        }
+      ],
+      "outputType": "array"
+    }
+  }
 });

@@ -1,0 +1,303 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/api-token.ejs",
+      "linkedForm": "formDelToken"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "TokenId",
+        "name": "TokenId"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "GetRecords",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_api_token",
+                "column": "user_id"
+              },
+              {
+                "table": "t_api_token",
+                "column": "ip_address"
+              },
+              {
+                "table": "t_api_token",
+                "column": "call_back_url"
+              },
+              {
+                "table": "t_api_token",
+                "column": "api_token"
+              },
+              {
+                "table": "t_api_token",
+                "column": "status"
+              },
+              {
+                "table": "t_api_token",
+                "column": "remarks"
+              }
+            ],
+            "table": {
+              "name": "t_api_token"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "t_api_token.id",
+                  "field": "t_api_token.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.TokenId}}",
+                  "data": {
+                    "table": "t_api_token",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT user_id, ip_address, call_back_url, api_token, status, remarks\nFROM t_api_token\nWHERE id = :P1 /* {{$_POST.TokenId}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.TokenId}}"
+              }
+            ]
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "number",
+            "name": "user_id"
+          },
+          {
+            "type": "text",
+            "name": "ip_address"
+          },
+          {
+            "type": "text",
+            "name": "call_back_url"
+          },
+          {
+            "type": "text",
+            "name": "api_token"
+          },
+          {
+            "type": "number",
+            "name": "status"
+          },
+          {
+            "type": "text",
+            "name": "remarks"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "RecordDump",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "dump_api_token",
+                "column": "user_id",
+                "type": "number",
+                "value": "{{GetRecords.user_id}}"
+              },
+              {
+                "table": "dump_api_token",
+                "column": "ip_address",
+                "type": "text",
+                "value": "{{GetRecords.ip_address}}"
+              },
+              {
+                "table": "dump_api_token",
+                "column": "call_back_url",
+                "type": "text",
+                "value": "{{GetRecords.call_back_url}}"
+              },
+              {
+                "table": "dump_api_token",
+                "column": "api_token",
+                "type": "text",
+                "value": "{{GetRecords.api_token}}"
+              },
+              {
+                "table": "dump_api_token",
+                "column": "status",
+                "type": "number",
+                "value": "{{GetRecords.status}}"
+              },
+              {
+                "table": "dump_api_token",
+                "column": "remarks",
+                "type": "text",
+                "value": "{{GetRecords.remarks}}"
+              },
+              {
+                "table": "dump_api_token",
+                "column": "created_by",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "dump_api_token",
+                "column": "created_on",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              }
+            ],
+            "table": "dump_api_token",
+            "returning": "id",
+            "query": "INSERT INTO dump_api_token\n(user_id, ip_address, call_back_url, api_token, status, remarks, created_by, created_on) VALUES (:P1 /* {{GetRecords.user_id}} */, :P2 /* {{GetRecords.ip_address}} */, :P3 /* {{GetRecords.call_back_url}} */, :P4 /* {{GetRecords.api_token}} */, :P5 /* {{GetRecords.status}} */, :P6 /* {{GetRecords.remarks}} */, :P7 /* {{identity}} */, :P8 /* {{NOW}} */)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{GetRecords.user_id}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{GetRecords.ip_address}}"
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{GetRecords.call_back_url}}"
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{GetRecords.api_token}}"
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{GetRecords.status}}"
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{GetRecords.remarks}}"
+              },
+              {
+                "name": ":P7",
+                "type": "expression",
+                "value": "{{identity}}"
+              },
+              {
+                "name": ":P8",
+                "type": "expression",
+                "value": "{{NOW}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "output": false
+      },
+      {
+        "name": "delAPIToken",
+        "module": "dbupdater",
+        "action": "delete",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "delete",
+            "table": "t_api_token",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "id",
+                  "field": "id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.TokenId}}",
+                  "data": {
+                    "column": "id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "DELETE\nFROM t_api_token\nWHERE id = :P1 /* {{$_POST.TokenId}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.TokenId}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "output": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/api-token.ejs",
+      "linkedForm": "formAddCredit"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "ip_address",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "ip_address"
+      },
+      {
+        "type": "text",
+        "fieldName": "call_back_url",
+        "options": {
+          "rules": {}
+        },
+        "name": "call_back_url"
+      },
+      {
+        "type": "text",
+        "name": "salt"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "api_token",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{NOW.md5(123456).substr(1, 15)}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "AddToken",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "t_api_token",
+                "column": "user_id",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "t_api_token",
+                "column": "ip_address",
+                "type": "text",
+                "value": "{{$_POST.ip_address}}"
+              },
+              {
+                "table": "t_api_token",
+                "column": "call_back_url",
+                "type": "text",
+                "value": "{{$_POST.call_back_url}}"
+              },
+              {
+                "table": "t_api_token",
+                "column": "api_token",
+                "type": "text",
+                "value": "{{api_token}}"
+              },
+              {
+                "table": "t_api_token",
+                "column": "status",
+                "type": "number",
+                "value": "1"
+              },
+              {
+                "table": "t_api_token",
+                "column": "created_by",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "t_api_token",
+                "column": "created_on",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "t_api_token",
+                "column": "salt",
+                "type": "text",
+                "value": "{{NOW}}"
+              }
+            ],
+            "table": "t_api_token",
+            "returning": "id",
+            "query": "INSERT INTO t_api_token\n(user_id, ip_address, call_back_url, api_token, status, created_by, created_on, salt) VALUES (:P1 /* {{identity}} */, :P2 /* {{$_POST.ip_address}} */, :P3 /* {{$_POST.call_back_url}} */, :P4 /* {{api_token}} */, '1', :P5 /* {{identity}} */, :P6 /* {{NOW}} */, :P7 /* {{NOW}} */)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{identity}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.ip_address}}"
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.call_back_url}}"
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{api_token}}"
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{identity}}"
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{NOW}}"
+              },
+              {
+                "name": ":P7",
+                "type": "expression",
+                "value": "{{NOW}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "output": true
+      }
+    ]
+  }
+}

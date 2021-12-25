@@ -1,11 +1,11 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="commision" appConnect="local" components="{dmxDataTraversal:{},dmxStateManagement:{},dmxBootstrap5TableGenerator:{},dmxBootstrap5PagingGenerator:{},dmxBootstrap5Navigation:{}}" -->
 <meta name="ac:route" content="/commision">
 <dmx-query-manager id="qm"></dmx-query-manager>
-<dmx-serverconnect id="scCommision" url="api/Commision/Commision" dmx-param:offset="qm.data.offset" dmx-param:sort="qm.data.sort" dmx-param:dir="qm.data.dir"></dmx-serverconnect>
+<dmx-serverconnect id="scCommision" url="api/Commision/Commision" dmx-param:offset="qm.data.offset" dmx-param:sort="qm.data.sort" dmx-param:dir="qm.data.dir" dmx-param:limit="50"></dmx-serverconnect>
 <dmx-data-view id="dvCommision" dmx-bind:data="scCommision.data.Commision.data" filter="(operator_name.lowercase().contains(formSearchUser.Search.value.lowercase()) || service_name.contains(formSearchUser.Search.value) || comm_per.contains(formSearchUser.Search.value) || comm_val.contains(formSearchUser.Search.value) || service_charge_per.contains(formSearchUser.Search.value) || service_charge_val.contains(formSearchUser.Search.value))" dmx-bind:page="qm.data.offset" pageSize="100"></dmx-data-view>
 <dmx-data-detail id="ddCommision" key="op_id" dmx-bind:data="dvCommision.data"></dmx-data-detail>
-<div class="row align-items-center justify-content-between px-4 mb-3 sd-secondary-header mx-0">
-    <div class="col-12 col-md-auto me-auto ps-4">
+<div class="row align-items-center justify-content-between px-2 sd-secondary-header mx-0">
+    <div class="col-12 col-md-auto me-auto">
         <h1 class="ms-md-1 mt-md-3 text-dark fs-2 sd-fw-800 d-flex align-items-center">
             Commision & Charges
             <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scStatement.state.executing"></span>
@@ -20,36 +20,62 @@
         </form>
     </div>
 </div>
-<ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">Commision</li>
+<ol class="breadcrumb mb-4 mx-4">
+    <li class="breadcrumb-item active">Slab</li>
 </ol>
-<div class="container px-4" id="Recharges">
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover table-sm">
-            <thead>
-                <tr>
-                    <th>Sl. No.</th>
-                    <th class="sorting" dmx-on:click="qm.set('offset','service_name');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='service_name' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='service_name' && qm.data.sort == 'desc'">Service</th>
-                    <th class="sorting" dmx-on:click="qm.set('offset','operator_name');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='operator_name' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='operator_name' && qm.data.sort == 'desc'">Operator</th>
-                    <th class="sorting" dmx-on:click="qm.set('offset','scheme_id');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='scheme_id' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='scheme_id' && qm.data.sort == 'desc'">Scheme</th>
-                    <th class="sorting" dmx-on:click="qm.set('offset','comm_per');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='comm_per' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='comm_per' && qm.data.sort == 'desc'">Comm %</th>
-                    <th class="sorting" dmx-on:click="qm.set('offset','comm_val');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='comm_val' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='comm_val' && qm.data.sort == 'desc'">Comm Amt.</th>
-                    <th class="sorting" dmx-on:click="qm.set('offset','service_charge_per');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='service_charge_per' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='service_charge_per' && qm.data.sort == 'desc'">Charge %</th>
-                    <th class="sorting" dmx-on:click="qm.set('offset','service_charge_val');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='service_charge_val' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='service_charge_val' && qm.data.sort == 'desc'">Charge Amt.</th>
-                </tr>
-            </thead>
-            <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="dvCommision.data" id="tableRepeat1" dmx-state="qm" dmx-sort="offset" dmx-order="sort">
-                <tr>
-                    <td>{{$index+1}}</td>
-                    <td dmx-text="service_name"></td>
-                    <td dmx-text="operator_name"></td>
-                    <td dmx-text="scheme_id"></td>
-                    <td dmx-text="comm_per"></td>
-                    <td dmx-text="comm_val"></td>
-                    <td dmx-text="service_charge_per"></td>
-                    <td dmx-text="service_charge_val"></td>
-                </tr>
-            </tbody>
-        </table>
+<div class="container-fluid px-4" id="Recharges">
+    <div class="card mt-3">
+        <div class="card-header bg-primary text-light">
+            <b>Slab Details</b>
+        </div>
+        <div class="card-body px-0">
+            <div class="table-responsive">
+                <table class="table bg-white table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sl. No.</th>
+                            <th>Operator</th>
+                            <th>Op. Code</th>
+                            <th>Comm. %</th>
+                            <th>Comm. Val.</th>
+                            <th>Charge %</th>
+                            <th>Charge Val.</th>
+                            <th>Min To Max</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" dmx-generator="bs5paging" dmx-bind:repeat="content.scCommision.data.Commision.data" id="repeatCommisionList">
+                        <tr>
+                            <td>{{$index+1}}</td>
+                            <td dmx-text="operator_name+' - '+service_name"></td>
+                            <td dmx-text="our_code"></td>
+                            <td dmx-text="comm_per"></td>
+                            <td dmx-text="comm_val"></td>
+                            <td dmx-text="service_charge_per"></td>
+                            <td dmx-text="service_charge_val"></td>
+                            <td dmx-text="min_amount+' - '+max_amount"></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <ul class="pagination" dmx-populate="content.scCommision.data.Commision" dmx-state="qm" dmx-offset="offset" dmx-generator="bs5paging">
+                <li class="page-item" dmx-class:disabled="content.scCommision.data.Commision.page.current == 1" aria-label="First">
+                    <a href="javascript:void(0)" class="page-link" dmx-on:click="qm.set('offset',content.scCommision.data.Commision.page.offset.first)"><span aria-hidden="true">&lsaquo;&lsaquo;</span></a>
+                </li>
+                <li class="page-item" dmx-class:disabled="content.scCommision.data.Commision.page.current == 1" aria-label="Previous">
+                    <a href="javascript:void(0)" class="page-link" dmx-on:click="qm.set('offset',content.scCommision.data.Commision.page.offset.prev)"><span aria-hidden="true">&lsaquo;</span></a>
+                </li>
+                <li class="page-item" dmx-class:active="title == content.scCommision.data.Commision.page.current" dmx-class:disabled="!active" dmx-repeat="content.scCommision.data.Commision.getServerConnectPagination(2,1,'...')">
+                    <a href="javascript:void(0)" class="page-link" dmx-on:click="qm.set('offset',(page-1)*content.scCommision.data.Commision.limit)">{{title}}</a>
+                </li>
+                <li class="page-item" dmx-class:disabled="content.scCommision.data.Commision.page.current ==  content.scCommision.data.Commision.page.total" aria-label="Next">
+                    <a href="javascript:void(0)" class="page-link" dmx-on:click="qm.set('offset',content.scCommision.data.Commision.page.offset.next)"><span aria-hidden="true">&rsaquo;</span></a>
+                </li>
+                <li class="page-item" dmx-class:disabled="content.scCommision.data.Commision.page.current ==  content.scCommision.data.Commision.page.total" aria-label="Last">
+                    <a href="javascript:void(0)" class="page-link" dmx-on:click="qm.set('offset',content.scCommision.data.Commision.page.offset.last)"><span aria-hidden="true">&rsaquo;&rsaquo;</span></a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

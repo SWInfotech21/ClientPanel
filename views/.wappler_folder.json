@@ -98,5 +98,13 @@
   "login.ejs": {
     "layoutPage": "",
     "description": ""
+  },
+  "api-token.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "certificate.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

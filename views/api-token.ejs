@@ -1,0 +1,110 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="apitoken" appConnect="local" components="{dmxDataTraversal:{}}" -->
+<meta name="ac:route" content="/api-token">
+<dmx-serverconnect id="scFetchToken" url="api/UserAPI/GetAPIToken"></dmx-serverconnect>
+<dmx-data-view id="dvFetchToken" dmx-bind:data="content.scFetchToken.data.FetchToken.data"></dmx-data-view>
+<dmx-data-detail id="ddFetchToken" dmx-bind:data="content.dvFetchToken.data" key="id"></dmx-data-detail>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="mt-4">API Token<span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scUserSchemPrio.state.executing"></span>
+            </h1>
+
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Generate API Token</li>
+            </ol>
+        </div>
+        <div class="card mx-3">
+            <div class="card-body px-0">
+                <form is="dmx-serverconnect-form" id="formAddCredit" method="post" action="api/UserAPI/AddEditToken" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="formAddCredit.data ? scNotif.success('New Token Successfully Added') : scNotif.success('Credit Updated');formAddCredit.reset();scFetchToken.load()" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(content.formAddCredit.lastError.response)">
+                    <div class="row">
+                        <div class="col-12 col-lg-4 p-2">
+                            <label>IP Address</label>
+                            <input id="ip_address" name="ip_address" class="form-control" placeholder="E.g: 00.00.00.00" required="" type="text">
+                        </div>
+                        <div class="col-12 col-lg-4 p-2">
+                            <label>Callback URL</label>
+                            <input type="text" id="callback_url" name="call_back_url" class="form-control" placeholder="Add domain/ subdomain (optional)">
+                        </div>
+                        <div class="col-4 p-0">
+                            <button id="btn1" class="btn btn-info mt-md-4" type="submit" dmx-bind:disabled="state.executing" dmx-on:click="scAdminTrans.load()">Submit<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-3">
+        <div class="card-header bg-primary text-light">
+            <b>Issued API Token</b>
+        </div>
+        <div class="card-body px-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th>Sl. No.</th>
+                            <th>token</th>
+                            <th>IP. Address</th>
+                            <th>Callback URL</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" dmx-generator="bs5table" id="tableRepeat1" dmx-bind:repeat="content.dvFetchToken.data">
+                        <tr>
+                            <td>{{$index+1}}</td>
+                            <td dmx-text="api_token"></td>
+                            <td dmx-text="ip_address"></td>
+                            <td dmx-text="call_back_url"></td>
+                            <td class="fw-bold" dmx-text="status == 1? 'Active' : 'Inactive'" dmx-class:text-success="status == 1" dmx-class:text-danger="status == 0"></td>
+                            <td>&emsp;
+                                <a class="sw-col-dr" href="#" dmx-on:click="ddFetchToken.select(id)" data-bs-toggle="modal" data-bs-target="#modalDelToken"><i class="far fa-trash-alt" title="Delete Token"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Delete token -->
+<div class="modal fade" id="modalDelToken" is="dmx-bs5-modal" tabindex="-1" nokeyboard="true" nocloseonclick="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete API Token</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3>Do you want to delete this record?</h3>
+                <form is="dmx-serverconnect-form" id="formDelToken" method="post" action="api/UserAPI/DeleteToken" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="modalDelToken.hide();scFetchToken.load({});scNotif.success('API Token Deleted')" dmx-on:error="scNotif.warning('An error occurred'); modalDelToken.hide();formDelToken.reset()">
+                    <input type="hidden" name="TokenId" dmx-bind:value="content.ddFetchToken.data.id">
+                    <table class="table table-striped table-bordered table-sm">
+                        <tr>
+                            <td>IP Address</td>
+                            <td>Token</td>
+                            <td>Callback URL</td>
+                            <td>Status</td>
+                        </tr>
+                        <tr>
+                            <td class="fs-5">{{ddFetchToken.data.ip_address}}</td>
+                            <td>{{ddFetchToken.data.api_token}}</td>
+                            <td>{{ddFetchToken.data.call_back_url}}</td>
+                            <td>{{ddFetchToken.data.status == 1 ? 'Active' : 'Inactive'}}</td>
+                        </tr>
+                    </table>
+                    <div class="mb-3 row">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary" dmx-bind:disabled="state.executing" data-bs-dismiss="modal">Delete<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

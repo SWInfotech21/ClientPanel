@@ -89,7 +89,7 @@
     <dmx-notifications id="scNotif" newest-on-top="true" timeout="10000" position="bottom"></dmx-notifications>
     <div is="dmx-view" id="content">
 
-        <nav class="sb-topnav navbar navbar-expand navbar-dark" dmx-class:bg-primary="scLoginUser.data.LoginUserInfo.user_type == 3" dmx-class:bg-dark="scLoginUser.data.LoginUserInfo.user_type == 2" dmx-class:bg-danger="scLoginUser.data.LoginUserInfo.user_type == 1">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark" dmx-class:bg-success="scLoginUser.data.LoginUserInfo.user_type == 5" dmx-class:bg-primary="scLoginUser.data.LoginUserInfo.user_type == 3" dmx-class:bg-warning="scLoginUser.data.LoginUserInfo.user_type == 2" dmx-class:bg-danger="scLoginUser.data.LoginUserInfo.user_type == 1">
             <a class="navbar-brand" href="dashboard">SW Infotech</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
 
@@ -136,6 +136,9 @@
                             <a class="nav-link" href="dashboard">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
+                            </a><a class="nav-link" href="/api-token" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 5">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tram"></i></div>
+                                API Token
                             </a><a class="nav-link" href="/recharge" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 3">
                                 <div class="sb-nav-link-icon"><i class="fas fa-mobile-alt"></i></div>
                                 Recharge
@@ -167,7 +170,7 @@
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages"><a class="nav-link" href="#">Payment Request</a><a class="nav-link" href="#">Certificate</a><a class="nav-link" href="./commision">Commision</a>
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages"><a class="nav-link" href="#">Payment Request</a><a class="nav-link" href="certificate">Certificate</a><a class="nav-link" href="commision">Commision</a>
                                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
                                         Error
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>

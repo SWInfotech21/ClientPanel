@@ -123,6 +123,16 @@
     {
       "path": "/login",
       "page": "login"
+    },
+    {
+      "path": "/api-token",
+      "page": "api-token",
+      "layout": "main"
+    },
+    {
+      "path": "/certificate",
+      "page": "certificate",
+      "layout": "main"
     }
   ],
   "layouts": {
