@@ -224,7 +224,8 @@
                     {
                       "table": "tt_recharge_trans",
                       "column": "id",
-                      "direction": "DESC"
+                      "direction": "DESC",
+                      "recid": 1
                     }
                   ]
                 }

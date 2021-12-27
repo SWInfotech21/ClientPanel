@@ -101,12 +101,6 @@
       "exec": "/api/PageAccess/UserAccess"
     },
     {
-      "path": "/payment",
-      "page": "payment",
-      "layout": "main",
-      "exec": "/api/PageAccess/UserAccess"
-    },
-    {
       "path": "/signup",
       "page": "signup"
     },
@@ -127,7 +121,8 @@
     {
       "path": "/api-token",
       "page": "api-token",
-      "layout": "main"
+      "layout": "main",
+      "exec": "/api/PageAccess/APIUserAccess"
     },
     {
       "path": "/certificate",

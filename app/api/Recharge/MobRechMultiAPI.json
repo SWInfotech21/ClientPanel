@@ -2336,11 +2336,17 @@
                                               "column": "netamt",
                                               "type": "text",
                                               "value": "{{RTNetAmt}}"
+                                            },
+                                            {
+                                              "table": "tt_balance",
+                                              "column": "status",
+                                              "type": "text",
+                                              "value": "{{'FAILED'}}"
                                             }
                                           ],
                                           "table": "tt_balance",
                                           "returning": "id",
-                                          "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt) VALUES (:P1 /* {{identity}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{RTClosingBalance}} */, :P5 /* {{'Recharge'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_POST.mobile_number+' | Amount:\\n '+$_POST.recharge_amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */)",
+                                          "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{RTClosingBalance}} */, :P5 /* {{'Recharge'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_POST.mobile_number+' | Amount:\\n '+$_POST.recharge_amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'FAILED'}} */)",
                                           "params": [
                                             {
                                               "name": ":P1",
@@ -2406,6 +2412,11 @@
                                               "name": ":P13",
                                               "type": "expression",
                                               "value": "{{RTNetAmt}}"
+                                            },
+                                            {
+                                              "name": ":P14",
+                                              "type": "expression",
+                                              "value": "{{'FAILED'}}"
                                             }
                                           ]
                                         }
@@ -2838,6 +2849,65 @@
                                                       "type": "expression",
                                                       "name": ":P11",
                                                       "value": "{{RechTrans.identity}}"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "meta": [
+                                                {
+                                                  "name": "affected",
+                                                  "type": "number"
+                                                }
+                                              ],
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "DrBalanceRTUp",
+                                              "module": "dbupdater",
+                                              "action": "update",
+                                              "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "type": "update",
+                                                  "values": [
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "status",
+                                                      "type": "text",
+                                                      "value": "{{apistatus}}"
+                                                    }
+                                                  ],
+                                                  "table": "tt_balance",
+                                                  "wheres": {
+                                                    "condition": "AND",
+                                                    "rules": [
+                                                      {
+                                                        "id": "id",
+                                                        "field": "id",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": "{{DrBalanceRT.identity}}",
+                                                        "data": {
+                                                          "column": "id"
+                                                        },
+                                                        "operation": "="
+                                                      }
+                                                    ],
+                                                    "conditional": null,
+                                                    "valid": true
+                                                  },
+                                                  "query": "UPDATE tt_balance\nSET status = :P1 /* {{apistatus}} */\nWHERE id = :P2 /* {{DrBalanceRT.identity}} */",
+                                                  "params": [
+                                                    {
+                                                      "name": ":P1",
+                                                      "type": "expression",
+                                                      "value": "{{apistatus}}"
+                                                    },
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P2",
+                                                      "value": "{{DrBalanceRT.identity}}"
                                                     }
                                                   ]
                                                 }
@@ -3856,7 +3926,7 @@
                                                       "table": "tt_balance",
                                                       "column": "transaction_type",
                                                       "type": "text",
-                                                      "value": "{{'Recharge'}}"
+                                                      "value": "{{'Recharge Refund'}}"
                                                     },
                                                     {
                                                       "table": "tt_balance",
@@ -3905,11 +3975,17 @@
                                                       "column": "netamt",
                                                       "type": "text",
                                                       "value": "{{RTNetAmt}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "status",
+                                                      "type": "text",
+                                                      "value": "{{'REFUND'}}"
                                                     }
                                                   ],
                                                   "table": "tt_balance",
                                                   "returning": "id",
-                                                  "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt) VALUES (:P1 /* {{identity}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{UserWalletBalCheck.balance_amt}} */, :P5 /* {{'Recharge'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_POST.mobile_number+' | Amount:\\n '+$_POST.recharge_amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */)",
+                                                  "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{UserWalletBalCheck.balance_amt}} */, :P5 /* {{'Recharge Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_POST.mobile_number+' | Amount:\\n '+$_POST.recharge_amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'REFUND'}} */)",
                                                   "params": [
                                                     {
                                                       "name": ":P1",
@@ -3934,7 +4010,7 @@
                                                     {
                                                       "name": ":P5",
                                                       "type": "expression",
-                                                      "value": "{{'Recharge'}}"
+                                                      "value": "{{'Recharge Refund'}}"
                                                     },
                                                     {
                                                       "name": ":P6",
@@ -3975,6 +4051,11 @@
                                                       "name": ":P13",
                                                       "type": "expression",
                                                       "value": "{{RTNetAmt}}"
+                                                    },
+                                                    {
+                                                      "name": ":P14",
+                                                      "type": "expression",
+                                                      "value": "{{'REFUND'}}"
                                                     }
                                                   ]
                                                 }

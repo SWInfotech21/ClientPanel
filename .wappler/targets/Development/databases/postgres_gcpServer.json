@@ -2148,6 +2148,13 @@
               "primary": false,
               "nullable": true
             }
+          },
+          "status": {
+            "db": {
+              "type": "string",
+              "primary": false,
+              "nullable": true
+            }
           }
         }
       },
