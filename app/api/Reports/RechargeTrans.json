@@ -226,6 +226,11 @@
                           {
                             "table": "tt_balance",
                             "column": "status"
+                          },
+                          {
+                            "table": "tt_rt",
+                            "column": "extra2",
+                            "alias": "complain_status"
                           }
                         ],
                         "table": {
@@ -348,7 +353,7 @@
                             }
                           }
                         ],
-                        "query": "SELECT tt_balance.id AS table_id, tt_balance.pay_ref_id, tt_balance.user_id AS ac_holder_user_id, tt_balance.old_balance, tt_balance.amount, tt_balance.new_balance, tt_balance.transaction_type, tt_balance.tr_date, tt_balance.crdr_type, tt_balance.remarks, tt_balance.created_by AS transaction_by, tt_rt.user_number AS recharge_number, tt_rt.comm_amt, tt_rt.charge_amt, tt_rt.tr_mode, tt_rt.tr_type, tt_rt.tr_id, tt_rt.operator_ref, tt_rt.api_ref, tt_rt.dtcommamt, tt_rt.dtchargeamt, tt_rt.mdtcommamt, tt_rt.mdtchargeamt, m_op.operator_name, m_service.service_name, m_user.created_by AS parent_id, parent_id.user_fname AS parent_fname, parent_id.user_mobile AS parent_mobile, m_user.user_fname, m_user.user_mobile, tt_balance.netamt, tt_rt.api_response_id, tt_rt.api_logs AS api_name, tt_balance.status\nFROM tt_balance\nINNER JOIN tt_recharge_trans AS tt_rt ON (tt_rt.id = tt_balance.pay_ref_id) INNER JOIN m_operator AS m_op ON (m_op.id = tt_rt.op_id AND m_op.service_id = tt_rt.service_id) INNER JOIN m_service AS m_service ON (m_service.id = tt_rt.service_id) INNER JOIN m_users AS m_user ON (m_user.id = tt_balance.user_id) INNER JOIN m_users AS parent_id ON (parent_id.id = m_user.created_by)\nWHERE tt_rt.tr_date >= :P1 /* {{$_GET.fromdate}} */ AND tt_rt.tr_date <= :P2 /* {{$_GET.todate}} */ AND tt_balance.user_id = :P3 /* {{identity}} */\nORDER BY tt_balance.id DESC",
+                        "query": "SELECT tt_balance.id AS table_id, tt_balance.pay_ref_id, tt_balance.user_id AS ac_holder_user_id, tt_balance.old_balance, tt_balance.amount, tt_balance.new_balance, tt_balance.transaction_type, tt_balance.tr_date, tt_balance.crdr_type, tt_balance.remarks, tt_balance.created_by AS transaction_by, tt_rt.user_number AS recharge_number, tt_rt.comm_amt, tt_rt.charge_amt, tt_rt.tr_mode, tt_rt.tr_type, tt_rt.tr_id, tt_rt.operator_ref, tt_rt.api_ref, tt_rt.dtcommamt, tt_rt.dtchargeamt, tt_rt.mdtcommamt, tt_rt.mdtchargeamt, m_op.operator_name, m_service.service_name, m_user.created_by AS parent_id, parent_id.user_fname AS parent_fname, parent_id.user_mobile AS parent_mobile, m_user.user_fname, m_user.user_mobile, tt_balance.netamt, tt_rt.api_response_id, tt_rt.api_logs AS api_name, tt_balance.status, tt_rt.extra2 AS complain_status\nFROM tt_balance\nINNER JOIN tt_recharge_trans AS tt_rt ON (tt_rt.id = tt_balance.pay_ref_id) INNER JOIN m_operator AS m_op ON (m_op.id = tt_rt.op_id AND m_op.service_id = tt_rt.service_id) INNER JOIN m_service AS m_service ON (m_service.id = tt_rt.service_id) INNER JOIN m_users AS m_user ON (m_user.id = tt_balance.user_id) INNER JOIN m_users AS parent_id ON (parent_id.id = m_user.created_by)\nWHERE tt_rt.tr_date >= :P1 /* {{$_GET.fromdate}} */ AND tt_rt.tr_date <= :P2 /* {{$_GET.todate}} */ AND tt_balance.user_id = :P3 /* {{identity}} */\nORDER BY tt_balance.id DESC",
                         "params": [
                           {
                             "operator": "greater_or_equal",
@@ -614,6 +619,10 @@
                           {
                             "type": "text",
                             "name": "status"
+                          },
+                          {
+                            "type": "text",
+                            "name": "complain_status"
                           }
                         ]
                       }
@@ -774,6 +783,11 @@
                           {
                             "table": "tt_balance",
                             "column": "status"
+                          },
+                          {
+                            "table": "tt_rt",
+                            "column": "extra2",
+                            "alias": "complain_status"
                           }
                         ],
                         "table": {
@@ -896,7 +910,7 @@
                             }
                           }
                         ],
-                        "query": "SELECT tt_balance.id AS table_id, tt_balance.pay_ref_id, tt_balance.user_id AS ac_holder_user_id, tt_balance.old_balance, tt_balance.amount, tt_balance.new_balance, tt_balance.transaction_type, tt_balance.tr_date, tt_balance.crdr_type, tt_balance.remarks, tt_balance.created_by AS transaction_by, tt_rt.user_number AS recharge_number, tt_rt.comm_amt, tt_rt.charge_amt, tt_rt.tr_mode, tt_rt.tr_type, tt_rt.tr_id, tt_rt.operator_ref, tt_rt.api_ref, tt_rt.dtcommamt, tt_rt.dtchargeamt, tt_rt.mdtcommamt, tt_rt.mdtchargeamt, m_op.operator_name, m_service.service_name, m_user.created_by AS parent_id, parent_id.user_fname AS parent_fname, parent_id.user_mobile AS parent_mobile, m_user.user_fname, m_user.user_mobile, tt_balance.netamt, tt_rt.api_response_id, tt_rt.api_logs AS api_name, tt_balance.status\nFROM tt_balance\nINNER JOIN tt_recharge_trans AS tt_rt ON (tt_rt.id = tt_balance.pay_ref_id) INNER JOIN m_operator AS m_op ON (m_op.id = tt_rt.op_id AND m_op.service_id = tt_rt.service_id) INNER JOIN m_service AS m_service ON (m_service.id = tt_rt.service_id) INNER JOIN m_users AS m_user ON (m_user.id = tt_balance.user_id) INNER JOIN m_users AS parent_id ON (parent_id.id = m_user.created_by)\nWHERE tt_rt.tr_date >= :P1 /* {{$_GET.fromdate}} */ AND tt_rt.tr_date <= :P2 /* {{$_GET.todate}} */ AND tt_rt.status = :P3 /* {{$_GET.selectstatus}} */ AND tt_balance.user_id = :P4 /* {{identity}} */\nORDER BY tt_balance.id DESC",
+                        "query": "SELECT tt_balance.id AS table_id, tt_balance.pay_ref_id, tt_balance.user_id AS ac_holder_user_id, tt_balance.old_balance, tt_balance.amount, tt_balance.new_balance, tt_balance.transaction_type, tt_balance.tr_date, tt_balance.crdr_type, tt_balance.remarks, tt_balance.created_by AS transaction_by, tt_rt.user_number AS recharge_number, tt_rt.comm_amt, tt_rt.charge_amt, tt_rt.tr_mode, tt_rt.tr_type, tt_rt.tr_id, tt_rt.operator_ref, tt_rt.api_ref, tt_rt.dtcommamt, tt_rt.dtchargeamt, tt_rt.mdtcommamt, tt_rt.mdtchargeamt, m_op.operator_name, m_service.service_name, m_user.created_by AS parent_id, parent_id.user_fname AS parent_fname, parent_id.user_mobile AS parent_mobile, m_user.user_fname, m_user.user_mobile, tt_balance.netamt, tt_rt.api_response_id, tt_rt.api_logs AS api_name, tt_balance.status, tt_rt.extra2 AS complain_status\nFROM tt_balance\nINNER JOIN tt_recharge_trans AS tt_rt ON (tt_rt.id = tt_balance.pay_ref_id) INNER JOIN m_operator AS m_op ON (m_op.id = tt_rt.op_id AND m_op.service_id = tt_rt.service_id) INNER JOIN m_service AS m_service ON (m_service.id = tt_rt.service_id) INNER JOIN m_users AS m_user ON (m_user.id = tt_balance.user_id) INNER JOIN m_users AS parent_id ON (parent_id.id = m_user.created_by)\nWHERE tt_rt.tr_date >= :P1 /* {{$_GET.fromdate}} */ AND tt_rt.tr_date <= :P2 /* {{$_GET.todate}} */ AND tt_rt.status = :P3 /* {{$_GET.selectstatus}} */ AND tt_balance.user_id = :P4 /* {{identity}} */\nORDER BY tt_balance.id DESC",
                         "params": [
                           {
                             "operator": "greater_or_equal",
@@ -1181,6 +1195,10 @@
                           {
                             "type": "text",
                             "name": "status"
+                          },
+                          {
+                            "type": "text",
+                            "name": "complain_status"
                           }
                         ]
                       }
@@ -1345,6 +1363,11 @@
                     {
                       "table": "tt_balance",
                       "column": "status"
+                    },
+                    {
+                      "table": "tt_rt",
+                      "column": "extra2",
+                      "alias": "complain_status"
                     }
                   ],
                   "table": {
@@ -1467,7 +1490,7 @@
                       }
                     }
                   ],
-                  "query": "SELECT tt_balance.id AS table_id, tt_balance.pay_ref_id, tt_balance.user_id AS ac_holder_user_id, tt_balance.old_balance, tt_balance.amount, tt_balance.new_balance, tt_balance.transaction_type, tt_balance.tr_date, tt_balance.crdr_type, tt_balance.remarks, tt_balance.created_by AS transaction_by, tt_rt.user_number AS recharge_number, tt_rt.comm_amt, tt_rt.charge_amt, tt_rt.tr_mode, tt_rt.tr_type, tt_rt.tr_id, tt_rt.operator_ref, tt_rt.api_ref, tt_rt.dtcommamt, tt_rt.dtchargeamt, tt_rt.mdtcommamt, tt_rt.mdtchargeamt, m_op.operator_name, m_service.service_name, m_user.created_by AS parent_id, parent_id.user_fname AS parent_fname, parent_id.user_mobile AS parent_mobile, m_user.user_fname, m_user.user_mobile, tt_balance.netamt, tt_rt.api_response_id, tt_rt.api_logs AS api_name, tt_balance.status\nFROM tt_balance\nINNER JOIN tt_recharge_trans AS tt_rt ON (tt_rt.id = tt_balance.pay_ref_id) INNER JOIN m_operator AS m_op ON (m_op.id = tt_rt.op_id AND m_op.service_id = tt_rt.service_id) INNER JOIN m_service AS m_service ON (m_service.id = tt_rt.service_id) INNER JOIN m_users AS m_user ON (m_user.id = tt_balance.user_id) INNER JOIN m_users AS parent_id ON (parent_id.id = m_user.created_by)\nWHERE tt_balance.user_id = :P1 /* {{identity}} */\nORDER BY tt_balance.id DESC",
+                  "query": "SELECT tt_balance.id AS table_id, tt_balance.pay_ref_id, tt_balance.user_id AS ac_holder_user_id, tt_balance.old_balance, tt_balance.amount, tt_balance.new_balance, tt_balance.transaction_type, tt_balance.tr_date, tt_balance.crdr_type, tt_balance.remarks, tt_balance.created_by AS transaction_by, tt_rt.user_number AS recharge_number, tt_rt.comm_amt, tt_rt.charge_amt, tt_rt.tr_mode, tt_rt.tr_type, tt_rt.tr_id, tt_rt.operator_ref, tt_rt.api_ref, tt_rt.dtcommamt, tt_rt.dtchargeamt, tt_rt.mdtcommamt, tt_rt.mdtchargeamt, m_op.operator_name, m_service.service_name, m_user.created_by AS parent_id, parent_id.user_fname AS parent_fname, parent_id.user_mobile AS parent_mobile, m_user.user_fname, m_user.user_mobile, tt_balance.netamt, tt_rt.api_response_id, tt_rt.api_logs AS api_name, tt_balance.status, tt_rt.extra2 AS complain_status\nFROM tt_balance\nINNER JOIN tt_recharge_trans AS tt_rt ON (tt_rt.id = tt_balance.pay_ref_id) INNER JOIN m_operator AS m_op ON (m_op.id = tt_rt.op_id AND m_op.service_id = tt_rt.service_id) INNER JOIN m_service AS m_service ON (m_service.id = tt_rt.service_id) INNER JOIN m_users AS m_user ON (m_user.id = tt_balance.user_id) INNER JOIN m_users AS parent_id ON (parent_id.id = m_user.created_by)\nWHERE tt_balance.user_id = :P1 /* {{identity}} */\nORDER BY tt_balance.id DESC",
                   "params": [
                     {
                       "operator": "equal",
@@ -1696,6 +1719,10 @@
                     {
                       "type": "text",
                       "name": "status"
+                    },
+                    {
+                      "type": "text",
+                      "name": "complain_status"
                     }
                   ]
                 }

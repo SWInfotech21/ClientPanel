@@ -4,9 +4,9 @@
     "module": "auth",
     "action": "restrict",
     "options": {
-      "provider": "securityAndroid",
+      "provider": "security",
       "permissions": [
-        "read"
+        "write"
       ],
       "loginUrl": "/login",
       "forbiddenUrl": "/403-forbidden"
