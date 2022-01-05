@@ -186,158 +186,73 @@
                       "then": {
                         "steps": [
                           {
-                            "name": "ComplainAdd",
-                            "module": "dbupdater",
-                            "action": "insert",
+                            "name": "GetComplain",
+                            "module": "dbconnector",
+                            "action": "single",
                             "options": {
                               "connection": "postgres_gcpServer",
                               "sql": {
-                                "type": "insert",
-                                "values": [
-                                  {
-                                    "table": "t_ticket",
-                                    "column": "user_id",
-                                    "type": "number",
-                                    "value": "{{$_GET.userid}}"
-                                  },
-                                  {
-                                    "table": "t_ticket",
-                                    "column": "support_type",
-                                    "type": "text",
-                                    "value": "{{'Recharge Complain'}}"
-                                  },
-                                  {
-                                    "table": "t_ticket",
-                                    "column": "message",
-                                    "type": "text",
-                                    "value": "{{$_GET.remarks}}"
-                                  },
-                                  {
-                                    "table": "t_ticket",
-                                    "column": "tran_id",
-                                    "type": "text",
-                                    "value": "{{$_GET.transid}}"
-                                  },
-                                  {
-                                    "table": "t_ticket",
-                                    "column": "status",
-                                    "type": "text",
-                                    "value": "{{1}}"
-                                  },
-                                  {
-                                    "table": "t_ticket",
-                                    "column": "adddate",
-                                    "type": "datetime",
-                                    "value": "{{NOW}}"
-                                  },
-                                  {
-                                    "table": "t_ticket",
-                                    "column": "created_on",
-                                    "type": "datetime",
-                                    "value": "{{NOW}}"
-                                  }
-                                ],
-                                "table": "t_ticket",
-                                "returning": "id",
-                                "query": "INSERT INTO t_ticket\n(user_id, support_type, message, tran_id, status, adddate, created_on) VALUES (:P1 /* {{$_GET.userid}} */, :P2 /* {{'Recharge Complain'}} */, :P3 /* {{$_GET.remarks}} */, :P4 /* {{$_GET.transid}} */, :P5 /* {{1}} */, :P6 /* {{NOW}} */, :P7 /* {{NOW}} */)",
-                                "params": [
-                                  {
-                                    "name": ":P1",
-                                    "type": "expression",
-                                    "value": "{{$_GET.userid}}"
-                                  },
-                                  {
-                                    "name": ":P2",
-                                    "type": "expression",
-                                    "value": "{{'Recharge Complain'}}"
-                                  },
-                                  {
-                                    "name": ":P3",
-                                    "type": "expression",
-                                    "value": "{{$_GET.remarks}}"
-                                  },
-                                  {
-                                    "name": ":P4",
-                                    "type": "expression",
-                                    "value": "{{$_GET.transid}}"
-                                  },
-                                  {
-                                    "name": ":P5",
-                                    "type": "expression",
-                                    "value": "{{1}}"
-                                  },
-                                  {
-                                    "name": ":P6",
-                                    "type": "expression",
-                                    "value": "{{NOW}}"
-                                  },
-                                  {
-                                    "name": ":P7",
-                                    "type": "expression",
-                                    "value": "{{NOW}}"
-                                  }
-                                ]
-                              }
-                            },
-                            "meta": [
-                              {
-                                "name": "identity",
-                                "type": "text"
-                              },
-                              {
-                                "name": "affected",
-                                "type": "number"
-                              }
-                            ],
-                            "output": false
-                          },
-                          {
-                            "name": "RechTransUp",
-                            "module": "dbupdater",
-                            "action": "update",
-                            "options": {
-                              "connection": "postgres_gcpServer",
-                              "sql": {
-                                "type": "update",
-                                "values": [
+                                "type": "SELECT",
+                                "columns": [
                                   {
                                     "table": "tt_recharge_trans",
-                                    "column": "extra2",
-                                    "type": "text",
-                                    "value": "1"
+                                    "column": "id",
+                                    "alias": "CountIds",
+                                    "aggregate": "COUNT"
                                   }
                                 ],
-                                "table": "tt_recharge_trans",
+                                "table": {
+                                  "name": "tt_recharge_trans"
+                                },
+                                "joins": [],
+                                "groupBy": [],
                                 "wheres": {
                                   "condition": "AND",
                                   "rules": [
                                     {
-                                      "id": "id",
-                                      "field": "id",
+                                      "id": "tt_recharge_trans.id",
+                                      "field": "tt_recharge_trans.id",
                                       "type": "double",
                                       "operator": "equal",
                                       "value": "{{$_GET.transid}}",
                                       "data": {
-                                        "column": "id"
+                                        "table": "tt_recharge_trans",
+                                        "column": "id",
+                                        "type": "number"
                                       },
                                       "operation": "="
                                     },
                                     {
-                                      "id": "user_id",
-                                      "field": "user_id",
+                                      "id": "tt_recharge_trans.user_id",
+                                      "field": "tt_recharge_trans.user_id",
                                       "type": "double",
                                       "operator": "equal",
                                       "value": "{{$_GET.userid}}",
                                       "data": {
-                                        "column": "user_id"
+                                        "table": "tt_recharge_trans",
+                                        "column": "user_id",
+                                        "type": "number"
                                       },
                                       "operation": "="
+                                    },
+                                    {
+                                      "id": "tt_recharge_trans.extra2",
+                                      "field": "tt_recharge_trans.extra2",
+                                      "type": "string",
+                                      "operator": "is_null",
+                                      "value": null,
+                                      "data": {
+                                        "table": "tt_recharge_trans",
+                                        "column": "extra2",
+                                        "type": "text"
+                                      },
+                                      "operation": "IS NULL"
                                     }
                                   ],
                                   "conditional": null,
                                   "valid": true
                                 },
-                                "query": "UPDATE tt_recharge_trans\nSET extra2 = '1'\nWHERE id = :P1 /* {{$_GET.transid}} */ AND user_id = :P2 /* {{$_GET.userid}} */",
+                                "query": "SELECT COUNT(id) AS CountIds\nFROM tt_recharge_trans\nWHERE id = :P1 /* {{$_GET.transid}} */ AND user_id = :P2 /* {{$_GET.userid}} */ AND extra2 IS NULL",
                                 "params": [
                                   {
                                     "operator": "equal",
@@ -354,24 +269,228 @@
                                 ]
                               }
                             },
+                            "output": false,
                             "meta": [
                               {
-                                "name": "affected",
-                                "type": "number"
+                                "type": "number",
+                                "name": "CountIds"
                               }
                             ],
-                            "output": false
+                            "outputType": "object"
                           },
                           {
-                            "name": "Complain",
+                            "name": "",
                             "module": "core",
-                            "action": "setvalue",
+                            "action": "condition",
                             "options": {
-                              "value": "Complain Successfully Raised"
+                              "if": "{{GetComplain.CountIds > 0}}",
+                              "then": {
+                                "steps": [
+                                  {
+                                    "name": "ComplainAdd",
+                                    "module": "dbupdater",
+                                    "action": "insert",
+                                    "options": {
+                                      "connection": "postgres_gcpServer",
+                                      "sql": {
+                                        "type": "insert",
+                                        "values": [
+                                          {
+                                            "table": "t_ticket",
+                                            "column": "user_id",
+                                            "type": "number",
+                                            "value": "{{$_GET.userid}}"
+                                          },
+                                          {
+                                            "table": "t_ticket",
+                                            "column": "support_type",
+                                            "type": "text",
+                                            "value": "{{'Recharge Complain'}}"
+                                          },
+                                          {
+                                            "table": "t_ticket",
+                                            "column": "message",
+                                            "type": "text",
+                                            "value": "{{$_GET.remarks}}"
+                                          },
+                                          {
+                                            "table": "t_ticket",
+                                            "column": "tran_id",
+                                            "type": "text",
+                                            "value": "{{$_GET.transid}}"
+                                          },
+                                          {
+                                            "table": "t_ticket",
+                                            "column": "status",
+                                            "type": "text",
+                                            "value": "{{1}}"
+                                          },
+                                          {
+                                            "table": "t_ticket",
+                                            "column": "adddate",
+                                            "type": "datetime",
+                                            "value": "{{NOW}}"
+                                          },
+                                          {
+                                            "table": "t_ticket",
+                                            "column": "created_on",
+                                            "type": "datetime",
+                                            "value": "{{NOW}}"
+                                          }
+                                        ],
+                                        "table": "t_ticket",
+                                        "returning": "id",
+                                        "query": "INSERT INTO t_ticket\n(user_id, support_type, message, tran_id, status, adddate, created_on) VALUES (:P1 /* {{$_GET.userid}} */, :P2 /* {{'Recharge Complain'}} */, :P3 /* {{$_GET.remarks}} */, :P4 /* {{$_GET.transid}} */, :P5 /* {{1}} */, :P6 /* {{NOW}} */, :P7 /* {{NOW}} */)",
+                                        "params": [
+                                          {
+                                            "name": ":P1",
+                                            "type": "expression",
+                                            "value": "{{$_GET.userid}}"
+                                          },
+                                          {
+                                            "name": ":P2",
+                                            "type": "expression",
+                                            "value": "{{'Recharge Complain'}}"
+                                          },
+                                          {
+                                            "name": ":P3",
+                                            "type": "expression",
+                                            "value": "{{$_GET.remarks}}"
+                                          },
+                                          {
+                                            "name": ":P4",
+                                            "type": "expression",
+                                            "value": "{{$_GET.transid}}"
+                                          },
+                                          {
+                                            "name": ":P5",
+                                            "type": "expression",
+                                            "value": "{{1}}"
+                                          },
+                                          {
+                                            "name": ":P6",
+                                            "type": "expression",
+                                            "value": "{{NOW}}"
+                                          },
+                                          {
+                                            "name": ":P7",
+                                            "type": "expression",
+                                            "value": "{{NOW}}"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "meta": [
+                                      {
+                                        "name": "identity",
+                                        "type": "text"
+                                      },
+                                      {
+                                        "name": "affected",
+                                        "type": "number"
+                                      }
+                                    ],
+                                    "output": false
+                                  },
+                                  {
+                                    "name": "RechTransUp",
+                                    "module": "dbupdater",
+                                    "action": "update",
+                                    "options": {
+                                      "connection": "postgres_gcpServer",
+                                      "sql": {
+                                        "type": "update",
+                                        "values": [
+                                          {
+                                            "table": "tt_recharge_trans",
+                                            "column": "extra2",
+                                            "type": "text",
+                                            "value": "1"
+                                          }
+                                        ],
+                                        "table": "tt_recharge_trans",
+                                        "wheres": {
+                                          "condition": "AND",
+                                          "rules": [
+                                            {
+                                              "id": "id",
+                                              "field": "id",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": "{{$_GET.transid}}",
+                                              "data": {
+                                                "column": "id"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "user_id",
+                                              "field": "user_id",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": "{{$_GET.userid}}",
+                                              "data": {
+                                                "column": "user_id"
+                                              },
+                                              "operation": "="
+                                            }
+                                          ],
+                                          "conditional": null,
+                                          "valid": true
+                                        },
+                                        "query": "UPDATE tt_recharge_trans\nSET extra2 = '1'\nWHERE id = :P1 /* {{$_GET.transid}} */ AND user_id = :P2 /* {{$_GET.userid}} */",
+                                        "params": [
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P1",
+                                            "value": "{{$_GET.transid}}"
+                                          },
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P2",
+                                            "value": "{{$_GET.userid}}"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "meta": [
+                                      {
+                                        "name": "affected",
+                                        "type": "number"
+                                      }
+                                    ],
+                                    "output": false
+                                  },
+                                  {
+                                    "name": "Complain",
+                                    "module": "core",
+                                    "action": "setvalue",
+                                    "options": {
+                                      "value": "Complain Successfully Raised"
+                                    },
+                                    "meta": [],
+                                    "output": true,
+                                    "outputType": "text"
+                                  }
+                                ]
+                              },
+                              "else": {
+                                "steps": {
+                                  "name": "Complain",
+                                  "module": "core",
+                                  "action": "setvalue",
+                                  "options": {
+                                    "value": "Complain Already Raised"
+                                  },
+                                  "meta": [],
+                                  "output": true,
+                                  "outputType": "text"
+                                }
+                              }
                             },
-                            "meta": [],
-                            "output": true,
-                            "outputType": "text"
+                            "outputType": "boolean"
                           }
                         ]
                       },
