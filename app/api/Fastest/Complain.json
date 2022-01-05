@@ -289,7 +289,7 @@
                                 "type": "number"
                               }
                             ],
-                            "output": true
+                            "output": false
                           },
                           {
                             "name": "RechTransUp",
@@ -360,7 +360,18 @@
                                 "type": "number"
                               }
                             ],
-                            "output": true
+                            "output": false
+                          },
+                          {
+                            "name": "Complain",
+                            "module": "core",
+                            "action": "setvalue",
+                            "options": {
+                              "value": "Complain Successfully Raised"
+                            },
+                            "meta": [],
+                            "output": true,
+                            "outputType": "text"
                           }
                         ]
                       },
