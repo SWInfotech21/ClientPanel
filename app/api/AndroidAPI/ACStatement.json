@@ -12,6 +12,14 @@
       {
         "type": "text",
         "name": "password"
+      },
+      {
+        "type": "text",
+        "name": "fromdate"
+      },
+      {
+        "type": "text",
+        "name": "todate"
       }
     ],
     "$_SERVER": [
@@ -320,7 +328,7 @@
                                 "module": "auth",
                                 "action": "login",
                                 "options": {
-                                  "provider": "securityAndroid",
+                                  "provider": "security",
                                   "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
                                   "username": "{{$_GET.username}}",
                                   "remember": ""
