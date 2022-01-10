@@ -48,164 +48,282 @@
         "meta": []
       },
       {
-        "name": "ComplainAdd",
-        "module": "dbupdater",
-        "action": "insert",
+        "name": "GetComplain",
+        "module": "dbconnector",
+        "action": "single",
         "options": {
           "connection": "postgres_gcpServer",
           "sql": {
-            "type": "insert",
-            "values": [
-              {
-                "table": "t_ticket",
-                "column": "user_id",
-                "type": "number",
-                "value": "{{identity}}"
-              },
-              {
-                "table": "t_ticket",
-                "column": "support_type",
-                "type": "text",
-                "value": "{{'Recharge Complain'}}"
-              },
-              {
-                "table": "t_ticket",
-                "column": "message",
-                "type": "text",
-                "value": "{{$_POST.complainReason}}"
-              },
-              {
-                "table": "t_ticket",
-                "column": "tran_id",
-                "type": "text",
-                "value": "{{$_POST.ComplainId}}"
-              },
-              {
-                "table": "t_ticket",
-                "column": "status",
-                "type": "text",
-                "value": "{{1}}"
-              },
-              {
-                "table": "t_ticket",
-                "column": "adddate",
-                "type": "datetime",
-                "value": "{{NOW}}"
-              },
-              {
-                "table": "t_ticket",
-                "column": "created_on",
-                "type": "datetime",
-                "value": "{{NOW}}"
-              }
-            ],
-            "table": "t_ticket",
-            "returning": "id",
-            "query": "INSERT INTO t_ticket\n(user_id, support_type, message, tran_id, status, adddate, created_on) VALUES (:P1 /* {{identity}} */, :P2 /* {{'Recharge Complain'}} */, :P3 /* {{$_POST.complainReason}} */, :P4 /* {{$_POST.ComplainId}} */, :P5 /* {{1}} */, :P6 /* {{NOW}} */, :P7 /* {{NOW}} */)",
-            "params": [
-              {
-                "name": ":P1",
-                "type": "expression",
-                "value": "{{identity}}"
-              },
-              {
-                "name": ":P2",
-                "type": "expression",
-                "value": "{{'Recharge Complain'}}"
-              },
-              {
-                "name": ":P3",
-                "type": "expression",
-                "value": "{{$_POST.complainReason}}"
-              },
-              {
-                "name": ":P4",
-                "type": "expression",
-                "value": "{{$_POST.ComplainId}}"
-              },
-              {
-                "name": ":P5",
-                "type": "expression",
-                "value": "{{1}}"
-              },
-              {
-                "name": ":P6",
-                "type": "expression",
-                "value": "{{NOW}}"
-              },
-              {
-                "name": ":P7",
-                "type": "expression",
-                "value": "{{NOW}}"
-              }
-            ]
-          }
-        },
-        "meta": [
-          {
-            "name": "identity",
-            "type": "text"
-          },
-          {
-            "name": "affected",
-            "type": "number"
-          }
-        ],
-        "output": true
-      },
-      {
-        "name": "RechTransUp",
-        "module": "dbupdater",
-        "action": "update",
-        "options": {
-          "connection": "postgres_gcpServer",
-          "sql": {
-            "type": "update",
-            "values": [
+            "type": "SELECT",
+            "columns": [
               {
                 "table": "tt_recharge_trans",
-                "column": "extra2",
-                "type": "text",
-                "value": "1"
+                "column": "id",
+                "alias": "CountIds",
+                "aggregate": "COUNT"
               }
             ],
-            "table": "tt_recharge_trans",
+            "table": {
+              "name": "tt_recharge_trans"
+            },
+            "joins": [],
+            "groupBy": [],
             "wheres": {
               "condition": "AND",
               "rules": [
                 {
-                  "id": "id",
-                  "field": "id",
+                  "id": "tt_recharge_trans.id",
+                  "field": "tt_recharge_trans.id",
                   "type": "double",
                   "operator": "equal",
                   "value": "{{$_POST.ComplainId}}",
                   "data": {
-                    "column": "id"
+                    "table": "tt_recharge_trans",
+                    "column": "id",
+                    "type": "number"
                   },
                   "operation": "="
+                },
+                {
+                  "id": "tt_recharge_trans.user_id",
+                  "field": "tt_recharge_trans.user_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "tt_recharge_trans",
+                    "column": "user_id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tt_recharge_trans.extra2",
+                  "field": "tt_recharge_trans.extra2",
+                  "type": "string",
+                  "operator": "is_null",
+                  "value": null,
+                  "data": {
+                    "table": "tt_recharge_trans",
+                    "column": "extra2",
+                    "type": "text"
+                  },
+                  "operation": "IS NULL"
                 }
               ],
               "conditional": null,
               "valid": true
             },
-            "query": "UPDATE tt_recharge_trans\nSET extra2 = '1'\nWHERE id = :P1 /* {{$_POST.ComplainId}} */",
+            "query": "SELECT COUNT(id) AS CountIds\nFROM tt_recharge_trans\nWHERE id = :P1 /* {{$_POST.ComplainId}} */ AND user_id = :P2 /* {{identity}} */ AND extra2 IS NULL",
             "params": [
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{$_POST.ComplainId}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{identity}}"
               }
             ]
           }
         },
+        "output": true,
         "meta": [
           {
-            "name": "affected",
-            "type": "number"
+            "type": "number",
+            "name": "CountIds"
           }
         ],
-        "output": true
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{GetComplain.CountIds > 0}}",
+          "then": {
+            "steps": [
+              {
+                "name": "ComplainAdd",
+                "module": "dbupdater",
+                "action": "insert",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "insert",
+                    "values": [
+                      {
+                        "table": "t_ticket",
+                        "column": "user_id",
+                        "type": "number",
+                        "value": "{{identity}}"
+                      },
+                      {
+                        "table": "t_ticket",
+                        "column": "support_type",
+                        "type": "text",
+                        "value": "{{'Recharge Complain'}}"
+                      },
+                      {
+                        "table": "t_ticket",
+                        "column": "message",
+                        "type": "text",
+                        "value": "{{$_POST.complainReason}}"
+                      },
+                      {
+                        "table": "t_ticket",
+                        "column": "tran_id",
+                        "type": "text",
+                        "value": "{{$_POST.ComplainId}}"
+                      },
+                      {
+                        "table": "t_ticket",
+                        "column": "status",
+                        "type": "text",
+                        "value": "{{1}}"
+                      },
+                      {
+                        "table": "t_ticket",
+                        "column": "adddate",
+                        "type": "datetime",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "table": "t_ticket",
+                        "column": "created_on",
+                        "type": "datetime",
+                        "value": "{{NOW}}"
+                      }
+                    ],
+                    "table": "t_ticket",
+                    "returning": "id",
+                    "query": "INSERT INTO t_ticket\n(user_id, support_type, message, tran_id, status, adddate, created_on) VALUES (:P1 /* {{identity}} */, :P2 /* {{'Recharge Complain'}} */, :P3 /* {{$_POST.complainReason}} */, :P4 /* {{$_POST.ComplainId}} */, :P5 /* {{1}} */, :P6 /* {{NOW}} */, :P7 /* {{NOW}} */)",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{identity}}"
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{'Recharge Complain'}}"
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{$_POST.complainReason}}"
+                      },
+                      {
+                        "name": ":P4",
+                        "type": "expression",
+                        "value": "{{$_POST.ComplainId}}"
+                      },
+                      {
+                        "name": ":P5",
+                        "type": "expression",
+                        "value": "{{1}}"
+                      },
+                      {
+                        "name": ":P6",
+                        "type": "expression",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "name": ":P7",
+                        "type": "expression",
+                        "value": "{{NOW}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "identity",
+                    "type": "text"
+                  },
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ],
+                "output": true
+              },
+              {
+                "name": "RechTransUp",
+                "module": "dbupdater",
+                "action": "update",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "update",
+                    "values": [
+                      {
+                        "table": "tt_recharge_trans",
+                        "column": "extra2",
+                        "type": "text",
+                        "value": "1"
+                      }
+                    ],
+                    "table": "tt_recharge_trans",
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "id",
+                          "field": "id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{$_POST.ComplainId}}",
+                          "data": {
+                            "column": "id"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "UPDATE tt_recharge_trans\nSET extra2 = '1'\nWHERE id = :P1 /* {{$_POST.ComplainId}} */",
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{$_POST.ComplainId}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ],
+                "output": true
+              }
+            ]
+          },
+          "else": {
+            "steps": {
+              "name": "Frequent",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 403,
+                "data": "Complain already raised"
+              },
+              "output": true
+            }
+          }
+        },
+        "outputType": "boolean"
       }
     ]
   }
