@@ -87,181 +87,202 @@
     ]
   },
   "exec": {
-    "steps": [
-      {
-        "name": "reqid",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{$_GET.reqid}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "getSalt",
-        "module": "dbconnector",
-        "action": "single",
-        "options": {
-          "connection": "postgres_gcpServer",
-          "sql": {
-            "type": "SELECT",
-            "columns": [
-              {
-                "table": "t_api_token",
-                "column": "ip_address"
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "trycatch",
+      "options": {
+        "try": {
+          "steps": [
+            {
+              "name": "reqid",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{$_GET.reqid}}"
               },
-              {
-                "table": "t_api_token",
-                "column": "call_back_url"
-              },
-              {
-                "table": "t_api_token",
-                "column": "salt",
-                "alias": "getSaltvalue"
-              }
-            ],
-            "table": {
-              "name": "t_api_token"
+              "meta": [],
+              "outputType": "text",
+              "output": true
             },
-            "joins": [],
-            "query": "SELECT ip_address, call_back_url, salt AS getSaltvalue\nFROM t_api_token\nWHERE user_id = :P1 /* {{$_GET.userid}} */ AND api_token = :P2 /* {{$_GET.token}} */ AND status = 1",
-            "params": [
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P1",
-                "value": "{{$_GET.userid}}"
+            {
+              "name": "getSalt",
+              "module": "dbconnector",
+              "action": "single",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "t_api_token",
+                      "column": "ip_address"
+                    },
+                    {
+                      "table": "t_api_token",
+                      "column": "call_back_url"
+                    },
+                    {
+                      "table": "t_api_token",
+                      "column": "salt",
+                      "alias": "getSaltvalue"
+                    }
+                  ],
+                  "table": {
+                    "name": "t_api_token"
+                  },
+                  "joins": [],
+                  "query": "SELECT ip_address, call_back_url, salt AS getSaltvalue\nFROM t_api_token\nWHERE user_id = :P1 /* {{$_GET.userid}} */ AND api_token = :P2 /* {{$_GET.token}} */ AND status = 1",
+                  "params": [
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P1",
+                      "value": "{{$_GET.userid}}"
+                    },
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P2",
+                      "value": "{{$_GET.token}}"
+                    }
+                  ],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "t_api_token.user_id",
+                        "field": "t_api_token.user_id",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": "{{$_GET.userid}}",
+                        "data": {
+                          "table": "t_api_token",
+                          "column": "user_id",
+                          "type": "number"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "t_api_token.api_token",
+                        "field": "t_api_token.api_token",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "{{$_GET.token}}",
+                        "data": {
+                          "table": "t_api_token",
+                          "column": "api_token",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "t_api_token.status",
+                        "field": "t_api_token.status",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": 1,
+                        "data": {
+                          "table": "t_api_token",
+                          "column": "status",
+                          "type": "number"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  }
+                }
               },
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P2",
-                "value": "{{$_GET.token}}"
-              }
-            ],
-            "wheres": {
-              "condition": "AND",
-              "rules": [
+              "output": false,
+              "meta": [
                 {
-                  "id": "t_api_token.user_id",
-                  "field": "t_api_token.user_id",
-                  "type": "double",
-                  "operator": "equal",
-                  "value": "{{$_GET.userid}}",
-                  "data": {
-                    "table": "t_api_token",
-                    "column": "user_id",
-                    "type": "number"
-                  },
-                  "operation": "="
+                  "type": "text",
+                  "name": "ip_address"
                 },
                 {
-                  "id": "t_api_token.api_token",
-                  "field": "t_api_token.api_token",
-                  "type": "string",
-                  "operator": "equal",
-                  "value": "{{$_GET.token}}",
-                  "data": {
-                    "table": "t_api_token",
-                    "column": "api_token",
-                    "type": "text"
-                  },
-                  "operation": "="
+                  "type": "text",
+                  "name": "call_back_url"
                 },
                 {
-                  "id": "t_api_token.status",
-                  "field": "t_api_token.status",
-                  "type": "double",
-                  "operator": "equal",
-                  "value": 1,
-                  "data": {
-                    "table": "t_api_token",
-                    "column": "status",
-                    "type": "number"
-                  },
-                  "operation": "="
+                  "type": "text",
+                  "name": "getSaltvalue"
                 }
               ],
-              "conditional": null,
-              "valid": true
-            }
-          }
-        },
-        "output": false,
-        "meta": [
-          {
-            "type": "text",
-            "name": "ip_address"
-          },
-          {
-            "type": "text",
-            "name": "call_back_url"
-          },
-          {
-            "type": "text",
-            "name": "getSaltvalue"
-          }
-        ],
-        "outputType": "object"
-      },
-      {
-        "name": "UserIP",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{$_SERVER.REMOTE_ADDR}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": false
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{getSalt.ip_address}}",
-          "then": {
-            "steps": {
+              "outputType": "object"
+            },
+            {
+              "name": "UserIP",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{$_SERVER.REMOTE_ADDR}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": false
+            },
+            {
               "name": "",
               "module": "core",
               "action": "condition",
               "options": {
-                "if": "{{getSalt.ip_address == UserIP}}",
+                "if": "{{getSalt.ip_address}}",
                 "then": {
-                  "steps": [
-                    {
-                      "name": "apisn",
-                      "module": "api",
-                      "action": "send",
-                      "options": {
-                        "url": "https://www.sonakshiworld.com/apiservice.asmx/Recharge",
-                        "params": {
-                          "apiToken": "{{GetOpAPICodeFwrd.api_password}}",
-                          "mn": "{{$_GET.account}}",
-                          "op": "{{GetOpAPICodeFwrd.api_code2}}",
-                          "amt": "{{$_GET.amount}}",
-                          "reqid": "{{$_GET.reqid}}",
-                          "field1": "",
-                          "field2": ""
+                  "steps": {
+                    "name": "",
+                    "module": "core",
+                    "action": "condition",
+                    "options": {
+                      "if": "{{getSalt.ip_address == UserIP}}",
+                      "then": {
+                        "steps": [
+                          {
+                            "name": "apisn",
+                            "module": "api",
+                            "action": "send",
+                            "options": {
+                              "url": "https://www.sonakshiworld.com/apiservice.asmx/Recharge",
+                              "params": {
+                                "apiToken": "{{GetOpAPICodeFwrd.api_password}}",
+                                "mn": "{{$_GET.account}}",
+                                "op": "{{GetOpAPICodeFwrd.api_code2}}",
+                                "amt": "{{$_GET.amount}}",
+                                "reqid": "{{$_GET.reqid}}",
+                                "field1": "",
+                                "field2": ""
+                              }
+                            },
+                            "output": false
+                          },
+                          {
+                            "name": "xml",
+                            "module": "core",
+                            "action": "setvalue",
+                            "options": {
+                              "value": "{{apisn.data.xmlToJSON()}}"
+                            },
+                            "meta": [],
+                            "outputType": "text",
+                            "output": false
+                          }
+                        ]
+                      },
+                      "else": {
+                        "steps": {
+                          "name": "ResUnauth",
+                          "module": "core",
+                          "action": "response",
+                          "options": {
+                            "status": 401,
+                            "data": "Unauthorized user with IP {{UserIP}}"
+                          }
                         }
-                      },
-                      "output": false
+                      }
                     },
-                    {
-                      "name": "xml",
-                      "module": "core",
-                      "action": "setvalue",
-                      "options": {
-                        "value": "{{apisn.data.xmlToJSON()}}"
-                      },
-                      "meta": [],
-                      "outputType": "text",
-                      "output": false
-                    }
-                  ]
+                    "outputType": "boolean"
+                  }
                 },
                 "else": {
                   "steps": {
@@ -270,28 +291,28 @@
                     "action": "response",
                     "options": {
                       "status": 401,
-                      "data": "Unauthorized user with IP {{UserIP}}"
+                      "data": "Unauthorized Access!"
                     }
                   }
                 }
               },
               "outputType": "boolean"
             }
-          },
-          "else": {
-            "steps": {
-              "name": "ResUnauth",
-              "module": "core",
-              "action": "response",
-              "options": {
-                "status": 401,
-                "data": "Unauthorized Access!"
-              }
-            }
-          }
+          ]
         },
-        "outputType": "boolean"
+        "catch": {
+          "steps": {
+            "name": "Unauth",
+            "module": "core",
+            "action": "response",
+            "options": {
+              "status": 403,
+              "data": "Do not even try to do this, we are watching & recording your activity!"
+            },
+            "output": true
+          }
+        }
       }
-    ]
+    }
   }
 }

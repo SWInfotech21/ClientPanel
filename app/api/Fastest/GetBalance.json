@@ -287,7 +287,7 @@
             "action": "response",
             "options": {
               "status": 401,
-              "data": "Unauthorized Access!"
+              "data": "Do not even try to do this, we are watching & recording your activity!"
             },
             "output": true
           }

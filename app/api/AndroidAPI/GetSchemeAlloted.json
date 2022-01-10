@@ -22,467 +22,488 @@
     ]
   },
   "exec": {
-    "steps": [
-      {
-        "name": "getSalt",
-        "module": "dbconnector",
-        "action": "single",
-        "options": {
-          "connection": "postgres_gcpServer",
-          "sql": {
-            "type": "SELECT",
-            "columns": [
-              {
-                "table": "m_users",
-                "column": "salt",
-                "alias": "saltvalue"
-              },
-              {
-                "table": "m_users",
-                "column": "user_tpin"
-              },
-              {
-                "table": "m_users",
-                "column": "id"
-              },
-              {
-                "table": "m_users",
-                "column": "md_id"
-              },
-              {
-                "table": "m_users",
-                "column": "ds_id"
-              }
-            ],
-            "table": {
-              "name": "m_users"
-            },
-            "joins": [],
-            "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_GET.username}} */",
-            "params": [
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P1",
-                "value": "{{$_GET.username}}"
-              }
-            ],
-            "wheres": {
-              "condition": "AND",
-              "rules": [
-                {
-                  "id": "m_users.user_type",
-                  "field": "m_users.user_type",
-                  "type": "double",
-                  "operator": "between",
-                  "value": [
-                    1,
-                    3
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "trycatch",
+      "options": {
+        "try": {
+          "steps": [
+            {
+              "name": "getSalt",
+              "module": "dbconnector",
+              "action": "single",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "m_users",
+                      "column": "salt",
+                      "alias": "saltvalue"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_tpin"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "md_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "ds_id"
+                    }
                   ],
-                  "data": {
-                    "table": "m_users",
-                    "column": "user_type",
-                    "type": "number"
+                  "table": {
+                    "name": "m_users"
                   },
-                  "operation": "BETWEEN"
-                },
-                {
-                  "id": "m_users.u_status",
-                  "field": "m_users.u_status",
-                  "type": "string",
-                  "operator": "equal",
-                  "value": "1",
-                  "data": {
-                    "table": "m_users",
-                    "column": "u_status",
-                    "type": "text"
-                  },
-                  "operation": "="
-                },
-                {
-                  "id": "m_users.blank2",
-                  "field": "m_users.blank2",
-                  "type": "string",
-                  "operator": "equal",
-                  "value": "{{$_GET.username}}",
-                  "data": {
-                    "table": "m_users",
-                    "column": "blank2",
-                    "type": "text"
-                  },
-                  "operation": "="
-                }
-              ],
-              "conditional": null,
-              "valid": true
-            }
-          }
-        },
-        "output": false,
-        "meta": [
-          {
-            "type": "text",
-            "name": "saltvalue"
-          },
-          {
-            "type": "text",
-            "name": "user_tpin"
-          },
-          {
-            "type": "number",
-            "name": "id"
-          },
-          {
-            "type": "text",
-            "name": "md_id"
-          },
-          {
-            "type": "text",
-            "name": "ds_id"
-          }
-        ],
-        "outputType": "object"
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{getSalt.saltvalue}}",
-          "then": {
-            "steps": [
-              {
-                "name": "GetMdt",
-                "module": "dbconnector",
-                "action": "single",
-                "options": {
-                  "connection": "postgres_gcpServer",
-                  "sql": {
-                    "type": "SELECT",
-                    "columns": [
+                  "joins": [],
+                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_GET.username}} */",
+                  "params": [
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P1",
+                      "value": "{{$_GET.username}}"
+                    }
+                  ],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
                       {
-                        "table": "m_users",
-                        "column": "id",
-                        "alias": "countmdt",
-                        "aggregate": "COUNT"
-                      }
-                    ],
-                    "table": {
-                      "name": "m_users"
-                    },
-                    "joins": [],
-                    "groupBy": [],
-                    "wheres": {
-                      "condition": "AND",
-                      "rules": [
-                        {
-                          "id": "m_users.id",
-                          "field": "m_users.id",
-                          "type": "double",
-                          "operator": "equal",
-                          "value": "{{getSalt.md_id.toNumber()}}",
-                          "data": {
-                            "table": "m_users",
-                            "column": "id",
-                            "type": "number"
-                          },
-                          "operation": "="
-                        },
-                        {
-                          "id": "m_users.u_status",
-                          "field": "m_users.u_status",
-                          "type": "string",
-                          "operator": "equal",
-                          "value": "1",
-                          "data": {
-                            "table": "m_users",
-                            "column": "u_status",
-                            "type": "text"
-                          },
-                          "operation": "="
-                        }
-                      ],
-                      "conditional": null,
-                      "valid": true
-                    },
-                    "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
-                    "params": [
-                      {
-                        "operator": "equal",
-                        "type": "expression",
-                        "name": ":P1",
-                        "value": "{{getSalt.md_id.toNumber()}}"
-                      }
-                    ]
-                  }
-                },
-                "output": false,
-                "meta": [
-                  {
-                    "type": "number",
-                    "name": "countmdt"
-                  }
-                ],
-                "outputType": "object"
-              },
-              {
-                "name": "",
-                "module": "core",
-                "action": "condition",
-                "options": {
-                  "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
-                  "then": {
-                    "steps": [
-                      {
-                        "name": "GetDt",
-                        "module": "dbconnector",
-                        "action": "single",
-                        "options": {
-                          "connection": "postgres_gcpServer",
-                          "sql": {
-                            "type": "SELECT",
-                            "columns": [
-                              {
-                                "table": "m_users",
-                                "column": "id",
-                                "alias": "countdt",
-                                "aggregate": "COUNT"
-                              }
-                            ],
-                            "table": {
-                              "name": "m_users"
-                            },
-                            "joins": [],
-                            "groupBy": [],
-                            "wheres": {
-                              "condition": "AND",
-                              "rules": [
-                                {
-                                  "id": "m_users.id",
-                                  "field": "m_users.id",
-                                  "type": "double",
-                                  "operator": "equal",
-                                  "value": "{{getSalt.ds_id.toNumber()}}",
-                                  "data": {
-                                    "table": "m_users",
-                                    "column": "id",
-                                    "type": "number"
-                                  },
-                                  "operation": "="
-                                },
-                                {
-                                  "id": "m_users.u_status",
-                                  "field": "m_users.u_status",
-                                  "type": "string",
-                                  "operator": "equal",
-                                  "value": "1",
-                                  "data": {
-                                    "table": "m_users",
-                                    "column": "u_status",
-                                    "type": "text"
-                                  },
-                                  "operation": "="
-                                }
-                              ],
-                              "conditional": null,
-                              "valid": true
-                            },
-                            "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
-                            "params": [
-                              {
-                                "operator": "equal",
-                                "type": "expression",
-                                "name": ":P1",
-                                "value": "{{getSalt.ds_id.toNumber()}}"
-                              }
-                            ]
-                          }
-                        },
-                        "output": false,
-                        "meta": [
-                          {
-                            "type": "number",
-                            "name": "countdt"
-                          }
+                        "id": "m_users.user_type",
+                        "field": "m_users.user_type",
+                        "type": "double",
+                        "operator": "between",
+                        "value": [
+                          1,
+                          3
                         ],
-                        "outputType": "object"
+                        "data": {
+                          "table": "m_users",
+                          "column": "user_type",
+                          "type": "number"
+                        },
+                        "operation": "BETWEEN"
                       },
                       {
-                        "name": "",
-                        "module": "core",
-                        "action": "condition",
-                        "options": {
-                          "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
-                          "then": {
-                            "steps": [
+                        "id": "m_users.u_status",
+                        "field": "m_users.u_status",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "1",
+                        "data": {
+                          "table": "m_users",
+                          "column": "u_status",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "m_users.blank2",
+                        "field": "m_users.blank2",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "{{$_GET.username}}",
+                        "data": {
+                          "table": "m_users",
+                          "column": "blank2",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  }
+                }
+              },
+              "output": false,
+              "meta": [
+                {
+                  "type": "text",
+                  "name": "saltvalue"
+                },
+                {
+                  "type": "text",
+                  "name": "user_tpin"
+                },
+                {
+                  "type": "number",
+                  "name": "id"
+                },
+                {
+                  "type": "text",
+                  "name": "md_id"
+                },
+                {
+                  "type": "text",
+                  "name": "ds_id"
+                }
+              ],
+              "outputType": "object"
+            },
+            {
+              "name": "",
+              "module": "core",
+              "action": "condition",
+              "options": {
+                "if": "{{getSalt.saltvalue}}",
+                "then": {
+                  "steps": [
+                    {
+                      "name": "GetMdt",
+                      "module": "dbconnector",
+                      "action": "single",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "m_users",
+                              "column": "id",
+                              "alias": "countmdt",
+                              "aggregate": "COUNT"
+                            }
+                          ],
+                          "table": {
+                            "name": "m_users"
+                          },
+                          "joins": [],
+                          "groupBy": [],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
                               {
-                                "name": "identity",
-                                "module": "auth",
-                                "action": "login",
-                                "options": {
-                                  "provider": "security",
-                                  "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
-                                  "username": "{{$_GET.username}}",
-                                  "remember": ""
+                                "id": "m_users.id",
+                                "field": "m_users.id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{getSalt.md_id.toNumber()}}",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "id",
+                                  "type": "number"
                                 },
-                                "output": false,
-                                "meta": []
+                                "operation": "="
                               },
                               {
-                                "name": "",
-                                "module": "core",
-                                "action": "condition",
-                                "options": {
-                                  "if": "{{identity}}",
-                                  "then": {
-                                    "steps": {
+                                "id": "m_users.u_status",
+                                "field": "m_users.u_status",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "1",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "u_status",
+                                  "type": "text"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{getSalt.md_id.toNumber()}}"
+                            }
+                          ]
+                        }
+                      },
+                      "output": false,
+                      "meta": [
+                        {
+                          "type": "number",
+                          "name": "countmdt"
+                        }
+                      ],
+                      "outputType": "object"
+                    },
+                    {
+                      "name": "",
+                      "module": "core",
+                      "action": "condition",
+                      "options": {
+                        "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
+                        "then": {
+                          "steps": [
+                            {
+                              "name": "GetDt",
+                              "module": "dbconnector",
+                              "action": "single",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "SELECT",
+                                  "columns": [
+                                    {
+                                      "table": "m_users",
+                                      "column": "id",
+                                      "alias": "countdt",
+                                      "aggregate": "COUNT"
+                                    }
+                                  ],
+                                  "table": {
+                                    "name": "m_users"
+                                  },
+                                  "joins": [],
+                                  "groupBy": [],
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "m_users.id",
+                                        "field": "m_users.id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{getSalt.ds_id.toNumber()}}",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      },
+                                      {
+                                        "id": "m_users.u_status",
+                                        "field": "m_users.u_status",
+                                        "type": "string",
+                                        "operator": "equal",
+                                        "value": "1",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "u_status",
+                                          "type": "text"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
+                                  "params": [
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P1",
+                                      "value": "{{getSalt.ds_id.toNumber()}}"
+                                    }
+                                  ]
+                                }
+                              },
+                              "output": false,
+                              "meta": [
+                                {
+                                  "type": "number",
+                                  "name": "countdt"
+                                }
+                              ],
+                              "outputType": "object"
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
+                                "then": {
+                                  "steps": [
+                                    {
+                                      "name": "identity",
+                                      "module": "auth",
+                                      "action": "login",
+                                      "options": {
+                                        "provider": "security",
+                                        "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
+                                        "username": "{{$_GET.username}}",
+                                        "remember": ""
+                                      },
+                                      "output": false,
+                                      "meta": []
+                                    },
+                                    {
                                       "name": "",
                                       "module": "core",
                                       "action": "condition",
                                       "options": {
-                                        "if": "{{$_GET.for_user_type}}",
+                                        "if": "{{identity}}",
                                         "then": {
-                                          "steps": [
-                                            {
-                                              "name": "custom",
-                                              "module": "dbupdater",
-                                              "action": "custom",
-                                              "options": {
-                                                "connection": "postgres_gcpServer",
-                                                "sql": {
-                                                  "query": "select distinct 'scheme_names',\n   unnest(array[tsu.scheme1, tsu.scheme2, tsu.scheme3, tsu.scheme4]) AS \"scheme_id\",\n   unnest(array[ms.scheme_name , ms2.scheme_name, ms3.scheme_name, ms4.scheme_name]) AS \"scheme_names\"\nFROM t_scheme_user tsu\n   left join m_scheme ms on ms.id = tsu.scheme1 \n   left join m_scheme ms2 on ms2.id = tsu.scheme2  \n   left join m_scheme ms3 on ms3.id = tsu.scheme3 \n   left join m_scheme ms4 on ms4.id = tsu.scheme4 \nwhere tsu.user_id = @user_id and tsu.for_user_type = @for_user_type  and 'scheme_id' is not null\norder by \"scheme_names\" ASC;",
-                                                  "params": [
-                                                    {
-                                                      "name": "@user_id",
-                                                      "value": "{{identity}}",
-                                                      "test": "17"
-                                                    },
-                                                    {
-                                                      "name": "@for_user_type",
-                                                      "value": "{{$_GET.for_user_type}}",
-                                                      "test": "2"
-                                                    }
-                                                  ]
-                                                }
-                                              },
-                                              "output": true,
-                                              "meta": [
-                                                {
-                                                  "name": "?column?",
-                                                  "type": "text"
-                                                },
-                                                {
-                                                  "name": "scheme_id",
-                                                  "type": "number"
-                                                },
-                                                {
-                                                  "name": "scheme_names",
-                                                  "type": "text"
-                                                }
-                                              ],
-                                              "outputType": "array"
-                                            },
-                                            {
-                                              "name": "",
-                                              "module": "core",
-                                              "action": "condition",
-                                              "options": {
-                                                "if": "{{$_GET.for_user_type == 2}}",
-                                                "then": {
-                                                  "steps": {
-                                                    "name": "GetRtScheme",
+                                          "steps": {
+                                            "name": "",
+                                            "module": "core",
+                                            "action": "condition",
+                                            "options": {
+                                              "if": "{{$_GET.for_user_type}}",
+                                              "then": {
+                                                "steps": [
+                                                  {
+                                                    "name": "custom",
                                                     "module": "dbupdater",
                                                     "action": "custom",
                                                     "options": {
                                                       "connection": "postgres_gcpServer",
                                                       "sql": {
-                                                        "query": "select distinct 'scheme_names',\n   unnest(array[tsu.scheme1, tsu.scheme2, tsu.scheme3, tsu.scheme4]) AS \"scheme_id\",\n   unnest(array[ms.scheme_name , ms2.scheme_name, ms3.scheme_name, ms4.scheme_name]) AS \"scheme_names\"\nFROM t_scheme_user tsu\n   left join m_scheme ms on ms.id = tsu.scheme1 \n   left join m_scheme ms2 on ms2.id = tsu.scheme2  \n   left join m_scheme ms3 on ms3.id = tsu.scheme3 \n   left join m_scheme ms4 on ms4.id = tsu.scheme4 \nwhere tsu.user_id = @user_id and tsu.for_user_type = 3 and 'scheme_id' is not null\norder by \"scheme_names\" ASC;",
+                                                        "query": "select distinct 'scheme_names',\n   unnest(array[tsu.scheme1, tsu.scheme2, tsu.scheme3, tsu.scheme4]) AS \"scheme_id\",\n   unnest(array[ms.scheme_name , ms2.scheme_name, ms3.scheme_name, ms4.scheme_name]) AS \"scheme_names\"\nFROM t_scheme_user tsu\n   left join m_scheme ms on ms.id = tsu.scheme1 \n   left join m_scheme ms2 on ms2.id = tsu.scheme2  \n   left join m_scheme ms3 on ms3.id = tsu.scheme3 \n   left join m_scheme ms4 on ms4.id = tsu.scheme4 \nwhere tsu.user_id = @user_id and tsu.for_user_type = @for_user_type  and 'scheme_id' is not null\norder by \"scheme_names\" ASC;",
                                                         "params": [
                                                           {
                                                             "name": "@user_id",
                                                             "value": "{{identity}}",
+                                                            "test": "17"
+                                                          },
+                                                          {
+                                                            "name": "@for_user_type",
+                                                            "value": "{{$_GET.for_user_type}}",
                                                             "test": "2"
                                                           }
                                                         ]
                                                       }
                                                     },
                                                     "output": true,
-                                                    "meta": [],
+                                                    "meta": [
+                                                      {
+                                                        "name": "?column?",
+                                                        "type": "text"
+                                                      },
+                                                      {
+                                                        "name": "scheme_id",
+                                                        "type": "number"
+                                                      },
+                                                      {
+                                                        "name": "scheme_names",
+                                                        "type": "text"
+                                                      }
+                                                    ],
                                                     "outputType": "array"
+                                                  },
+                                                  {
+                                                    "name": "",
+                                                    "module": "core",
+                                                    "action": "condition",
+                                                    "options": {
+                                                      "if": "{{$_GET.for_user_type == 2}}",
+                                                      "then": {
+                                                        "steps": {
+                                                          "name": "GetRtScheme",
+                                                          "module": "dbupdater",
+                                                          "action": "custom",
+                                                          "options": {
+                                                            "connection": "postgres_gcpServer",
+                                                            "sql": {
+                                                              "query": "select distinct 'scheme_names',\n   unnest(array[tsu.scheme1, tsu.scheme2, tsu.scheme3, tsu.scheme4]) AS \"scheme_id\",\n   unnest(array[ms.scheme_name , ms2.scheme_name, ms3.scheme_name, ms4.scheme_name]) AS \"scheme_names\"\nFROM t_scheme_user tsu\n   left join m_scheme ms on ms.id = tsu.scheme1 \n   left join m_scheme ms2 on ms2.id = tsu.scheme2  \n   left join m_scheme ms3 on ms3.id = tsu.scheme3 \n   left join m_scheme ms4 on ms4.id = tsu.scheme4 \nwhere tsu.user_id = @user_id and tsu.for_user_type = 3 and 'scheme_id' is not null\norder by \"scheme_names\" ASC;",
+                                                              "params": [
+                                                                {
+                                                                  "name": "@user_id",
+                                                                  "value": "{{identity}}",
+                                                                  "test": "2"
+                                                                }
+                                                              ]
+                                                            }
+                                                          },
+                                                          "output": true,
+                                                          "meta": [],
+                                                          "outputType": "array"
+                                                        }
+                                                      }
+                                                    },
+                                                    "outputType": "boolean"
                                                   }
-                                                }
-                                              },
-                                              "outputType": "boolean"
+                                                ]
+                                              }
+                                            },
+                                            "outputType": "boolean"
+                                          }
+                                        },
+                                        "else": {
+                                          "steps": {
+                                            "name": "LoginError",
+                                            "module": "core",
+                                            "action": "response",
+                                            "options": {
+                                              "status": 403,
+                                              "data": "Password Mismatched"
                                             }
-                                          ]
+                                          }
                                         }
                                       },
                                       "outputType": "boolean"
                                     }
-                                  },
-                                  "else": {
-                                    "steps": {
-                                      "name": "LoginError",
-                                      "module": "core",
-                                      "action": "response",
-                                      "options": {
-                                        "status": 403,
-                                        "data": "Password Mismatched"
-                                      }
+                                  ]
+                                },
+                                "else": {
+                                  "steps": {
+                                    "name": "DtInactive",
+                                    "module": "core",
+                                    "action": "response",
+                                    "options": {
+                                      "status": 403,
+                                      "data": "Your Distributor(DT) inactive, Please contact technical support team"
                                     }
                                   }
-                                },
-                                "outputType": "boolean"
-                              }
-                            ]
-                          },
-                          "else": {
-                            "steps": {
-                              "name": "DtInactive",
-                              "module": "core",
-                              "action": "response",
-                              "options": {
-                                "status": 403,
-                                "data": "Your Distributor(DT) inactive, Please contact technical support team"
-                              }
+                                }
+                              },
+                              "outputType": "boolean"
+                            }
+                          ]
+                        },
+                        "else": {
+                          "steps": {
+                            "name": "MdtInactive",
+                            "module": "core",
+                            "action": "response",
+                            "options": {
+                              "status": 403,
+                              "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
                             }
                           }
-                        },
-                        "outputType": "boolean"
-                      }
-                    ]
-                  },
-                  "else": {
-                    "steps": {
-                      "name": "MdtInactive",
-                      "module": "core",
-                      "action": "response",
-                      "options": {
-                        "status": 403,
-                        "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
-                      }
+                        }
+                      },
+                      "outputType": "boolean"
+                    }
+                  ]
+                },
+                "else": {
+                  "steps": {
+                    "name": "LoginRes403",
+                    "module": "core",
+                    "action": "response",
+                    "options": {
+                      "status": 403,
+                      "data": "User does not exists or user inactive, Please contact technical support team"
                     }
                   }
-                },
-                "outputType": "boolean"
-              }
-            ]
-          },
-          "else": {
-            "steps": {
-              "name": "LoginRes403",
-              "module": "core",
-              "action": "response",
-              "options": {
-                "status": 403,
-                "data": "User does not exists or user inactive, Please contact technical support team"
-              }
+                }
+              },
+              "outputType": "boolean",
+              "output": false
             }
-          }
+          ]
         },
-        "outputType": "boolean",
-        "output": false
+        "catch": {
+          "steps": {
+            "name": "Unauth",
+            "module": "core",
+            "action": "response",
+            "options": {
+              "status": 403,
+              "data": "Do not even try to do this, we are watching & recording your activity!"
+            },
+            "output": true
+          }
+        }
       }
-    ]
+    }
   }
 }
