@@ -4,26 +4,28 @@
       "linkedFile": "/views/login.ejs",
       "linkedForm": "formLogin"
     },
-    "$_POST": [
+    "$_GET": [
       {
-        "type": "number",
+        "type": "text",
         "fieldName": "Mobile",
         "options": {
-          "rules": {}
+          "rules": {
+            "core:required": {}
+          }
         },
-        "name": "Mobile"
+        "name": "mobile"
       },
       {
         "type": "text",
-        "fieldName": "Password",
         "options": {
-          "rules": {}
+          "rules": {
+            "core:required": {}
+          }
         },
-        "name": "Password"
+        "name": "password"
       },
       {
         "type": "text",
-        "fieldName": "remember",
         "name": "remember"
       }
     ],
@@ -77,13 +79,13 @@
                     "name": "m_users"
                   },
                   "joins": [],
-                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_POST.Mobile}} */ AND u_status = '1' AND (user_type >= 1 AND user_type <= 3)",
+                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_GET.mobile}} */",
                   "params": [
                     {
                       "operator": "equal",
                       "type": "expression",
                       "name": ":P1",
-                      "value": "{{$_POST.Mobile}}"
+                      "value": "{{$_GET.mobile}}"
                     }
                   ],
                   "wheres": {
@@ -94,58 +96,13 @@
                         "field": "m_users.user_mobile",
                         "type": "string",
                         "operator": "equal",
-                        "value": "{{$_POST.Mobile}}",
+                        "value": "{{$_GET.mobile}}",
                         "data": {
                           "table": "m_users",
                           "column": "user_mobile",
                           "type": "text"
                         },
                         "operation": "="
-                      },
-                      {
-                        "id": "m_users.u_status",
-                        "field": "m_users.u_status",
-                        "type": "string",
-                        "operator": "equal",
-                        "value": "1",
-                        "data": {
-                          "table": "m_users",
-                          "column": "u_status",
-                          "type": "text"
-                        },
-                        "operation": "="
-                      },
-                      {
-                        "condition": "AND",
-                        "rules": [
-                          {
-                            "id": "m_users.user_type",
-                            "field": "m_users.user_type",
-                            "type": "double",
-                            "operator": "greater_or_equal",
-                            "value": 1,
-                            "data": {
-                              "table": "m_users",
-                              "column": "user_type",
-                              "type": "number"
-                            },
-                            "operation": ">="
-                          },
-                          {
-                            "id": "m_users.user_type",
-                            "field": "m_users.user_type",
-                            "type": "double",
-                            "operator": "less_or_equal",
-                            "value": 3,
-                            "data": {
-                              "table": "m_users",
-                              "column": "user_type",
-                              "type": "number"
-                            },
-                            "operation": "<="
-                          }
-                        ],
-                        "conditional": null
                       }
                     ],
                     "conditional": null,
@@ -153,7 +110,7 @@
                   }
                 }
               },
-              "output": true,
+              "output": false,
               "meta": [
                 {
                   "type": "text",
@@ -356,10 +313,10 @@
                                       "action": "login",
                                       "options": {
                                         "provider": "securityAndroid",
-                                        "password": "{{$_POST.Password.sha256(getSalt.saltvalue)}}",
-                                        "username": "{{$_POST.Mobile}}"
+                                        "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
+                                        "username": "{{$_GET.mobile}}"
                                       },
-                                      "output": true,
+                                      "output": false,
                                       "meta": []
                                     },
                                     {
@@ -422,6 +379,16 @@
                                           "type": "number"
                                         }
                                       ],
+                                      "output": false
+                                    },
+                                    {
+                                      "name": "Success",
+                                      "module": "core",
+                                      "action": "response",
+                                      "options": {
+                                        "status": 200,
+                                        "data": "Success Login"
+                                      },
                                       "output": true
                                     }
                                   ]
@@ -474,8 +441,7 @@
                 }
               },
               "outputType": "boolean",
-              "output": false,
-              "disabled": true
+              "output": false
             }
           ]
         },
