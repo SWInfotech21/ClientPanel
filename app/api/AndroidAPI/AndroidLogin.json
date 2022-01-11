@@ -156,7 +156,7 @@
                   }
                 }
               },
-              "output": false,
+              "output": true,
               "meta": [
                 {
                   "type": "text",
@@ -477,7 +477,8 @@
                 }
               },
               "outputType": "boolean",
-              "output": false
+              "output": false,
+              "disabled": true
             }
           ]
         },
