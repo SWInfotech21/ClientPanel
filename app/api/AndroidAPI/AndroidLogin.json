@@ -52,158 +52,18 @@
                 "username": "{{$_POST.Mobile}}"
               },
               "output": true,
-              "meta": [],
-              "disabled": true
-            },
-            {
-              "name": "getSalt",
-              "module": "dbconnector",
-              "action": "single",
-              "options": {
-                "connection": "postgres_gcpServer",
-                "sql": {
-                  "type": "SELECT",
-                  "columns": [
-                    {
-                      "table": "m_users",
-                      "column": "salt",
-                      "alias": "saltvalue"
-                    },
-                    {
-                      "table": "m_users",
-                      "column": "user_tpin"
-                    },
-                    {
-                      "table": "m_users",
-                      "column": "id"
-                    },
-                    {
-                      "table": "m_users",
-                      "column": "md_id"
-                    },
-                    {
-                      "table": "m_users",
-                      "column": "ds_id"
-                    }
-                  ],
-                  "table": {
-                    "name": "m_users"
-                  },
-                  "joins": [],
-                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_POST.Mobile}} */ AND u_status = '1' AND (user_type BETWEEN 1 AND 3 OR user_type = 5)",
-                  "params": [
-                    {
-                      "operator": "equal",
-                      "type": "expression",
-                      "name": ":P1",
-                      "value": "{{$_POST.Mobile}}"
-                    }
-                  ],
-                  "wheres": {
-                    "condition": "AND",
-                    "rules": [
-                      {
-                        "id": "m_users.user_mobile",
-                        "field": "m_users.user_mobile",
-                        "type": "string",
-                        "operator": "equal",
-                        "value": "{{$_POST.Mobile}}",
-                        "data": {
-                          "table": "m_users",
-                          "column": "user_mobile",
-                          "type": "text"
-                        },
-                        "operation": "="
-                      },
-                      {
-                        "id": "m_users.u_status",
-                        "field": "m_users.u_status",
-                        "type": "string",
-                        "operator": "equal",
-                        "value": "1",
-                        "data": {
-                          "table": "m_users",
-                          "column": "u_status",
-                          "type": "text"
-                        },
-                        "operation": "="
-                      },
-                      {
-                        "condition": "OR",
-                        "rules": [
-                          {
-                            "id": "m_users.user_type",
-                            "field": "m_users.user_type",
-                            "type": "double",
-                            "operator": "between",
-                            "value": [
-                              1,
-                              3
-                            ],
-                            "data": {
-                              "table": "m_users",
-                              "column": "user_type",
-                              "type": "number"
-                            },
-                            "operation": "BETWEEN"
-                          },
-                          {
-                            "id": "m_users.user_type",
-                            "field": "m_users.user_type",
-                            "type": "double",
-                            "operator": "equal",
-                            "value": 5,
-                            "data": {
-                              "table": "m_users",
-                              "column": "user_type",
-                              "type": "number"
-                            },
-                            "operation": "="
-                          }
-                        ],
-                        "conditional": null
-                      }
-                    ],
-                    "conditional": null,
-                    "valid": true
-                  }
-                }
-              },
-              "output": true,
-              "meta": [
-                {
-                  "type": "text",
-                  "name": "saltvalue"
-                },
-                {
-                  "type": "text",
-                  "name": "user_tpin"
-                },
-                {
-                  "type": "number",
-                  "name": "id"
-                },
-                {
-                  "type": "text",
-                  "name": "md_id"
-                },
-                {
-                  "type": "text",
-                  "name": "ds_id"
-                }
-              ],
-              "outputType": "object"
+              "meta": []
             },
             {
               "name": "",
               "module": "core",
               "action": "condition",
               "options": {
-                "if": "{{getSalt.saltvalue}}",
+                "if": "{{identity}}",
                 "then": {
                   "steps": [
                     {
-                      "name": "GetMdt",
+                      "name": "getSalt",
                       "module": "dbconnector",
                       "action": "single",
                       "options": {
@@ -213,29 +73,52 @@
                           "columns": [
                             {
                               "table": "m_users",
-                              "column": "id",
-                              "alias": "countmdt",
-                              "aggregate": "COUNT"
+                              "column": "salt",
+                              "alias": "saltvalue"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "user_tpin"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "id"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "md_id"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "ds_id"
                             }
                           ],
                           "table": {
                             "name": "m_users"
                           },
                           "joins": [],
-                          "groupBy": [],
+                          "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_POST.Mobile}} */ AND u_status = '1' AND (user_type BETWEEN 1 AND 3 OR user_type = 5)",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{$_POST.Mobile}}"
+                            }
+                          ],
                           "wheres": {
                             "condition": "AND",
                             "rules": [
                               {
-                                "id": "m_users.id",
-                                "field": "m_users.id",
-                                "type": "double",
+                                "id": "m_users.user_mobile",
+                                "field": "m_users.user_mobile",
+                                "type": "string",
                                 "operator": "equal",
-                                "value": "{{getSalt.md_id.toNumber()}}",
+                                "value": "{{$_POST.Mobile}}",
                                 "data": {
                                   "table": "m_users",
-                                  "column": "id",
-                                  "type": "number"
+                                  "column": "user_mobile",
+                                  "type": "text"
                                 },
                                 "operation": "="
                               },
@@ -251,27 +134,69 @@
                                   "type": "text"
                                 },
                                 "operation": "="
+                              },
+                              {
+                                "condition": "OR",
+                                "rules": [
+                                  {
+                                    "id": "m_users.user_type",
+                                    "field": "m_users.user_type",
+                                    "type": "double",
+                                    "operator": "between",
+                                    "value": [
+                                      1,
+                                      3
+                                    ],
+                                    "data": {
+                                      "table": "m_users",
+                                      "column": "user_type",
+                                      "type": "number"
+                                    },
+                                    "operation": "BETWEEN"
+                                  },
+                                  {
+                                    "id": "m_users.user_type",
+                                    "field": "m_users.user_type",
+                                    "type": "double",
+                                    "operator": "equal",
+                                    "value": 5,
+                                    "data": {
+                                      "table": "m_users",
+                                      "column": "user_type",
+                                      "type": "number"
+                                    },
+                                    "operation": "="
+                                  }
+                                ],
+                                "conditional": null
                               }
                             ],
                             "conditional": null,
                             "valid": true
-                          },
-                          "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
-                          "params": [
-                            {
-                              "operator": "equal",
-                              "type": "expression",
-                              "name": ":P1",
-                              "value": "{{getSalt.md_id.toNumber()}}"
-                            }
-                          ]
+                          }
                         }
                       },
-                      "output": false,
+                      "output": true,
                       "meta": [
                         {
+                          "type": "text",
+                          "name": "saltvalue"
+                        },
+                        {
+                          "type": "text",
+                          "name": "user_tpin"
+                        },
+                        {
                           "type": "number",
-                          "name": "countmdt"
+                          "name": "id"
+                        },
+                        {
+                          "type": "text",
+                          "name": "md_id"
+                        },
+                        {
+                          "type": "text",
+                          "name": "ds_id"
                         }
                       ],
                       "outputType": "object"
@@ -281,11 +206,11 @@
                       "module": "core",
                       "action": "condition",
                       "options": {
-                        "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
+                        "if": "{{getSalt.saltvalue}}",
                         "then": {
                           "steps": [
                             {
-                              "name": "GetDt",
+                              "name": "GetMdt",
                               "module": "dbconnector",
                               "action": "single",
                               "options": {
@@ -296,7 +221,7 @@
                                     {
                                       "table": "m_users",
                                       "column": "id",
-                                      "alias": "countdt",
+                                      "alias": "countmdt",
                                       "aggregate": "COUNT"
                                     }
                                   ],
@@ -313,7 +238,7 @@
                                         "field": "m_users.id",
                                         "type": "double",
                                         "operator": "equal",
-                                        "value": "{{getSalt.ds_id.toNumber()}}",
+                                        "value": "{{getSalt.md_id.toNumber()}}",
                                         "data": {
                                           "table": "m_users",
                                           "column": "id",
@@ -338,13 +263,13 @@
                                     "conditional": null,
                                     "valid": true
                                   },
-                                  "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
+                                  "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
                                   "params": [
                                     {
                                       "operator": "equal",
                                       "type": "expression",
                                       "name": ":P1",
-                                      "value": "{{getSalt.ds_id.toNumber()}}"
+                                      "value": "{{getSalt.md_id.toNumber()}}"
                                     }
                                   ]
                                 }
@@ -353,7 +278,7 @@
                               "meta": [
                                 {
                                   "type": "number",
-                                  "name": "countdt"
+                                  "name": "countmdt"
                                 }
                               ],
                               "outputType": "object"
@@ -363,79 +288,178 @@
                               "module": "core",
                               "action": "condition",
                               "options": {
-                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
+                                "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
                                 "then": {
-                                  "steps": {
-                                    "name": "insert",
-                                    "module": "dbupdater",
-                                    "action": "insert",
-                                    "options": {
-                                      "connection": "postgres_gcpServer",
-                                      "sql": {
-                                        "type": "insert",
-                                        "values": [
-                                          {
-                                            "table": "t_login_history",
-                                            "column": "user_id",
-                                            "type": "text",
-                                            "value": "{{getSalt.id}}"
+                                  "steps": [
+                                    {
+                                      "name": "GetDt",
+                                      "module": "dbconnector",
+                                      "action": "single",
+                                      "options": {
+                                        "connection": "postgres_gcpServer",
+                                        "sql": {
+                                          "type": "SELECT",
+                                          "columns": [
+                                            {
+                                              "table": "m_users",
+                                              "column": "id",
+                                              "alias": "countdt",
+                                              "aggregate": "COUNT"
+                                            }
+                                          ],
+                                          "table": {
+                                            "name": "m_users"
                                           },
-                                          {
-                                            "table": "t_login_history",
-                                            "column": "ip_address",
-                                            "type": "text",
-                                            "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                          "joins": [],
+                                          "groupBy": [],
+                                          "wheres": {
+                                            "condition": "AND",
+                                            "rules": [
+                                              {
+                                                "id": "m_users.id",
+                                                "field": "m_users.id",
+                                                "type": "double",
+                                                "operator": "equal",
+                                                "value": "{{getSalt.ds_id.toNumber()}}",
+                                                "data": {
+                                                  "table": "m_users",
+                                                  "column": "id",
+                                                  "type": "number"
+                                                },
+                                                "operation": "="
+                                              },
+                                              {
+                                                "id": "m_users.u_status",
+                                                "field": "m_users.u_status",
+                                                "type": "string",
+                                                "operator": "equal",
+                                                "value": "1",
+                                                "data": {
+                                                  "table": "m_users",
+                                                  "column": "u_status",
+                                                  "type": "text"
+                                                },
+                                                "operation": "="
+                                              }
+                                            ],
+                                            "conditional": null,
+                                            "valid": true
                                           },
-                                          {
-                                            "table": "t_login_history",
-                                            "column": "login_time",
-                                            "type": "datetime",
-                                            "value": "{{NOW}}"
-                                          }
-                                        ],
-                                        "table": "t_login_history",
-                                        "returning": "id",
-                                        "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */)",
-                                        "params": [
-                                          {
-                                            "name": ":P1",
-                                            "type": "expression",
-                                            "value": "{{getSalt.id}}"
-                                          },
-                                          {
-                                            "name": ":P2",
-                                            "type": "expression",
-                                            "value": "{{$_SERVER.REMOTE_ADDR}}"
-                                          },
-                                          {
-                                            "name": ":P3",
-                                            "type": "expression",
-                                            "value": "{{NOW}}"
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    "meta": [
-                                      {
-                                        "name": "identity",
-                                        "type": "text"
+                                          "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
+                                          "params": [
+                                            {
+                                              "operator": "equal",
+                                              "type": "expression",
+                                              "name": ":P1",
+                                              "value": "{{getSalt.ds_id.toNumber()}}"
+                                            }
+                                          ]
+                                        }
                                       },
-                                      {
-                                        "name": "affected",
-                                        "type": "number"
-                                      }
-                                    ],
-                                    "output": true
-                                  }
+                                      "output": false,
+                                      "meta": [
+                                        {
+                                          "type": "number",
+                                          "name": "countdt"
+                                        }
+                                      ],
+                                      "outputType": "object"
+                                    },
+                                    {
+                                      "name": "",
+                                      "module": "core",
+                                      "action": "condition",
+                                      "options": {
+                                        "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
+                                        "then": {
+                                          "steps": {
+                                            "name": "insert",
+                                            "module": "dbupdater",
+                                            "action": "insert",
+                                            "options": {
+                                              "connection": "postgres_gcpServer",
+                                              "sql": {
+                                                "type": "insert",
+                                                "values": [
+                                                  {
+                                                    "table": "t_login_history",
+                                                    "column": "user_id",
+                                                    "type": "text",
+                                                    "value": "{{getSalt.id}}"
+                                                  },
+                                                  {
+                                                    "table": "t_login_history",
+                                                    "column": "ip_address",
+                                                    "type": "text",
+                                                    "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                  },
+                                                  {
+                                                    "table": "t_login_history",
+                                                    "column": "login_time",
+                                                    "type": "datetime",
+                                                    "value": "{{NOW}}"
+                                                  }
+                                                ],
+                                                "table": "t_login_history",
+                                                "returning": "id",
+                                                "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */)",
+                                                "params": [
+                                                  {
+                                                    "name": ":P1",
+                                                    "type": "expression",
+                                                    "value": "{{getSalt.id}}"
+                                                  },
+                                                  {
+                                                    "name": ":P2",
+                                                    "type": "expression",
+                                                    "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                  },
+                                                  {
+                                                    "name": ":P3",
+                                                    "type": "expression",
+                                                    "value": "{{NOW}}"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            "meta": [
+                                              {
+                                                "name": "identity",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "affected",
+                                                "type": "number"
+                                              }
+                                            ],
+                                            "output": true
+                                          }
+                                        },
+                                        "else": {
+                                          "steps": {
+                                            "name": "DtInactive",
+                                            "module": "core",
+                                            "action": "response",
+                                            "options": {
+                                              "status": 403,
+                                              "data": "Your Distributor(DT) inactive, Please contact technical support team"
+                                            },
+                                            "output": true
+                                          }
+                                        }
+                                      },
+                                      "outputType": "boolean"
+                                    }
+                                  ]
                                 },
                                 "else": {
                                   "steps": {
-                                    "name": "DtInactive",
+                                    "name": "MdtInactive",
                                     "module": "core",
                                     "action": "response",
                                     "options": {
                                       "status": 403,
-                                      "data": "Your Distributor(DT) inactive, Please contact technical support team"
+                                      "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
                                     },
                                     "output": true
                                   }
@@ -447,52 +471,24 @@
                         },
                         "else": {
                           "steps": {
-                            "name": "MdtInactive",
+                            "name": "LoginRes403",
                             "module": "core",
                             "action": "response",
                             "options": {
                               "status": 403,
-                              "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                              "data": "User does not exists or user inactive, Please contact technical support team"
                             },
                             "output": true
                           }
                         }
                       },
-                      "outputType": "boolean"
+                      "outputType": "boolean",
+                      "output": false
                     }
                   ]
-                },
-                "else": {
-                  "steps": {
-                    "name": "LoginRes403",
-                    "module": "core",
-                    "action": "response",
-                    "options": {
-                      "status": 403,
-                      "data": "User does not exists or user inactive, Please contact technical support team"
-                    },
-                    "output": true
-                  }
                 }
               },
-              "outputType": "boolean",
-              "output": false
-            },
-            {
-              "name": "",
-              "module": "core",
-              "action": "condition",
-              "options": {
-                "if": "{{identity}}",
-                "then": {
-                  "steps": {
-                    "name": "",
-                    "options": {}
-                  }
-                }
-              },
-              "outputType": "boolean",
-              "disabled": true
+              "outputType": "boolean"
             }
           ]
         },
