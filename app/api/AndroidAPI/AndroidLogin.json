@@ -52,7 +52,8 @@
                 "username": "{{$_POST.Mobile}}"
               },
               "output": true,
-              "meta": []
+              "meta": [],
+              "disabled": true
             },
             {
               "name": "",
