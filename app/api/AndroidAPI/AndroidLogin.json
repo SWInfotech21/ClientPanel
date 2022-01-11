@@ -389,7 +389,8 @@
                                         "status": 200,
                                         "data": "Success Login"
                                       },
-                                      "output": true
+                                      "output": true,
+                                      "disabled": true
                                     }
                                   ]
                                 },
