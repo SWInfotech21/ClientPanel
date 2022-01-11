@@ -9,7 +9,7 @@
     "users": {
       "table": "m_users",
       "identity": "id",
-      "username": "blank1",
+      "username": "blank2",
       "password": "password"
     },
     "permissions": {
