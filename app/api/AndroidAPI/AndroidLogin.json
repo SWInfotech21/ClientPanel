@@ -156,7 +156,7 @@
                   }
                 }
               },
-              "output": true,
+              "output": false,
               "meta": [
                 {
                   "type": "text",
@@ -254,7 +254,7 @@
                           ]
                         }
                       },
-                      "output": true,
+                      "output": false,
                       "meta": [
                         {
                           "type": "number",
@@ -336,7 +336,7 @@
                                   ]
                                 }
                               },
-                              "output": true,
+                              "output": false,
                               "meta": [
                                 {
                                   "type": "number",
@@ -437,7 +437,8 @@
                                     "options": {
                                       "status": 403,
                                       "data": "Your Distributor(DT) inactive, Please contact technical support team"
-                                    }
+                                    },
+                                    "output": true
                                   }
                                 }
                               },
@@ -453,7 +454,8 @@
                             "options": {
                               "status": 403,
                               "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
-                            }
+                            },
+                            "output": true
                           }
                         }
                       },
@@ -469,12 +471,13 @@
                     "options": {
                       "status": 403,
                       "data": "User does not exists or user inactive, Please contact technical support team"
-                    }
+                    },
+                    "output": true
                   }
                 }
               },
               "outputType": "boolean",
-              "output": true
+              "output": false
             }
           ]
         },
