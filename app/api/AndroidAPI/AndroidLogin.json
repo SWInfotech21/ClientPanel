@@ -316,7 +316,7 @@
                                         "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
                                         "username": "{{$_GET.mobile}}"
                                       },
-                                      "output": false,
+                                      "output": true,
                                       "meta": []
                                     },
                                     {
