@@ -399,17 +399,6 @@
                                         }
                                       ],
                                       "output": false
-                                    },
-                                    {
-                                      "name": "Success",
-                                      "module": "core",
-                                      "action": "response",
-                                      "options": {
-                                        "status": 200,
-                                        "data": "Success Login"
-                                      },
-                                      "output": true,
-                                      "disabled": true
                                     }
                                   ]
                                 },
