@@ -414,16 +414,29 @@
                                   ]
                                 },
                                 "else": {
-                                  "steps": {
-                                    "name": "DtInactive",
-                                    "module": "core",
-                                    "action": "response",
-                                    "options": {
-                                      "status": 403,
-                                      "data": "Your Distributor(DT) inactive, Please contact technical support team"
+                                  "steps": [
+                                    {
+                                      "name": "DtInactive",
+                                      "module": "core",
+                                      "action": "response",
+                                      "options": {
+                                        "status": 403,
+                                        "data": "Your Distributor(DT) inactive, Please contact technical support team"
+                                      },
+                                      "output": true,
+                                      "disabled": true
                                     },
-                                    "output": true
-                                  }
+                                    {
+                                      "name": "Status",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "Your Distributor(DT) inactive, Please contact technical support team"
+                                      },
+                                      "meta": [],
+                                      "outputType": "text"
+                                    }
+                                  ]
                                 }
                               },
                               "outputType": "boolean"
@@ -431,16 +444,29 @@
                           ]
                         },
                         "else": {
-                          "steps": {
-                            "name": "MdtInactive",
-                            "module": "core",
-                            "action": "response",
-                            "options": {
-                              "status": 403,
-                              "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                          "steps": [
+                            {
+                              "name": "MdtInactive",
+                              "module": "core",
+                              "action": "response",
+                              "options": {
+                                "status": 403,
+                                "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                              },
+                              "output": true,
+                              "disabled": true
                             },
-                            "output": true
-                          }
+                            {
+                              "name": "Status",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                              },
+                              "meta": [],
+                              "outputType": "text"
+                            }
+                          ]
                         }
                       },
                       "outputType": "boolean"
@@ -448,16 +474,29 @@
                   ]
                 },
                 "else": {
-                  "steps": {
-                    "name": "LoginRes403",
-                    "module": "core",
-                    "action": "response",
-                    "options": {
-                      "status": 403,
-                      "data": "User does not exists or user inactive, Please contact technical support team"
+                  "steps": [
+                    {
+                      "name": "LoginRes403",
+                      "module": "core",
+                      "action": "response",
+                      "options": {
+                        "status": 403,
+                        "data": "User does not exists or user inactive, Please contact technical support team"
+                      },
+                      "output": true,
+                      "disabled": true
                     },
-                    "output": true
-                  }
+                    {
+                      "name": "Status",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "User does not exists or user inactive, Please contact technical support team"
+                      },
+                      "meta": [],
+                      "outputType": "text"
+                    }
+                  ]
                 }
               },
               "outputType": "boolean",
@@ -466,16 +505,29 @@
           ]
         },
         "catch": {
-          "steps": {
-            "name": "Unauth",
-            "module": "core",
-            "action": "response",
-            "options": {
-              "status": 401,
-              "data": "Unauthorized Access"
+          "steps": [
+            {
+              "name": "Unauth",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 401,
+                "data": "Unauthorized Access"
+              },
+              "output": true,
+              "disabled": true
             },
-            "output": true
-          }
+            {
+              "name": "Status",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "Unauthorized Access"
+              },
+              "meta": [],
+              "outputType": "text"
+            }
+          ]
         }
       }
     }
