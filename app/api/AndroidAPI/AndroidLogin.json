@@ -73,13 +73,17 @@
                     {
                       "table": "m_users",
                       "column": "ds_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_type"
                     }
                   ],
                   "table": {
                     "name": "m_users"
                   },
                   "joins": [],
-                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_GET.mobile}} */",
+                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id, user_type\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_GET.mobile}} */",
                   "params": [
                     {
                       "operator": "equal",
@@ -131,6 +135,10 @@
                 {
                   "type": "text",
                   "name": "ds_id"
+                },
+                {
+                  "type": "number",
+                  "name": "user_type"
                 }
               ],
               "outputType": "object"
@@ -318,6 +326,17 @@
                                       },
                                       "output": true,
                                       "meta": []
+                                    },
+                                    {
+                                      "name": "user_type",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{getSalt.user_type}}"
+                                      },
+                                      "meta": [],
+                                      "outputType": "number",
+                                      "output": true
                                     },
                                     {
                                       "name": "insert",
