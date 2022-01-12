@@ -106,6 +106,17 @@
               "output": true
             },
             {
+              "name": "account",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{$_GET.account}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true
+            },
+            {
               "name": "getSalt",
               "module": "dbconnector",
               "action": "single",

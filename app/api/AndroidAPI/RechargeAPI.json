@@ -1102,7 +1102,7 @@
                                                                             "module": "core",
                                                                             "action": "setvalue",
                                                                             "options": {
-                                                                              "value": "{{($_GET.amount.toNumber()*GetCommision.service_charge_per/100)+GetCommision.service_charge_val.toNumber()}}"
+                                                                              "value": "{{($_GET.amount.toNumber()*GetCommision.service_charge_per.toNumber()/100)+GetCommision.service_charge_val.toNumber()}}"
                                                                             },
                                                                             "meta": [],
                                                                             "outputType": "text"
@@ -2693,7 +2693,7 @@
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text",
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "apibalance",
@@ -3292,25 +3292,25 @@
                                                                                                     "table": "t_charge_cal",
                                                                                                     "column": "old_balance",
                                                                                                     "type": "text",
-                                                                                                    "value": "{{GetRTCreator.rt_coeator_balance_amt}}"
+                                                                                                    "value": "{{GetRTCreator.rt_coeator_balance_amt.toNumber()}}"
                                                                                                   },
                                                                                                   {
                                                                                                     "table": "t_charge_cal",
                                                                                                     "column": "amount",
                                                                                                     "type": "text",
-                                                                                                    "value": "{{$_GET.amount}}"
+                                                                                                    "value": "{{$_GET.amount.toNumber()}}"
                                                                                                   },
                                                                                                   {
                                                                                                     "table": "t_charge_cal",
                                                                                                     "column": "netamt",
                                                                                                     "type": "text",
-                                                                                                    "value": "{{DTNetAmt}}"
+                                                                                                    "value": "{{DTNetAmt.toNumber()}}"
                                                                                                   },
                                                                                                   {
                                                                                                     "table": "t_charge_cal",
                                                                                                     "column": "new_balance",
                                                                                                     "type": "text",
-                                                                                                    "value": "{{DTClosingBalance}}"
+                                                                                                    "value": "{{DTClosingBalance.toNumber()}}"
                                                                                                   },
                                                                                                   {
                                                                                                     "table": "t_charge_cal",
@@ -3363,7 +3363,7 @@
                                                                                                 ],
                                                                                                 "table": "t_charge_cal",
                                                                                                 "returning": "id",
-                                                                                                "query": "INSERT INTO t_charge_cal\n(user_id, old_balance, amount, netamt, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on) VALUES (:P1 /* {{UserWalletBalCheck.retailer_creator_id}} */, :P2 /* {{GetRTCreator.rt_coeator_balance_amt}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{DTNetAmt}} */, :P5 /* {{DTClosingBalance}} */, :P6 /* {{'Recharge Comm'}} */, :P7 /* {{NOW}} */, :P8 /* {{$_SERVER.REMOTE_ADDR}} */, :P9 /* {{'Credit'}} */, :P10 /* {{RechTrans.identity}} */, :P11 /* {{'Number: '+$_GET.mobile+' | Amount:\\n '+$_GET.amount+' | Charge Credit | Ref. Id: '+RechTrans.identity+' | Comm Per:  '+DTCommPer+' | Comm Val: '+DTCommVal+' | Charge Per:\\n '+DTChargePer+' | Charge Val: '+DTChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+DTNetAmt}} */, :P12 /* {{identity}} */, :P13 /* {{NOW}} */)",
+                                                                                                "query": "INSERT INTO t_charge_cal\n(user_id, old_balance, amount, netamt, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on) VALUES (:P1 /* {{UserWalletBalCheck.retailer_creator_id}} */, :P2 /* {{GetRTCreator.rt_coeator_balance_amt.toNumber()}} */, :P3 /* {{$_GET.amount.toNumber()}} */, :P4 /* {{DTNetAmt.toNumber()}} */, :P5 /* {{DTClosingBalance.toNumber()}} */, :P6 /* {{'Recharge Comm'}} */, :P7 /* {{NOW}} */, :P8 /* {{$_SERVER.REMOTE_ADDR}} */, :P9 /* {{'Credit'}} */, :P10 /* {{RechTrans.identity}} */, :P11 /* {{'Number: '+$_GET.mobile+' | Amount:\\n '+$_GET.amount+' | Charge Credit | Ref. Id: '+RechTrans.identity+' | Comm Per:  '+DTCommPer+' | Comm Val: '+DTCommVal+' | Charge Per:\\n '+DTChargePer+' | Charge Val: '+DTChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+DTNetAmt}} */, :P12 /* {{identity}} */, :P13 /* {{NOW}} */)",
                                                                                                 "params": [
                                                                                                   {
                                                                                                     "name": ":P1",
@@ -3373,22 +3373,22 @@
                                                                                                   {
                                                                                                     "name": ":P2",
                                                                                                     "type": "expression",
-                                                                                                    "value": "{{GetRTCreator.rt_coeator_balance_amt}}"
+                                                                                                    "value": "{{GetRTCreator.rt_coeator_balance_amt.toNumber()}}"
                                                                                                   },
                                                                                                   {
                                                                                                     "name": ":P3",
                                                                                                     "type": "expression",
-                                                                                                    "value": "{{$_GET.amount}}"
+                                                                                                    "value": "{{$_GET.amount.toNumber()}}"
                                                                                                   },
                                                                                                   {
                                                                                                     "name": ":P4",
                                                                                                     "type": "expression",
-                                                                                                    "value": "{{DTNetAmt}}"
+                                                                                                    "value": "{{DTNetAmt.toNumber()}}"
                                                                                                   },
                                                                                                   {
                                                                                                     "name": ":P5",
                                                                                                     "type": "expression",
-                                                                                                    "value": "{{DTClosingBalance}}"
+                                                                                                    "value": "{{DTClosingBalance.toNumber()}}"
                                                                                                   },
                                                                                                   {
                                                                                                     "name": ":P6",
@@ -3458,7 +3458,7 @@
                                                                                                     "table": "m_users",
                                                                                                     "column": "balance_amt",
                                                                                                     "type": "text",
-                                                                                                    "value": "{{DTClosingBalance}}"
+                                                                                                    "value": "{{DTClosingBalance.toNumber()}}"
                                                                                                   }
                                                                                                 ],
                                                                                                 "table": "m_users",
@@ -3480,12 +3480,12 @@
                                                                                                   "conditional": null,
                                                                                                   "valid": true
                                                                                                 },
-                                                                                                "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{DTClosingBalance}} */\nWHERE id = :P2 /* {{UserWalletBalCheck.retailer_creator_id}} */",
+                                                                                                "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{DTClosingBalance.toNumber()}} */\nWHERE id = :P2 /* {{UserWalletBalCheck.retailer_creator_id}} */",
                                                                                                 "params": [
                                                                                                   {
                                                                                                     "name": ":P1",
                                                                                                     "type": "expression",
-                                                                                                    "value": "{{DTClosingBalance}}"
+                                                                                                    "value": "{{DTClosingBalance.toNumber()}}"
                                                                                                   },
                                                                                                   {
                                                                                                     "operator": "equal",
@@ -3531,25 +3531,25 @@
                                                                                                             "table": "t_charge_cal",
                                                                                                             "column": "old_balance",
                                                                                                             "type": "text",
-                                                                                                            "value": "{{GetDTCreator.dt_balance_amt}}"
+                                                                                                            "value": "{{GetDTCreator.dt_balance_amt.toNumber()}}"
                                                                                                           },
                                                                                                           {
                                                                                                             "table": "t_charge_cal",
                                                                                                             "column": "amount",
                                                                                                             "type": "text",
-                                                                                                            "value": "{{$_GET.amount}}"
+                                                                                                            "value": "{{$_GET.amount.toNumber()}}"
                                                                                                           },
                                                                                                           {
                                                                                                             "table": "t_charge_cal",
                                                                                                             "column": "netamt",
                                                                                                             "type": "text",
-                                                                                                            "value": "{{MDTNetAmt}}"
+                                                                                                            "value": "{{MDTNetAmt.toNumber()}}"
                                                                                                           },
                                                                                                           {
                                                                                                             "table": "t_charge_cal",
                                                                                                             "column": "new_balance",
                                                                                                             "type": "text",
-                                                                                                            "value": "{{MDTClosingBalance}}"
+                                                                                                            "value": "{{MDTClosingBalance.toNumber()}}"
                                                                                                           },
                                                                                                           {
                                                                                                             "table": "t_charge_cal",
@@ -3602,7 +3602,7 @@
                                                                                                         ],
                                                                                                         "table": "t_charge_cal",
                                                                                                         "returning": "id",
-                                                                                                        "query": "INSERT INTO t_charge_cal\n(user_id, old_balance, amount, netamt, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on) VALUES (:P1 /* {{GetRTCreator.dt_coeator_id}} */, :P2 /* {{GetDTCreator.dt_balance_amt}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{MDTNetAmt}} */, :P5 /* {{MDTClosingBalance}} */, :P6 /* {{'Recharge Comm'}} */, :P7 /* {{NOW}} */, :P8 /* {{$_SERVER.REMOTE_ADDR}} */, :P9 /* {{'Credit'}} */, :P10 /* {{RechTrans.identity}} */, :P11 /* {{'Number: '+$_GET.mobile+'  | Amount:\\n '+$_GET.amount+' | Charge Credit | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+MDTCommPer+' | Comm Val: '+MDTCommVal+' | Charge Per:\\n '+MDTChargePer+' | Charge Val: '+MDTChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+MDTNetAmt}} */, :P12 /* {{identity}} */, :P13 /* {{NOW}} */)",
+                                                                                                        "query": "INSERT INTO t_charge_cal\n(user_id, old_balance, amount, netamt, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on) VALUES (:P1 /* {{GetRTCreator.dt_coeator_id}} */, :P2 /* {{GetDTCreator.dt_balance_amt.toNumber()}} */, :P3 /* {{$_GET.amount.toNumber()}} */, :P4 /* {{MDTNetAmt.toNumber()}} */, :P5 /* {{MDTClosingBalance.toNumber()}} */, :P6 /* {{'Recharge Comm'}} */, :P7 /* {{NOW}} */, :P8 /* {{$_SERVER.REMOTE_ADDR}} */, :P9 /* {{'Credit'}} */, :P10 /* {{RechTrans.identity}} */, :P11 /* {{'Number: '+$_GET.mobile+'  | Amount:\\n '+$_GET.amount+' | Charge Credit | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+MDTCommPer+' | Comm Val: '+MDTCommVal+' | Charge Per:\\n '+MDTChargePer+' | Charge Val: '+MDTChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+MDTNetAmt}} */, :P12 /* {{identity}} */, :P13 /* {{NOW}} */)",
                                                                                                         "params": [
                                                                                                           {
                                                                                                             "name": ":P1",
@@ -3612,22 +3612,22 @@
                                                                                                           {
                                                                                                             "name": ":P2",
                                                                                                             "type": "expression",
-                                                                                                            "value": "{{GetDTCreator.dt_balance_amt}}"
+                                                                                                            "value": "{{GetDTCreator.dt_balance_amt.toNumber()}}"
                                                                                                           },
                                                                                                           {
                                                                                                             "name": ":P3",
                                                                                                             "type": "expression",
-                                                                                                            "value": "{{$_GET.amount}}"
+                                                                                                            "value": "{{$_GET.amount.toNumber()}}"
                                                                                                           },
                                                                                                           {
                                                                                                             "name": ":P4",
                                                                                                             "type": "expression",
-                                                                                                            "value": "{{MDTNetAmt}}"
+                                                                                                            "value": "{{MDTNetAmt.toNumber()}}"
                                                                                                           },
                                                                                                           {
                                                                                                             "name": ":P5",
                                                                                                             "type": "expression",
-                                                                                                            "value": "{{MDTClosingBalance}}"
+                                                                                                            "value": "{{MDTClosingBalance.toNumber()}}"
                                                                                                           },
                                                                                                           {
                                                                                                             "name": ":P6",
@@ -3697,7 +3697,7 @@
                                                                                                             "table": "m_users",
                                                                                                             "column": "balance_amt",
                                                                                                             "type": "text",
-                                                                                                            "value": "{{MDTClosingBalance}}"
+                                                                                                            "value": "{{MDTClosingBalance.toNumber()}}"
                                                                                                           }
                                                                                                         ],
                                                                                                         "table": "m_users",
@@ -3719,12 +3719,12 @@
                                                                                                           "conditional": null,
                                                                                                           "valid": true
                                                                                                         },
-                                                                                                        "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{MDTClosingBalance}} */\nWHERE id = :P2 /* {{GetRTCreator.dt_coeator_id}} */",
+                                                                                                        "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{MDTClosingBalance.toNumber()}} */\nWHERE id = :P2 /* {{GetRTCreator.dt_coeator_id}} */",
                                                                                                         "params": [
                                                                                                           {
                                                                                                             "name": ":P1",
                                                                                                             "type": "expression",
-                                                                                                            "value": "{{MDTClosingBalance}}"
+                                                                                                            "value": "{{MDTClosingBalance.toNumber()}}"
                                                                                                           },
                                                                                                           {
                                                                                                             "operator": "equal",
@@ -3757,6 +3757,16 @@
                                                                               },
                                                                               "else": {
                                                                                 "steps": [
+                                                                                  {
+                                                                                    "name": "balance",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "{{UserWalletBalCheck.balance_amt.toNumber()}}"
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "outputType": "text"
+                                                                                  },
                                                                                   {
                                                                                     "name": "RechTransUP_Failed",
                                                                                     "module": "dbupdater",
@@ -3836,7 +3846,7 @@
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "closing_balance",
                                                                                             "type": "text",
-                                                                                            "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                                            "value": "{{balance}}"
                                                                                           }
                                                                                         ],
                                                                                         "table": "tt_recharge_trans",
@@ -3858,7 +3868,7 @@
                                                                                           "conditional": null,
                                                                                           "valid": true
                                                                                         },
-                                                                                        "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus}} */, api_logs = :P2 /* {{api_log}} */, is_processed = :P3 /* {{apifiredid}} */, operator_ref = :P4 /* {{remarks}} */, api_ref = :P5 /* {{api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance}} */, closing_balance = :P11 /* {{UserWalletBalCheck.balance_amt}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
+                                                                                        "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus}} */, api_logs = :P2 /* {{api_log}} */, is_processed = :P3 /* {{apifiredid}} */, operator_ref = :P4 /* {{remarks}} */, api_ref = :P5 /* {{api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance}} */, closing_balance = :P11 /* {{balance}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
                                                                                         "params": [
                                                                                           {
                                                                                             "name": ":P1",
@@ -3913,7 +3923,7 @@
                                                                                           {
                                                                                             "name": ":P11",
                                                                                             "type": "expression",
-                                                                                            "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                                            "value": "{{balance}}"
                                                                                           },
                                                                                           {
                                                                                             "operator": "equal",
@@ -3951,7 +3961,7 @@
                                                                                             "table": "tt_balance",
                                                                                             "column": "old_balance",
                                                                                             "type": "text",
-                                                                                            "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                                            "value": "{{balance}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_balance",
@@ -3963,7 +3973,7 @@
                                                                                             "table": "tt_balance",
                                                                                             "column": "new_balance",
                                                                                             "type": "text",
-                                                                                            "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                                            "value": "{{balance}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_balance",
@@ -4028,7 +4038,7 @@
                                                                                         ],
                                                                                         "table": "tt_balance",
                                                                                         "returning": "id",
-                                                                                        "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{UserWalletBalCheck.balance_amt}} */, :P5 /* {{'Recharge Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.mobile+' | Amount:\\n '+$_GET.amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'REFUND'}} */)",
+                                                                                        "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{balance}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{balance}} */, :P5 /* {{'Recharge Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.mobile+' | Amount:\\n '+$_GET.amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'REFUND'}} */)",
                                                                                         "params": [
                                                                                           {
                                                                                             "name": ":P1",
@@ -4038,7 +4048,7 @@
                                                                                           {
                                                                                             "name": ":P2",
                                                                                             "type": "expression",
-                                                                                            "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                                            "value": "{{balance}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P3",
@@ -4048,7 +4058,7 @@
                                                                                           {
                                                                                             "name": ":P4",
                                                                                             "type": "expression",
-                                                                                            "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                                            "value": "{{balance}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P5",
