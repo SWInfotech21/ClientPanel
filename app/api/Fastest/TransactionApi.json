@@ -855,7 +855,7 @@
                                                             "module": "core",
                                                             "action": "setvalue",
                                                             "options": {
-                                                              "value": "{{($_GET.amount.toNumber()*GetCommision.service_charge_per/100)+GetCommision.service_charge_val.toNumber()}}"
+                                                              "value": "{{($_GET.amount.toNumber()*GetCommision.service_charge_per.toNumber()/100)+GetCommision.service_charge_val.toNumber()}}"
                                                             },
                                                             "meta": [],
                                                             "outputType": "text"
@@ -2264,7 +2264,7 @@
                                                                     "module": "core",
                                                                     "action": "setvalue",
                                                                     "options": {
-                                                                      "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                      "value": "{{UserWalletBalCheck.balance_amt.toNumber()}}"
                                                                     },
                                                                     "meta": [],
                                                                     "outputType": "text",
@@ -2349,7 +2349,7 @@
                                                                             "table": "tt_recharge_trans",
                                                                             "column": "closing_balance",
                                                                             "type": "text",
-                                                                            "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                            "value": "{{balance}}"
                                                                           }
                                                                         ],
                                                                         "table": "tt_recharge_trans",
@@ -2371,7 +2371,7 @@
                                                                           "conditional": null,
                                                                           "valid": true
                                                                         },
-                                                                        "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus}} */, api_logs = :P2 /* {{api_log}} */, is_processed = :P3 /* {{apifiredid}} */, operator_ref = :P4 /* {{remarks}} */, api_ref = :P5 /* {{api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance}} */, closing_balance = :P11 /* {{UserWalletBalCheck.balance_amt}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
+                                                                        "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus}} */, api_logs = :P2 /* {{api_log}} */, is_processed = :P3 /* {{apifiredid}} */, operator_ref = :P4 /* {{remarks}} */, api_ref = :P5 /* {{api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance}} */, closing_balance = :P11 /* {{balance}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
                                                                         "params": [
                                                                           {
                                                                             "name": ":P1",
@@ -2426,7 +2426,7 @@
                                                                           {
                                                                             "name": ":P11",
                                                                             "type": "expression",
-                                                                            "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                            "value": "{{balance}}"
                                                                           },
                                                                           {
                                                                             "operator": "equal",
@@ -2464,7 +2464,7 @@
                                                                             "table": "tt_balance",
                                                                             "column": "old_balance",
                                                                             "type": "text",
-                                                                            "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                            "value": "{{balance}}"
                                                                           },
                                                                           {
                                                                             "table": "tt_balance",
@@ -2476,7 +2476,7 @@
                                                                             "table": "tt_balance",
                                                                             "column": "new_balance",
                                                                             "type": "text",
-                                                                            "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                            "value": "{{balance}}"
                                                                           },
                                                                           {
                                                                             "table": "tt_balance",
@@ -2541,7 +2541,7 @@
                                                                         ],
                                                                         "table": "tt_balance",
                                                                         "returning": "id",
-                                                                        "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{$_GET.userid}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{UserWalletBalCheck.balance_amt}} */, :P5 /* {{'Recharge Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.account+' | Amount:\\n '+$_GET.amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{$_GET.userid}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'REFUND'}} */)",
+                                                                        "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{$_GET.userid}} */, :P2 /* {{balance}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{balance}} */, :P5 /* {{'Recharge Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.account+' | Amount:\\n '+$_GET.amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{$_GET.userid}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'REFUND'}} */)",
                                                                         "params": [
                                                                           {
                                                                             "name": ":P1",
@@ -2551,7 +2551,7 @@
                                                                           {
                                                                             "name": ":P2",
                                                                             "type": "expression",
-                                                                            "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                            "value": "{{balance}}"
                                                                           },
                                                                           {
                                                                             "name": ":P3",
@@ -2561,7 +2561,7 @@
                                                                           {
                                                                             "name": ":P4",
                                                                             "type": "expression",
-                                                                            "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                            "value": "{{balance}}"
                                                                           },
                                                                           {
                                                                             "name": ":P5",
