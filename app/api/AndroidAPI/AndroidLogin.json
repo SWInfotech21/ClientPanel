@@ -434,7 +434,8 @@
                                         "value": "Your Distributor(DT) inactive, Please contact technical support team"
                                       },
                                       "meta": [],
-                                      "outputType": "text"
+                                      "outputType": "text",
+                                      "output": true
                                     }
                                   ]
                                 }
@@ -464,7 +465,8 @@
                                 "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
                               },
                               "meta": [],
-                              "outputType": "text"
+                              "outputType": "text",
+                              "output": true
                             }
                           ]
                         }
@@ -494,7 +496,8 @@
                         "value": "User does not exists or user inactive, Please contact technical support team"
                       },
                       "meta": [],
-                      "outputType": "text"
+                      "outputType": "text",
+                      "output": true
                     }
                   ]
                 }
@@ -525,7 +528,8 @@
                 "value": "Unauthorized Access"
               },
               "meta": [],
-              "outputType": "text"
+              "outputType": "text",
+              "output": true
             }
           ]
         }
