@@ -3780,7 +3780,7 @@
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "status",
                                                                                             "type": "text",
-                                                                                            "value": "{{apistatus}}"
+                                                                                            "value": "{{'FAILED'}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
@@ -3868,12 +3868,12 @@
                                                                                           "conditional": null,
                                                                                           "valid": true
                                                                                         },
-                                                                                        "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus}} */, api_logs = :P2 /* {{api_log}} */, is_processed = :P3 /* {{apifiredid}} */, operator_ref = :P4 /* {{remarks}} */, api_ref = :P5 /* {{api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance}} */, closing_balance = :P11 /* {{balance}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
+                                                                                        "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{'FAILED'}} */, api_logs = :P2 /* {{api_log}} */, is_processed = :P3 /* {{apifiredid}} */, operator_ref = :P4 /* {{remarks}} */, api_ref = :P5 /* {{api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance}} */, closing_balance = :P11 /* {{balance}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
                                                                                         "params": [
                                                                                           {
                                                                                             "name": ":P1",
                                                                                             "type": "expression",
-                                                                                            "value": "{{apistatus}}"
+                                                                                            "value": "{{'FAILED'}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P2",
