@@ -1480,12 +1480,13 @@
                               "output": true
                             },
                             {
-                              "name": "refresh",
-                              "module": "sockets",
-                              "action": "refresh",
+                              "name": "api",
+                              "module": "api",
+                              "action": "send",
                               "options": {
-                                "action": "AndroidAPI/LiveTrFrAdmin"
-                              }
+                                "url": "https://portal.swpay.in/api/RefreshTrans"
+                              },
+                              "output": true
                             }
                           ]
                         },
