@@ -1059,7 +1059,7 @@
                                       "module": "core",
                                       "action": "setvalue",
                                       "options": {
-                                        "value": "{{($_POST.recharge_amount.toNumber()*GetCommision.service_charge_per/100)+GetCommision.service_charge_val.toNumber()}}"
+                                        "value": "{{($_POST.recharge_amount.toNumber()*GetCommision.service_charge_per.toNumber()/100)+GetCommision.service_charge_val.toNumber()}}"
                                       },
                                       "meta": [],
                                       "outputType": "text"
@@ -2434,6 +2434,14 @@
                                       "output": true
                                     },
                                     {
+                                      "name": "refresh",
+                                      "module": "sockets",
+                                      "action": "refresh",
+                                      "options": {
+                                        "action": "AndroidAPI/LiveTrFrAdmin"
+                                      }
+                                    },
+                                    {
                                       "name": "AdminChargesAmt",
                                       "module": "core",
                                       "action": "setvalue",
@@ -3150,6 +3158,14 @@
                                                 }
                                               ],
                                               "output": true
+                                            },
+                                            {
+                                              "name": "refresh1",
+                                              "module": "sockets",
+                                              "action": "refresh",
+                                              "options": {
+                                                "action": "AndroidAPI/LiveTrFrAdmin"
+                                              }
                                             },
                                             {
                                               "name": "AdminClosingBalUserUp",
@@ -4071,6 +4087,14 @@
                                                 }
                                               ],
                                               "output": true
+                                            },
+                                            {
+                                              "name": "refresh2",
+                                              "module": "sockets",
+                                              "action": "refresh",
+                                              "options": {
+                                                "action": "AndroidAPI/LiveTrFrAdmin"
+                                              }
                                             },
                                             {
                                               "name": "ResFailed",
