@@ -1,0 +1,1493 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/login.ejs",
+      "linkedForm": "formLogin"
+    },
+    "$_GET": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "username"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "password"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {},
+            "core:number": {}
+          }
+        },
+        "name": "user_type"
+      },
+      {
+        "type": "text",
+        "name": "user_id"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "name"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {},
+            "core:number": {}
+          }
+        },
+        "name": "mobile"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {},
+            "core:number": {}
+          }
+        },
+        "name": "status"
+      },
+      {
+        "type": "number",
+        "options": {
+          "rules": {
+            "core:required": {},
+            "core:number": {}
+          }
+        },
+        "name": "scheme_id"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "aadhar"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "pan"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "address"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "pin"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "state"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "district"
+      },
+      {
+        "type": "text",
+        "name": "scheme0"
+      },
+      {
+        "type": "text",
+        "name": "scheme1"
+      },
+      {
+        "type": "text",
+        "name": "scheme2"
+      },
+      {
+        "type": "text",
+        "name": "scheme3"
+      }
+    ],
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "REMOTE_ADDR"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "trycatch",
+      "options": {
+        "try": {
+          "steps": [
+            {
+              "name": "getSalt",
+              "module": "dbconnector",
+              "action": "single",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "m_users",
+                      "column": "salt",
+                      "alias": "saltvalue"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_tpin"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "md_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "ds_id"
+                    }
+                  ],
+                  "table": {
+                    "name": "m_users"
+                  },
+                  "joins": [],
+                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_GET.username}} */",
+                  "params": [
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P1",
+                      "value": "{{$_GET.username}}"
+                    }
+                  ],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "m_users.user_type",
+                        "field": "m_users.user_type",
+                        "type": "double",
+                        "operator": "between",
+                        "value": [
+                          1,
+                          3
+                        ],
+                        "data": {
+                          "table": "m_users",
+                          "column": "user_type",
+                          "type": "number"
+                        },
+                        "operation": "BETWEEN"
+                      },
+                      {
+                        "id": "m_users.u_status",
+                        "field": "m_users.u_status",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "1",
+                        "data": {
+                          "table": "m_users",
+                          "column": "u_status",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "m_users.blank2",
+                        "field": "m_users.blank2",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "{{$_GET.username}}",
+                        "data": {
+                          "table": "m_users",
+                          "column": "blank2",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  }
+                }
+              },
+              "output": false,
+              "meta": [
+                {
+                  "type": "text",
+                  "name": "saltvalue"
+                },
+                {
+                  "type": "text",
+                  "name": "user_tpin"
+                },
+                {
+                  "type": "number",
+                  "name": "id"
+                },
+                {
+                  "type": "text",
+                  "name": "md_id"
+                },
+                {
+                  "type": "text",
+                  "name": "ds_id"
+                }
+              ],
+              "outputType": "object"
+            },
+            {
+              "name": "",
+              "module": "core",
+              "action": "condition",
+              "options": {
+                "if": "{{getSalt.saltvalue}}",
+                "then": {
+                  "steps": [
+                    {
+                      "name": "GetMdt",
+                      "module": "dbconnector",
+                      "action": "single",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "m_users",
+                              "column": "id",
+                              "alias": "countmdt",
+                              "aggregate": "COUNT"
+                            }
+                          ],
+                          "table": {
+                            "name": "m_users"
+                          },
+                          "joins": [],
+                          "groupBy": [],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "m_users.id",
+                                "field": "m_users.id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{getSalt.md_id.toNumber()}}",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "id",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "m_users.u_status",
+                                "field": "m_users.u_status",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "1",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "u_status",
+                                  "type": "text"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{getSalt.md_id.toNumber()}}"
+                            }
+                          ]
+                        }
+                      },
+                      "output": false,
+                      "meta": [
+                        {
+                          "type": "number",
+                          "name": "countmdt"
+                        }
+                      ],
+                      "outputType": "object"
+                    },
+                    {
+                      "name": "",
+                      "module": "core",
+                      "action": "condition",
+                      "options": {
+                        "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
+                        "then": {
+                          "steps": [
+                            {
+                              "name": "GetDt",
+                              "module": "dbconnector",
+                              "action": "single",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "SELECT",
+                                  "columns": [
+                                    {
+                                      "table": "m_users",
+                                      "column": "id",
+                                      "alias": "countdt",
+                                      "aggregate": "COUNT"
+                                    }
+                                  ],
+                                  "table": {
+                                    "name": "m_users"
+                                  },
+                                  "joins": [],
+                                  "groupBy": [],
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "m_users.id",
+                                        "field": "m_users.id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{getSalt.ds_id.toNumber()}}",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      },
+                                      {
+                                        "id": "m_users.u_status",
+                                        "field": "m_users.u_status",
+                                        "type": "string",
+                                        "operator": "equal",
+                                        "value": "1",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "u_status",
+                                          "type": "text"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
+                                  "params": [
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P1",
+                                      "value": "{{getSalt.ds_id.toNumber()}}"
+                                    }
+                                  ]
+                                }
+                              },
+                              "output": false,
+                              "meta": [
+                                {
+                                  "type": "number",
+                                  "name": "countdt"
+                                }
+                              ],
+                              "outputType": "object"
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
+                                "then": {
+                                  "steps": [
+                                    {
+                                      "name": "identity",
+                                      "module": "auth",
+                                      "action": "login",
+                                      "options": {
+                                        "provider": "securityAndroid",
+                                        "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
+                                        "username": "{{$_GET.username}}",
+                                        "remember": ""
+                                      },
+                                      "output": false,
+                                      "meta": []
+                                    },
+                                    {
+                                      "name": "",
+                                      "module": "core",
+                                      "action": "condition",
+                                      "options": {
+                                        "if": "{{identity}}",
+                                        "then": {
+                                          "steps": [
+                                            {
+                                              "name": "SequenceNo",
+                                              "module": "dbconnector",
+                                              "action": "single",
+                                              "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "type": "SELECT",
+                                                  "columns": [
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "id",
+                                                      "alias": "u_no",
+                                                      "aggregate": "COUNT"
+                                                    }
+                                                  ],
+                                                  "groupBy": [],
+                                                  "table": {
+                                                    "name": "m_users"
+                                                  },
+                                                  "joins": [],
+                                                  "wheres": {
+                                                    "condition": "AND",
+                                                    "rules": [
+                                                      {
+                                                        "id": "m_users.user_type",
+                                                        "field": "m_users.user_type",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": "{{$_GET.user_type}}",
+                                                        "data": {
+                                                          "table": "m_users",
+                                                          "column": "user_type",
+                                                          "type": "text"
+                                                        },
+                                                        "operation": "="
+                                                      }
+                                                    ],
+                                                    "conditional": null,
+                                                    "valid": true
+                                                  },
+                                                  "query": "SELECT COUNT(id) AS u_no\nFROM m_users\nWHERE user_type = :P1 /* {{$_GET.user_type}} */",
+                                                  "params": [
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P1",
+                                                      "value": "{{$_GET.user_type}}"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "output": true,
+                                              "meta": [
+                                                {
+                                                  "type": "number",
+                                                  "name": "u_no"
+                                                }
+                                              ],
+                                              "outputType": "object"
+                                            },
+                                            {
+                                              "name": "GetMdtDt",
+                                              "module": "dbconnector",
+                                              "action": "single",
+                                              "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "type": "SELECT",
+                                                  "columns": [
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "md_id"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "ds_id"
+                                                    }
+                                                  ],
+                                                  "table": {
+                                                    "name": "m_users"
+                                                  },
+                                                  "joins": [],
+                                                  "wheres": {
+                                                    "condition": "AND",
+                                                    "rules": [
+                                                      {
+                                                        "id": "m_users.id",
+                                                        "field": "m_users.id",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": "{{identity}}",
+                                                        "data": {
+                                                          "table": "m_users",
+                                                          "column": "id",
+                                                          "type": "number"
+                                                        },
+                                                        "operation": "="
+                                                      }
+                                                    ],
+                                                    "conditional": null,
+                                                    "valid": true
+                                                  },
+                                                  "query": "SELECT md_id, ds_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
+                                                  "params": [
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P1",
+                                                      "value": "{{identity}}"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "output": true,
+                                              "meta": [
+                                                {
+                                                  "type": "text",
+                                                  "name": "md_id"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "ds_id"
+                                                }
+                                              ],
+                                              "outputType": "object"
+                                            },
+                                            {
+                                              "name": "User",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{$_GET.user_type == 1 ? 'MD10' : $_GET.user_type == 2 ? 'DT20' : $_GET.user_type == 3 ? 'RT30' : 'UN40'}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text"
+                                            },
+                                            {
+                                              "name": "UniqueID",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{User+SequenceNo.u_no.sum('1')}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text"
+                                            },
+                                            {
+                                              "name": "",
+                                              "module": "core",
+                                              "action": "condition",
+                                              "options": {
+                                                "if": "{{$_GET.user_id != ''}}",
+                                                "then": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "EditUsers",
+                                                      "module": "dbupdater",
+                                                      "action": "update",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "update",
+                                                          "values": [
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "user_fname",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.name}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "user_type",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.user_type}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "u_status",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.status}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "updated_by",
+                                                              "type": "text",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "updated_on",
+                                                              "type": "datetime",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "scheme_id",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.scheme_id}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "aadhar_no",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.aadhar}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "pan_no",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.pan}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "address",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.address}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "pin",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.pin}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "state",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.state}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "district",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.district}}"
+                                                            }
+                                                          ],
+                                                          "table": "m_users",
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "id",
+                                                                "field": "id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{$_GET.user_id}}",
+                                                                "data": {
+                                                                  "column": "id"
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "query": "UPDATE m_users\nSET user_fname = :P1 /* {{$_GET.name}} */, user_type = :P2 /* {{$_GET.user_type}} */, u_status = :P3 /* {{$_GET.status}} */, updated_by = :P4 /* {{identity}} */, updated_on = :P5 /* {{NOW}} */, scheme_id = :P6 /* {{$_GET.scheme_id}} */, aadhar_no = :P7 /* {{$_GET.aadhar}} */, pan_no = :P8 /* {{$_GET.pan}} */, address = :P9 /* {{$_GET.address}} */, pin = :P10 /* {{$_GET.pin}} */, state = :P11 /* {{$_GET.state}} */, district = :P12 /* {{$_GET.district}} */\nWHERE id = :P13 /* {{$_GET.user_id}} */",
+                                                          "params": [
+                                                            {
+                                                              "name": ":P1",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.name}}"
+                                                            },
+                                                            {
+                                                              "name": ":P2",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.user_type}}"
+                                                            },
+                                                            {
+                                                              "name": ":P3",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.status}}"
+                                                            },
+                                                            {
+                                                              "name": ":P4",
+                                                              "type": "expression",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "name": ":P5",
+                                                              "type": "expression",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "name": ":P6",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.scheme_id}}"
+                                                            },
+                                                            {
+                                                              "name": ":P7",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.aadhar}}"
+                                                            },
+                                                            {
+                                                              "name": ":P8",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.pan}}"
+                                                            },
+                                                            {
+                                                              "name": ":P9",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.address}}"
+                                                            },
+                                                            {
+                                                              "name": ":P10",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.pin}}"
+                                                            },
+                                                            {
+                                                              "name": ":P11",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.state}}"
+                                                            },
+                                                            {
+                                                              "name": ":P12",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.district}}"
+                                                            },
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P13",
+                                                              "value": "{{$_GET.user_id}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ],
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "",
+                                                      "module": "core",
+                                                      "action": "condition",
+                                                      "options": {
+                                                        "if": "{{$_GET.user_type == 2}}",
+                                                        "then": {
+                                                          "steps": {
+                                                            "name": "schemeFrRT",
+                                                            "module": "dbupdater",
+                                                            "action": "update",
+                                                            "options": {
+                                                              "connection": "postgres_gcpServer",
+                                                              "sql": {
+                                                                "type": "update",
+                                                                "values": [
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "scheme1",
+                                                                    "type": "number",
+                                                                    "value": "{{$_GET.scheme0}}",
+                                                                    "condition": "{{$_GET.scheme0}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "scheme2",
+                                                                    "type": "number",
+                                                                    "value": "{{$_GET.scheme1}}",
+                                                                    "condition": "{{$_GET.scheme1}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "scheme3",
+                                                                    "type": "number",
+                                                                    "value": "{{$_GET.scheme2}}",
+                                                                    "condition": "{{$_GET.scheme2}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "scheme4",
+                                                                    "type": "number",
+                                                                    "value": "{{$_GET.scheme3}}",
+                                                                    "condition": "{{$_GET.scheme3}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "updated_by",
+                                                                    "type": "text",
+                                                                    "value": "{{identity}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "updated_on",
+                                                                    "type": "datetime",
+                                                                    "value": "{{NOW}}"
+                                                                  }
+                                                                ],
+                                                                "table": "t_scheme_user",
+                                                                "wheres": {
+                                                                  "condition": "AND",
+                                                                  "rules": [
+                                                                    {
+                                                                      "id": "user_id",
+                                                                      "field": "user_id",
+                                                                      "type": "double",
+                                                                      "operator": "equal",
+                                                                      "value": "{{$_GET.user_id}}",
+                                                                      "data": {
+                                                                        "column": "user_id"
+                                                                      },
+                                                                      "operation": "="
+                                                                    }
+                                                                  ],
+                                                                  "conditional": null,
+                                                                  "valid": true
+                                                                },
+                                                                "query": "UPDATE t_scheme_user\nSET scheme1 = :P1 /* {{$_GET.scheme0}} */, scheme2 = :P2 /* {{$_GET.scheme1}} */, scheme3 = :P3 /* {{$_GET.scheme2}} */, scheme4 = :P4 /* {{$_GET.scheme3}} */, updated_by = :P5 /* {{identity}} */, updated_on = :P6 /* {{NOW}} */\nWHERE user_id = :P7 /* {{$_GET.user_id}} */",
+                                                                "params": [
+                                                                  {
+                                                                    "name": ":P1",
+                                                                    "type": "expression",
+                                                                    "value": "{{$_GET.scheme0}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P2",
+                                                                    "type": "expression",
+                                                                    "value": "{{$_GET.scheme1}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P3",
+                                                                    "type": "expression",
+                                                                    "value": "{{$_GET.scheme2}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P4",
+                                                                    "type": "expression",
+                                                                    "value": "{{$_GET.scheme3}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P5",
+                                                                    "type": "expression",
+                                                                    "value": "{{identity}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P6",
+                                                                    "type": "expression",
+                                                                    "value": "{{NOW}}"
+                                                                  },
+                                                                  {
+                                                                    "operator": "equal",
+                                                                    "type": "expression",
+                                                                    "name": ":P7",
+                                                                    "value": "{{$_GET.user_id}}"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            },
+                                                            "meta": [
+                                                              {
+                                                                "name": "affected",
+                                                                "type": "number"
+                                                              }
+                                                            ],
+                                                            "output": true
+                                                          }
+                                                        }
+                                                      },
+                                                      "outputType": "boolean"
+                                                    }
+                                                  ]
+                                                },
+                                                "else": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "validate",
+                                                      "module": "validator",
+                                                      "action": "validate",
+                                                      "options": {
+                                                        "data": [
+                                                          {
+                                                            "name": "validate_1",
+                                                            "value": "{{$_GET.mobile}}",
+                                                            "rules": {
+                                                              "db:notexists": {
+                                                                "param": {
+                                                                  "connection": "postgres_gcpServer",
+                                                                  "table": "m_users",
+                                                                  "column": "user_mobile"
+                                                                }
+                                                              }
+                                                            },
+                                                            "fieldName": "mobile"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    {
+                                                      "name": "password",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{NOW.md5(123456).substr(1, 9)}}"
+                                                      },
+                                                      "output": true,
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "AddUser",
+                                                      "module": "dbupdater",
+                                                      "action": "insert",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "insert",
+                                                          "values": [
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "user_id",
+                                                              "type": "text",
+                                                              "value": "{{UniqueID}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "user_fname",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.name}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "user_mobile",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.mobile}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "user_email",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.email.lowercase()}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "password",
+                                                              "type": "text",
+                                                              "value": "{{password.sha256(NOW)}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "salt",
+                                                              "type": "text",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "user_type",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.user_type}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "u_status",
+                                                              "type": "text",
+                                                              "value": "1"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "created_by",
+                                                              "type": "text",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "created_on",
+                                                              "type": "datetime",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "user_lname",
+                                                              "type": "text",
+                                                              "value": "{{'https://github.com/ddo.png'}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "cap_amt",
+                                                              "type": "number",
+                                                              "value": "0"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "balance_amt",
+                                                              "type": "number",
+                                                              "value": "0"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "balance_outstanding",
+                                                              "type": "number",
+                                                              "value": "0"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "aeps_balance",
+                                                              "type": "number",
+                                                              "value": "0"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "scheme_id",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.scheme_id}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "aadhar_no",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.aadhar}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "pan_no",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.pan}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "address",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.address}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "pin",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.pin}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "state",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.state}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "district",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.district}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "blank1",
+                                                              "type": "text",
+                                                              "value": "{{password}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "md_id",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.user_type == 2 ? identity : GetMdtDt.md_id}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "ds_id",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.user_type == 2 ? 0 : identity}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "blank2",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.mobile}}"
+                                                            }
+                                                          ],
+                                                          "table": "m_users",
+                                                          "query": "INSERT INTO m_users\n(user_id, user_fname, user_mobile, user_email, password, salt, user_type, u_status, created_by, created_on, user_lname, cap_amt, balance_amt, balance_outstanding, aeps_balance, scheme_id, aadhar_no, pan_no, address, pin, state, district, blank1, md_id, ds_id, blank2) VALUES (:P1 /* {{UniqueID}} */, :P2 /* {{$_GET.name}} */, :P3 /* {{$_GET.mobile}} */, :P4 /* {{$_GET.email.lowercase()}} */, :P5 /* {{password.sha256(NOW)}} */, :P6 /* {{NOW}} */, :P7 /* {{$_GET.user_type}} */, '1', :P8 /* {{identity}} */, :P9 /* {{NOW}} */, :P10 /* {{'https://github.com/ddo.png'}} */, '0', '0', '0', '0', :P11 /* {{$_GET.scheme_id}} */, :P12 /* {{$_GET.aadhar}} */, :P13 /* {{$_GET.pan}} */, :P14 /* {{$_GET.address}} */, :P15 /* {{$_GET.pin}} */, :P16 /* {{$_GET.state}} */, :P17 /* {{$_GET.district}} */, :P18 /* {{password}} */, :P19 /* {{$_GET.user_type == 2 ? identity : GetMdtDt.md_id}} */, :P20 /* {{$_GET.user_type == 2 ? 0 : identity}} */, :P21 /* {{$_GET.mobile}} */)",
+                                                          "params": [
+                                                            {
+                                                              "name": ":P1",
+                                                              "type": "expression",
+                                                              "value": "{{UniqueID}}"
+                                                            },
+                                                            {
+                                                              "name": ":P2",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.name}}"
+                                                            },
+                                                            {
+                                                              "name": ":P3",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.mobile}}"
+                                                            },
+                                                            {
+                                                              "name": ":P4",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.email.lowercase()}}"
+                                                            },
+                                                            {
+                                                              "name": ":P5",
+                                                              "type": "expression",
+                                                              "value": "{{password.sha256(NOW)}}"
+                                                            },
+                                                            {
+                                                              "name": ":P6",
+                                                              "type": "expression",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "name": ":P7",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.user_type}}"
+                                                            },
+                                                            {
+                                                              "name": ":P8",
+                                                              "type": "expression",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "name": ":P9",
+                                                              "type": "expression",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "name": ":P10",
+                                                              "type": "expression",
+                                                              "value": "{{'https://github.com/ddo.png'}}"
+                                                            },
+                                                            {
+                                                              "name": ":P11",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.scheme_id}}"
+                                                            },
+                                                            {
+                                                              "name": ":P12",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.aadhar}}"
+                                                            },
+                                                            {
+                                                              "name": ":P13",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.pan}}"
+                                                            },
+                                                            {
+                                                              "name": ":P14",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.address}}"
+                                                            },
+                                                            {
+                                                              "name": ":P15",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.pin}}"
+                                                            },
+                                                            {
+                                                              "name": ":P16",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.state}}"
+                                                            },
+                                                            {
+                                                              "name": ":P17",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.district}}"
+                                                            },
+                                                            {
+                                                              "name": ":P18",
+                                                              "type": "expression",
+                                                              "value": "{{password}}"
+                                                            },
+                                                            {
+                                                              "name": ":P19",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.user_type == 2 ? identity : GetMdtDt.md_id}}"
+                                                            },
+                                                            {
+                                                              "name": ":P20",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.user_type == 2 ? 0 : identity}}"
+                                                            },
+                                                            {
+                                                              "name": ":P21",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.mobile}}"
+                                                            }
+                                                          ],
+                                                          "returning": "id"
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "identity",
+                                                          "type": "text"
+                                                        },
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ],
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "",
+                                                      "module": "core",
+                                                      "action": "condition",
+                                                      "options": {
+                                                        "if": "{{$_GET.user_type  == 2}}",
+                                                        "then": {
+                                                          "steps": {
+                                                            "name": "schemeRt",
+                                                            "module": "dbupdater",
+                                                            "action": "insert",
+                                                            "options": {
+                                                              "connection": "postgres_gcpServer",
+                                                              "sql": {
+                                                                "type": "insert",
+                                                                "values": [
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "user_id",
+                                                                    "type": "number",
+                                                                    "value": "{{AddUser.identity}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "scheme1",
+                                                                    "type": "number",
+                                                                    "value": "{{$_GET.scheme0}}",
+                                                                    "condition": "{{$_GET.scheme0}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "scheme2",
+                                                                    "type": "number",
+                                                                    "value": "{{$_GET.scheme1}}",
+                                                                    "condition": "{{$_GET.scheme1}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "scheme3",
+                                                                    "type": "number",
+                                                                    "value": "{{$_GET.scheme2}}",
+                                                                    "condition": "{{$_GET.scheme2}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "scheme4",
+                                                                    "type": "number",
+                                                                    "value": "{{$_GET.scheme3}}",
+                                                                    "condition": "{{$_GET.scheme3}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "created_by",
+                                                                    "type": "text",
+                                                                    "value": "{{identity}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "created_on",
+                                                                    "type": "datetime",
+                                                                    "value": "{{NOW}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_scheme_user",
+                                                                    "column": "for_user_type",
+                                                                    "type": "number",
+                                                                    "value": "3"
+                                                                  }
+                                                                ],
+                                                                "table": "t_scheme_user",
+                                                                "returning": "id",
+                                                                "query": "INSERT INTO t_scheme_user\n(user_id, scheme1, scheme2, scheme3, scheme4, created_by, created_on, for_user_type) VALUES (:P1 /* {{AddUser.identity}} */, :P2 /* {{$_GET.scheme0}} */, :P3 /* {{$_GET.scheme1}} */, :P4 /* {{$_GET.scheme2}} */, :P5 /* {{$_GET.scheme3}} */, :P6 /* {{identity}} */, :P7 /* {{NOW}} */, '3')",
+                                                                "params": [
+                                                                  {
+                                                                    "name": ":P1",
+                                                                    "type": "expression",
+                                                                    "value": "{{AddUser.identity}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P2",
+                                                                    "type": "expression",
+                                                                    "value": "{{$_GET.scheme0}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P3",
+                                                                    "type": "expression",
+                                                                    "value": "{{$_GET.scheme1}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P4",
+                                                                    "type": "expression",
+                                                                    "value": "{{$_GET.scheme2}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P5",
+                                                                    "type": "expression",
+                                                                    "value": "{{$_GET.scheme3}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P6",
+                                                                    "type": "expression",
+                                                                    "value": "{{identity}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P7",
+                                                                    "type": "expression",
+                                                                    "value": "{{NOW}}"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            },
+                                                            "meta": [
+                                                              {
+                                                                "name": "identity",
+                                                                "type": "text"
+                                                              },
+                                                              {
+                                                                "name": "affected",
+                                                                "type": "number"
+                                                              }
+                                                            ],
+                                                            "output": true
+                                                          }
+                                                        }
+                                                      },
+                                                      "outputType": "boolean"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "outputType": "boolean"
+                                            }
+                                          ]
+                                        },
+                                        "else": {
+                                          "steps": {
+                                            "name": "LoginError",
+                                            "module": "core",
+                                            "action": "response",
+                                            "options": {
+                                              "status": 403,
+                                              "data": "Password Mismatched"
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "outputType": "boolean"
+                                    }
+                                  ]
+                                },
+                                "else": {
+                                  "steps": {
+                                    "name": "DtInactive",
+                                    "module": "core",
+                                    "action": "response",
+                                    "options": {
+                                      "status": 403,
+                                      "data": "Your Distributor(DT) inactive, Please contact technical support team"
+                                    }
+                                  }
+                                }
+                              },
+                              "outputType": "boolean"
+                            }
+                          ]
+                        },
+                        "else": {
+                          "steps": {
+                            "name": "MdtInactive",
+                            "module": "core",
+                            "action": "response",
+                            "options": {
+                              "status": 403,
+                              "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                            }
+                          }
+                        }
+                      },
+                      "outputType": "boolean"
+                    }
+                  ]
+                },
+                "else": {
+                  "steps": {
+                    "name": "LoginRes403",
+                    "module": "core",
+                    "action": "response",
+                    "options": {
+                      "status": 403,
+                      "data": "User does not exists or user inactive, Please contact technical support team"
+                    }
+                  }
+                }
+              },
+              "outputType": "boolean",
+              "output": false
+            }
+          ]
+        },
+        "catch": {
+          "steps": {
+            "name": "Unauthorized",
+            "module": "core",
+            "action": "response",
+            "options": {
+              "status": 403,
+              "data": "Do not even try to do this, we are watching & recording your activity!"
+            },
+            "output": true
+          }
+        }
+      }
+    }
+  }
+}
