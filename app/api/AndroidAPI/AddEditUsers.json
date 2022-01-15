@@ -536,7 +536,7 @@
                                                   ]
                                                 }
                                               },
-                                              "output": true,
+                                              "output": false,
                                               "meta": [
                                                 {
                                                   "type": "number",
@@ -598,7 +598,7 @@
                                                   ]
                                                 }
                                               },
-                                              "output": true,
+                                              "output": false,
                                               "meta": [
                                                 {
                                                   "type": "text",
@@ -982,7 +982,7 @@
                                                       "options": {
                                                         "value": "{{NOW.md5(123456).substr(1, 9)}}"
                                                       },
-                                                      "output": true,
+                                                      "output": false,
                                                       "meta": [],
                                                       "outputType": "text"
                                                     },
@@ -1274,7 +1274,18 @@
                                                           "type": "number"
                                                         }
                                                       ],
-                                                      "output": true
+                                                      "output": false
+                                                    },
+                                                    {
+                                                      "name": "Status",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "Success"
+                                                      },
+                                                      "meta": [],
+                                                      "output": true,
+                                                      "outputType": "text"
                                                     },
                                                     {
                                                       "name": "",
@@ -1397,7 +1408,7 @@
                                                                 "type": "number"
                                                               }
                                                             ],
-                                                            "output": true
+                                                            "output": false
                                                           }
                                                         }
                                                       },
@@ -1411,15 +1422,29 @@
                                           ]
                                         },
                                         "else": {
-                                          "steps": {
-                                            "name": "LoginError",
-                                            "module": "core",
-                                            "action": "response",
-                                            "options": {
-                                              "status": 403,
-                                              "data": "Password Mismatched"
+                                          "steps": [
+                                            {
+                                              "name": "Status",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "Password Mismatched"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "LoginError",
+                                              "module": "core",
+                                              "action": "response",
+                                              "options": {
+                                                "status": 403,
+                                                "data": "Password Mismatched"
+                                              },
+                                              "disabled": true
                                             }
-                                          }
+                                          ]
                                         }
                                       },
                                       "outputType": "boolean"
@@ -1427,15 +1452,29 @@
                                   ]
                                 },
                                 "else": {
-                                  "steps": {
-                                    "name": "DtInactive",
-                                    "module": "core",
-                                    "action": "response",
-                                    "options": {
-                                      "status": 403,
-                                      "data": "Your Distributor(DT) inactive, Please contact technical support team"
+                                  "steps": [
+                                    {
+                                      "name": "Status",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "Your Distributor(DT) inactive, Please contact technical support team"
+                                      },
+                                      "meta": [],
+                                      "outputType": "text",
+                                      "output": true
+                                    },
+                                    {
+                                      "name": "DtInactive",
+                                      "module": "core",
+                                      "action": "response",
+                                      "options": {
+                                        "status": 403,
+                                        "data": "Your Distributor(DT) inactive, Please contact technical support team"
+                                      },
+                                      "disabled": true
                                     }
-                                  }
+                                  ]
                                 }
                               },
                               "outputType": "boolean"
@@ -1443,15 +1482,29 @@
                           ]
                         },
                         "else": {
-                          "steps": {
-                            "name": "MdtInactive",
-                            "module": "core",
-                            "action": "response",
-                            "options": {
-                              "status": 403,
-                              "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                          "steps": [
+                            {
+                              "name": "Status",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                              },
+                              "meta": [],
+                              "outputType": "text",
+                              "output": true
+                            },
+                            {
+                              "name": "MdtInactive",
+                              "module": "core",
+                              "action": "response",
+                              "options": {
+                                "status": 403,
+                                "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                              },
+                              "disabled": true
                             }
-                          }
+                          ]
                         }
                       },
                       "outputType": "boolean"
@@ -1459,15 +1512,29 @@
                   ]
                 },
                 "else": {
-                  "steps": {
-                    "name": "LoginRes403",
-                    "module": "core",
-                    "action": "response",
-                    "options": {
-                      "status": 403,
-                      "data": "User does not exists or user inactive, Please contact technical support team"
+                  "steps": [
+                    {
+                      "name": "Status",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "User does not exists or user inactive, Please contact technical support team"
+                      },
+                      "meta": [],
+                      "outputType": "text",
+                      "output": true
+                    },
+                    {
+                      "name": "LoginRes403",
+                      "module": "core",
+                      "action": "response",
+                      "options": {
+                        "status": 403,
+                        "data": "User does not exists or user inactive, Please contact technical support team"
+                      },
+                      "disabled": true
                     }
-                  }
+                  ]
                 }
               },
               "outputType": "boolean",
@@ -1476,16 +1543,30 @@
           ]
         },
         "catch": {
-          "steps": {
-            "name": "Unauthorized",
-            "module": "core",
-            "action": "response",
-            "options": {
-              "status": 403,
-              "data": "Do not even try to do this, we are watching & recording your activity!"
+          "steps": [
+            {
+              "name": "Status",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "Do not even try to do this, we are watching & recording your activity!"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true
             },
-            "output": true
-          }
+            {
+              "name": "Unauthorized",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 403,
+                "data": "Do not even try to do this, we are watching & recording your activity!"
+              },
+              "output": true,
+              "disabled": true
+            }
+          ]
         }
       }
     }
