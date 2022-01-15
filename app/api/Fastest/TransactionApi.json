@@ -1478,6 +1478,15 @@
                                                             "output": false
                                                           },
                                                           {
+                                                            "name": "LiveApi",
+                                                            "module": "api",
+                                                            "action": "send",
+                                                            "options": {
+                                                              "url": "https://portal.swpay.in/api/RefreshTrans"
+                                                            },
+                                                            "output": false
+                                                          },
+                                                          {
                                                             "name": "",
                                                             "module": "core",
                                                             "action": "condition",
@@ -2207,6 +2216,15 @@
                                                                     "output": false
                                                                   },
                                                                   {
+                                                                    "name": "LiveApi",
+                                                                    "module": "api",
+                                                                    "action": "send",
+                                                                    "options": {
+                                                                      "url": "https://portal.swpay.in/api/RefreshTrans"
+                                                                    },
+                                                                    "output": false
+                                                                  },
+                                                                  {
                                                                     "name": "AdminClosingBalUserUp",
                                                                     "module": "dbupdater",
                                                                     "action": "update",
@@ -2637,6 +2655,15 @@
                                                                         "type": "number"
                                                                       }
                                                                     ],
+                                                                    "output": false
+                                                                  },
+                                                                  {
+                                                                    "name": "LiveApi",
+                                                                    "module": "api",
+                                                                    "action": "send",
+                                                                    "options": {
+                                                                      "url": "https://portal.swpay.in/api/RefreshTrans"
+                                                                    },
                                                                     "output": false
                                                                   }
                                                                 ]
