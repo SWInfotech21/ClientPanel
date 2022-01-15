@@ -90,7 +90,7 @@
         "options": {
           "provider": "security"
         },
-        "output": true,
+        "output": false,
         "meta": []
       },
       {
@@ -175,7 +175,7 @@
             }
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "text",
@@ -289,7 +289,7 @@
                           "params": []
                         }
                       },
-                      "output": true,
+                      "output": false,
                       "meta": [
                         {
                           "type": "number",
@@ -372,7 +372,7 @@
                           ]
                         }
                       },
-                      "output": true,
+                      "output": false,
                       "meta": [
                         {
                           "type": "text",
@@ -481,7 +481,7 @@
                           ]
                         }
                       },
-                      "output": true,
+                      "output": false,
                       "meta": [
                         {
                           "type": "text",
@@ -517,7 +517,7 @@
                               "options": {
                                 "value": "{{($_POST.credit_amount.toNumber() * GetCommision.comm_per.toNumber() / 100) +GetCommision.comm_val.toNumber()}}"
                               },
-                              "output": true,
+                              "output": false,
                               "meta": [],
                               "outputType": "text"
                             },
@@ -528,7 +528,7 @@
                               "options": {
                                 "value": "{{($_POST.credit_amount.toNumber() * GetCommision.service_charge_per.toNumber() / 100) +GetCommision.service_charge_val.toNumber()}}"
                               },
-                              "output": true,
+                              "output": false,
                               "meta": [],
                               "outputType": "text"
                             },
@@ -539,7 +539,7 @@
                               "options": {
                                 "value": "{{$_POST.credit_amount.toNumber() +GetCommAmt.toNumber() - GetChargeAmt.toNumber()}}"
                               },
-                              "output": true,
+                              "output": false,
                               "meta": [],
                               "outputType": "text"
                             },
@@ -995,7 +995,7 @@
                                   "type": "number"
                                 }
                               ],
-                              "output": true
+                              "output": false
                             },
                             {
                               "name": "WalletCrBalance",
@@ -1418,7 +1418,7 @@
                                   "type": "number"
                                 }
                               ],
-                              "output": true
+                              "output": false
                             },
                             {
                               "name": "BalUpDebitUser",
@@ -1477,7 +1477,7 @@
                                   "type": "number"
                                 }
                               ],
-                              "output": true
+                              "output": false
                             },
                             {
                               "name": "api",
@@ -1486,7 +1486,7 @@
                               "options": {
                                 "url": "https://portal.swpay.in/api/RefreshTrans"
                               },
-                              "output": true
+                              "output": false
                             }
                           ]
                         },
@@ -1498,8 +1498,7 @@
                             "options": {
                               "status": 403,
                               "data": "Contact admin for set commision and charges and allot scheme"
-                            },
-                            "disabled": true
+                            }
                           }
                         }
                       },
