@@ -1480,7 +1480,7 @@
                               "output": false
                             },
                             {
-                              "name": "LiveApi",
+                              "name": "LiveApiReport",
                               "module": "api",
                               "action": "send",
                               "options": {
