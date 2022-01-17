@@ -82,6 +82,14 @@
         "try": {
           "steps": [
             {
+              "name": "reqid",
+              "module": "core",
+              "action": "setvalue",
+              "options": {},
+              "meta": [],
+              "outputType": "text"
+            },
+            {
               "name": "getSalt",
               "module": "dbconnector",
               "action": "single",
@@ -661,7 +669,8 @@
                                                                       "value": "{{NOW.md5(123456).substr(1, 9)}}"
                                                                     },
                                                                     "meta": [],
-                                                                    "outputType": "text"
+                                                                    "outputType": "text",
+                                                                    "output": true
                                                                   },
                                                                   {
                                                                     "name": "GetAdmin",
@@ -2533,11 +2542,21 @@
                                                                                     "output": false
                                                                                   },
                                                                                   {
-                                                                                    "name": "apistatus",
+                                                                                    "name": "stat",
                                                                                     "module": "core",
                                                                                     "action": "setvalue",
                                                                                     "options": {
                                                                                       "value": "{{xml.Result.status[0]}}"
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "outputType": "text"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "apistatus",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "{{stat == 'SUCCESS' ? 'SUCCESS' : stat == 'PENDING' ? 'PENDING' : 'FAILED'}}"
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text",
@@ -2606,7 +2625,7 @@
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text",
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   }
                                                                                 ]
                                                                               }
@@ -2713,7 +2732,7 @@
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text",
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "api_ref",
@@ -2911,7 +2930,7 @@
                                                                                         "type": "number"
                                                                                       }
                                                                                     ],
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "DrBalanceRTUp",
@@ -2970,7 +2989,7 @@
                                                                                         "type": "number"
                                                                                       }
                                                                                     ],
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "TrUserUpdateRT",
@@ -3029,7 +3048,7 @@
                                                                                         "type": "number"
                                                                                       }
                                                                                     ],
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "AdminCharAmt",
@@ -3201,7 +3220,7 @@
                                                                                         "type": "number"
                                                                                       }
                                                                                     ],
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "LiveApi",
@@ -3271,6 +3290,17 @@
                                                                                     ],
                                                                                     "output": true,
                                                                                     "disabled": true
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "Resp",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": 200
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "output": true,
+                                                                                    "outputType": "number"
                                                                                   },
                                                                                   {
                                                                                     "name": "ResSuccess",
@@ -4171,15 +4201,29 @@
                                                                         ]
                                                                       },
                                                                       "else": {
-                                                                        "steps": {
-                                                                          "name": "RespAPI",
-                                                                          "module": "core",
-                                                                          "action": "response",
-                                                                          "options": {
-                                                                            "status": 401,
-                                                                            "data": "API Inactive/ API Not Forwarded/ Operator API Code Not Updated"
+                                                                        "steps": [
+                                                                          {
+                                                                            "name": "RespAPI",
+                                                                            "module": "core",
+                                                                            "action": "response",
+                                                                            "options": {
+                                                                              "status": 401,
+                                                                              "data": "API Inactive/ API Not Forwarded/ Operator API Code Not Updated"
+                                                                            },
+                                                                            "disabled": true
+                                                                          },
+                                                                          {
+                                                                            "name": "Resp",
+                                                                            "module": "core",
+                                                                            "action": "setvalue",
+                                                                            "options": {
+                                                                              "value": "API Inactive/ API Not Forwarded/ Operator API Code Not Updated"
+                                                                            },
+                                                                            "meta": [],
+                                                                            "output": true,
+                                                                            "outputType": "text"
                                                                           }
-                                                                        }
+                                                                        ]
                                                                       }
                                                                     },
                                                                     "outputType": "boolean"
@@ -4187,15 +4231,28 @@
                                                                 ]
                                                               },
                                                               "else": {
-                                                                "steps": {
-                                                                  "name": "RespCommision",
-                                                                  "module": "core",
-                                                                  "action": "response",
-                                                                  "options": {
-                                                                    "status": 401,
-                                                                    "data": "Please set the commision first for this operator"
+                                                                "steps": [
+                                                                  {
+                                                                    "name": "RespCommision",
+                                                                    "module": "core",
+                                                                    "action": "response",
+                                                                    "options": {
+                                                                      "status": 401,
+                                                                      "data": "Please set the commision first for this operator"
+                                                                    },
+                                                                    "disabled": true
+                                                                  },
+                                                                  {
+                                                                    "name": "Resp",
+                                                                    "module": "core",
+                                                                    "action": "setvalue",
+                                                                    "options": {
+                                                                      "value": "Please set the commision first for this operator"
+                                                                    },
+                                                                    "meta": [],
+                                                                    "outputType": "text"
                                                                   }
-                                                                }
+                                                                ]
                                                               }
                                                             },
                                                             "outputType": "boolean"
@@ -4203,30 +4260,58 @@
                                                         ]
                                                       },
                                                       "else": {
-                                                        "steps": {
-                                                          "name": "RespWalletBal",
-                                                          "module": "core",
-                                                          "action": "response",
-                                                          "options": {
-                                                            "status": 401,
-                                                            "data": "You do not have sufficient wallet balance!"
+                                                        "steps": [
+                                                          {
+                                                            "name": "RespWalletBal",
+                                                            "module": "core",
+                                                            "action": "response",
+                                                            "options": {
+                                                              "status": 401,
+                                                              "data": "You do not have sufficient wallet balance!"
+                                                            },
+                                                            "disabled": true
+                                                          },
+                                                          {
+                                                            "name": "Resp",
+                                                            "module": "core",
+                                                            "action": "setvalue",
+                                                            "options": {
+                                                              "value": "You do not have sufficient wallet balance!"
+                                                            },
+                                                            "meta": [],
+                                                            "output": true,
+                                                            "outputType": "text"
                                                           }
-                                                        }
+                                                        ]
                                                       }
                                                     },
                                                     "outputType": "boolean"
                                                   }
                                                 },
                                                 "else": {
-                                                  "steps": {
-                                                    "name": "RespTPIN",
-                                                    "module": "core",
-                                                    "action": "response",
-                                                    "options": {
-                                                      "status": 401,
-                                                      "data": "T-Pin Mismatched"
+                                                  "steps": [
+                                                    {
+                                                      "name": "RespTPIN",
+                                                      "module": "core",
+                                                      "action": "response",
+                                                      "options": {
+                                                        "status": 401,
+                                                        "data": "T-Pin Mismatched"
+                                                      },
+                                                      "disabled": true
+                                                    },
+                                                    {
+                                                      "name": "Resp",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "T-Pin Mismatched"
+                                                      },
+                                                      "meta": [],
+                                                      "output": true,
+                                                      "outputType": "text"
                                                     }
-                                                  }
+                                                  ]
                                                 }
                                               },
                                               "outputType": "boolean"
@@ -4234,16 +4319,30 @@
                                           ]
                                         },
                                         "else": {
-                                          "steps": {
-                                            "name": "LoginError",
-                                            "module": "core",
-                                            "action": "response",
-                                            "options": {
-                                              "status": 403,
-                                              "data": "Password Mismatched"
+                                          "steps": [
+                                            {
+                                              "name": "LoginError",
+                                              "module": "core",
+                                              "action": "response",
+                                              "options": {
+                                                "status": 403,
+                                                "data": "Password Mismatched"
+                                              },
+                                              "output": true,
+                                              "disabled": true
                                             },
-                                            "output": true
-                                          }
+                                            {
+                                              "name": "Resp",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "Password Mismatched"
+                                              },
+                                              "meta": [],
+                                              "output": true,
+                                              "outputType": "text"
+                                            }
+                                          ]
                                         }
                                       },
                                       "outputType": "boolean"
@@ -4251,16 +4350,30 @@
                                   ]
                                 },
                                 "else": {
-                                  "steps": {
-                                    "name": "DtInactive",
-                                    "module": "core",
-                                    "action": "response",
-                                    "options": {
-                                      "status": 403,
-                                      "data": "Your Distributor(DT) inactive, Please contact technical support team"
+                                  "steps": [
+                                    {
+                                      "name": "DtInactive",
+                                      "module": "core",
+                                      "action": "response",
+                                      "options": {
+                                        "status": 403,
+                                        "data": "Your Distributor(DT) inactive, Please contact technical support team"
+                                      },
+                                      "output": true,
+                                      "disabled": true
                                     },
-                                    "output": true
-                                  }
+                                    {
+                                      "name": "Resp",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "Your Distributor(DT) inactive, Please contact technical support team"
+                                      },
+                                      "meta": [],
+                                      "output": true,
+                                      "outputType": "text"
+                                    }
+                                  ]
                                 }
                               },
                               "outputType": "boolean"
@@ -4268,16 +4381,30 @@
                           ]
                         },
                         "else": {
-                          "steps": {
-                            "name": "MdtInactive",
-                            "module": "core",
-                            "action": "response",
-                            "options": {
-                              "status": 403,
-                              "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                          "steps": [
+                            {
+                              "name": "MdtInactive",
+                              "module": "core",
+                              "action": "response",
+                              "options": {
+                                "status": 403,
+                                "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                              },
+                              "output": true,
+                              "disabled": true
                             },
-                            "output": true
-                          }
+                            {
+                              "name": "Resp",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                              },
+                              "meta": [],
+                              "outputType": "text",
+                              "output": true
+                            }
+                          ]
                         }
                       },
                       "outputType": "boolean"
@@ -4285,16 +4412,30 @@
                   ]
                 },
                 "else": {
-                  "steps": {
-                    "name": "LoginRes403",
-                    "module": "core",
-                    "action": "response",
-                    "options": {
-                      "status": 403,
-                      "data": "User does not exists or user inactive, Please contact technical support team"
+                  "steps": [
+                    {
+                      "name": "LoginRes403",
+                      "module": "core",
+                      "action": "response",
+                      "options": {
+                        "status": 403,
+                        "data": "User does not exists or user inactive, Please contact technical support team"
+                      },
+                      "output": true,
+                      "disabled": true
                     },
-                    "output": true
-                  }
+                    {
+                      "name": "Resp",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "User does not exists or user inactive, Please contact technical support team"
+                      },
+                      "meta": [],
+                      "outputType": "text",
+                      "output": true
+                    }
+                  ]
                 }
               },
               "outputType": "boolean",
@@ -4303,16 +4444,30 @@
           ]
         },
         "catch": {
-          "steps": {
-            "name": "Unauthorized",
-            "module": "core",
-            "action": "response",
-            "options": {
-              "status": 403,
-              "data": "Do not even try to do this, we are watching & recording your activity!"
+          "steps": [
+            {
+              "name": "Resp",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "Do not even try to do this, we are watching & recording your activity!"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true
             },
-            "output": true
-          }
+            {
+              "name": "Unauthorized",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 403,
+                "data": "Do not even try to do this, we are watching & recording your activity!"
+              },
+              "output": true,
+              "disabled": true
+            }
+          ]
         }
       }
     }
