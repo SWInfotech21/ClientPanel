@@ -70,7 +70,7 @@
     <dmx-serverconnect id="scLogout" url="api/Users/logout" noload dmx-on:success="browserMain.goto('login')"></dmx-serverconnect>
     <dmx-datetime id="varDateTime"></dmx-datetime>
     <meta charset="UTF-8">
-    <title>SW Infotech</title>
+    <title>SW Pay</title>
     <dmx-serverconnect id="scLoginUser" url="api/Users/userinfo" dmx-on:unauthorized="browserMain.goto('/login')" dmx-on:forbidden="browserMain.goto('/login')" dmx-on:error="browserMain.goto('/login')"></dmx-serverconnect>
     <!-- Custom Links Starts-->
     <link href="css/custom_styles.css" rel="stylesheet" />
@@ -90,7 +90,7 @@
     <div is="dmx-view" id="content">
 
         <nav class="sb-topnav navbar navbar-expand navbar-dark" dmx-class:bg-success="scLoginUser.data.LoginUserInfo.user_type == 5" dmx-class:bg-primary="scLoginUser.data.LoginUserInfo.user_type == 3" dmx-class:bg-warning="scLoginUser.data.LoginUserInfo.user_type == 2" dmx-class:bg-danger="scLoginUser.data.LoginUserInfo.user_type == 1">
-            <a class="navbar-brand" href="dashboard">SW Infotech</a>
+            <a class="navbar-brand" href="dashboard">SW Pay</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
 
 
@@ -201,7 +201,7 @@
                     <footer class="py-4 bg-light mt-auto">
                         <div class="container-fluid">
                             <div class="d-flex align-items-center justify-content-between small">
-                                <div class="text-muted">Copyright &copy; swinfotech.com 2020</div>
+                                <div class="text-muted">Copyright &copy; SWPAY.IN 2022</div>
                                 <div>
                                     <a href="#">Privacy Policy</a>
                                     &middot;

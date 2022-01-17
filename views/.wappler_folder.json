@@ -110,5 +110,9 @@
   "live-transactions.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "404-not-found.ejs": {
+    "layoutPage": "",
+    "description": ""
   }
 }
