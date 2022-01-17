@@ -76,7 +76,7 @@
                 <div class="tab-pane fade px-2" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <h4 class="mb-4">DTH Recharge</h4>
                     <div class="row">
-                        <form id="formDTHRecharge" method="post" action="#" is="dmx-serverconnect-form" dmx-on:success="scNotif.success('DTH Recharge of Rs. '+formDTHRecharge.rechargeAmount.value+' successful to '+formDTHRecharge.mobileNumber.value); formDTHRecharge.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formDTHRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formDTHRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formDTHRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formDTHRecharge.lastError.response)">
+                        <form id="formDTHRecharge" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
                             <div class="form-group row">
                                 <label class="text-monospace col-3 pe-0">Subscriber ID</label>
                                 <div class="input-group mb-2 col-9 ps-0">
@@ -85,7 +85,7 @@
                                             <i class="fas fa-user-alt"></i>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control" id="inpSubscriber" name="subscriber_id" placeholder="Enter Subscriber Id" maxlength="20" required="" title="Enter Subscriber Id" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid Subscriber Id">
+                                    <input type="text" class="form-control" id="inpSubscriber" name="mobile_number" placeholder="Enter Subscriber Id" maxlength="20" required="" title="Enter Subscriber Id" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid Subscriber Id">
                                 </div>
                             </div>
 
@@ -97,7 +97,7 @@
                                             <i class="fas fa-rupee-sign"></i>
                                         </div>
                                     </div>
-                                    <input type="number" class="form-control" id="inpDTHAmount" name="dth_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
+                                    <input type="number" class="form-control" id="inpDTHAmount" name="recharge_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -108,7 +108,7 @@
                                             <i class="fas fa-check"></i>
                                         </div>
                                     </div>
-                                    <select type="text" class="form-control form-select" id="inp_dth_opname" name="dth_op_code" aria-describedby="inp_opname_help" placeholder="Enter Operator Name" maxlength="50" data-msg-required="Operator Name is required." dmx-on:click="scOperator.load({})" dmx-bind:options="content.scOperator.data.OperatorFetch" optiontext="operator_name" optionvalue="op_id">
+                                    <select type="text" class="form-control form-select" id="inp_dth_opname" name="op_code" aria-describedby="inp_opname_help" placeholder="Enter Operator Name" maxlength="50" data-msg-required="Operator Name is required." dmx-on:click="scOperator.load({})" dmx-bind:options="content.scOperator.data.GetDTHOpFetch" optiontext="operator_name" optionvalue="op_id">
                                         <option value="">Select Operator</option>
 
                                     </select>
@@ -122,7 +122,7 @@
                                             <i class="fas fa-edit"></i>
                                         </div>
                                     </div>
-                                    <input type="number" class="form-control" id="dthTPIN" name="dth_tpin" placeholder="Enter T-Pin" maxlength="10" required="" title="Enter T-Pin" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid t-pin." maxlength="4">
+                                    <input type="number" class="form-control" id="dthTPIN" name="mobile_tpin" placeholder="Enter T-Pin" maxlength="10" required="" title="Enter T-Pin" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid t-pin." maxlength="4">
                                 </div>
                             </div>
                             <div class="col"><button type="submit" class="btn btn-primary pull-left" dmx-bind:disabled="state.executing" id="btndthrecharge">Recharge<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
