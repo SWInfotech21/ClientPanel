@@ -1,684 +1,684 @@
 {
-    "meta": {
-        "options": {
-            "linkedFile": "/views/login.ejs",
-            "linkedForm": "formLogin"
-        },
-        "$_GET": [
+  "meta": {
+    "options": {
+      "linkedFile": "/views/login.ejs",
+      "linkedForm": "formLogin"
+    },
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "username"
+      },
+      {
+        "type": "text",
+        "name": "password"
+      }
+    ],
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "REMOTE_ADDR"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "trycatch",
+      "options": {
+        "try": {
+          "steps": [
             {
-                "type": "text",
-                "name": "username"
+              "name": "getSalt",
+              "module": "dbconnector",
+              "action": "single",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "m_users",
+                      "column": "salt",
+                      "alias": "saltvalue"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_tpin"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "md_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "ds_id"
+                    }
+                  ],
+                  "table": {
+                    "name": "m_users"
+                  },
+                  "joins": [],
+                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_GET.username}} */",
+                  "params": [
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P1",
+                      "value": "{{$_GET.username}}"
+                    }
+                  ],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "m_users.user_type",
+                        "field": "m_users.user_type",
+                        "type": "double",
+                        "operator": "between",
+                        "value": [
+                          1,
+                          3
+                        ],
+                        "data": {
+                          "table": "m_users",
+                          "column": "user_type",
+                          "type": "number"
+                        },
+                        "operation": "BETWEEN"
+                      },
+                      {
+                        "id": "m_users.u_status",
+                        "field": "m_users.u_status",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "1",
+                        "data": {
+                          "table": "m_users",
+                          "column": "u_status",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "m_users.blank2",
+                        "field": "m_users.blank2",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "{{$_GET.username}}",
+                        "data": {
+                          "table": "m_users",
+                          "column": "blank2",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  }
+                }
+              },
+              "output": false,
+              "meta": [
+                {
+                  "type": "text",
+                  "name": "saltvalue"
+                },
+                {
+                  "type": "text",
+                  "name": "user_tpin"
+                },
+                {
+                  "type": "number",
+                  "name": "id"
+                },
+                {
+                  "type": "text",
+                  "name": "md_id"
+                },
+                {
+                  "type": "text",
+                  "name": "ds_id"
+                }
+              ],
+              "outputType": "object"
             },
             {
-                "type": "text",
-                "name": "password"
-            }
-        ],
-        "$_SERVER": [
-            {
-                "type": "text",
-                "name": "REMOTE_ADDR"
-            }
-        ]
-    },
-    "exec": {
-        "steps": {
-            "name": "",
-            "module": "core",
-            "action": "trycatch",
-            "options": {
-                "try": {
-                    "steps": [
+              "name": "",
+              "module": "core",
+              "action": "condition",
+              "options": {
+                "if": "{{getSalt.saltvalue}}",
+                "then": {
+                  "steps": [
+                    {
+                      "name": "GetMdt",
+                      "module": "dbconnector",
+                      "action": "single",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "m_users",
+                              "column": "id",
+                              "alias": "countmdt",
+                              "aggregate": "COUNT"
+                            }
+                          ],
+                          "table": {
+                            "name": "m_users"
+                          },
+                          "joins": [],
+                          "groupBy": [],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "m_users.id",
+                                "field": "m_users.id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{getSalt.md_id.toNumber()}}",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "id",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "m_users.u_status",
+                                "field": "m_users.u_status",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "1",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "u_status",
+                                  "type": "text"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{getSalt.md_id.toNumber()}}"
+                            }
+                          ]
+                        }
+                      },
+                      "output": false,
+                      "meta": [
                         {
-                            "name": "getSalt",
-                            "module": "dbconnector",
-                            "action": "single",
-                            "options": {
+                          "type": "number",
+                          "name": "countmdt"
+                        }
+                      ],
+                      "outputType": "object"
+                    },
+                    {
+                      "name": "",
+                      "module": "core",
+                      "action": "condition",
+                      "options": {
+                        "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
+                        "then": {
+                          "steps": [
+                            {
+                              "name": "GetDt",
+                              "module": "dbconnector",
+                              "action": "single",
+                              "options": {
                                 "connection": "postgres_gcpServer",
                                 "sql": {
-                                    "type": "SELECT",
-                                    "columns": [
-                                        {
-                                            "table": "m_users",
-                                            "column": "salt",
-                                            "alias": "saltvalue"
-                                        },
-                                        {
-                                            "table": "m_users",
-                                            "column": "user_tpin"
-                                        },
-                                        {
-                                            "table": "m_users",
-                                            "column": "id"
-                                        },
-                                        {
-                                            "table": "m_users",
-                                            "column": "md_id"
-                                        },
-                                        {
-                                            "table": "m_users",
-                                            "column": "ds_id"
-                                        }
-                                    ],
-                                    "table": {
-                                        "name": "m_users"
-                                    },
-                                    "joins": [],
-                                    "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_GET.username}} */",
-                                    "params": [
-                                        {
-                                            "operator": "equal",
-                                            "type": "expression",
-                                            "name": ":P1",
-                                            "value": "{{$_GET.username}}"
-                                        }
-                                    ],
-                                    "wheres": {
-                                        "condition": "AND",
-                                        "rules": [
-                                            {
-                                                "id": "m_users.user_type",
-                                                "field": "m_users.user_type",
-                                                "type": "double",
-                                                "operator": "between",
-                                                "value": [
-                                                    1,
-                                                    3
-                                                ],
-                                                "data": {
-                                                    "table": "m_users",
-                                                    "column": "user_type",
-                                                    "type": "number"
-                                                },
-                                                "operation": "BETWEEN"
-                                            },
-                                            {
-                                                "id": "m_users.u_status",
-                                                "field": "m_users.u_status",
-                                                "type": "string",
-                                                "operator": "equal",
-                                                "value": "1",
-                                                "data": {
-                                                    "table": "m_users",
-                                                    "column": "u_status",
-                                                    "type": "text"
-                                                },
-                                                "operation": "="
-                                            },
-                                            {
-                                                "id": "m_users.blank2",
-                                                "field": "m_users.blank2",
-                                                "type": "string",
-                                                "operator": "equal",
-                                                "value": "{{$_GET.username}}",
-                                                "data": {
-                                                    "table": "m_users",
-                                                    "column": "blank2",
-                                                    "type": "text"
-                                                },
-                                                "operation": "="
-                                            }
-                                        ],
-                                        "conditional": null,
-                                        "valid": true
+                                  "type": "SELECT",
+                                  "columns": [
+                                    {
+                                      "table": "m_users",
+                                      "column": "id",
+                                      "alias": "countdt",
+                                      "aggregate": "COUNT"
                                     }
+                                  ],
+                                  "table": {
+                                    "name": "m_users"
+                                  },
+                                  "joins": [],
+                                  "groupBy": [],
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "m_users.id",
+                                        "field": "m_users.id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{getSalt.ds_id.toNumber()}}",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      },
+                                      {
+                                        "id": "m_users.u_status",
+                                        "field": "m_users.u_status",
+                                        "type": "string",
+                                        "operator": "equal",
+                                        "value": "1",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "u_status",
+                                          "type": "text"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
+                                  "params": [
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P1",
+                                      "value": "{{getSalt.ds_id.toNumber()}}"
+                                    }
+                                  ]
                                 }
+                              },
+                              "output": false,
+                              "meta": [
+                                {
+                                  "type": "number",
+                                  "name": "countdt"
+                                }
+                              ],
+                              "outputType": "object"
                             },
-                            "output": false,
-                            "meta": [
-                                {
-                                    "type": "text",
-                                    "name": "saltvalue"
-                                },
-                                {
-                                    "type": "text",
-                                    "name": "user_tpin"
-                                },
-                                {
-                                    "type": "number",
-                                    "name": "id"
-                                },
-                                {
-                                    "type": "text",
-                                    "name": "md_id"
-                                },
-                                {
-                                    "type": "text",
-                                    "name": "ds_id"
-                                }
-                            ],
-                            "outputType": "object"
-                        },
-                        {
-                            "name": "",
-                            "module": "core",
-                            "action": "condition",
-                            "options": {
-                                "if": "{{getSalt.saltvalue}}",
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
                                 "then": {
-                                    "steps": [
-                                        {
-                                            "name": "GetMdt",
-                                            "module": "dbconnector",
-                                            "action": "single",
-                                            "options": {
+                                  "steps": [
+                                    {
+                                      "name": "identity",
+                                      "module": "auth",
+                                      "action": "login",
+                                      "options": {
+                                        "provider": "securityAndroid",
+                                        "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
+                                        "username": "{{$_GET.username}}",
+                                        "remember": ""
+                                      },
+                                      "output": false,
+                                      "meta": []
+                                    },
+                                    {
+                                      "name": "",
+                                      "module": "core",
+                                      "action": "condition",
+                                      "options": {
+                                        "if": "{{identity}}",
+                                        "then": {
+                                          "steps": [
+                                            {
+                                              "name": "LoginUserInfo",
+                                              "module": "dbconnector",
+                                              "action": "single",
+                                              "options": {
                                                 "connection": "postgres_gcpServer",
                                                 "sql": {
-                                                    "type": "SELECT",
-                                                    "columns": [
-                                                        {
-                                                            "table": "m_users",
-                                                            "column": "id",
-                                                            "alias": "countmdt",
-                                                            "aggregate": "COUNT"
-                                                        }
-                                                    ],
-                                                    "table": {
-                                                        "name": "m_users"
+                                                  "type": "SELECT",
+                                                  "columns": [
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "user_id"
                                                     },
-                                                    "joins": [],
-                                                    "groupBy": [],
-                                                    "wheres": {
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "user_fname"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "user_mobile"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "user_email"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "user_tpin"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "cap_amt"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "balance_amt"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "balance_outstanding"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "aeps_limit"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "aeps_balance"
+                                                    },
+                                                    {
+                                                      "table": "mut",
+                                                      "column": "type_name"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "user_type"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "aadhar_no"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "pan_no"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "address"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "pin"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "state"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "district"
+                                                    }
+                                                  ],
+                                                  "table": {
+                                                    "name": "m_users"
+                                                  },
+                                                  "joins": [
+                                                    {
+                                                      "table": "m_user_type",
+                                                      "column": "*",
+                                                      "alias": "mut",
+                                                      "type": "INNER",
+                                                      "clauses": {
                                                         "condition": "AND",
                                                         "rules": [
-                                                            {
-                                                                "id": "m_users.id",
-                                                                "field": "m_users.id",
-                                                                "type": "double",
-                                                                "operator": "equal",
-                                                                "value": "{{getSalt.md_id.toNumber()}}",
-                                                                "data": {
-                                                                    "table": "m_users",
-                                                                    "column": "id",
-                                                                    "type": "number"
-                                                                },
-                                                                "operation": "="
-                                                            },
-                                                            {
-                                                                "id": "m_users.u_status",
-                                                                "field": "m_users.u_status",
-                                                                "type": "string",
-                                                                "operator": "equal",
-                                                                "value": "1",
-                                                                "data": {
-                                                                    "table": "m_users",
-                                                                    "column": "u_status",
-                                                                    "type": "text"
-                                                                },
-                                                                "operation": "="
-                                                            }
-                                                        ],
-                                                        "conditional": null,
-                                                        "valid": true
-                                                    },
-                                                    "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
-                                                    "params": [
-                                                        {
+                                                          {
+                                                            "table": "mut",
+                                                            "column": "id",
                                                             "operator": "equal",
-                                                            "type": "expression",
-                                                            "name": ":P1",
-                                                            "value": "{{getSalt.md_id.toNumber()}}"
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                            "output": false,
-                                            "meta": [
-                                                {
-                                                    "type": "number",
-                                                    "name": "countmdt"
-                                                }
-                                            ],
-                                            "outputType": "object"
-                                        },
-                                        {
-                                            "name": "",
-                                            "module": "core",
-                                            "action": "condition",
-                                            "options": {
-                                                "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
-                                                "then": {
-                                                    "steps": [
-                                                        {
-                                                            "name": "GetDt",
-                                                            "module": "dbconnector",
-                                                            "action": "single",
-                                                            "options": {
-                                                                "connection": "postgres_gcpServer",
-                                                                "sql": {
-                                                                    "type": "SELECT",
-                                                                    "columns": [
-                                                                        {
-                                                                            "table": "m_users",
-                                                                            "column": "id",
-                                                                            "alias": "countdt",
-                                                                            "aggregate": "COUNT"
-                                                                        }
-                                                                    ],
-                                                                    "table": {
-                                                                        "name": "m_users"
-                                                                    },
-                                                                    "joins": [],
-                                                                    "groupBy": [],
-                                                                    "wheres": {
-                                                                        "condition": "AND",
-                                                                        "rules": [
-                                                                            {
-                                                                                "id": "m_users.id",
-                                                                                "field": "m_users.id",
-                                                                                "type": "double",
-                                                                                "operator": "equal",
-                                                                                "value": "{{getSalt.ds_id.toNumber()}}",
-                                                                                "data": {
-                                                                                    "table": "m_users",
-                                                                                    "column": "id",
-                                                                                    "type": "number"
-                                                                                },
-                                                                                "operation": "="
-                                                                            },
-                                                                            {
-                                                                                "id": "m_users.u_status",
-                                                                                "field": "m_users.u_status",
-                                                                                "type": "string",
-                                                                                "operator": "equal",
-                                                                                "value": "1",
-                                                                                "data": {
-                                                                                    "table": "m_users",
-                                                                                    "column": "u_status",
-                                                                                    "type": "text"
-                                                                                },
-                                                                                "operation": "="
-                                                                            }
-                                                                        ],
-                                                                        "conditional": null,
-                                                                        "valid": true
-                                                                    },
-                                                                    "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
-                                                                    "params": [
-                                                                        {
-                                                                            "operator": "equal",
-                                                                            "type": "expression",
-                                                                            "name": ":P1",
-                                                                            "value": "{{getSalt.ds_id.toNumber()}}"
-                                                                        }
-                                                                    ]
-                                                                }
+                                                            "value": {
+                                                              "table": "m_users",
+                                                              "column": "user_type"
                                                             },
-                                                            "output": false,
-                                                            "meta": [
-                                                                {
-                                                                    "type": "number",
-                                                                    "name": "countdt"
-                                                                }
-                                                            ],
-                                                            "outputType": "object"
-                                                        },
-                                                        {
-                                                            "name": "",
-                                                            "module": "core",
-                                                            "action": "condition",
-                                                            "options": {
-                                                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
-                                                                "then": {
-                                                                    "steps": [
-                                                                        {
-                                                                            "name": "identity",
-                                                                            "module": "auth",
-                                                                            "action": "login",
-                                                                            "options": {
-                                                                                "provider": "security",
-                                                                                "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
-                                                                                "username": "{{$_GET.username}}",
-                                                                                "remember": ""
-                                                                            },
-                                                                            "output": false,
-                                                                            "meta": []
-                                                                        },
-                                                                        {
-                                                                            "name": "",
-                                                                            "module": "core",
-                                                                            "action": "condition",
-                                                                            "options": {
-                                                                                "if": "{{identity}}",
-                                                                                "then": {
-                                                                                    "steps": [
-                                                                                        {
-                                                                                            "name": "LoginUserInfo",
-                                                                                            "module": "dbconnector",
-                                                                                            "action": "single",
-                                                                                            "options": {
-                                                                                                "connection": "postgres_gcpServer",
-                                                                                                "sql": {
-                                                                                                    "type": "SELECT",
-                                                                                                    "columns": [
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "user_id"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "user_fname"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "user_mobile"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "user_email"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "user_tpin"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "cap_amt"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "balance_amt"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "balance_outstanding"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "aeps_limit"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "aeps_balance"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "mut",
-                                                                                                            "column": "type_name"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "user_type"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "aadhar_no"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "pan_no"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "address"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "pin"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "state"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "district"
-                                                                                                        }
-                                                                                                    ],
-                                                                                                    "table": {
-                                                                                                        "name": "m_users"
-                                                                                                    },
-                                                                                                    "joins": [
-                                                                                                        {
-                                                                                                            "table": "m_user_type",
-                                                                                                            "column": "*",
-                                                                                                            "alias": "mut",
-                                                                                                            "type": "INNER",
-                                                                                                            "clauses": {
-                                                                                                                "condition": "AND",
-                                                                                                                "rules": [
-                                                                                                                    {
-                                                                                                                        "table": "mut",
-                                                                                                                        "column": "id",
-                                                                                                                        "operator": "equal",
-                                                                                                                        "value": {
-                                                                                                                            "table": "m_users",
-                                                                                                                            "column": "user_type"
-                                                                                                                        },
-                                                                                                                        "operation": "="
-                                                                                                                    }
-                                                                                                                ]
-                                                                                                            }
-                                                                                                        }
-                                                                                                    ],
-                                                                                                    "wheres": {
-                                                                                                        "condition": "AND",
-                                                                                                        "rules": [
-                                                                                                            {
-                                                                                                                "id": "m_users.id",
-                                                                                                                "field": "m_users.id",
-                                                                                                                "type": "double",
-                                                                                                                "operator": "equal",
-                                                                                                                "value": "{{identity}}",
-                                                                                                                "data": {
-                                                                                                                    "table": "m_users",
-                                                                                                                    "column": "id",
-                                                                                                                    "type": "number"
-                                                                                                                },
-                                                                                                                "operation": "="
-                                                                                                            }
-                                                                                                        ],
-                                                                                                        "conditional": null,
-                                                                                                        "valid": true
-                                                                                                    },
-                                                                                                    "query": "SELECT m_users.user_id, m_users.user_fname, m_users.user_mobile, m_users.user_email, m_users.user_tpin, m_users.cap_amt, m_users.balance_amt, m_users.balance_outstanding, m_users.aeps_limit, m_users.aeps_balance, mut.type_name, m_users.user_type, m_users.aadhar_no, m_users.pan_no, m_users.address, m_users.pin, m_users.state, m_users.district\nFROM m_users\nINNER JOIN m_user_type AS mut ON (mut.id = m_users.user_type)\nWHERE m_users.id = :P1 /* {{identity}} */",
-                                                                                                    "params": [
-                                                                                                        {
-                                                                                                            "operator": "equal",
-                                                                                                            "type": "expression",
-                                                                                                            "name": ":P1",
-                                                                                                            "value": "{{identity}}"
-                                                                                                        }
-                                                                                                    ],
-                                                                                                    "orders": []
-                                                                                                }
-                                                                                            },
-                                                                                            "output": true,
-                                                                                            "meta": [
-                                                                                                {
-                                                                                                    "name": "user_id",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "user_fname",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "user_mobile",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "user_email",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "user_tpin",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "cap_amt",
-                                                                                                    "type": "number"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "balance_amt",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "balance_outstanding",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "aeps_limit",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "aeps_balance",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "type_name",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "user_type",
-                                                                                                    "type": "number"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "aadhar_no",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "pan_no",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "address",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "pin",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "state",
-                                                                                                    "type": "text"
-                                                                                                },
-                                                                                                {
-                                                                                                    "name": "district",
-                                                                                                    "type": "text"
-                                                                                                }
-                                                                                            ],
-                                                                                            "outputType": "object"
-                                                                                        },
-                                                                                        {
-                                                                                            "name": "OpeningBalance",
-                                                                                            "module": "dbupdater",
-                                                                                            "action": "custom",
-                                                                                            "options": {
-                                                                                                "connection": "postgres_gcpServer",
-                                                                                                "sql": {
-                                                                                                    "query": "SELECT new_balance as opening_balance FROM tt_balance WHERE user_id=@id AND tr_date::date < now()::date ORDER BY id DESC LIMIT 1;",
-                                                                                                    "params": [
-                                                                                                        {
-                                                                                                            "name": "@id",
-                                                                                                            "value": "{{identity}}"
-                                                                                                        }
-                                                                                                    ]
-                                                                                                }
-                                                                                            },
-                                                                                            "output": true,
-                                                                                            "meta": [],
-                                                                                            "outputType": "array"
-                                                                                        },
-                                                                                        {
-                                                                                            "name": "ClosingBalance",
-                                                                                            "module": "dbupdater",
-                                                                                            "action": "custom",
-                                                                                            "options": {
-                                                                                                "connection": "postgres_gcpServer",
-                                                                                                "sql": {
-                                                                                                    "query": "SELECT new_balance as closing_balance FROM tt_balance WHERE user_id = @id ORDER BY id DESC LIMIT 1;",
-                                                                                                    "params": [
-                                                                                                        {
-                                                                                                            "name": "@id",
-                                                                                                            "value": "{{identity}}"
-                                                                                                        }
-                                                                                                    ]
-                                                                                                }
-                                                                                            },
-                                                                                            "output": true,
-                                                                                            "meta": [],
-                                                                                            "outputType": "array"
-                                                                                        }
-                                                                                    ]
-                                                                                },
-                                                                                "else": {
-                                                                                    "steps": {
-                                                                                        "name": "LoginError",
-                                                                                        "module": "core",
-                                                                                        "action": "response",
-                                                                                        "options": {
-                                                                                            "status": 403,
-                                                                                            "data": "Password Mismatched"
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            },
-                                                                            "outputType": "boolean"
-                                                                        }
-                                                                    ]
-                                                                },
-                                                                "else": {
-                                                                    "steps": {
-                                                                        "name": "DtInactive",
-                                                                        "module": "core",
-                                                                        "action": "response",
-                                                                        "options": {
-                                                                            "status": 403,
-                                                                            "data": "Your Distributor(DT) inactive, Please contact technical support team"
-                                                                        }
-                                                                    }
-                                                                }
-                                                            },
-                                                            "outputType": "boolean"
-                                                        }
-                                                    ]
-                                                },
-                                                "else": {
-                                                    "steps": {
-                                                        "name": "MdtInactive",
-                                                        "module": "core",
-                                                        "action": "response",
-                                                        "options": {
-                                                            "status": 403,
-                                                            "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
-                                                        }
+                                                            "operation": "="
+                                                          }
+                                                        ]
+                                                      }
                                                     }
+                                                  ],
+                                                  "wheres": {
+                                                    "condition": "AND",
+                                                    "rules": [
+                                                      {
+                                                        "id": "m_users.id",
+                                                        "field": "m_users.id",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": "{{identity}}",
+                                                        "data": {
+                                                          "table": "m_users",
+                                                          "column": "id",
+                                                          "type": "number"
+                                                        },
+                                                        "operation": "="
+                                                      }
+                                                    ],
+                                                    "conditional": null,
+                                                    "valid": true
+                                                  },
+                                                  "query": "SELECT m_users.user_id, m_users.user_fname, m_users.user_mobile, m_users.user_email, m_users.user_tpin, m_users.cap_amt, m_users.balance_amt, m_users.balance_outstanding, m_users.aeps_limit, m_users.aeps_balance, mut.type_name, m_users.user_type, m_users.aadhar_no, m_users.pan_no, m_users.address, m_users.pin, m_users.state, m_users.district\nFROM m_users\nINNER JOIN m_user_type AS mut ON (mut.id = m_users.user_type)\nWHERE m_users.id = :P1 /* {{identity}} */",
+                                                  "params": [
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P1",
+                                                      "value": "{{identity}}"
+                                                    }
+                                                  ],
+                                                  "orders": []
                                                 }
+                                              },
+                                              "output": true,
+                                              "meta": [
+                                                {
+                                                  "type": "text",
+                                                  "name": "user_id"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "user_fname"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "user_mobile"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "user_email"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "user_tpin"
+                                                },
+                                                {
+                                                  "type": "number",
+                                                  "name": "cap_amt"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "balance_amt"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "balance_outstanding"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "aeps_limit"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "aeps_balance"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "type_name"
+                                                },
+                                                {
+                                                  "type": "number",
+                                                  "name": "user_type"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "aadhar_no"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "pan_no"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "address"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "pin"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "state"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "district"
+                                                }
+                                              ],
+                                              "outputType": "object"
                                             },
-                                            "outputType": "boolean"
+                                            {
+                                              "name": "OpeningBalance",
+                                              "module": "dbupdater",
+                                              "action": "custom",
+                                              "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "query": "SELECT new_balance as opening_balance FROM tt_balance WHERE user_id=@id AND tr_date::date < now()::date ORDER BY id DESC LIMIT 1;",
+                                                  "params": [
+                                                    {
+                                                      "name": "@id",
+                                                      "value": "{{identity}}"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "output": true,
+                                              "meta": [],
+                                              "outputType": "array"
+                                            },
+                                            {
+                                              "name": "ClosingBalance",
+                                              "module": "dbupdater",
+                                              "action": "custom",
+                                              "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "query": "SELECT new_balance as closing_balance FROM tt_balance WHERE user_id = @id ORDER BY id DESC LIMIT 1;",
+                                                  "params": [
+                                                    {
+                                                      "name": "@id",
+                                                      "value": "{{identity}}"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "output": true,
+                                              "meta": [],
+                                              "outputType": "array"
+                                            }
+                                          ]
+                                        },
+                                        "else": {
+                                          "steps": {
+                                            "name": "LoginError",
+                                            "module": "core",
+                                            "action": "response",
+                                            "options": {
+                                              "status": 403,
+                                              "data": "Password Mismatched"
+                                            }
+                                          }
                                         }
-                                    ]
+                                      },
+                                      "outputType": "boolean"
+                                    }
+                                  ]
                                 },
                                 "else": {
-                                    "steps": {
-                                        "name": "LoginRes403",
-                                        "module": "core",
-                                        "action": "response",
-                                        "options": {
-                                            "status": 403,
-                                            "data": "User does not exists or user inactive, Please contact technical support team"
-                                        }
+                                  "steps": {
+                                    "name": "DtInactive",
+                                    "module": "core",
+                                    "action": "response",
+                                    "options": {
+                                      "status": 403,
+                                      "data": "Your Distributor(DT) inactive, Please contact technical support team"
                                     }
+                                  }
                                 }
-                            },
-                            "outputType": "boolean",
-                            "output": false
-                        }
-                    ]
-                },
-                "catch": {
-                    "steps": {
-                        "name": "Unauthorized",
-                        "module": "core",
-                        "action": "response",
-                        "options": {
-                            "status": 403,
-                            "data": "Do not even try to do this, we are watching & recording your activity!"
+                              },
+                              "outputType": "boolean"
+                            }
+                          ]
                         },
-                        "output": true
+                        "else": {
+                          "steps": {
+                            "name": "MdtInactive",
+                            "module": "core",
+                            "action": "response",
+                            "options": {
+                              "status": 403,
+                              "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                            }
+                          }
+                        }
+                      },
+                      "outputType": "boolean"
                     }
+                  ]
+                },
+                "else": {
+                  "steps": {
+                    "name": "LoginRes403",
+                    "module": "core",
+                    "action": "response",
+                    "options": {
+                      "status": 403,
+                      "data": "User does not exists or user inactive, Please contact technical support team"
+                    }
+                  }
                 }
+              },
+              "outputType": "boolean",
+              "output": false
             }
+          ]
+        },
+        "catch": {
+          "steps": {
+            "name": "Unauthorized",
+            "module": "core",
+            "action": "response",
+            "options": {
+              "status": 403,
+              "data": "Do not even try to do this, we are watching & recording your activity!"
+            },
+            "output": true
+          }
         }
+      }
     }
+  }
 }
