@@ -817,7 +817,7 @@
                                                           "type": "number"
                                                         }
                                                       ],
-                                                      "output": true
+                                                      "output": false
                                                     },
                                                     {
                                                       "name": "Status",
