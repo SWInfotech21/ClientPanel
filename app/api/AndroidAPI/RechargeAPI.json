@@ -3491,7 +3491,7 @@
                                                                                                 "type": "number"
                                                                                               }
                                                                                             ],
-                                                                                            "output": true
+                                                                                            "output": false
                                                                                           },
                                                                                           {
                                                                                             "name": "DtUserBal",
@@ -3550,7 +3550,7 @@
                                                                                                 "type": "number"
                                                                                               }
                                                                                             ],
-                                                                                            "output": true
+                                                                                            "output": false
                                                                                           },
                                                                                           {
                                                                                             "name": "",
@@ -3730,7 +3730,7 @@
                                                                                                         "type": "number"
                                                                                                       }
                                                                                                     ],
-                                                                                                    "output": true
+                                                                                                    "output": false
                                                                                                   },
                                                                                                   {
                                                                                                     "name": "MdtUserAmtUp",
@@ -3789,7 +3789,7 @@
                                                                                                         "type": "number"
                                                                                                       }
                                                                                                     ],
-                                                                                                    "output": true
+                                                                                                    "output": false
                                                                                                   }
                                                                                                 ]
                                                                                               }
@@ -3988,7 +3988,7 @@
                                                                                         "type": "number"
                                                                                       }
                                                                                     ],
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "DrBalanceRT_Failed",
@@ -4171,7 +4171,7 @@
                                                                                         "type": "number"
                                                                                       }
                                                                                     ],
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "LiveApi",
