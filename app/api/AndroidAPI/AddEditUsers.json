@@ -820,6 +820,17 @@
                                                       "output": true
                                                     },
                                                     {
+                                                      "name": "Status",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "Success"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    },
+                                                    {
                                                       "name": "",
                                                       "module": "core",
                                                       "action": "condition",
@@ -942,7 +953,7 @@
                                                                 "type": "number"
                                                               }
                                                             ],
-                                                            "output": true
+                                                            "output": false
                                                           }
                                                         }
                                                       },
