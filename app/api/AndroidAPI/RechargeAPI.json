@@ -2530,7 +2530,7 @@
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text",
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "apistatus",
@@ -2647,7 +2647,7 @@
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text",
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "apistatus",

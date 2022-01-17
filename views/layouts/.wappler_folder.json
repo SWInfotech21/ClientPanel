@@ -4,5 +4,8 @@
   },
   "main.ejs": {
     "description": ""
+  },
+  "test.ejs": {
+    "description": ""
   }
 }
