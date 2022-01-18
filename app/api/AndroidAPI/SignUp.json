@@ -108,7 +108,7 @@
                   "params": []
                 }
               },
-              "output": true,
+              "output": false,
               "meta": [
                 {
                   "type": "number",
@@ -154,7 +154,7 @@
               "options": {
                 "data": [
                   {
-                    "name": "validate_1",
+                    "name": "message",
                     "value": "{{$_GET.mobile}}",
                     "rules": {
                       "db:notexists": {
@@ -167,7 +167,8 @@
                     }
                   }
                 ]
-              }
+              },
+              "output": true
             },
             {
               "name": "UserCreate",
@@ -394,17 +395,28 @@
               "module": "core",
               "action": "setvalue",
               "options": {
-                "value": 200
+                "value": "true"
               },
               "meta": [],
-              "outputType": "number",
+              "outputType": "text",
+              "output": true
+            },
+            {
+              "name": "message",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "Registered Successfully"
+              },
+              "meta": [],
+              "outputType": "text",
               "output": true
             }
           ]
         },
         "catch": {
           "steps": {
-            "name": "Resp",
+            "name": "message",
             "module": "core",
             "action": "setvalue",
             "options": {
