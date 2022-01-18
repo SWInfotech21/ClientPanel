@@ -480,7 +480,7 @@
                                                   }
                                                 }
                                               },
-                                              "output": true,
+                                              "output": false,
                                               "meta": [
                                                 {
                                                   "type": "text",
@@ -594,7 +594,7 @@
                                                                 "params": []
                                                               }
                                                             },
-                                                            "output": true,
+                                                            "output": false,
                                                             "meta": [
                                                               {
                                                                 "type": "number",
@@ -677,7 +677,7 @@
                                                                 ]
                                                               }
                                                             },
-                                                            "output": true,
+                                                            "output": false,
                                                             "meta": [
                                                               {
                                                                 "type": "text",
@@ -786,7 +786,7 @@
                                                                 ]
                                                               }
                                                             },
-                                                            "output": true,
+                                                            "output": false,
                                                             "meta": [
                                                               {
                                                                 "type": "text",
@@ -1301,7 +1301,7 @@
                                                                         "type": "number"
                                                                       }
                                                                     ],
-                                                                    "output": true
+                                                                    "output": false
                                                                   },
                                                                   {
                                                                     "name": "WalletCrBalance",
@@ -1702,7 +1702,7 @@
                                                                         "type": "number"
                                                                       }
                                                                     ],
-                                                                    "output": true
+                                                                    "output": false
                                                                   },
                                                                   {
                                                                     "name": "BalUpDebitUser",
@@ -1761,21 +1761,45 @@
                                                                         "type": "number"
                                                                       }
                                                                     ],
+                                                                    "output": false
+                                                                  },
+                                                                  {
+                                                                    "name": "Resp",
+                                                                    "module": "core",
+                                                                    "action": "setvalue",
+                                                                    "options": {
+                                                                      "value": "Success"
+                                                                    },
+                                                                    "meta": [],
+                                                                    "outputType": "text",
                                                                     "output": true
                                                                   }
                                                                 ]
                                                               },
                                                               "else": {
-                                                                "steps": {
-                                                                  "name": "ErrorCommCh",
-                                                                  "module": "core",
-                                                                  "action": "response",
-                                                                  "options": {
-                                                                    "status": 403,
-                                                                    "data": "Contact admin for set commision and charges and allot scheme"
+                                                                "steps": [
+                                                                  {
+                                                                    "name": "ErrorCommCh",
+                                                                    "module": "core",
+                                                                    "action": "response",
+                                                                    "options": {
+                                                                      "status": 403,
+                                                                      "data": "Contact admin for set commision and charges and allot scheme"
+                                                                    },
+                                                                    "disabled": true
                                                                   },
-                                                                  "disabled": true
-                                                                }
+                                                                  {
+                                                                    "name": "Resp",
+                                                                    "module": "core",
+                                                                    "action": "setvalue",
+                                                                    "options": {
+                                                                      "value": "Contact admin for set commision and charges and allot scheme"
+                                                                    },
+                                                                    "meta": [],
+                                                                    "outputType": "text",
+                                                                    "output": true
+                                                                  }
+                                                                ]
                                                               }
                                                             },
                                                             "outputType": "boolean"
@@ -1783,30 +1807,58 @@
                                                         ]
                                                       },
                                                       "else": {
-                                                        "steps": {
-                                                          "name": "PinMissMatched",
-                                                          "module": "core",
-                                                          "action": "response",
-                                                          "options": {
-                                                            "status": 403,
-                                                            "data": "TPin Mismatched"
+                                                        "steps": [
+                                                          {
+                                                            "name": "PinMissMatched",
+                                                            "module": "core",
+                                                            "action": "response",
+                                                            "options": {
+                                                              "status": 403,
+                                                              "data": "TPin Mismatched"
+                                                            },
+                                                            "disabled": true
+                                                          },
+                                                          {
+                                                            "name": "Resp",
+                                                            "module": "core",
+                                                            "action": "setvalue",
+                                                            "options": {
+                                                              "value": "TPin Mismatched"
+                                                            },
+                                                            "meta": [],
+                                                            "output": true,
+                                                            "outputType": "text"
                                                           }
-                                                        }
+                                                        ]
                                                       }
                                                     },
                                                     "outputType": "boolean"
                                                   }
                                                 },
                                                 "else": {
-                                                  "steps": {
-                                                    "name": "InsufficientBalance",
-                                                    "module": "core",
-                                                    "action": "response",
-                                                    "options": {
-                                                      "status": 403,
-                                                      "data": "Insufficient Wallet Balance"
+                                                  "steps": [
+                                                    {
+                                                      "name": "InsufficientBalance",
+                                                      "module": "core",
+                                                      "action": "response",
+                                                      "options": {
+                                                        "status": 403,
+                                                        "data": "Insufficient Wallet Balance"
+                                                      },
+                                                      "disabled": true
+                                                    },
+                                                    {
+                                                      "name": "Resp",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "Insufficient Wallet Balance"
+                                                      },
+                                                      "meta": [],
+                                                      "output": true,
+                                                      "outputType": "text"
                                                     }
-                                                  }
+                                                  ]
                                                 }
                                               },
                                               "outputType": "boolean"
@@ -1814,15 +1866,29 @@
                                           ]
                                         },
                                         "else": {
-                                          "steps": {
-                                            "name": "LoginError",
-                                            "module": "core",
-                                            "action": "response",
-                                            "options": {
-                                              "status": 403,
-                                              "data": "Password Mismatched"
+                                          "steps": [
+                                            {
+                                              "name": "LoginError",
+                                              "module": "core",
+                                              "action": "response",
+                                              "options": {
+                                                "status": 403,
+                                                "data": "Password Mismatched"
+                                              },
+                                              "disabled": true
+                                            },
+                                            {
+                                              "name": "Resp",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "Password Mismatched"
+                                              },
+                                              "meta": [],
+                                              "output": true,
+                                              "outputType": "text"
                                             }
-                                          }
+                                          ]
                                         }
                                       },
                                       "outputType": "boolean"
@@ -1849,7 +1915,8 @@
                                         "value": "Your Distributor(DT) inactive, Please contact technical support team"
                                       },
                                       "meta": [],
-                                      "outputType": "text"
+                                      "outputType": "text",
+                                      "output": true
                                     }
                                   ]
                                 }
