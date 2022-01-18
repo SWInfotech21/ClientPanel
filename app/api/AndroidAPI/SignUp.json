@@ -56,333 +56,366 @@
     ]
   },
   "exec": {
-    "steps": [
-      {
-        "name": "SequenceNo",
-        "module": "dbconnector",
-        "action": "single",
-        "options": {
-          "connection": "postgres_gcpServer",
-          "sql": {
-            "type": "SELECT",
-            "columns": [
-              {
-                "table": "m_users",
-                "column": "id",
-                "alias": "CountId",
-                "aggregate": "COUNT"
-              }
-            ],
-            "table": {
-              "name": "m_users"
-            },
-            "joins": [],
-            "groupBy": [],
-            "wheres": {
-              "condition": "AND",
-              "rules": [
-                {
-                  "id": "m_users.user_type",
-                  "field": "m_users.user_type",
-                  "type": "double",
-                  "operator": "equal",
-                  "value": 3,
-                  "data": {
-                    "table": "m_users",
-                    "column": "user_type",
-                    "type": "number"
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "trycatch",
+      "options": {
+        "try": {
+          "steps": [
+            {
+              "name": "SequenceNo",
+              "module": "dbconnector",
+              "action": "single",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "m_users",
+                      "column": "id",
+                      "alias": "CountId",
+                      "aggregate": "COUNT"
+                    }
+                  ],
+                  "table": {
+                    "name": "m_users"
                   },
-                  "operation": "="
+                  "joins": [],
+                  "groupBy": [],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "m_users.user_type",
+                        "field": "m_users.user_type",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": 3,
+                        "data": {
+                          "table": "m_users",
+                          "column": "user_type",
+                          "type": "number"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  },
+                  "query": "SELECT COUNT(id) AS CountId\nFROM m_users\nWHERE user_type = 3",
+                  "params": []
+                }
+              },
+              "output": true,
+              "meta": [
+                {
+                  "type": "number",
+                  "name": "CountId"
                 }
               ],
-              "conditional": null,
-              "valid": true
+              "outputType": "object"
             },
-            "query": "SELECT COUNT(id) AS CountId\nFROM m_users\nWHERE user_type = 3",
-            "params": []
-          }
-        },
-        "output": true,
-        "meta": [
-          {
-            "type": "number",
-            "name": "CountId"
-          }
-        ],
-        "outputType": "object"
-      },
-      {
-        "name": "user",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "RT30"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "UniqueId",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{user+SequenceNo.CountId.sum('1')}}"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "validate",
-        "module": "validator",
-        "action": "validate",
-        "options": {
-          "data": [
             {
-              "name": "validate_1",
-              "value": "{{$_GET.mobile}}",
-              "rules": {
-                "db:notexists": {
-                  "param": {
-                    "connection": "postgres_gcpServer",
-                    "table": "m_users",
-                    "column": "user_mobile"
+              "name": "user",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "RT30"
+              },
+              "meta": [],
+              "outputType": "text"
+            },
+            {
+              "name": "UniqueId",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{user+SequenceNo.CountId.sum('1')}}"
+              },
+              "meta": [],
+              "outputType": "text"
+            },
+            {
+              "name": "password",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{NOW.md5(123456).substr(1, 9)}}"
+              },
+              "meta": [],
+              "outputType": "text"
+            },
+            {
+              "name": "validate",
+              "module": "validator",
+              "action": "validate",
+              "options": {
+                "data": [
+                  {
+                    "name": "validate_1",
+                    "value": "{{$_GET.mobile}}",
+                    "rules": {
+                      "db:notexists": {
+                        "param": {
+                          "connection": "postgres_gcpServer",
+                          "table": "m_users",
+                          "column": "user_mobile"
+                        }
+                      }
+                    }
                   }
-                }
+                ]
               }
+            },
+            {
+              "name": "UserCreate",
+              "module": "dbupdater",
+              "action": "insert",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "insert",
+                  "values": [
+                    {
+                      "table": "m_users",
+                      "column": "user_id",
+                      "type": "text",
+                      "value": "{{UniqueId}}"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_fname",
+                      "type": "text",
+                      "value": "{{$_GET.user_name}}"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_lname",
+                      "type": "text",
+                      "value": "{{'https://github.com/cdo.png'}}"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_mobile",
+                      "type": "text",
+                      "value": "{{$_GET.mobile}}"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_email",
+                      "type": "text",
+                      "value": "{{$_GET.email}}"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "password",
+                      "type": "text",
+                      "value": "{{password.sha256(NOW)}}"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "salt",
+                      "type": "text",
+                      "value": "{{NOW}}"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_type",
+                      "type": "number",
+                      "value": "3"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "md_id",
+                      "type": "text",
+                      "value": "0"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "ds_id",
+                      "type": "text",
+                      "value": "0"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "u_status",
+                      "type": "text",
+                      "value": "{{1}}"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "scheme_id",
+                      "type": "number",
+                      "value": "3"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "ip",
+                      "type": "text",
+                      "value": "{{$_SERVER.REMOTE_ADDR}}"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "cap_amt",
+                      "type": "number",
+                      "value": "0"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "balance_amt",
+                      "type": "text",
+                      "value": "0"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "balance_outstanding",
+                      "type": "text",
+                      "value": "0"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "aeps_limit",
+                      "type": "text",
+                      "value": "0"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "aeps_balance",
+                      "type": "text",
+                      "value": "0"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "created_by",
+                      "type": "number",
+                      "value": "12"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "created_on",
+                      "type": "datetime",
+                      "value": "{{NOW}}"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "blank1",
+                      "type": "text",
+                      "value": "{{password}}"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "blank2",
+                      "type": "text",
+                      "value": "{{$_GET.mobile}}"
+                    }
+                  ],
+                  "table": "m_users",
+                  "returning": "id",
+                  "query": "INSERT INTO m_users\n(user_id, user_fname, user_lname, user_mobile, user_email, password, salt, user_type, md_id, ds_id, u_status, scheme_id, ip, cap_amt, balance_amt, balance_outstanding, aeps_limit, aeps_balance, created_by, created_on, blank1, blank2) VALUES (:P1 /* {{UniqueId}} */, :P2 /* {{$_GET.user_name}} */, :P3 /* {{'https://github.com/cdo.png'}} */, :P4 /* {{$_GET.mobile}} */, :P5 /* {{$_GET.email}} */, :P6 /* {{password.sha256(NOW)}} */, :P7 /* {{NOW}} */, '3', '0', '0', :P8 /* {{1}} */, '3', :P9 /* {{$_SERVER.REMOTE_ADDR}} */, '0', '0', '0', '0', '0', '12', :P10 /* {{NOW}} */, :P11 /* {{password}} */, :P12 /* {{$_GET.mobile}} */)",
+                  "params": [
+                    {
+                      "name": ":P1",
+                      "type": "expression",
+                      "value": "{{UniqueId}}"
+                    },
+                    {
+                      "name": ":P2",
+                      "type": "expression",
+                      "value": "{{$_GET.user_name}}"
+                    },
+                    {
+                      "name": ":P3",
+                      "type": "expression",
+                      "value": "{{'https://github.com/cdo.png'}}"
+                    },
+                    {
+                      "name": ":P4",
+                      "type": "expression",
+                      "value": "{{$_GET.mobile}}"
+                    },
+                    {
+                      "name": ":P5",
+                      "type": "expression",
+                      "value": "{{$_GET.email}}"
+                    },
+                    {
+                      "name": ":P6",
+                      "type": "expression",
+                      "value": "{{password.sha256(NOW)}}"
+                    },
+                    {
+                      "name": ":P7",
+                      "type": "expression",
+                      "value": "{{NOW}}"
+                    },
+                    {
+                      "name": ":P8",
+                      "type": "expression",
+                      "value": "{{1}}"
+                    },
+                    {
+                      "name": ":P9",
+                      "type": "expression",
+                      "value": "{{$_SERVER.REMOTE_ADDR}}"
+                    },
+                    {
+                      "name": ":P10",
+                      "type": "expression",
+                      "value": "{{NOW}}"
+                    },
+                    {
+                      "name": ":P11",
+                      "type": "expression",
+                      "value": "{{password}}"
+                    },
+                    {
+                      "name": ":P12",
+                      "type": "expression",
+                      "value": "{{$_GET.mobile}}"
+                    }
+                  ]
+                }
+              },
+              "meta": [
+                {
+                  "name": "identity",
+                  "type": "text"
+                },
+                {
+                  "name": "affected",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "Status",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": 200
+              },
+              "meta": [],
+              "outputType": "number",
+              "output": true
             }
           ]
+        },
+        "catch": {
+          "steps": {
+            "name": "Resp",
+            "module": "core",
+            "action": "setvalue",
+            "options": {
+              "value": "Unusual Activity"
+            },
+            "meta": [],
+            "outputType": "text",
+            "output": true
+          }
         }
-      },
-      {
-        "name": "password",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{NOW.md5(123456).substr(1, 9)}}"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "UserCreate",
-        "module": "dbupdater",
-        "action": "insert",
-        "options": {
-          "connection": "postgres_gcpServer",
-          "sql": {
-            "type": "insert",
-            "values": [
-              {
-                "table": "m_users",
-                "column": "user_id",
-                "type": "text",
-                "value": "{{UniqueId}}"
-              },
-              {
-                "table": "m_users",
-                "column": "user_fname",
-                "type": "text",
-                "value": "{{$_GET.user_name}}"
-              },
-              {
-                "table": "m_users",
-                "column": "user_lname",
-                "type": "text",
-                "value": "{{'https://github.com/cdo.png'}}"
-              },
-              {
-                "table": "m_users",
-                "column": "user_mobile",
-                "type": "text",
-                "value": "{{$_GET.mobile}}"
-              },
-              {
-                "table": "m_users",
-                "column": "user_email",
-                "type": "text",
-                "value": "{{$_GET.email}}"
-              },
-              {
-                "table": "m_users",
-                "column": "password",
-                "type": "text",
-                "value": "{{password.sha256(NOW)}}"
-              },
-              {
-                "table": "m_users",
-                "column": "salt",
-                "type": "text",
-                "value": "{{NOW}}"
-              },
-              {
-                "table": "m_users",
-                "column": "user_type",
-                "type": "number",
-                "value": "3"
-              },
-              {
-                "table": "m_users",
-                "column": "md_id",
-                "type": "text",
-                "value": "0"
-              },
-              {
-                "table": "m_users",
-                "column": "ds_id",
-                "type": "text",
-                "value": "0"
-              },
-              {
-                "table": "m_users",
-                "column": "u_status",
-                "type": "text",
-                "value": "{{1}}"
-              },
-              {
-                "table": "m_users",
-                "column": "scheme_id",
-                "type": "number",
-                "value": "3"
-              },
-              {
-                "table": "m_users",
-                "column": "ip",
-                "type": "text",
-                "value": "{{$_SERVER.REMOTE_ADDR}}"
-              },
-              {
-                "table": "m_users",
-                "column": "cap_amt",
-                "type": "number",
-                "value": "0"
-              },
-              {
-                "table": "m_users",
-                "column": "balance_amt",
-                "type": "text",
-                "value": "0"
-              },
-              {
-                "table": "m_users",
-                "column": "balance_outstanding",
-                "type": "text",
-                "value": "0"
-              },
-              {
-                "table": "m_users",
-                "column": "aeps_limit",
-                "type": "text",
-                "value": "0"
-              },
-              {
-                "table": "m_users",
-                "column": "aeps_balance",
-                "type": "text",
-                "value": "0"
-              },
-              {
-                "table": "m_users",
-                "column": "created_by",
-                "type": "number",
-                "value": "12"
-              },
-              {
-                "table": "m_users",
-                "column": "created_on",
-                "type": "datetime",
-                "value": "{{NOW}}"
-              },
-              {
-                "table": "m_users",
-                "column": "blank1",
-                "type": "text",
-                "value": "{{password}}"
-              },
-              {
-                "table": "m_users",
-                "column": "blank2",
-                "type": "text",
-                "value": "{{$_GET.mobile}}"
-              }
-            ],
-            "table": "m_users",
-            "returning": "id",
-            "query": "INSERT INTO m_users\n(user_id, user_fname, user_lname, user_mobile, user_email, password, salt, user_type, md_id, ds_id, u_status, scheme_id, ip, cap_amt, balance_amt, balance_outstanding, aeps_limit, aeps_balance, created_by, created_on, blank1, blank2) VALUES (:P1 /* {{UniqueId}} */, :P2 /* {{$_GET.user_name}} */, :P3 /* {{'https://github.com/cdo.png'}} */, :P4 /* {{$_GET.mobile}} */, :P5 /* {{$_GET.email}} */, :P6 /* {{password.sha256(NOW)}} */, :P7 /* {{NOW}} */, '3', '0', '0', :P8 /* {{1}} */, '3', :P9 /* {{$_SERVER.REMOTE_ADDR}} */, '0', '0', '0', '0', '0', '12', :P10 /* {{NOW}} */, :P11 /* {{password}} */, :P12 /* {{$_GET.mobile}} */)",
-            "params": [
-              {
-                "name": ":P1",
-                "type": "expression",
-                "value": "{{UniqueId}}"
-              },
-              {
-                "name": ":P2",
-                "type": "expression",
-                "value": "{{$_GET.user_name}}"
-              },
-              {
-                "name": ":P3",
-                "type": "expression",
-                "value": "{{'https://github.com/cdo.png'}}"
-              },
-              {
-                "name": ":P4",
-                "type": "expression",
-                "value": "{{$_GET.mobile}}"
-              },
-              {
-                "name": ":P5",
-                "type": "expression",
-                "value": "{{$_GET.email}}"
-              },
-              {
-                "name": ":P6",
-                "type": "expression",
-                "value": "{{password.sha256(NOW)}}"
-              },
-              {
-                "name": ":P7",
-                "type": "expression",
-                "value": "{{NOW}}"
-              },
-              {
-                "name": ":P8",
-                "type": "expression",
-                "value": "{{1}}"
-              },
-              {
-                "name": ":P9",
-                "type": "expression",
-                "value": "{{$_SERVER.REMOTE_ADDR}}"
-              },
-              {
-                "name": ":P10",
-                "type": "expression",
-                "value": "{{NOW}}"
-              },
-              {
-                "name": ":P11",
-                "type": "expression",
-                "value": "{{password}}"
-              },
-              {
-                "name": ":P12",
-                "type": "expression",
-                "value": "{{$_GET.mobile}}"
-              }
-            ]
-          }
-        },
-        "meta": [
-          {
-            "name": "identity",
-            "type": "text"
-          },
-          {
-            "name": "affected",
-            "type": "number"
-          }
-        ]
       }
-    ]
+    }
   }
 }
