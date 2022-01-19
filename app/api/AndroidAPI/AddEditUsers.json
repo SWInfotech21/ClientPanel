@@ -35,6 +35,15 @@
       },
       {
         "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "firm_name"
+      },
+      {
+        "type": "text",
         "name": "user_id"
       },
       {
@@ -719,6 +728,12 @@
                                                               "column": "district",
                                                               "type": "text",
                                                               "value": "{{$_GET.district}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "blank3",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.firm_name}}"
                                                             }
                                                           ],
                                                           "table": "m_users",
@@ -740,7 +755,7 @@
                                                             "conditional": null,
                                                             "valid": true
                                                           },
-                                                          "query": "UPDATE m_users\nSET user_fname = :P1 /* {{$_GET.name}} */, user_type = :P2 /* {{$_GET.user_type}} */, u_status = :P3 /* {{$_GET.status}} */, updated_by = :P4 /* {{identity}} */, updated_on = :P5 /* {{NOW}} */, scheme_id = :P6 /* {{$_GET.scheme_id}} */, aadhar_no = :P7 /* {{$_GET.aadhar}} */, pan_no = :P8 /* {{$_GET.pan}} */, address = :P9 /* {{$_GET.address}} */, pin = :P10 /* {{$_GET.pin}} */, state = :P11 /* {{$_GET.state}} */, district = :P12 /* {{$_GET.district}} */\nWHERE id = :P13 /* {{$_GET.user_id}} */",
+                                                          "query": "UPDATE m_users\nSET user_fname = :P1 /* {{$_GET.name}} */, user_type = :P2 /* {{$_GET.user_type}} */, u_status = :P3 /* {{$_GET.status}} */, updated_by = :P4 /* {{identity}} */, updated_on = :P5 /* {{NOW}} */, scheme_id = :P6 /* {{$_GET.scheme_id}} */, aadhar_no = :P7 /* {{$_GET.aadhar}} */, pan_no = :P8 /* {{$_GET.pan}} */, address = :P9 /* {{$_GET.address}} */, pin = :P10 /* {{$_GET.pin}} */, state = :P11 /* {{$_GET.state}} */, district = :P12 /* {{$_GET.district}} */, blank3 = :P13 /* {{$_GET.firm_name}} */\nWHERE id = :P14 /* {{$_GET.user_id}} */",
                                                           "params": [
                                                             {
                                                               "name": ":P1",
@@ -803,9 +818,14 @@
                                                               "value": "{{$_GET.district}}"
                                                             },
                                                             {
+                                                              "name": ":P13",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.firm_name}}"
+                                                            },
+                                                            {
                                                               "operator": "equal",
                                                               "type": "expression",
-                                                              "name": ":P13",
+                                                              "name": ":P14",
                                                               "value": "{{$_GET.user_id}}"
                                                             }
                                                           ]
@@ -1161,10 +1181,16 @@
                                                               "column": "blank2",
                                                               "type": "text",
                                                               "value": "{{$_GET.mobile}}"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "blank3",
+                                                              "type": "text",
+                                                              "value": "{{$_GET.firm_name}}"
                                                             }
                                                           ],
                                                           "table": "m_users",
-                                                          "query": "INSERT INTO m_users\n(user_id, user_fname, user_mobile, user_email, password, salt, user_type, u_status, created_by, created_on, user_lname, cap_amt, balance_amt, balance_outstanding, aeps_balance, scheme_id, aadhar_no, pan_no, address, pin, state, district, blank1, md_id, ds_id, blank2) VALUES (:P1 /* {{UniqueID}} */, :P2 /* {{$_GET.name}} */, :P3 /* {{$_GET.mobile}} */, :P4 /* {{$_GET.email.lowercase()}} */, :P5 /* {{password.sha256(NOW)}} */, :P6 /* {{NOW}} */, :P7 /* {{$_GET.user_type}} */, '1', :P8 /* {{identity}} */, :P9 /* {{NOW}} */, :P10 /* {{'https://github.com/ddo.png'}} */, '0', '0', '0', '0', :P11 /* {{$_GET.scheme_id}} */, :P12 /* {{$_GET.aadhar}} */, :P13 /* {{$_GET.pan}} */, :P14 /* {{$_GET.address}} */, :P15 /* {{$_GET.pin}} */, :P16 /* {{$_GET.state}} */, :P17 /* {{$_GET.district}} */, :P18 /* {{password}} */, :P19 /* {{$_GET.user_type == 2 ? identity : GetMdtDt.md_id}} */, :P20 /* {{$_GET.user_type == 2 ? 0 : identity}} */, :P21 /* {{$_GET.mobile}} */)",
+                                                          "query": "INSERT INTO m_users\n(user_id, user_fname, user_mobile, user_email, password, salt, user_type, u_status, created_by, created_on, user_lname, cap_amt, balance_amt, balance_outstanding, aeps_balance, scheme_id, aadhar_no, pan_no, address, pin, state, district, blank1, md_id, ds_id, blank2, blank3) VALUES (:P1 /* {{UniqueID}} */, :P2 /* {{$_GET.name}} */, :P3 /* {{$_GET.mobile}} */, :P4 /* {{$_GET.email.lowercase()}} */, :P5 /* {{password.sha256(NOW)}} */, :P6 /* {{NOW}} */, :P7 /* {{$_GET.user_type}} */, '1', :P8 /* {{identity}} */, :P9 /* {{NOW}} */, :P10 /* {{'https://github.com/ddo.png'}} */, '0', '0', '0', '0', :P11 /* {{$_GET.scheme_id}} */, :P12 /* {{$_GET.aadhar}} */, :P13 /* {{$_GET.pan}} */, :P14 /* {{$_GET.address}} */, :P15 /* {{$_GET.pin}} */, :P16 /* {{$_GET.state}} */, :P17 /* {{$_GET.district}} */, :P18 /* {{password}} */, :P19 /* {{$_GET.user_type == 2 ? identity : GetMdtDt.md_id}} */, :P20 /* {{$_GET.user_type == 2 ? 0 : identity}} */, :P21 /* {{$_GET.mobile}} */, :P22 /* {{$_GET.firm_name}} */)",
                                                           "params": [
                                                             {
                                                               "name": ":P1",
@@ -1270,6 +1296,11 @@
                                                               "name": ":P21",
                                                               "type": "expression",
                                                               "value": "{{$_GET.mobile}}"
+                                                            },
+                                                            {
+                                                              "name": ":P22",
+                                                              "type": "expression",
+                                                              "value": "{{$_GET.firm_name}}"
                                                             }
                                                           ],
                                                           "returning": "id"
