@@ -213,6 +213,15 @@
       {
         "type": "number",
         "name": "id"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "firm_name"
       }
     ]
   },
@@ -476,6 +485,12 @@
                         "column": "district",
                         "type": "text",
                         "value": "{{$_POST.district}}"
+                      },
+                      {
+                        "table": "m_users",
+                        "column": "blank3",
+                        "type": "text",
+                        "value": "{{$_POST.firm_name}}"
                       }
                     ],
                     "table": "m_users",
@@ -497,7 +512,7 @@
                       "conditional": null,
                       "valid": true
                     },
-                    "query": "UPDATE m_users\nSET user_fname = :P1 /* {{$_POST.name}} */, user_type = :P2 /* {{$_POST.user_type}} */, u_status = :P3 /* {{$_POST.status}} */, updated_by = :P4 /* {{identity}} */, updated_on = :P5 /* {{NOW}} */, scheme_id = :P6 /* {{$_POST.scheme_id}} */, aadhar_no = :P7 /* {{$_POST.aadhar}} */, pan_no = :P8 /* {{$_POST.pan}} */, address = :P9 /* {{$_POST.address}} */, pin = :P10 /* {{$_POST.pin}} */, state = :P11 /* {{$_POST.state}} */, district = :P12 /* {{$_POST.district}} */\nWHERE id = :P13 /* {{$_POST.UserId}} */",
+                    "query": "UPDATE m_users\nSET user_fname = :P1 /* {{$_POST.name}} */, user_type = :P2 /* {{$_POST.user_type}} */, u_status = :P3 /* {{$_POST.status}} */, updated_by = :P4 /* {{identity}} */, updated_on = :P5 /* {{NOW}} */, scheme_id = :P6 /* {{$_POST.scheme_id}} */, aadhar_no = :P7 /* {{$_POST.aadhar}} */, pan_no = :P8 /* {{$_POST.pan}} */, address = :P9 /* {{$_POST.address}} */, pin = :P10 /* {{$_POST.pin}} */, state = :P11 /* {{$_POST.state}} */, district = :P12 /* {{$_POST.district}} */, blank3 = :P13 /* {{$_POST.firm_name}} */\nWHERE id = :P14 /* {{$_POST.UserId}} */",
                     "params": [
                       {
                         "name": ":P1",
@@ -560,9 +575,14 @@
                         "value": "{{$_POST.district}}"
                       },
                       {
+                        "name": ":P13",
+                        "type": "expression",
+                        "value": "{{$_POST.firm_name}}"
+                      },
+                      {
                         "operator": "equal",
                         "type": "expression",
-                        "name": ":P13",
+                        "name": ":P14",
                         "value": "{{$_POST.UserId}}"
                       }
                     ]
@@ -907,10 +927,16 @@
                         "column": "blank2",
                         "type": "text",
                         "value": "{{$_POST.mobile}}"
+                      },
+                      {
+                        "table": "m_users",
+                        "column": "blank3",
+                        "type": "text",
+                        "value": "{{$_POST.firm_name}}"
                       }
                     ],
                     "table": "m_users",
-                    "query": "INSERT INTO m_users\n(user_id, user_fname, user_mobile, user_email, password, salt, user_type, u_status, created_by, created_on, user_lname, cap_amt, balance_amt, balance_outstanding, aeps_balance, scheme_id, aadhar_no, pan_no, address, pin, state, district, blank1, md_id, ds_id, blank2) VALUES (:P1 /* {{UniqueID}} */, :P2 /* {{$_POST.name}} */, :P3 /* {{$_POST.mobile}} */, :P4 /* {{$_POST.email.lowercase()}} */, :P5 /* {{password.sha256(NOW)}} */, :P6 /* {{NOW}} */, :P7 /* {{$_POST.user_type}} */, '1', :P8 /* {{identity}} */, :P9 /* {{NOW}} */, :P10 /* {{'https://github.com/ado.png'}} */, '0', '0', '0', '0', :P11 /* {{$_POST.scheme_id}} */, :P12 /* {{$_POST.aadhar}} */, :P13 /* {{$_POST.pan}} */, :P14 /* {{$_POST.address}} */, :P15 /* {{$_POST.pin}} */, :P16 /* {{$_POST.state}} */, :P17 /* {{$_POST.district}} */, :P18 /* {{password}} */, :P19 /* {{$_POST.user_type == 2 ? identity : GetMdtDt.md_id}} */, :P20 /* {{$_POST.user_type == 2 ? 0 : identity}} */, :P21 /* {{$_POST.mobile}} */)",
+                    "query": "INSERT INTO m_users\n(user_id, user_fname, user_mobile, user_email, password, salt, user_type, u_status, created_by, created_on, user_lname, cap_amt, balance_amt, balance_outstanding, aeps_balance, scheme_id, aadhar_no, pan_no, address, pin, state, district, blank1, md_id, ds_id, blank2, blank3) VALUES (:P1 /* {{UniqueID}} */, :P2 /* {{$_POST.name}} */, :P3 /* {{$_POST.mobile}} */, :P4 /* {{$_POST.email.lowercase()}} */, :P5 /* {{password.sha256(NOW)}} */, :P6 /* {{NOW}} */, :P7 /* {{$_POST.user_type}} */, '1', :P8 /* {{identity}} */, :P9 /* {{NOW}} */, :P10 /* {{'https://github.com/ado.png'}} */, '0', '0', '0', '0', :P11 /* {{$_POST.scheme_id}} */, :P12 /* {{$_POST.aadhar}} */, :P13 /* {{$_POST.pan}} */, :P14 /* {{$_POST.address}} */, :P15 /* {{$_POST.pin}} */, :P16 /* {{$_POST.state}} */, :P17 /* {{$_POST.district}} */, :P18 /* {{password}} */, :P19 /* {{$_POST.user_type == 2 ? identity : GetMdtDt.md_id}} */, :P20 /* {{$_POST.user_type == 2 ? 0 : identity}} */, :P21 /* {{$_POST.mobile}} */, :P22 /* {{$_POST.firm_name}} */)",
                     "params": [
                       {
                         "name": ":P1",
@@ -1016,6 +1042,11 @@
                         "name": ":P21",
                         "type": "expression",
                         "value": "{{$_POST.mobile}}"
+                      },
+                      {
+                        "name": ":P22",
+                        "type": "expression",
+                        "value": "{{$_POST.firm_name}}"
                       }
                     ],
                     "returning": "id"

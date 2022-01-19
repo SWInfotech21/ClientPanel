@@ -40,6 +40,7 @@
                     <th>PAN No.</th>
                     <th>Address & PIN</th>
                     <th>State & Dist.</th>
+                    <th>Firm Name</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -57,6 +58,7 @@
                     <td dmx-text="pan_no"></td>
                     <td dmx-text="address+' | '+pin"></td>
                     <td dmx-text="state+' | '+district"></td>
+                    <td dmx-text="firm_name"></td>
                     <td>
                         <a class="sw-col-ar" href="#" dmx-on:click="ddUsers.select(id); " data-bs-toggle="modal" data-bs-target="#modalAddUsers"><i class="fas fa-edit" title="Edit Users"></i></a>
                     </td>
@@ -138,7 +140,10 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <div class="col-12 col-sm-6 row mx-0">
+                        <div class="col-12 col-sm-6 row mx-0"><label for="inp_firm" class="col-form-label">Firm Name</label>
+                            <div class="col-12 px-0">
+                                <input type="text" class="form-control" id="inp_firm" name="firm_name" aria-describedby="inp_firm_help" placeholder="Enter Firm Name" maxlength="100" required="" data-msg-required="Firm Name is required." dmx-bind:value="ddUsers.data.firm_name">
+                            </div>
                             <label for="inp_pin" class="col-form-label">PIN</label>
                             <div class="col-12 px-0">
                                 <input type="number" class="form-control" id="inp_pin" name="pin" aria-describedby="inp_pin_help" placeholder="Enter PIN No." maxlength="100" required="" data-msg-required="PIN is required." dmx-bind:value="ddUsers.data.pin">
