@@ -437,6 +437,22 @@
                       ]
                     },
                     {
+                      "name": "SMSapi",
+                      "module": "api",
+                      "action": "send",
+                      "options": {
+                        "url": "https://mobicomm.dove-sms.com//submitsms.jsp",
+                        "params": {
+                          "user": "{{'Bucks'}}",
+                          "key": "{{'797b4459a9XX'}}",
+                          "mobile": "{{$_GET.mobile}}",
+                          "message": "{{'Congratulations! You have successfully registered with SW PAY with login id '+$_GET.mobile+' and password '+password}}",
+                          "senderid": "{{'BUCKSP'}}"
+                        }
+                      },
+                      "output": false
+                    },
+                    {
                       "name": "Status",
                       "module": "core",
                       "action": "setvalue",
