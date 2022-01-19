@@ -461,17 +461,30 @@
                   ]
                 },
                 "else": {
-                  "steps": {
-                    "name": "message",
-                    "module": "core",
-                    "action": "setvalue",
-                    "options": {
-                      "value": "This user already exists in database."
+                  "steps": [
+                    {
+                      "name": "Status",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "false"
+                      },
+                      "meta": [],
+                      "output": true,
+                      "outputType": "text"
                     },
-                    "meta": [],
-                    "outputType": "text",
-                    "output": true
-                  }
+                    {
+                      "name": "message",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "This user already exists in database."
+                      },
+                      "meta": [],
+                      "outputType": "text",
+                      "output": true
+                    }
+                  ]
                 }
               },
               "outputType": "boolean"
