@@ -12,6 +12,16 @@
       },
       {
         "type": "text",
+        "fieldName": "complainSubject",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "complainSubject"
+      },
+      {
+        "type": "text",
         "fieldName": "complainReason",
         "options": {
           "rules": {
@@ -167,7 +177,7 @@
                         "table": "t_ticket",
                         "column": "support_type",
                         "type": "text",
-                        "value": "{{'Recharge Complain'}}"
+                        "value": "{{$_POST.complainSubject}}"
                       },
                       {
                         "table": "t_ticket",
@@ -202,7 +212,7 @@
                     ],
                     "table": "t_ticket",
                     "returning": "id",
-                    "query": "INSERT INTO t_ticket\n(user_id, support_type, message, tran_id, status, adddate, created_on) VALUES (:P1 /* {{identity}} */, :P2 /* {{'Recharge Complain'}} */, :P3 /* {{$_POST.complainReason}} */, :P4 /* {{$_POST.ComplainId}} */, :P5 /* {{1}} */, :P6 /* {{NOW}} */, :P7 /* {{NOW}} */)",
+                    "query": "INSERT INTO t_ticket\n(user_id, support_type, message, tran_id, status, adddate, created_on) VALUES (:P1 /* {{identity}} */, :P2 /* {{$_POST.complainSubject}} */, :P3 /* {{$_POST.complainReason}} */, :P4 /* {{$_POST.ComplainId}} */, :P5 /* {{1}} */, :P6 /* {{NOW}} */, :P7 /* {{NOW}} */)",
                     "params": [
                       {
                         "name": ":P1",
@@ -212,7 +222,7 @@
                       {
                         "name": ":P2",
                         "type": "expression",
-                        "value": "{{'Recharge Complain'}}"
+                        "value": "{{$_POST.complainSubject}}"
                       },
                       {
                         "name": ":P3",

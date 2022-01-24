@@ -114,5 +114,9 @@
   "404-not-found.ejs": {
     "layoutPage": "",
     "description": ""
+  },
+  "payment-request.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

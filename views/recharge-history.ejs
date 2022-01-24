@@ -1,6 +1,7 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="rechargehistory" appConnect="local" components="{dmxStateManagement:{},dmxDataTraversal:{},dmxBootstrap5TableGenerator:{},dmxBootstrap5PagingGenerator:{},dmxSockets:{},dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" -->
 <meta name="ac:route" content="/recharge-history">
 <dmx-query-manager id="qm"></dmx-query-manager>
+<dmx-serverconnect id="scComplainSub" url="api/Complain/ComplainSubject"></dmx-serverconnect>
 <dmx-serverconnect id="scRechargeTrans" url="api/Reports/RechargeTrans" dmx-param:offset="qm.data.offset" dmx-param:sort="qm.data.sort" dmx-param:dir="qm.data.dir"></dmx-serverconnect>
 <dmx-data-view id="dvRechTrans" dmx-bind:data="scRechargeTrans.data.Recharge.data" filter="((parent_mobile.contains(formSearchUser.Search.value) || api_ref.contains(formSearchUser.Search.value) || parent_fname.lowercase().contains(formSearchUser.Search.value.lowercase())) || user_fname.lowercase().contains(formSearchUser.Search.value.lowercase()) || api_name.contains(formSearchUser.Search.value) || user_mobile.contains(formSearchUser.Search.value) || recharge_number.contains(formSearchUser.Search.value) || operator_name.lowercase().contains(formSearchUser.Search.value.lowercase()) || status.lowercase().contains(formSearchUser.Search.value.lowercase()))" dmx-bind:page="qm.data.offset" pageSize="100"></dmx-data-view>
 <dmx-data-detail id="ddRechargeTrans" dmx-bind:data="dvRechTrans.data" key="table_id"></dmx-data-detail>
@@ -170,6 +171,14 @@
                             <td>{{ddRechargeTrans.data.tr_date.formatDate("dd-MM-yyyy hh:mm:ss A")}}</td>
                         </tr>
                     </table>
+                    <div class="mb-3 row">
+                        <label class="fw-bold">Subject</label>
+                        <div class="col-12">
+                            <select type="text" class="form-control form-select" id="complainSubject" name="complainSubject" required="true" dmx-bind:options="content.scComplainSub.data.SubjectList" optionvalue="subject" optiontext="subject">
+                                <option value="">Select Option</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="mb-3 row">
                         <label class="fw-bold">Reason</label>
                         <div class="col-12">

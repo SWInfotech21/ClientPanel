@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-not-found"
+        }
+      },
+      {
+        "name": "SubjectList",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "complain_subject",
+                "column": "id"
+              },
+              {
+                "table": "complain_subject",
+                "column": "subject"
+              }
+            ],
+            "table": {
+              "name": "complain_subject"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "complain_subject.status",
+                  "field": "complain_subject.status",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "complain_subject",
+                    "column": "status",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "orders": [
+              {
+                "table": "complain_subject",
+                "column": "id",
+                "direction": "ASC",
+                "recid": 1
+              }
+            ],
+            "query": "SELECT id, subject\nFROM complain_subject\nWHERE status = 1\nORDER BY id ASC",
+            "params": []
+          },
+          "connection": "postgres_gcpServer"
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "text",
+            "name": "subject"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

@@ -382,6 +382,14 @@
                                                   {
                                                     "table": "mc",
                                                     "column": "service_charge_val"
+                                                  },
+                                                  {
+                                                    "table": "m_operator",
+                                                    "column": "image"
+                                                  },
+                                                  {
+                                                    "table": "m_operator",
+                                                    "column": "image"
                                                   }
                                                 ],
                                                 "table": {
@@ -480,7 +488,7 @@
                                                     "recid": 1
                                                   }
                                                 ],
-                                                "query": "SELECT m_operator.id AS op_id, m_operator.operator_name, ms.service_name, mc.scheme_id, mc.comm_per, mc.comm_val, mc.service_charge_per, mc.service_charge_val\nFROM m_operator\nINNER JOIN m_service AS ms ON (ms.id = m_operator.service_id) LEFT JOIN m_commission AS mc ON (mc.operator_id = m_operator.id) LEFT JOIN m_users AS mu ON (mu.scheme_id = mc.scheme_id)\nWHERE mu.id = :P1 /* {{identity}} */\nORDER BY m_operator.operator_name DESC",
+                                                "query": "SELECT m_operator.id AS op_id, m_operator.operator_name, ms.service_name, mc.scheme_id, mc.comm_per, mc.comm_val, mc.service_charge_per, mc.service_charge_val, m_operator.image, m_operator.image\nFROM m_operator\nINNER JOIN m_service AS ms ON (ms.id = m_operator.service_id) LEFT JOIN m_commission AS mc ON (mc.operator_id = m_operator.id) LEFT JOIN m_users AS mu ON (mu.scheme_id = mc.scheme_id)\nWHERE mu.id = :P1 /* {{identity}} */\nORDER BY m_operator.operator_name DESC",
                                                 "params": [
                                                   {
                                                     "operator": "equal",
@@ -576,6 +584,10 @@
                                                   {
                                                     "type": "text",
                                                     "name": "service_charge_val"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "image"
                                                   }
                                                 ]
                                               }
