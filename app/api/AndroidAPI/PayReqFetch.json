@@ -350,34 +350,97 @@
                                         "if": "{{identity}}",
                                         "then": {
                                           "steps": {
-                                            "name": "StatementReport",
+                                            "name": "GetRequests",
                                             "module": "dbupdater",
                                             "action": "custom",
                                             "options": {
                                               "connection": "postgres_gcpServer",
                                               "sql": {
-                                                "query": "select tb.old_balance, tb.netamt, tb.new_balance, tb.tr_date, tb.crdr_type, tb.pay_ref_id, tb.remarks,m_op.operator_name, \nms.service_name, tb.status \nfrom tt_balance tb \nleft join tt_recharge_trans as trt on (trt.id = tb.pay_ref_id::int)\nINNER JOIN m_operator AS m_op ON (m_op.id = trt.op_id AND m_op.service_id = trt.service_id) \nINNER JOIN m_service AS ms ON (ms.id = trt.service_id) \nwhere tb.user_id = @user_id and tb.tr_date>= @fromdate and tb.tr_date  <= @todate;",
+                                                "query": "SELECT pr.id, pr.amount, pr.tr_date, pr.tr_time, pr.tr_no, pr.bank_name, pr.branch_name, pr.cheque_no, pr.utr_no, pr.payment_mode, pr.cash_type, pr.remarks, pr.status, pr.request_time, pr.response_time, mu.user_id as parent_id, mu.user_fname as parent_name, mu.user_mobile as parent_mobile FROM payment_request pr \nINNER JOIN m_users mu on (mu.id = pr.pay_user_id)\nwhere pr.req_user_id = @user order by pr.id desc LIMIT 50",
                                                 "params": [
                                                   {
-                                                    "name": "@user_id",
+                                                    "name": "@user",
                                                     "value": "{{identity}}",
-                                                    "test": "1"
-                                                  },
-                                                  {
-                                                    "name": "@fromdate",
-                                                    "value": "{{$_GET.fromdate}}",
-                                                    "test": "2021-10-28 00:00:00"
-                                                  },
-                                                  {
-                                                    "name": "@todate",
-                                                    "value": "{{$_GET.todate}}",
-                                                    "test": "2021-10-28 23:59:59.999"
+                                                    "test": "33"
                                                   }
                                                 ]
                                               }
                                             },
                                             "output": true,
-                                            "meta": [],
+                                            "meta": [
+                                              {
+                                                "name": "id",
+                                                "type": "number"
+                                              },
+                                              {
+                                                "name": "amount",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "tr_date",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "tr_time",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "tr_no",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "bank_name",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "branch_name",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "cheque_no",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "utr_no",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "payment_mode",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "cash_type",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "remarks",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "status",
+                                                "type": "number"
+                                              },
+                                              {
+                                                "name": "request_time",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "response_time",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "parent_id",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "parent_name",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "parent_mobile",
+                                                "type": "text"
+                                              }
+                                            ],
                                             "outputType": "array"
                                           }
                                         },
