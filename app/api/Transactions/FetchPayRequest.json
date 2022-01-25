@@ -1,0 +1,329 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "GetPaymentReq",
+        "module": "dbconnector",
+        "action": "paged",
+        "options": {
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "payment_request",
+                "column": "id"
+              },
+              {
+                "table": "payment_request",
+                "column": "amount"
+              },
+              {
+                "table": "payment_request",
+                "column": "tr_date"
+              },
+              {
+                "table": "payment_request",
+                "column": "tr_time"
+              },
+              {
+                "table": "payment_request",
+                "column": "tr_no"
+              },
+              {
+                "table": "payment_request",
+                "column": "bank_name"
+              },
+              {
+                "table": "payment_request",
+                "column": "branch_name"
+              },
+              {
+                "table": "payment_request",
+                "column": "cheque_no"
+              },
+              {
+                "table": "payment_request",
+                "column": "utr_no"
+              },
+              {
+                "table": "payment_request",
+                "column": "payment_mode"
+              },
+              {
+                "table": "payment_request",
+                "column": "cash_type"
+              },
+              {
+                "table": "payment_request",
+                "column": "remarks"
+              },
+              {
+                "table": "payment_request",
+                "column": "status"
+              },
+              {
+                "table": "payment_request",
+                "column": "request_time"
+              },
+              {
+                "table": "payment_request",
+                "column": "response_time"
+              },
+              {
+                "table": "m_user",
+                "column": "user_id",
+                "alias": "parent_userid"
+              },
+              {
+                "table": "m_user",
+                "column": "user_fname",
+                "alias": "parent_name"
+              },
+              {
+                "table": "m_user",
+                "column": "user_mobile",
+                "alias": "parent_mobile"
+              }
+            ],
+            "table": {
+              "name": "payment_request"
+            },
+            "joins": [
+              {
+                "table": "m_users",
+                "column": "*",
+                "alias": "m_user",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "m_user",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "payment_request",
+                        "column": "pay_user_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                }
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "payment_request.req_user_id",
+                  "field": "payment_request.req_user_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "payment_request",
+                    "column": "req_user_id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "orders": [
+              {
+                "table": "payment_request",
+                "column": "id",
+                "direction": "DESC"
+              }
+            ],
+            "query": "SELECT payment_request.id, payment_request.amount, payment_request.tr_date, payment_request.tr_time, payment_request.tr_no, payment_request.bank_name, payment_request.branch_name, payment_request.cheque_no, payment_request.utr_no, payment_request.payment_mode, payment_request.cash_type, payment_request.remarks, payment_request.status, payment_request.request_time, payment_request.response_time, m_user.user_id AS parent_userid, m_user.user_fname AS parent_name, m_user.user_mobile AS parent_mobile\nFROM payment_request\nINNER JOIN m_users AS m_user ON (m_user.id = payment_request.pay_user_id)\nWHERE payment_request.req_user_id = :P1 /* {{identity}} */\nORDER BY payment_request.id DESC",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ]
+          },
+          "connection": "postgres_gcpServer"
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "offset",
+            "type": "number"
+          },
+          {
+            "name": "limit",
+            "type": "number"
+          },
+          {
+            "name": "total",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "type": "object",
+            "sub": [
+              {
+                "name": "offset",
+                "type": "object",
+                "sub": [
+                  {
+                    "name": "first",
+                    "type": "number"
+                  },
+                  {
+                    "name": "prev",
+                    "type": "number"
+                  },
+                  {
+                    "name": "next",
+                    "type": "number"
+                  },
+                  {
+                    "name": "last",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "current",
+                "type": "number"
+              },
+              {
+                "name": "total",
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "name": "data",
+            "type": "array",
+            "sub": [
+              {
+                "type": "number",
+                "name": "id"
+              },
+              {
+                "type": "text",
+                "name": "amount"
+              },
+              {
+                "type": "date",
+                "name": "tr_date"
+              },
+              {
+                "type": "time",
+                "name": "tr_time"
+              },
+              {
+                "type": "text",
+                "name": "tr_no"
+              },
+              {
+                "type": "text",
+                "name": "bank_name"
+              },
+              {
+                "type": "text",
+                "name": "branch_name"
+              },
+              {
+                "type": "text",
+                "name": "cheque_no"
+              },
+              {
+                "type": "text",
+                "name": "utr_no"
+              },
+              {
+                "type": "text",
+                "name": "payment_mode"
+              },
+              {
+                "type": "text",
+                "name": "cash_type"
+              },
+              {
+                "type": "text",
+                "name": "remarks"
+              },
+              {
+                "type": "number",
+                "name": "status"
+              },
+              {
+                "type": "datetime",
+                "name": "request_time"
+              },
+              {
+                "type": "datetime",
+                "name": "response_time"
+              },
+              {
+                "type": "text",
+                "name": "parent_userid"
+              },
+              {
+                "type": "text",
+                "name": "parent_name"
+              },
+              {
+                "type": "text",
+                "name": "parent_mobile"
+              }
+            ]
+          }
+        ],
+        "outputType": "object"
+      }
+    ]
+  }
+}

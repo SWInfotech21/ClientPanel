@@ -1,0 +1,405 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/payment-request.ejs",
+      "linkedForm": "formPayReq"
+    },
+    "$_POST": [
+      {
+        "type": "number",
+        "fieldName": "Amount",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            },
+            "core:number": {
+              "param": ""
+            }
+          }
+        },
+        "name": "Amount"
+      },
+      {
+        "type": "date",
+        "fieldName": "Date",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            },
+            "core:date": {}
+          }
+        },
+        "name": "Date"
+      },
+      {
+        "type": "text",
+        "fieldName": "Time",
+        "options": {
+          "rules": {}
+        },
+        "name": "Time"
+      },
+      {
+        "type": "text",
+        "fieldName": "Tr_No",
+        "options": {
+          "rules": {}
+        },
+        "name": "Tr_No"
+      },
+      {
+        "type": "text",
+        "fieldName": "Bank_Name",
+        "options": {
+          "rules": {}
+        },
+        "name": "Bank_Name"
+      },
+      {
+        "type": "text",
+        "fieldName": "Branch_Name",
+        "options": {
+          "rules": {}
+        },
+        "name": "Branch_Name"
+      },
+      {
+        "type": "text",
+        "fieldName": "ChequeNo",
+        "options": {
+          "rules": {}
+        },
+        "name": "ChequeNo"
+      },
+      {
+        "type": "text",
+        "fieldName": "UTR_NO",
+        "options": {
+          "rules": {}
+        },
+        "name": "UTR_NO"
+      },
+      {
+        "type": "text",
+        "fieldName": "PaymentMode",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "PaymentMode"
+      },
+      {
+        "type": "text",
+        "fieldName": "CashType",
+        "name": "CashType"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "GetParent",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_users",
+                "column": "created_by"
+              }
+            ],
+            "table": {
+              "name": "m_users"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_users.id",
+                  "field": "m_users.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "m_users",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "m_users.u_status",
+                  "field": "m_users.u_status",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "1",
+                  "data": {
+                    "table": "m_users",
+                    "column": "u_status",
+                    "type": "text"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT created_by\nFROM m_users\nWHERE id = :P1 /* {{identity}} */ AND u_status = '1'",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "created_by"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{GetParent.created_by}}",
+          "then": {
+            "steps": {
+              "name": "PaymentRequest",
+              "module": "dbupdater",
+              "action": "insert",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "insert",
+                  "values": [
+                    {
+                      "table": "payment_request",
+                      "column": "pay_user_id",
+                      "type": "number",
+                      "value": "{{GetParent.created_by}}"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "req_user_id",
+                      "type": "number",
+                      "value": "{{identity}}"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "amount",
+                      "type": "text",
+                      "value": "{{$_POST.Amount}}"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "tr_date",
+                      "type": "date",
+                      "value": "{{$_POST.Date}}"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "tr_time",
+                      "type": "time",
+                      "value": "{{$_POST.Time}}"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "tr_no",
+                      "type": "text",
+                      "value": "{{$_POST.Tr_No}}",
+                      "condition": "{{$_POST.Tr_No}}"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "bank_name",
+                      "type": "text",
+                      "value": "{{$_POST.Bank_Name}}",
+                      "condition": "{{$_POST.Bank_Name}}"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "branch_name",
+                      "type": "text",
+                      "value": "{{$_POST.Branch_Name}}",
+                      "condition": "{{$_POST.Branch_Name}}"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "cheque_no",
+                      "type": "text",
+                      "value": "{{$_POST.ChequeNo}}",
+                      "condition": "{{$_POST.ChequeNo}}"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "utr_no",
+                      "type": "text",
+                      "value": "{{$_POST.UTR_NO}}",
+                      "condition": "{{$_POST.UTR_NO}}"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "payment_mode",
+                      "type": "text",
+                      "value": "{{$_POST.PaymentMode}}"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "cash_type",
+                      "type": "text",
+                      "value": "{{$_POST.CashType}}",
+                      "condition": "{{$_POST.CashType}}"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "status",
+                      "type": "number",
+                      "value": "1"
+                    },
+                    {
+                      "table": "payment_request",
+                      "column": "request_time",
+                      "type": "datetime",
+                      "value": "{{NOW}}"
+                    }
+                  ],
+                  "table": "payment_request",
+                  "returning": "id",
+                  "query": "INSERT INTO payment_request\n(pay_user_id, req_user_id, amount, tr_date, tr_time, tr_no, bank_name, branch_name, cheque_no, utr_no, payment_mode, cash_type, status, request_time) VALUES (:P1 /* {{GetParent.created_by}} */, :P2 /* {{identity}} */, :P3 /* {{$_POST.Amount}} */, :P4 /* {{$_POST.Date}} */, :P5 /* {{$_POST.Time}} */, :P6 /* {{$_POST.Tr_No}} */, :P7 /* {{$_POST.Bank_Name}} */, :P8 /* {{$_POST.Branch_Name}} */, :P9 /* {{$_POST.ChequeNo}} */, :P10 /* {{$_POST.UTR_NO}} */, :P11 /* {{$_POST.PaymentMode}} */, :P12 /* {{$_POST.CashType}} */, '1', :P13 /* {{NOW}} */)",
+                  "params": [
+                    {
+                      "name": ":P1",
+                      "type": "expression",
+                      "value": "{{GetParent.created_by}}"
+                    },
+                    {
+                      "name": ":P2",
+                      "type": "expression",
+                      "value": "{{identity}}"
+                    },
+                    {
+                      "name": ":P3",
+                      "type": "expression",
+                      "value": "{{$_POST.Amount}}"
+                    },
+                    {
+                      "name": ":P4",
+                      "type": "expression",
+                      "value": "{{$_POST.Date}}"
+                    },
+                    {
+                      "name": ":P5",
+                      "type": "expression",
+                      "value": "{{$_POST.Time}}"
+                    },
+                    {
+                      "name": ":P6",
+                      "type": "expression",
+                      "value": "{{$_POST.Tr_No}}"
+                    },
+                    {
+                      "name": ":P7",
+                      "type": "expression",
+                      "value": "{{$_POST.Bank_Name}}"
+                    },
+                    {
+                      "name": ":P8",
+                      "type": "expression",
+                      "value": "{{$_POST.Branch_Name}}"
+                    },
+                    {
+                      "name": ":P9",
+                      "type": "expression",
+                      "value": "{{$_POST.ChequeNo}}"
+                    },
+                    {
+                      "name": ":P10",
+                      "type": "expression",
+                      "value": "{{$_POST.UTR_NO}}"
+                    },
+                    {
+                      "name": ":P11",
+                      "type": "expression",
+                      "value": "{{$_POST.PaymentMode}}"
+                    },
+                    {
+                      "name": ":P12",
+                      "type": "expression",
+                      "value": "{{$_POST.CashType}}"
+                    },
+                    {
+                      "name": ":P13",
+                      "type": "expression",
+                      "value": "{{NOW}}"
+                    }
+                  ]
+                }
+              },
+              "meta": [
+                {
+                  "name": "identity",
+                  "type": "text"
+                },
+                {
+                  "name": "affected",
+                  "type": "number"
+                }
+              ],
+              "output": true
+            }
+          },
+          "else": {
+            "steps": {
+              "name": "Response",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "data": "Parent User Not Found! Contact Admin",
+                "status": 401
+              }
+            }
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
+}

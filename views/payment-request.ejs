@@ -1,7 +1,138 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="paymentrequest" appConnect="local" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="paymentrequest" appConnect="local" components="{dmxValidator:{},dmxBootstrap5TableGenerator:{}}" -->
 <meta name="ac:route" content="/payment-request">
-<div class="container mt-3">
-    <div class="row">
-        <h4 class="mb-4">Payment Request</h4>
+<dmx-serverconnect id="scPaymentReq" url="api/Transactions/FetchPayRequest" dmx-param:limit="50"></dmx-serverconnect>
+<div class="container-fluid mt-3">
+    <h1 class="mt-4">Payment Request
+        <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scPaymentReq.state.executing"></span>
+    </h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Raise Request</li>
+    </ol>
+    <form is="dmx-serverconnect-form" id="formPayReq" method="post" action="api/Transactions/PaymentRequest" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('Payment Request Submitted Successfully'); formPayReq.reset();scPaymentReq.load({limit: 50});" dmx-on:error="scNotif.warning(content.formPayReq.lastError.response);" dmx-on:forbidden="scNotif.warning(content.formPayReq.lastError.response)" dmx-on:unauthorized="scNotif.warning(content.formPayReq.lastError.response)">
+        <div class="row mb-3 mx-0">
+            <div class="col-12 col-sm-6 col-md-4">
+                <label class="col-12">Payment Mode</label>
+                <div class="col-12">
+                    <select class="form-select" id="PaymentMode" name="PaymentMode" required="">
+                        <option value="">Select</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="RTGS">RTGS</option>
+                        <option value="NEFT">NEFT</option>
+                        <option value="Fund Transfer">Fund Transfer</option>
+                        <option value="IMPS">IMPS</option>
+                        <option value="Credit">Credit</option>
+                        <option value="UPI">UPI</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4" dmx-show="content.formPayReq.PaymentMode.value == 'Cash'">
+                <label class="col-12">Cash Type</label>
+                <div class="col-12"><select class="form-select" id="CashType" name="CashType">
+                        <option value="Branch Deposit">Branch Deposit</option>
+                        <option value="CDM Machine">CDM Machine</option>
+                    </select></div>
+            </div>
+        </div>
+        <div class="row mb-3 mx-0">
+            <div class="col-12 col-sm-4 col-md-3 mb-3">
+                <label class="col-12">Amount</label>
+                <div class="col-12">
+                    <input type="number" name="Amount" class="form-control" required="" data-rule-number="">
+                </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-3 mb-3">
+                <label class="col-12">Date</label>
+                <div class="col-12">
+                    <input type="date" name="Date" class="form-control" required="">
+                </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-3 mb-3" dmx-hide="content.formPayReq.PaymentMode.value == 'Cheque'">
+                <label class="col-12">Time</label>
+                <div class="col-12">
+                    <input type="text" name="Time" class="form-control">
+                </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-3 mb-3" dmx-show="content.formPayReq.CashType.value == 'CDM Machine'">
+                <label class="col-12">Transaction No.</label>
+                <div class="col-12">
+                    <input type="text" name="Tr_No" class="form-control">
+                </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-3 mb-3" dmx-hide="content.formPayReq.PaymentMode.value == 'Cash' || content.PaymentMode.value == 'Credit' || content.formPayReq.PaymentMode.value == ''">
+                <label class="col-12">User Bank Name</label>
+                <div class="col-12">
+                    <input type="text" name="Bank_Name" class="form-control">
+                </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-3 mb-3" dmx-show="content.formPayReq.PaymentMode.value == 'Cheque'">
+                <label class="col-12">Branch</label>
+                <div class="col-12">
+                    <input type="text" name="Branch_Name" class="form-control">
+                </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-3 mb-3" dmx-show="content.formPayReq.PaymentMode.value == 'Cheque'">
+                <label class="col-12">Cheque No.</label>
+                <div class="col-12">
+                    <input type="text" name="ChequeNo" class="form-control">
+                </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-3 mb-3" dmx-hide="content.formPayReq.PaymentMode.value == 'Cash' || content.formPayReq.PaymentMode.value == 'Cheque' || content.formPayReq.PaymentMode.value == 'Credit' || content.formPayReq.PaymentMode.value == ''">
+                <label class="col-12">UTR No.</label>
+                <div class="col-12">
+                    <input type="text" name="UTR_NO" class="form-control">
+                </div>
+            </div>
+            <div class="col-12 px-3">
+                <button type="submit" class="btn btn-primary pull-left" dmx-bind:disabled="state.executing" id="btnpayrequest">Submit<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+            </div>
+        </div>
+    </form>
+    <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item active">View Requests</li>
+    </ol>
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>Sl. No.</th>
+                    <th>Amount</th>
+                    <th>Tr. Date</th>
+                    <th>Tr. Time</th>
+                    <th>Tr. No</th>
+                    <th>Bank Name</th>
+                    <th>Branch Name</th>
+                    <th>Cheque No.</th>
+                    <th>UTR No.</th>
+                    <th>Payment Mode</th>
+                    <th>Cash Type</th>
+                    <th>Request Time</th>
+                    <th>Status</th>
+                    <th>Remarks By Parent</th>
+                    <th>Response Time</th>
+                    <th>Req. Parent</th>
+                </tr>
+            </thead>
+            <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="content.scPaymentReq.data.GetPaymentReq.data" id="tableRepeat1">
+                <tr>
+                    <td dmx-text="$index+1"></td>
+                    <td dmx-text="amount+' /-'"></td>
+                    <td dmx-text="tr_date.formatDate('dd-MM-yyyy')"></td>
+                    <td dmx-text="tr_time"></td>
+                    <td dmx-text="tr_no"></td>
+                    <td dmx-text="bank_name"></td>
+                    <td dmx-text="branch_name"></td>
+                    <td dmx-text="cheque_no"></td>
+                    <td dmx-text="utr_no"></td>
+                    <td dmx-text="payment_mode"></td>
+                    <td dmx-text="cash_type"></td>
+                    <td dmx-text="request_time.formatDate('dd-MM-yyyy hh:mm:ss A')"></td>
+                    <td dmx-text="status == 1 ? 'Pending' : status == 2 ? 'Approved' :status == 3 ? 'Declined' :status == 4 ? 'Hold' : 'N/A'" dmx-class:text-primary="status==1" dmx-class:text-success="status==2" dmx-class:text-danger="status==3" dmx-class:text-warning="status==4"></td>
+                    <td dmx-text="remarks"></td>
+                    <td dmx-text="response_time.formatDate('dd-MM-yyyy hh:mm:ss A')"></td>
+                    <td dmx-text="parent_userid+' | '+parent_name+' | '+parent_mobile"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
