@@ -53,7 +53,7 @@
                     <td dmx-text="cash_type"></td>
                     <td dmx-text="status == 1 ? 'Pending' : status == 2 ? 'Approved' :status == 3 ? 'Declined' :status == 4 ? 'Hold' : 'N/A'" dmx-class:text-primary="status==1" dmx-class:text-success="status==2" dmx-class:text-danger="status==3" dmx-class:text-warning="status==4"></td>
                     <td dmx-text="remarks"></td>
-                    <td dmx-text="response_time"></td>
+                    <td dmx-text="response_time.formatDate('dd-MM-yyyy hh:mm:ss A')"></td>
                 </tr>
             </tbody>
         </table>
@@ -79,7 +79,7 @@
 <div class="modal fade" id="modalPayReq" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form is="dmx-serverconnect-form" id="formPaymentProcess" method="post" action="api/Transactions/PaymentRequest" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success(content.formPaymentProcess.lastError.response); scPaymentReq.load();" dmx-on:error="scNotif.warning(content.formPaymentProcess.lastError.response);" dmx-on:forbidden="scNotif.warning(content.formPaymentProcess.lastError.response)" dmx-on:unauthorized="scNotif.warning(content.formPaymentProcess.lastError.response)">
+            <form is="dmx-serverconnect-form" id="formPaymentProcess" method="post" action="api/Transactions/ProcessPaymentReq" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('Success'); scManagePayReq.load();formPaymentProcess.reset()" dmx-on:error="scNotif.warning(content.modalPayReq.formPaymentProcess.lastError.response);" dmx-on:forbidden="scNotif.warning(content.modalPayReq.formPaymentProcess.lastError.response)" dmx-on:unauthorized="scNotif.warning(content.modalPayReq.formPaymentProcess.lastError.response)">
                 <div class="modal-header">
                     <h5 class="modal-title">Manage Request</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -102,10 +102,10 @@
                                     <td dmx-text="ddManagePayReq.data.request_time.formatDate('dd-MM-yyyy hh:mm:ss A')"></td>
                                     <td dmx-text="ddManagePayReq.data.req_user_balance.toNumber().formatCurrency('₹', '.', ',', 2)"></td>
                                     <td dmx-text="ddManagePayReq.data.amount.toNumber().formatCurrency('₹', '.', ',', 2)"></td>
-                                    <td dmx-text="ddManagePayReq.data.status == 1 ? 'Pending' : ddManagePayReq.data.status == 2 ? 'Approved' : ddManagePayReq.data.status == 3 ? 'Declined' : ddManagePayReq.data.status == 1 ? 'Hold' : 'N/A'" dmx-class:text-primary="ddManagePayReq.data.status==1" dmx-class:text-success="ddManagePayReq.data.status==2" dmx-class:text-danger="ddManagePayReq.data.status==3" dmx-class:text-warning="ddManagePayReq.data.status==4"></td>
+                                    <td dmx-text="ddManagePayReq.data.status == 1 ? 'Pending' : ddManagePayReq.data.status == 2 ? 'Approved' : ddManagePayReq.data.status == 3 ? 'Declined' : ddManagePayReq.data.status == 4 ? 'Hold' : 'N/A'" dmx-class:text-primary="ddManagePayReq.data.status==1" dmx-class:text-success="ddManagePayReq.data.status==2" dmx-class:text-danger="ddManagePayReq.data.status==3" dmx-class:text-warning="ddManagePayReq.data.status==4"></td>
                                 <tr>
-                                </tr>
-                                <input type="text" name="user_type" id="for_user_type"><input type="text" name="for_user_id">
+                                </tr><input type="hidden" name="pay_req_id" id="pay_req_id" dmx-bind:value="ddManagePayReq.data.id">
+                                <input type="hidden" name="user_type" id="for_user_type" dmx-bind:value="ddManagePayReq.data.user_type"><input type="hidden" name="for_user_id" dmx-bind:value="ddManagePayReq.data.u_id"><input type="hidden" name="credit_amount" dmx-bind:value="ddManagePayReq.data.amount">
                                 <td colspan="2"> <label>Allow Status</label>
                                     <select class="form-select" name="allow_status" id="allow_status" required="">
                                         <option value="2">Approved</option>
@@ -125,7 +125,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" dmx-bind:disabled="state.executing" dmx-class:disabled="content.ddManagePayReq.data.status == 2">Submit <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
                 </div>
             </form>
         </div>
