@@ -105,14 +105,18 @@
                                     <td dmx-text="ddManagePayReq.data.status == 1 ? 'Pending' : ddManagePayReq.data.status == 2 ? 'Approved' : ddManagePayReq.data.status == 3 ? 'Declined' : ddManagePayReq.data.status == 1 ? 'Hold' : 'N/A'" dmx-class:text-primary="ddManagePayReq.data.status==1" dmx-class:text-success="ddManagePayReq.data.status==2" dmx-class:text-danger="ddManagePayReq.data.status==3" dmx-class:text-warning="ddManagePayReq.data.status==4"></td>
                                 <tr>
                                 </tr>
+                                <input type="text" name="user_type" id="for_user_type"><input type="text" name="for_user_id">
                                 <td colspan="2"> <label>Allow Status</label>
-                                    <select class="form-select" name="allow_status" id="allow_status">
+                                    <select class="form-select" name="allow_status" id="allow_status" required="">
                                         <option value="2">Approved</option>
                                         <option value="3">Declined</option>
                                         <option value="4">Hold</option>
                                     </select>
                                 </td>
-                                <td colspan="2"> <label>Remarks</label> <textarea class="form-control" name="remarks" id="remarks"></textarea></td>
+                                <td colspan="2"> <label>Your T-PIN</label> <input type="number" class="form-control" name="tpin" id="tpin" required=""></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> <label>Remarks</label> <textarea class="form-control" name="remarks" id="remarks"></textarea></td>
                                 </tr>
                             </tbody>
                         </table>
