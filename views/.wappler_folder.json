@@ -118,5 +118,9 @@
   "payment-request.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "manage-pay-request.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

@@ -1319,5 +1319,183 @@ dmx.config({
       ],
       "outputType": "array"
     }
+  },
+  "managepaymentrequest": {
+    "query": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      }
+    ],
+    "dvManagePayReq": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "number",
+          "name": "pay_user_id"
+        },
+        {
+          "type": "text",
+          "name": "req_user_id"
+        },
+        {
+          "type": "text",
+          "name": "amount"
+        },
+        {
+          "type": "date",
+          "name": "tr_date"
+        },
+        {
+          "type": "time",
+          "name": "tr_time"
+        },
+        {
+          "type": "text",
+          "name": "tr_no"
+        },
+        {
+          "type": "text",
+          "name": "bank_name"
+        },
+        {
+          "type": "text",
+          "name": "branch_name"
+        },
+        {
+          "type": "text",
+          "name": "cheque_no"
+        },
+        {
+          "type": "text",
+          "name": "utr_no"
+        },
+        {
+          "type": "text",
+          "name": "payment_mode"
+        },
+        {
+          "type": "text",
+          "name": "cash_type"
+        },
+        {
+          "type": "text",
+          "name": "remarks"
+        },
+        {
+          "type": "number",
+          "name": "status"
+        },
+        {
+          "type": "datetime",
+          "name": "response_time"
+        },
+        {
+          "type": "datetime",
+          "name": "request_time"
+        },
+        {
+          "type": "text",
+          "name": "req_user_name"
+        },
+        {
+          "type": "text",
+          "name": "req_user_mobile"
+        }
+      ],
+      "outputType": "array"
+    },
+    "ddManagePayReq": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "number",
+          "name": "pay_user_id"
+        },
+        {
+          "type": "text",
+          "name": "req_user_id"
+        },
+        {
+          "type": "text",
+          "name": "amount"
+        },
+        {
+          "type": "date",
+          "name": "tr_date"
+        },
+        {
+          "type": "time",
+          "name": "tr_time"
+        },
+        {
+          "type": "text",
+          "name": "tr_no"
+        },
+        {
+          "type": "text",
+          "name": "bank_name"
+        },
+        {
+          "type": "text",
+          "name": "branch_name"
+        },
+        {
+          "type": "text",
+          "name": "cheque_no"
+        },
+        {
+          "type": "text",
+          "name": "utr_no"
+        },
+        {
+          "type": "text",
+          "name": "payment_mode"
+        },
+        {
+          "type": "text",
+          "name": "cash_type"
+        },
+        {
+          "type": "text",
+          "name": "remarks"
+        },
+        {
+          "type": "number",
+          "name": "status"
+        },
+        {
+          "type": "datetime",
+          "name": "response_time"
+        },
+        {
+          "type": "datetime",
+          "name": "request_time"
+        },
+        {
+          "type": "text",
+          "name": "req_user_name"
+        },
+        {
+          "type": "text",
+          "name": "req_user_mobile"
+        }
+      ],
+      "outputType": "array"
+    }
   }
 });

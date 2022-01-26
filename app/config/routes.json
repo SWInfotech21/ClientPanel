@@ -136,6 +136,12 @@
       "exec": "/api/PageAccess/UserAccess"
     },
     {
+      "path": "/manage-pay-request",
+      "page": "manage-pay-request",
+      "layout": "main",
+      "exec": "/api/PageAccess/PagesFrDTMDT"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }

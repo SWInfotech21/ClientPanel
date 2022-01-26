@@ -1,0 +1,129 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="managepaymentrequest" appConnect="local" components="{dmxStateManagement:{},dmxBootstrap5TableGenerator:{},dmxBootstrap5PagingGenerator:{},dmxDataTraversal:{},dmxBootstrap5Modal:{}}" -->
+<meta name="ac:route" content="/manage-pay-request">
+<dmx-query-manager id="qm"></dmx-query-manager>
+<dmx-serverconnect id="scManagePayReq" url="api/Transactions/ManagePaymentReq" dmx-param:offset="content.qm.data.offset" dmx-param:limit="" dmx-param:sort="content.qm.data.sort" dmx-param:dir="content.qm.data.dir"></dmx-serverconnect>
+<dmx-data-view id="dvManagePayReq" dmx-bind:data="content.scManagePayReq.data.GetPayReq.data"></dmx-data-view>
+<dmx-data-detail id="ddManagePayReq" dmx-bind:data="content.dvManagePayReq.data" key="id"></dmx-data-detail>
+<div class="container-fluid mt-3">
+    <h1 class="mt-4">Manage Payment Request
+        <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scManagePayReq.state.executing"></span>
+    </h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Manage Request</li>
+    </ol>
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>Sl. No.</th>
+                    <th>Action</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','req_user_id');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='req_user_id' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='req_user_id' && qm.data.sort == 'desc'">Req. By</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','request_time');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='request_time' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='request_time' && qm.data.sort == 'desc'">Request Time</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','amount');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='amount' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='amount' && qm.data.sort == 'desc'">Amount</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','tr_date');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='tr_date' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='tr_date' && qm.data.sort == 'desc'">Tr. Date</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','tr_time');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='tr_time' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='tr_time' && qm.data.sort == 'desc'">Tr. Time</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','tr_no');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='tr_no' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='tr_no' && qm.data.sort == 'desc'">Tr. no</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','bank_name');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='bank_name' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='bank_name' && qm.data.sort == 'desc'">Bank Name</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','branch_name');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='branch_name' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='branch_name' && qm.data.sort == 'desc'">Branch Name</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','cheque_no');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='cheque_no' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='cheque_no' && qm.data.sort == 'desc'">Cheque No.</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','utr_no');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='utr_no' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='utr_no' && qm.data.sort == 'desc'">UTR No.</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','payment_mode');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='payment_mode' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='payment_mode' && qm.data.sort == 'desc'">Payment Mode</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','cash_type');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='cash_type' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='cash_type' && qm.data.sort == 'desc'">Cash Type</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','status');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='status' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='status' && qm.data.sort == 'desc'">Status</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','remarks');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='remarks' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='remarks' && qm.data.sort == 'desc'">Remarks</th>
+                    <th class="sorting" dmx-on:click="qm.set('offset','response_time');qm.set('sort',qm.data.sort == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="qm.data.offset=='response_time' && qm.data.sort == 'asc'" dmx-class:sorting_desc="qm.data.offset=='response_time' && qm.data.sort == 'desc'">Response time</th>
+
+                </tr>
+            </thead>
+            <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="content.scManagePayReq.data.GetPayReq.data" id="tableRepeat1" dmx-state="qm" dmx-sort="offset" dmx-order="sort">
+                <tr>
+                    <td dmx-text="$index+1"></td>
+                    <td><a class="sw-col-ar" href="#" dmx-on:click="ddManagePayReq.select(id)" data-bs-toggle="modal" data-bs-target="#modalPayReq"><i class="fas fa-edit" title="Payment Request Manage"></i></a> </td>
+                    <td dmx-text="req_user_id+' | '+req_user_name+' | '+req_user_mobile"></td>
+                    <td dmx-text="request_time.formatDate('dd-MM-yyyy hh:mm:ss A')"></td>
+                    <td dmx-text="amount.toNumber().formatCurrency('₹', '.', ',', 2)"></td>
+                    <td dmx-text="tr_date.formatDate('dd-MM-yyyy')"></td>
+                    <td dmx-text="tr_time"></td>
+                    <td dmx-text="tr_no"></td>
+                    <td dmx-text="bank_name"></td>
+                    <td dmx-text="branch_name"></td>
+                    <td dmx-text="cheque_no"></td>
+                    <td dmx-text="utr_no"></td>
+                    <td dmx-text="payment_mode"></td>
+                    <td dmx-text="cash_type"></td>
+                    <td dmx-text="status == 1 ? 'Pending' : status == 2 ? 'Approved' :status == 3 ? 'Declined' :status == 4 ? 'Hold' : 'N/A'" dmx-class:text-primary="status==1" dmx-class:text-success="status==2" dmx-class:text-danger="status==3" dmx-class:text-warning="status==4"></td>
+                    <td dmx-text="remarks"></td>
+                    <td dmx-text="response_time"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <ul class="pagination" dmx-populate="content.scManagePayReq.data.GetPayReq.data" dmx-state="qm" dmx-offset="offset" dmx-generator="bs5paging">
+        <li class="page-item" dmx-class:disabled="content.scManagePayReq.data.GetPayReq.data.page.current == 1" aria-label="First">
+            <a href="javascript:void(0)" class="page-link" dmx-on:click="qm.set('offset',content.scManagePayReq.data.GetPayReq.data.page.offset.first)"><span aria-hidden="true">&lsaquo;&lsaquo;</span></a>
+        </li>
+        <li class="page-item" dmx-class:disabled="content.scManagePayReq.data.GetPayReq.data.page.current == 1" aria-label="Previous">
+            <a href="javascript:void(0)" class="page-link" dmx-on:click="qm.set('offset',content.scManagePayReq.data.GetPayReq.data.page.offset.prev)"><span aria-hidden="true">&lsaquo;</span></a>
+        </li>
+        <li class="page-item" dmx-class:active="title == content.scManagePayReq.data.GetPayReq.data.page.current" dmx-class:disabled="!active" dmx-repeat="content.scManagePayReq.data.GetPayReq.data.getServerConnectPagination(2,1,'...')">
+            <a href="javascript:void(0)" class="page-link" dmx-on:click="qm.set('offset',(page-1)*content.scManagePayReq.data.GetPayReq.data.limit)">{{title}}</a>
+        </li>
+        <li class="page-item" dmx-class:disabled="content.scManagePayReq.data.GetPayReq.data.page.current ==  content.scManagePayReq.data.GetPayReq.data.page.total" aria-label="Next">
+            <a href="javascript:void(0)" class="page-link" dmx-on:click="qm.set('offset',content.scManagePayReq.data.GetPayReq.data.page.offset.next)"><span aria-hidden="true">&rsaquo;</span></a>
+        </li>
+        <li class="page-item" dmx-class:disabled="content.scManagePayReq.data.GetPayReq.data.page.current ==  content.scManagePayReq.data.GetPayReq.data.page.total" aria-label="Last">
+            <a href="javascript:void(0)" class="page-link" dmx-on:click="qm.set('offset',content.scManagePayReq.data.GetPayReq.data.page.offset.last)"><span aria-hidden="true">&rsaquo;&rsaquo;</span></a>
+        </li>
+    </ul>
+</div>
+<div class="modal fade" id="modalPayReq" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form is="dmx-serverconnect-form" id="formPaymentProcess" method="post" action="api/Transactions/PaymentRequest" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success(content.formPaymentProcess.lastError.response); scPaymentReq.load();" dmx-on:error="scNotif.warning(content.formPaymentProcess.lastError.response);" dmx-on:forbidden="scNotif.warning(content.formPaymentProcess.lastError.response)" dmx-on:unauthorized="scNotif.warning(content.formPaymentProcess.lastError.response)">
+                <div class="modal-header">
+                    <h5 class="modal-title">Manage Request</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Request By</th>
+                                    <th scope="col">Request Time</th>
+                                    <th scope="col">Available Balance</th>
+                                    <th scope="col">Request Amount</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td dmx-text="ddManagePayReq.data.req_user_id+' | '+ddManagePayReq.data.req_user_name+' | '+ddManagePayReq.data.req_user_mobile"></td>
+                                    <td dmx-text="ddManagePayReq.data.request_time.formatDate('dd-MM-yyyy hh:mm:ss A')"></td>
+                                    <td dmx-text="ddManagePayReq.data.req_user_balance.toNumber().formatCurrency('₹', '.', ',', 2)"></td>
+                                    <td dmx-text="ddManagePayReq.data.amount.toNumber().formatCurrency('₹', '.', ',', 2)"></td>
+                                    <td dmx-text="ddManagePayReq.data.status == 1 ? 'Pending' : ddManagePayReq.data.status == 2 ? 'Approved' : ddManagePayReq.data.status == 3 ? 'Declined' : ddManagePayReq.data.status == 1 ? 'Hold' : 'N/A'" dmx-class:text-primary="ddManagePayReq.data.status==1" dmx-class:text-success="ddManagePayReq.data.status==2" dmx-class:text-danger="ddManagePayReq.data.status==3" dmx-class:text-warning="ddManagePayReq.data.status==4"></td>
+                                <tr>
+                                </tr>
+                                <td colspan="2"> <label>Allow Status</label>
+                                    <select class="form-select" name="allow_status" id="allow_status">
+                                        <option value="2">Approved</option>
+                                        <option value="3">Declined</option>
+                                        <option value="4">Hold</option>
+                                    </select>
+                                </td>
+                                <td colspan="2"> <label>Remarks</label> <textarea class="form-control" name="remarks" id="remarks"></textarea></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
