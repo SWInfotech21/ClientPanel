@@ -1,6 +1,16 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="paymentrequest" appConnect="local" components="{dmxValidator:{},dmxBootstrap5TableGenerator:{}}" -->
 <meta name="ac:route" content="/payment-request">
-<dmx-serverconnect id="scPaymentReq" url="api/Transactions/FetchPayRequest" dmx-param:limit="50"></dmx-serverconnect>
+<script is="dmx-flow" id="flowPaymentReq" type="text/dmx-flow">{
+  condition: {
+    if: "{{content.fromDate.value && content.toDate.value}}",
+    then: {
+      steps: {
+        run: {action: "{{scPaymentReq.load({})}}"}
+      }
+    }
+  }
+}</script>
+<dmx-serverconnect id="scPaymentReq" url="api/Transactions/FetchPayRequest" dmx-param:fromdate="content.fromDate.value" dmx-param:todate="content.toDate.value"></dmx-serverconnect>
 <div class="container-fluid mt-3">
     <h1 class="mt-4">Payment Request
         <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scPaymentReq.state.executing"></span>
@@ -91,6 +101,11 @@
     <ol class="breadcrumb my-4">
         <li class="breadcrumb-item active">View Requests</li>
     </ol>
+    <div class="col-auto order-2 order-md-1 d-flex align-items-center justify-content-start justify-content-md-center px-0 px-lg-2">
+        <label>From Date:</label><input type="date" name="fromdate" id="fromDate" class="w-25" dmx-bind:value="varDateTime.datetime.formatDate('MM/dd/yyyy')" required="">
+        &emsp;<label>To Date:</label><input type="date" name="todate" id="toDate" class="w-25" dmx-bind:value="varDateTime.datetime.formatDate('MM/dd/yyyy')" required="">
+        &emsp;<button id="btnFilter" class="btn btn-primary btn-sm" dmx-on:click="flowPaymentReq.run();">Search</button>
+    </div>
     <div class="table-responsive">
         <table class="table table-hover table-sm">
             <thead>

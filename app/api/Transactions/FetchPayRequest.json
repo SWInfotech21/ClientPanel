@@ -16,6 +16,14 @@
       {
         "type": "text",
         "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "fromdate"
+      },
+      {
+        "type": "text",
+        "name": "todate"
       }
     ]
   },
@@ -169,6 +177,22 @@
                     "type": "number"
                   },
                   "operation": "="
+                },
+                {
+                  "id": "payment_request.request_time",
+                  "field": "payment_request.request_time",
+                  "type": "datetime",
+                  "operator": "between",
+                  "value": [
+                    "{{$_GET.fromdate+' 00:00:00'}}",
+                    "{{$_GET.todate+' 23:59:59'}}"
+                  ],
+                  "data": {
+                    "table": "payment_request",
+                    "column": "request_time",
+                    "type": "datetime"
+                  },
+                  "operation": "BETWEEN"
                 }
               ],
               "conditional": null,
@@ -178,16 +202,29 @@
               {
                 "table": "payment_request",
                 "column": "id",
-                "direction": "DESC"
+                "direction": "DESC",
+                "recid": 1
               }
             ],
-            "query": "SELECT payment_request.id, payment_request.amount, payment_request.tr_date, payment_request.tr_time, payment_request.tr_no, payment_request.bank_name, payment_request.branch_name, payment_request.cheque_no, payment_request.utr_no, payment_request.payment_mode, payment_request.cash_type, payment_request.remarks, payment_request.status, payment_request.request_time, payment_request.response_time, m_user.user_id AS parent_userid, m_user.user_fname AS parent_name, m_user.user_mobile AS parent_mobile\nFROM payment_request\nINNER JOIN m_users AS m_user ON (m_user.id = payment_request.pay_user_id)\nWHERE payment_request.req_user_id = :P1 /* {{identity}} */\nORDER BY payment_request.id DESC",
+            "query": "SELECT payment_request.id, payment_request.amount, payment_request.tr_date, payment_request.tr_time, payment_request.tr_no, payment_request.bank_name, payment_request.branch_name, payment_request.cheque_no, payment_request.utr_no, payment_request.payment_mode, payment_request.cash_type, payment_request.remarks, payment_request.status, payment_request.request_time, payment_request.response_time, m_user.user_id AS parent_userid, m_user.user_fname AS parent_name, m_user.user_mobile AS parent_mobile\nFROM payment_request\nINNER JOIN m_users AS m_user ON (m_user.id = payment_request.pay_user_id)\nWHERE payment_request.req_user_id = :P1 /* {{identity}} */ AND payment_request.request_time BETWEEN :P2 /* {{$_GET.fromdate+' 00:00:00'}} */ AND :P3 /* {{$_GET.todate+' 23:59:59'}} */\nORDER BY payment_request.id DESC",
             "params": [
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{identity}}"
+              },
+              {
+                "operator": "between",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.fromdate+' 00:00:00'}}"
+              },
+              {
+                "operator": "between",
+                "type": "expression",
+                "name": ":P3",
+                "value": "{{$_GET.todate+' 23:59:59'}}"
               }
             ]
           },
