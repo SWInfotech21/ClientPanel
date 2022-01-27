@@ -472,15 +472,6 @@
                                                     "table": "mu",
                                                     "column": "user_mobile",
                                                     "alias": "req_user_mobile"
-                                                  },
-                                                  {
-                                                    "table": "mu",
-                                                    "column": "id",
-                                                    "alias": "u_id"
-                                                  },
-                                                  {
-                                                    "table": "mu",
-                                                    "column": "user_type"
                                                   }
                                                 ],
                                                 "table": {
@@ -530,7 +521,7 @@
                                                       "field": "payment_request.request_time",
                                                       "type": "datetime",
                                                       "operator": "greater_or_equal",
-                                                      "value": "{{$_GET.fromdate}}",
+                                                      "value": "{{$_GET.fromdate+' 00:00:00'}}",
                                                       "data": {
                                                         "table": "payment_request",
                                                         "column": "request_time",
@@ -543,7 +534,7 @@
                                                       "field": "payment_request.request_time",
                                                       "type": "datetime",
                                                       "operator": "less_or_equal",
-                                                      "value": "{{$_GET.todate}}",
+                                                      "value": "{{$_GET.todate+' 23:59:59'}}",
                                                       "data": {
                                                         "table": "payment_request",
                                                         "column": "request_time",
@@ -555,7 +546,7 @@
                                                   "conditional": null,
                                                   "valid": true
                                                 },
-                                                "query": "SELECT payment_request.id, payment_request.amount, payment_request.tr_date, payment_request.tr_time, payment_request.tr_no, payment_request.bank_name, payment_request.branch_name, payment_request.cheque_no, payment_request.utr_no, payment_request.payment_mode, payment_request.cash_type, payment_request.remarks, payment_request.status, payment_request.request_time, payment_request.response_time, mu.user_id AS req_user_id, mu.user_fname AS req_user_name, mu.balance_amt AS req_user_balance, mu.user_mobile AS req_user_mobile, mu.id AS u_id, mu.user_type\nFROM payment_request\nINNER JOIN m_users AS mu ON (mu.id = payment_request.req_user_id)\nWHERE payment_request.pay_user_id = :P1 /* {{identity}} */ AND payment_request.request_time >= :P2 /* {{$_GET.fromdate}} */ AND payment_request.request_time <= :P3 /* {{$_GET.todate}} */\nORDER BY payment_request.id DESC",
+                                                "query": "SELECT payment_request.id, payment_request.amount, payment_request.tr_date, payment_request.tr_time, payment_request.tr_no, payment_request.bank_name, payment_request.branch_name, payment_request.cheque_no, payment_request.utr_no, payment_request.payment_mode, payment_request.cash_type, payment_request.remarks, payment_request.status, payment_request.request_time, payment_request.response_time, mu.user_id AS req_user_id, mu.user_fname AS req_user_name, mu.balance_amt AS req_user_balance, mu.user_mobile AS req_user_mobile\nFROM payment_request\nINNER JOIN m_users AS mu ON (mu.id = payment_request.req_user_id)\nWHERE payment_request.pay_user_id = :P1 /* {{identity}} */ AND payment_request.request_time >= :P2 /* {{$_GET.fromdate+' 00:00:00'}} */ AND payment_request.request_time <= :P3 /* {{$_GET.todate+' 23:59:59'}} */\nORDER BY payment_request.id DESC",
                                                 "params": [
                                                   {
                                                     "operator": "equal",
@@ -567,13 +558,13 @@
                                                     "operator": "greater_or_equal",
                                                     "type": "expression",
                                                     "name": ":P2",
-                                                    "value": "{{$_GET.fromdate}}"
+                                                    "value": "{{$_GET.fromdate+' 00:00:00'}}"
                                                   },
                                                   {
                                                     "operator": "less_or_equal",
                                                     "type": "expression",
                                                     "name": ":P3",
-                                                    "value": "{{$_GET.todate}}"
+                                                    "value": "{{$_GET.todate+' 23:59:59'}}"
                                                   }
                                                 ],
                                                 "orders": [
@@ -716,14 +707,6 @@
                                                   {
                                                     "type": "text",
                                                     "name": "req_user_mobile"
-                                                  },
-                                                  {
-                                                    "type": "number",
-                                                    "name": "u_id"
-                                                  },
-                                                  {
-                                                    "type": "number",
-                                                    "name": "user_type"
                                                   }
                                                 ]
                                               }
