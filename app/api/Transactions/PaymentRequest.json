@@ -238,7 +238,8 @@
                       "table": "payment_request",
                       "column": "tr_time",
                       "type": "time",
-                      "value": "{{$_POST.Time}}"
+                      "value": "{{$_POST.Time}}",
+                      "condition": "{{$_POST.Time}}"
                     },
                     {
                       "table": "payment_request",
