@@ -348,7 +348,7 @@
         "options": {
           "provider": "security"
         },
-        "output": true,
+        "output": false,
         "meta": []
       },
       {
@@ -444,7 +444,7 @@
             ]
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "text",
@@ -581,7 +581,7 @@
                           ]
                         }
                       },
-                      "output": true,
+                      "output": false,
                       "meta": [
                         {
                           "type": "text",
@@ -683,7 +683,7 @@
                                   "params": []
                                 }
                               },
-                              "output": true,
+                              "output": false,
                               "meta": [
                                 {
                                   "type": "number",
@@ -801,7 +801,7 @@
                                   }
                                 }
                               },
-                              "output": true,
+                              "output": false,
                               "meta": [
                                 {
                                   "type": "text",
@@ -983,7 +983,7 @@
                                   }
                                 }
                               },
-                              "output": true,
+                              "output": false,
                               "meta": [
                                 {
                                   "type": "text",
@@ -1182,7 +1182,7 @@
                                                   ]
                                                 }
                                               },
-                                              "output": true,
+                                              "output": false,
                                               "meta": [
                                                 {
                                                   "type": "text",
@@ -1381,7 +1381,7 @@
                                                   ]
                                                 }
                                               },
-                                              "output": true,
+                                              "output": false,
                                               "meta": [
                                                 {
                                                   "type": "text",
@@ -1498,7 +1498,7 @@
                                                           ]
                                                         }
                                                       },
-                                                      "output": true,
+                                                      "output": false,
                                                       "meta": [
                                                         {
                                                           "type": "text",
@@ -2248,7 +2248,7 @@
                                           "type": "number"
                                         }
                                       ],
-                                      "output": true
+                                      "output": false
                                     },
                                     {
                                       "name": "DrBalanceRT",
@@ -2431,7 +2431,7 @@
                                           "type": "number"
                                         }
                                       ],
-                                      "output": true
+                                      "output": false
                                     },
                                     {
                                       "name": "LiveApi",
@@ -2689,6 +2689,152 @@
                                       "outputType": "boolean"
                                     },
                                     {
+                                      "name": "",
+                                      "module": "core",
+                                      "action": "condition",
+                                      "options": {
+                                        "if": "{{GetOpAPICodeFwrd.api_code == 'MRO'}}",
+                                        "then": {
+                                          "steps": [
+                                            {
+                                              "name": "apimrobotic",
+                                              "module": "api",
+                                              "action": "send",
+                                              "options": {
+                                                "url": "https://mrobotics.in/api/recharge_get",
+                                                "params": {
+                                                  "api_token": "{{GetOpAPICodeFwrd.api_password}}",
+                                                  "mobile_no": "{{$_POST.mobile_number}}",
+                                                  "amount": "{{$_POST.recharge_amount}}",
+                                                  "company_id": "{{GetOpAPICodeFwrd.api_code3}}",
+                                                  "order_id": "{{TransactionId}}",
+                                                  "is_stv": "{{false}}"
+                                                }
+                                              },
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "stat",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{apimrobotic.data.status}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "",
+                                              "module": "core",
+                                              "action": "condition",
+                                              "options": {
+                                                "if": "{{stat == 'failure'}}",
+                                                "then": {
+                                                  "steps": {
+                                                    "name": "apimrobotic",
+                                                    "module": "api",
+                                                    "action": "send",
+                                                    "options": {
+                                                      "url": "https://mrobotics.in/api/recharge_get",
+                                                      "params": {
+                                                        "api_token": "{{GetOpAPICodeFwrd.api_password}}",
+                                                        "mobile_no": "{{$_POST.mobile_number}}",
+                                                        "amount": "{{$_POST.recharge_amount}}",
+                                                        "company_id": "{{GetOpAPICodeFwrd.api_code3}}",
+                                                        "order_id": "{{TransactionId}}",
+                                                        "is_stv": "{{true}}"
+                                                      }
+                                                    },
+                                                    "output": true
+                                                  }
+                                                }
+                                              },
+                                              "outputType": "boolean"
+                                            },
+                                            {
+                                              "name": "apistatus",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{stat == 'success' ? 'SUCCESS' : stat == 'pending'? 'PENDING' : 'FAILED'}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "apifiredid",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{apimrobotic.data.id}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "remarks",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{apimrobotic.data.response}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "ec",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{apimrobotic.data.lapu_id}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "api_log",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "MRO"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "apibalance",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{apimrobotic.data.balance}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "api_ref",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{apimrobotic.data.tnx_id}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "outputType": "boolean"
+                                    },
+                                    {
                                       "name": "apiResponseTime",
                                       "module": "core",
                                       "action": "setvalue",
@@ -2927,7 +3073,7 @@
                                                   "type": "number"
                                                 }
                                               ],
-                                              "output": true
+                                              "output": false
                                             },
                                             {
                                               "name": "TrUserUpdateRT",
@@ -2986,7 +3132,7 @@
                                                   "type": "number"
                                                 }
                                               ],
-                                              "output": true
+                                              "output": false
                                             },
                                             {
                                               "name": "AdminCharAmt",
@@ -3158,7 +3304,7 @@
                                                   "type": "number"
                                                 }
                                               ],
-                                              "output": true
+                                              "output": false
                                             },
                                             {
                                               "name": "LiveApi",
@@ -3418,7 +3564,7 @@
                                                           "type": "number"
                                                         }
                                                       ],
-                                                      "output": true
+                                                      "output": false
                                                     },
                                                     {
                                                       "name": "DtUserBal",
@@ -3477,7 +3623,7 @@
                                                           "type": "number"
                                                         }
                                                       ],
-                                                      "output": true
+                                                      "output": false
                                                     },
                                                     {
                                                       "name": "",
@@ -3657,7 +3803,7 @@
                                                                   "type": "number"
                                                                 }
                                                               ],
-                                                              "output": true
+                                                              "output": false
                                                             },
                                                             {
                                                               "name": "MdtUserAmtUp",
@@ -3716,7 +3862,7 @@
                                                                   "type": "number"
                                                                 }
                                                               ],
-                                                              "output": true
+                                                              "output": false
                                                             }
                                                           ]
                                                         }
@@ -4088,7 +4234,7 @@
                                                   "type": "number"
                                                 }
                                               ],
-                                              "output": true
+                                              "output": false
                                             },
                                             {
                                               "name": "LiveApi",
