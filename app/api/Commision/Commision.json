@@ -98,6 +98,10 @@
               {
                 "table": "m_operator",
                 "column": "max_amount"
+              },
+              {
+                "table": "m_operator",
+                "column": "image"
               }
             ],
             "table": {
@@ -213,15 +217,17 @@
               {
                 "table": "ms",
                 "column": "id",
-                "direction": "ASC"
+                "direction": "ASC",
+                "recid": 1
               },
               {
                 "table": "m_operator",
                 "column": "operator_name",
-                "direction": "ASC"
+                "direction": "ASC",
+                "recid": 2
               }
             ],
-            "query": "SELECT m_operator.id AS op_id, m_operator.operator_name, ms.service_name, mc.scheme_id, mc.comm_per, mc.comm_val, mc.service_charge_per, mc.service_charge_val, t_op_api.api_code1 AS our_code, m_operator.min_amount, m_operator.max_amount\nFROM m_operator\nINNER JOIN m_service AS ms ON (ms.id = m_operator.service_id) LEFT JOIN m_commission AS mc ON (mc.operator_id = m_operator.id) LEFT JOIN m_users AS mu ON (mu.scheme_id = mc.scheme_id) LEFT JOIN t_op_api_rel AS t_op_api ON (t_op_api.op_id = m_operator.id)\nWHERE mu.id = :P1 /* {{identity}} */\nORDER BY ms.id ASC, m_operator.operator_name ASC",
+            "query": "SELECT m_operator.id AS op_id, m_operator.operator_name, ms.service_name, mc.scheme_id, mc.comm_per, mc.comm_val, mc.service_charge_per, mc.service_charge_val, t_op_api.api_code1 AS our_code, m_operator.min_amount, m_operator.max_amount, m_operator.image\nFROM m_operator\nINNER JOIN m_service AS ms ON (ms.id = m_operator.service_id) LEFT JOIN m_commission AS mc ON (mc.operator_id = m_operator.id) LEFT JOIN m_users AS mu ON (mu.scheme_id = mc.scheme_id) LEFT JOIN t_op_api_rel AS t_op_api ON (t_op_api.op_id = m_operator.id)\nWHERE mu.id = :P1 /* {{identity}} */\nORDER BY ms.id ASC, m_operator.operator_name ASC",
             "params": [
               {
                 "operator": "equal",
@@ -329,6 +335,10 @@
               {
                 "type": "text",
                 "name": "max_amount"
+              },
+              {
+                "type": "text",
+                "name": "image"
               }
             ]
           }
