@@ -1,15 +1,5 @@
 [
   {
-    "name": "identity",
-    "module": "auth",
-    "action": "identify",
-    "options": {
-      "provider": "security"
-    },
-    "output": true,
-    "meta": []
-  },
-  {
     "name": "",
     "module": "auth",
     "action": "restrict",
@@ -21,6 +11,16 @@
       "loginUrl": "/login",
       "forbiddenUrl": "/403-forbidden"
     }
+  },
+  {
+    "name": "identity",
+    "module": "auth",
+    "action": "identify",
+    "options": {
+      "provider": "security"
+    },
+    "output": false,
+    "meta": []
   },
   {
     "name": "",
@@ -127,7 +127,7 @@
                 ]
               }
             },
-            "output": true,
+            "output": false,
             "meta": [
               {
                 "type": "number",

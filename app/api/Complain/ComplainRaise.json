@@ -141,7 +141,7 @@
             ]
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "number",
@@ -262,7 +262,7 @@
                     "type": "number"
                   }
                 ],
-                "output": true
+                "output": false
               },
               {
                 "name": "RechTransUp",
@@ -316,7 +316,7 @@
                     "type": "number"
                   }
                 ],
-                "output": true
+                "output": false
               }
             ]
           },

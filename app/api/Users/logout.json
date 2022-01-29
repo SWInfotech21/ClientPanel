@@ -19,7 +19,7 @@
     "options": {
       "provider": "security"
     },
-    "output": true,
+    "output": false,
     "meta": []
   },
   {
@@ -42,7 +42,7 @@
         ]
       }
     },
-    "output": true,
+    "output": false,
     "meta": [],
     "outputType": "array"
   },

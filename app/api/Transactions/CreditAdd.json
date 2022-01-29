@@ -1498,7 +1498,8 @@
                             "options": {
                               "status": 403,
                               "data": "Contact admin for set commision and charges and allot scheme"
-                            }
+                            },
+                            "output": true
                           }
                         }
                       },
@@ -1514,7 +1515,8 @@
                     "options": {
                       "status": 403,
                       "data": "TPin Mismatched"
-                    }
+                    },
+                    "output": true
                   }
                 }
               },
@@ -1529,7 +1531,8 @@
               "options": {
                 "status": 403,
                 "data": "Insufficient Wallet Balance"
-              }
+              },
+              "output": true
             }
           }
         },

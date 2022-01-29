@@ -1758,7 +1758,7 @@
                                     "type": "number"
                                   }
                                 ],
-                                "output": true
+                                "output": false
                               }
                             }
                           },

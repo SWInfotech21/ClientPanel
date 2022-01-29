@@ -19,7 +19,7 @@
     "options": {
       "provider": "security"
     },
-    "output": true,
+    "output": false,
     "meta": []
   },
   {
@@ -165,76 +165,76 @@
     "output": true,
     "meta": [
       {
-        "name": "user_id",
-        "type": "text"
+        "type": "text",
+        "name": "user_id"
       },
       {
-        "name": "user_fname",
-        "type": "text"
+        "type": "text",
+        "name": "user_fname"
       },
       {
-        "name": "user_mobile",
-        "type": "text"
+        "type": "text",
+        "name": "user_mobile"
       },
       {
-        "name": "user_email",
-        "type": "text"
+        "type": "text",
+        "name": "user_email"
       },
       {
-        "name": "user_tpin",
-        "type": "text"
+        "type": "text",
+        "name": "user_tpin"
       },
       {
-        "name": "cap_amt",
-        "type": "number"
+        "type": "number",
+        "name": "cap_amt"
       },
       {
-        "name": "balance_amt",
-        "type": "text"
+        "type": "text",
+        "name": "balance_amt"
       },
       {
-        "name": "balance_outstanding",
-        "type": "text"
+        "type": "text",
+        "name": "balance_outstanding"
       },
       {
-        "name": "aeps_limit",
-        "type": "text"
+        "type": "text",
+        "name": "aeps_limit"
       },
       {
-        "name": "aeps_balance",
-        "type": "text"
+        "type": "text",
+        "name": "aeps_balance"
       },
       {
-        "name": "type_name",
-        "type": "text"
+        "type": "text",
+        "name": "type_name"
       },
       {
-        "name": "user_type",
-        "type": "number"
+        "type": "number",
+        "name": "user_type"
       },
       {
-        "name": "aadhar_no",
-        "type": "text"
+        "type": "text",
+        "name": "aadhar_no"
       },
       {
-        "name": "pan_no",
-        "type": "text"
+        "type": "text",
+        "name": "pan_no"
       },
       {
-        "name": "address",
-        "type": "text"
+        "type": "text",
+        "name": "address"
       },
       {
-        "name": "pin",
-        "type": "text"
+        "type": "text",
+        "name": "pin"
       },
       {
-        "name": "state",
-        "type": "text"
+        "type": "text",
+        "name": "state"
       },
       {
-        "name": "district",
-        "type": "text"
+        "type": "text",
+        "name": "district"
       }
     ],
     "outputType": "object"
@@ -278,5 +278,16 @@
     "output": true,
     "meta": [],
     "outputType": "array"
+  },
+  {
+    "name": "ip",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "{{$_SERVER.REMOTE_ADDR}}"
+    },
+    "meta": [],
+    "output": true,
+    "outputType": "text"
   }
 ]

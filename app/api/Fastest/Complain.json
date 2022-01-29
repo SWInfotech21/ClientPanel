@@ -502,7 +502,8 @@
                           "options": {
                             "status": 401,
                             "data": "Unauthorized user with IP {{UserIP}}"
-                          }
+                          },
+                          "output": true
                         }
                       }
                     },
@@ -517,7 +518,8 @@
                     "options": {
                       "status": 401,
                       "data": "Unauthorized Access!"
-                    }
+                    },
+                    "output": true
                   }
                 }
               },
@@ -533,7 +535,8 @@
             "options": {
               "status": 401,
               "data": "Do not even try to do this, we are watching & recording your activity!"
-            }
+            },
+            "output": true
           }
         }
       }

@@ -26,7 +26,7 @@
         "options": {
           "provider": "security"
         },
-        "output": true,
+        "output": false,
         "meta": []
       },
       {
@@ -110,7 +110,7 @@
             "type": "number"
           }
         ],
-        "output": true
+        "output": false
       }
     ]
   }

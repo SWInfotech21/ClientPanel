@@ -257,7 +257,8 @@
                           "options": {
                             "status": 401,
                             "data": "Unauthorized user with IP {{UserIP}}"
-                          }
+                          },
+                          "output": true
                         }
                       }
                     },
@@ -272,7 +273,8 @@
                     "options": {
                       "status": 401,
                       "data": "Unauthorized Access!"
-                    }
+                    },
+                    "output": true
                   }
                 }
               },

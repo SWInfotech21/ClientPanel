@@ -46,7 +46,7 @@
         "options": {
           "provider": "security"
         },
-        "output": true,
+        "output": false,
         "meta": []
       },
       {
@@ -193,7 +193,7 @@
                         },
                         "passErrors": false
                       },
-                      "output": true
+                      "output": false
                     },
                     {
                       "name": "api_status",
@@ -330,7 +330,7 @@
                           "type": "number"
                         }
                       ],
-                      "output": true
+                      "output": false
                     }
                   ]
                 }

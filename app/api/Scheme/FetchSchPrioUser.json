@@ -29,7 +29,7 @@
         "options": {
           "provider": "security"
         },
-        "output": true,
+        "output": false,
         "meta": []
       },
       {

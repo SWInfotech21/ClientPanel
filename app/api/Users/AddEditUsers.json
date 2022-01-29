@@ -234,7 +234,7 @@
         "options": {
           "provider": "security"
         },
-        "output": true,
+        "output": false,
         "meta": []
       },
       {
@@ -302,7 +302,7 @@
             ]
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "number",
@@ -364,7 +364,7 @@
             ]
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "text",
@@ -594,7 +594,7 @@
                     "type": "number"
                   }
                 ],
-                "output": true
+                "output": false
               },
               {
                 "name": "",
@@ -719,7 +719,7 @@
                           "type": "number"
                         }
                       ],
-                      "output": true
+                      "output": false
                     }
                   }
                 },
@@ -759,7 +759,7 @@
                 "options": {
                   "value": "{{NOW.md5(123456).substr(1, 9)}}"
                 },
-                "output": true,
+                "output": false,
                 "meta": [],
                 "outputType": "text"
               },
@@ -1062,7 +1062,7 @@
                     "type": "number"
                   }
                 ],
-                "output": true
+                "output": false
               },
               {
                 "name": "",
@@ -1185,7 +1185,7 @@
                           "type": "number"
                         }
                       ],
-                      "output": true
+                      "output": false
                     }
                   }
                 },

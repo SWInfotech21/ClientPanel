@@ -120,7 +120,7 @@
         "options": {
           "provider": "security"
         },
-        "output": true,
+        "output": false,
         "meta": []
       },
       {
@@ -185,7 +185,7 @@
             ]
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "number",
@@ -384,7 +384,7 @@
                   "type": "number"
                 }
               ],
-              "output": true
+              "output": false
             }
           },
           "else": {
@@ -395,7 +395,8 @@
               "options": {
                 "data": "Parent User Not Found! Contact Admin",
                 "status": 401
-              }
+              },
+              "output": true
             }
           }
         },
