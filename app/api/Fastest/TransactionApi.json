@@ -1752,7 +1752,7 @@
                                                                         "mobile_no": "{{$_POST.mobile_number}}",
                                                                         "amount": "{{$_POST.recharge_amount}}",
                                                                         "company_id": "{{GetOpAPICodeFwrd.api_code3}}",
-                                                                        "order_id": "{{TransactionId}}",
+                                                                        "order_id": "{{$_GET.reqid}}",
                                                                         "is_stv": "{{false}}"
                                                                       }
                                                                     },
@@ -1787,7 +1787,7 @@
                                                                               "mobile_no": "{{$_POST.mobile_number}}",
                                                                               "amount": "{{$_POST.recharge_amount}}",
                                                                               "company_id": "{{GetOpAPICodeFwrd.api_code3}}",
-                                                                              "order_id": "{{TransactionId}}",
+                                                                              "order_id": "{{$_GET.reqid}}",
                                                                               "is_stv": "{{true}}"
                                                                             }
                                                                           },

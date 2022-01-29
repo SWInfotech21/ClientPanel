@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="recharge1" appConnect="local" components="{dmxBootstrap5Navigation:{}}" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="recharge1" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" -->
 <meta name="ac:route" content="/recharge">
 <dmx-serverconnect id="scOperator" url="api/Operator/MobileOpFetch" noload></dmx-serverconnect>
 <div class="container mt-3">
@@ -19,7 +19,7 @@
                 <div class="tab-pane fade show active px-2" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                     <h4 class="mb-4">Mobile Recharge</h4>
                     <div class="row">
-                        <form id="formMobileRecharge" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
+                        <form id="formMobileRecharge" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load();modalRecharge.show()" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
                             <div class="form-group row">
                                 <label class="text-monospace col-3 pe-0">Mobile No. (+91)</label>
                                 <div class="input-group mb-2 col-9 ps-0">
@@ -134,6 +134,24 @@
             </div>
         </div>
         <div class="col-md-6 col-12">
+            <img src="assets/images/swpay.png" class="col-9 img-fluid mt-5">
+        </div>
+    </div>
+</div>
+<div class="modal" id="modalRecharge" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Recharge</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4>Status:</h4>
+                <h4>Remarks:</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
