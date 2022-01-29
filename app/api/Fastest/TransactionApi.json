@@ -2870,16 +2870,29 @@
                                 ]
                               },
                               "else": {
-                                "steps": {
-                                  "name": "ResUniqueReqId",
-                                  "module": "core",
-                                  "action": "response",
-                                  "options": {
-                                    "status": 403,
-                                    "data": "Please enter a unique reqid"
+                                "steps": [
+                                  {
+                                    "name": "remarks",
+                                    "module": "core",
+                                    "action": "setvalue",
+                                    "options": {
+                                      "value": "{{remarks}}"
+                                    },
+                                    "meta": [],
+                                    "outputType": "text",
+                                    "output": true
                                   },
-                                  "output": true
-                                }
+                                  {
+                                    "name": "ResUniqueReqId",
+                                    "module": "core",
+                                    "action": "response",
+                                    "options": {
+                                      "status": 403,
+                                      "data": "Please enter a unique reqid"
+                                    },
+                                    "output": true
+                                  }
+                                ]
                               }
                             },
                             "outputType": "boolean"
