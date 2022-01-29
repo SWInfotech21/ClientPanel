@@ -1791,11 +1791,13 @@
                                                                               "is_stv": "{{true}}"
                                                                             }
                                                                           },
-                                                                          "output": false
+                                                                          "output": false,
+                                                                          "disabled": true
                                                                         }
                                                                       }
                                                                     },
-                                                                    "outputType": "boolean"
+                                                                    "outputType": "boolean",
+                                                                    "disabled": true
                                                                   },
                                                                   {
                                                                     "name": "apistatus",
