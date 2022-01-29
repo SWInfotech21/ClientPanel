@@ -2773,7 +2773,7 @@
                                                                                         "is_stv": "{{false}}"
                                                                                       }
                                                                                     },
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "stat",
@@ -2784,7 +2784,7 @@
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text",
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "",
@@ -2808,7 +2808,7 @@
                                                                                               "is_stv": "{{true}}"
                                                                                             }
                                                                                           },
-                                                                                          "output": true
+                                                                                          "output": false
                                                                                         }
                                                                                       }
                                                                                     },
@@ -2867,7 +2867,7 @@
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text",
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "apibalance",
@@ -2878,7 +2878,7 @@
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text",
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "api_ref",
