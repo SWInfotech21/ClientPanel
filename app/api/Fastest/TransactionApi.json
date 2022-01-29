@@ -1749,8 +1749,8 @@
                                                                       "url": "https://mrobotics.in/api/recharge_get",
                                                                       "params": {
                                                                         "api_token": "{{GetOpAPICodeFwrd.api_password}}",
-                                                                        "mobile_no": "{{$_POST.mobile_number}}",
-                                                                        "amount": "{{$_POST.recharge_amount}}",
+                                                                        "mobile_no": "{{$_GET.account}}",
+                                                                        "amount": "{{$_GET.amount}}",
                                                                         "company_id": "{{GetOpAPICodeFwrd.api_code3}}",
                                                                         "order_id": "{{$_GET.reqid}}",
                                                                         "is_stv": "{{false}}"
@@ -1784,8 +1784,8 @@
                                                                             "url": "https://mrobotics.in/api/recharge_get",
                                                                             "params": {
                                                                               "api_token": "{{GetOpAPICodeFwrd.api_password}}",
-                                                                              "mobile_no": "{{$_POST.mobile_number}}",
-                                                                              "amount": "{{$_POST.recharge_amount}}",
+                                                                              "mobile_no": "{{$_GET.account}}",
+                                                                              "amount": "{{$_GET.amount}}",
                                                                               "company_id": "{{GetOpAPICodeFwrd.api_code3}}",
                                                                               "order_id": "{{$_GET.reqid}}",
                                                                               "is_stv": "{{true}}"
