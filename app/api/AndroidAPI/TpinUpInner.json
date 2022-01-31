@@ -35,7 +35,8 @@
         "type": "text",
         "options": {
           "rules": {
-            "core:required": {}
+            "core:required": {},
+            "core:number": {}
           }
         },
         "name": "newtpin"
