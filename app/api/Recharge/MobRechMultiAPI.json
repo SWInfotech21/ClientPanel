@@ -560,7 +560,7 @@
             ]
           }
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
             "type": "datetime",
@@ -578,7 +578,7 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": false
+        "output": true
       },
       {
         "name": "",
