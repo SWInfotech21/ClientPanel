@@ -4543,7 +4543,8 @@
                 "status": 401,
                 "data": "Recharge of same amount not allowed for next 10 minutes."
               },
-              "output": true
+              "output": true,
+              "disabled": true
             }
           }
         },
