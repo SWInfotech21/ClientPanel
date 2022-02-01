@@ -2755,6 +2755,125 @@
                                                                             "module": "core",
                                                                             "action": "condition",
                                                                             "options": {
+                                                                              "if": "{{GetOpAPICodeFwrd.api_code == 'MA'}}",
+                                                                              "then": {
+                                                                                "steps": [
+                                                                                  {
+                                                                                    "name": "apiMoneyArt",
+                                                                                    "module": "api",
+                                                                                    "action": "send",
+                                                                                    "options": {
+                                                                                      "url": "http://corp.moneyart.in/Recharge",
+                                                                                      "params": {
+                                                                                        "token": "{{GetOpAPICodeFwrd.api_password}}",
+                                                                                        "number": "{{$_GET.mobile}}",
+                                                                                        "amount": "{{$_GET.amount}}",
+                                                                                        "apiCode": "{{GetOpAPICodeFwrd.api_code4}}",
+                                                                                        "requestID": "{{TransactionId}}",
+                                                                                        "field1": ""
+                                                                                      },
+                                                                                      "method": "POST"
+                                                                                    },
+                                                                                    "output": true
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "stat",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "{{apiMoneyArt.data.Data.Status}}"
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "outputType": "text",
+                                                                                    "output": false
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "apistatus",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "{{stat == 'Success'? 'SUCCESS' : stat == 'Failure'? 'FAILED' : 'PENDING'}}"
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "outputType": "text",
+                                                                                    "output": true
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "apifiredid",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "{{apiMoneyArt.data.Data.OperatorRef}}"
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "outputType": "text",
+                                                                                    "output": true
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "remarks",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "{{apiMoneyArt.data.Message}}"
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "outputType": "text",
+                                                                                    "output": true
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "ec",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "{{apiMoneyArt.data.StatusCode}}"
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "outputType": "text",
+                                                                                    "output": true
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "api_log",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "MA"
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "outputType": "text",
+                                                                                    "output": false
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "apibalance",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "{{apiMoneyArt.data.Data.Balance}}"
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "outputType": "text",
+                                                                                    "output": false
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "api_ref",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "{{apiMoneyArt.data.Data.TxnRef}}"
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "outputType": "text",
+                                                                                    "output": true
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            },
+                                                                            "outputType": "boolean"
+                                                                          },
+                                                                          {
+                                                                            "name": "",
+                                                                            "module": "core",
+                                                                            "action": "condition",
+                                                                            "options": {
                                                                               "if": "{{GetOpAPICodeFwrd.api_code == 'MRO'}}",
                                                                               "then": {
                                                                                 "steps": [
