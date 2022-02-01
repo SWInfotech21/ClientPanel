@@ -4535,17 +4535,126 @@
             }
           },
           "else": {
-            "steps": {
-              "name": "RespFreq",
-              "module": "core",
-              "action": "response",
-              "options": {
-                "status": 401,
-                "data": "Recharge of same amount not allowed for next 10 minutes."
+            "steps": [
+              {
+                "name": "CheckFrequent_copy",
+                "module": "dbconnector",
+                "action": "single",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "SELECT",
+                    "columns": [
+                      {
+                        "table": "tt_recharge_trans",
+                        "column": "tr_date"
+                      }
+                    ],
+                    "table": {
+                      "name": "tt_recharge_trans"
+                    },
+                    "joins": [],
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "tt_recharge_trans.op_id",
+                          "field": "tt_recharge_trans.op_id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{$_POST.op_code}}",
+                          "data": {
+                            "table": "tt_recharge_trans",
+                            "column": "op_id",
+                            "type": "number"
+                          },
+                          "operation": "="
+                        },
+                        {
+                          "id": "tt_recharge_trans.user_number",
+                          "field": "tt_recharge_trans.user_number",
+                          "type": "string",
+                          "operator": "equal",
+                          "value": "{{$_POST.mobile_number}}",
+                          "data": {
+                            "table": "tt_recharge_trans",
+                            "column": "user_number",
+                            "type": "text"
+                          },
+                          "operation": "="
+                        },
+                        {
+                          "id": "tt_recharge_trans.amount",
+                          "field": "tt_recharge_trans.amount",
+                          "type": "string",
+                          "operator": "equal",
+                          "value": "{{$_POST.recharge_amount}}",
+                          "data": {
+                            "table": "tt_recharge_trans",
+                            "column": "amount",
+                            "type": "text"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "SELECT tr_date\nFROM tt_recharge_trans\nWHERE op_id = :P1 /* {{$_POST.op_code}} */ AND user_number = :P2 /* {{$_POST.mobile_number}} */ AND amount = :P3 /* {{$_POST.recharge_amount}} */",
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{$_POST.op_code}}"
+                      },
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P2",
+                        "value": "{{$_POST.mobile_number}}"
+                      },
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P3",
+                        "value": "{{$_POST.recharge_amount}}"
+                      }
+                    ]
+                  }
+                },
+                "output": true,
+                "meta": [
+                  {
+                    "type": "datetime",
+                    "name": "tr_date"
+                  }
+                ],
+                "outputType": "object"
               },
-              "output": true,
-              "disabled": true
-            }
+              {
+                "name": "CountFreq_copy",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{NOW.dateDiff('seconds', CheckFrequent.tr_date)}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "RespFreq",
+                "module": "core",
+                "action": "response",
+                "options": {
+                  "status": 401,
+                  "data": "Recharge of same amount not allowed for next 10 minutes."
+                },
+                "output": true,
+                "disabled": true
+              }
+            ]
           }
         },
         "outputType": "boolean"
