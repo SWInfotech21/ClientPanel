@@ -146,9 +146,13 @@
                 <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h4 dmx-show="content.formMobileRecharge.lastError.response.error == 'true'">Status:{{content.formMobileRecharge.lastError.response.errorMessage}} {{content.formMobileRecharge.lastError.response.ip}}</h4>
-                <h4 dmx-show="content.formMobileRecharge.lastError.status == 0">Status:{{content.formMobileRecharge.data.apistatus}}</h4>
-                <h4>Remarks: {{content.formMobileRecharge.data.remarks}}</h4>
+                <div class="col-12">
+                    <img src="assets/images/mark-success.gif" width="200" height="200" class="img-fluid" dmx-show="content.formMobileRecharge.data.apistatus == 'SUCCESS' || content.formMobileRecharge.data.apistatus == 'PENDING'">
+                    <img src="assets/images/mark-failure.gif" width="200" height="200" class="img-fluid" dmx-show="content.formMobileRecharge.data.apistatus == 'FAILED'">
+                </div>
+                <h5 dmx-show="content.formMobileRecharge.lastError.response.error == 'true'">Status:{{content.formMobileRecharge.lastError.response.errorMessage}} {{content.formMobileRecharge.lastError.response.ip}}</h5>
+                <h5 dmx-show="content.formMobileRecharge.lastError.status == 0">Status:{{content.formMobileRecharge.data.apistatus}}</h5>
+                <h6>Remarks: {{content.formMobileRecharge.data.remarks}}</h6>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
