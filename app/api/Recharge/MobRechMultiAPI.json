@@ -585,7 +585,7 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{CountFreq >= 10}}",
+          "if": "{{CountFreq.toNumber() >= 10}}",
           "then": {
             "steps": {
               "name": "",
