@@ -142,6 +142,11 @@
       "exec": "/api/PageAccess/PagesFrDTMDT"
     },
     {
+      "path": "/bbps",
+      "page": "bbps",
+      "layout": "main"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }

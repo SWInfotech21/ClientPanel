@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "GetBBPS",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_service",
+                "column": "id"
+              },
+              {
+                "table": "m_service",
+                "column": "service_name"
+              },
+              {
+                "table": "m_service",
+                "column": "service_type"
+              }
+            ],
+            "table": {
+              "name": "m_service"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_service.is_bbps",
+                  "field": "m_service.is_bbps",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "m_service",
+                    "column": "is_bbps",
+                    "type": "number"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "m_service.is_active",
+                  "field": "m_service.is_active",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "m_service",
+                    "column": "is_active",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT id, service_name, service_type\nFROM m_service\nWHERE is_bbps = 1 AND is_active = 1",
+            "params": []
+          },
+          "connection": "postgres_gcpServer"
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "text",
+            "name": "service_name"
+          },
+          {
+            "type": "text",
+            "name": "service_type"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

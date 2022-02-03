@@ -1,0 +1,147 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "custom",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tt_recharge_trans",
+                "column": "tr_date"
+              }
+            ],
+            "table": {
+              "name": "tt_recharge_trans"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tt_recharge_trans.op_id",
+                  "field": "tt_recharge_trans.op_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 25,
+                  "data": {
+                    "table": "tt_recharge_trans",
+                    "column": "op_id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tt_recharge_trans.user_number",
+                  "field": "tt_recharge_trans.user_number",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{9508862529}}",
+                  "data": {
+                    "table": "tt_recharge_trans",
+                    "column": "user_number",
+                    "type": "text"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tt_recharge_trans.amount",
+                  "field": "tt_recharge_trans.amount",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{10}}",
+                  "data": {
+                    "table": "tt_recharge_trans",
+                    "column": "amount",
+                    "type": "text"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT tr_date\nFROM tt_recharge_trans\nWHERE op_id = 25 AND user_number = :P1 /* {{9508862529}} */ AND amount = :P2 /* {{10}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{9508862529}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{10}}"
+              }
+            ]
+          },
+          "connection": "postgres_gcpServer"
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "datetime",
+            "name": "tr_date"
+          }
+        ],
+        "outputType": "array",
+        "disabled": true
+      },
+      {
+        "name": "TimeDiff",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{NOW.dateDiff('seconds', custom==''? '2021-01-01 00:00:00' : custom.tr_date)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "TrId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{NOW.md5(123456).substr(1, 12)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "api",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "method": "POST",
+          "url": "https://corp.moneyart.in/TransactionStatus",
+          "params": {
+            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+            "clientTransactionID": "{{'f8d1b39bb'}}"
+          }
+        },
+        "output": true
+      }
+    ]
+  }
+}

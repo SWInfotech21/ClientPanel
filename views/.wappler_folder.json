@@ -122,5 +122,9 @@
   "manage-pay-request.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "bbps.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }
