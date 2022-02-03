@@ -1064,7 +1064,7 @@
                                                                     "table": "tt_recharge_trans",
                                                                     "column": "closing_balance",
                                                                     "type": "text",
-                                                                    "value": "{{RTClosingBalance}}"
+                                                                    "value": "{{UserWalletBalCheck.balance_amt}}"
                                                                   },
                                                                   {
                                                                     "table": "tt_recharge_trans",
@@ -1147,7 +1147,7 @@
                                                                 ],
                                                                 "table": "tt_recharge_trans",
                                                                 "returning": "id",
-                                                                "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed) VALUES (:P1 /* {{GetOpAPICodeFwrd.op_id}} */, :P2 /* {{GetOpAPICodeFwrd.service_id}} */, :P3 /* {{GetOpAPICodeFwrd.api_id}} */, :P4 /* {{$_GET.userid}} */, :P5 /* {{$_GET.account}} */, :P6 /* {{UserWalletBalCheck.user_fname}} */, :P7 /* {{$_GET.amount}} */, :P8 /* {{'API'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{$_GET.reqid}} */, :P12 /* {{'Recharge of Rs. '+$_GET.amount+' by API user '+UserWalletBalCheck.user_fname+' | '+UserWalletBalCheck.user_mobile}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2B'}} */, :P15 /* {{NOW}} */, :P16 /* {{$_GET.userid}} */, :P17 /* {{UserWalletBalCheck.balance_amt}} */, :P18 /* {{GetCommision.comm_per}} */, :P19 /* {{GetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{GetCommision.service_charge_val}} */, :P22 /* {{GetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{RTClosingBalance}} */, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', :P26 /* {{'N/A'}} */)",
+                                                                "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed) VALUES (:P1 /* {{GetOpAPICodeFwrd.op_id}} */, :P2 /* {{GetOpAPICodeFwrd.service_id}} */, :P3 /* {{GetOpAPICodeFwrd.api_id}} */, :P4 /* {{$_GET.userid}} */, :P5 /* {{$_GET.account}} */, :P6 /* {{UserWalletBalCheck.user_fname}} */, :P7 /* {{$_GET.amount}} */, :P8 /* {{'API'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{$_GET.reqid}} */, :P12 /* {{'Recharge of Rs. '+$_GET.amount+' by API user '+UserWalletBalCheck.user_fname+' | '+UserWalletBalCheck.user_mobile}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2B'}} */, :P15 /* {{NOW}} */, :P16 /* {{$_GET.userid}} */, :P17 /* {{UserWalletBalCheck.balance_amt}} */, :P18 /* {{GetCommision.comm_per}} */, :P19 /* {{GetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{GetCommision.service_charge_val}} */, :P22 /* {{GetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{UserWalletBalCheck.balance_amt}} */, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', :P26 /* {{'N/A'}} */)",
                                                                 "params": [
                                                                   {
                                                                     "name": ":P1",
@@ -1272,7 +1272,7 @@
                                                                   {
                                                                     "name": ":P25",
                                                                     "type": "expression",
-                                                                    "value": "{{RTClosingBalance}}"
+                                                                    "value": "{{UserWalletBalCheck.balance_amt}}"
                                                                   },
                                                                   {
                                                                     "name": ":P26",
@@ -1325,7 +1325,7 @@
                                                                     "table": "tt_balance",
                                                                     "column": "new_balance",
                                                                     "type": "text",
-                                                                    "value": "{{RTClosingBalance}}"
+                                                                    "value": "{{UserWalletBalCheck.balance_amt}}"
                                                                   },
                                                                   {
                                                                     "table": "tt_balance",
@@ -1390,7 +1390,7 @@
                                                                 ],
                                                                 "table": "tt_balance",
                                                                 "returning": "id",
-                                                                "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{$_GET.userid}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{RTClosingBalance}} */, :P5 /* {{'Recharge'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.account+' | Amount:\\n '+$_GET.amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{$_GET.userid}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'FAILED'}} */)",
+                                                                "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{$_GET.userid}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{UserWalletBalCheck.balance_amt}} */, :P5 /* {{'Recharge'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.account+' | Amount:\\n '+$_GET.amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{$_GET.userid}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'FAILED'}} */)",
                                                                 "params": [
                                                                   {
                                                                     "name": ":P1",
@@ -1410,7 +1410,7 @@
                                                                   {
                                                                     "name": ":P4",
                                                                     "type": "expression",
-                                                                    "value": "{{RTClosingBalance}}"
+                                                                    "value": "{{UserWalletBalCheck.balance_amt}}"
                                                                   },
                                                                   {
                                                                     "name": ":P5",
@@ -2103,6 +2103,12 @@
                                                                             "column": "extra3",
                                                                             "type": "text",
                                                                             "value": "{{apibalance}}"
+                                                                          },
+                                                                          {
+                                                                            "table": "tt_recharge_trans",
+                                                                            "column": "closing_balance",
+                                                                            "type": "text",
+                                                                            "value": "{{RTClosingBalance}}"
                                                                           }
                                                                         ],
                                                                         "table": "tt_recharge_trans",
@@ -2124,7 +2130,7 @@
                                                                           "conditional": null,
                                                                           "valid": true
                                                                         },
-                                                                        "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus}} */, api_logs = :P2 /* {{api_log}} */, is_processed = :P3 /* {{apifiredid}} */, operator_ref = :P4 /* {{remarks}} */, api_ref = :P5 /* {{api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance}} */\nWHERE id = :P11 /* {{RechTrans.identity}} */",
+                                                                        "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus}} */, api_logs = :P2 /* {{api_log}} */, is_processed = :P3 /* {{apifiredid}} */, operator_ref = :P4 /* {{remarks}} */, api_ref = :P5 /* {{api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance}} */, closing_balance = :P11 /* {{RTClosingBalance}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
                                                                         "params": [
                                                                           {
                                                                             "name": ":P1",
@@ -2177,9 +2183,14 @@
                                                                             "value": "{{apibalance}}"
                                                                           },
                                                                           {
+                                                                            "name": ":P11",
+                                                                            "type": "expression",
+                                                                            "value": "{{RTClosingBalance}}"
+                                                                          },
+                                                                          {
                                                                             "operator": "equal",
                                                                             "type": "expression",
-                                                                            "name": ":P11",
+                                                                            "name": ":P12",
                                                                             "value": "{{RechTrans.identity}}"
                                                                           }
                                                                         ]
@@ -2207,6 +2218,12 @@
                                                                             "column": "status",
                                                                             "type": "text",
                                                                             "value": "{{apistatus}}"
+                                                                          },
+                                                                          {
+                                                                            "table": "tt_balance",
+                                                                            "column": "new_balance",
+                                                                            "type": "text",
+                                                                            "value": "{{RTClosingBalance}}"
                                                                           }
                                                                         ],
                                                                         "table": "tt_balance",
@@ -2228,7 +2245,7 @@
                                                                           "conditional": null,
                                                                           "valid": true
                                                                         },
-                                                                        "query": "UPDATE tt_balance\nSET status = :P1 /* {{apistatus}} */\nWHERE id = :P2 /* {{DrBalanceRT.identity}} */",
+                                                                        "query": "UPDATE tt_balance\nSET status = :P1 /* {{apistatus}} */, new_balance = :P2 /* {{RTClosingBalance}} */\nWHERE id = :P3 /* {{DrBalanceRT.identity}} */",
                                                                         "params": [
                                                                           {
                                                                             "name": ":P1",
@@ -2236,9 +2253,14 @@
                                                                             "value": "{{apistatus}}"
                                                                           },
                                                                           {
+                                                                            "name": ":P2",
+                                                                            "type": "expression",
+                                                                            "value": "{{RTClosingBalance}}"
+                                                                          },
+                                                                          {
                                                                             "operator": "equal",
                                                                             "type": "expression",
-                                                                            "name": ":P2",
+                                                                            "name": ":P3",
                                                                             "value": "{{DrBalanceRT.identity}}"
                                                                           }
                                                                         ]
