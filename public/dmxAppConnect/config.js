@@ -1497,5 +1497,24 @@ dmx.config({
       ],
       "outputType": "array"
     }
+  },
+  "bbps": {
+    "repeat1": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "service_name"
+        },
+        {
+          "type": "text",
+          "name": "service_type"
+        }
+      ],
+      "outputType": "array"
+    }
   }
 });

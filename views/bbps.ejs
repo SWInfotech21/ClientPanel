@@ -12,21 +12,35 @@
         <div class="col-md-3 col-sm-4 col-12">
             <ul class="nav nav-pills flex-column mb-3 px-2" id="pills-tab" role="tablist">
                 <li class="nav-item border sw-border-radius px-0" role="presentation">
-                    <button class="nav-link active w-100 h6 mb-0" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Mobile</button>
+                    <button class="nav-link active w-100 h6 mb-0" id="pills-electricity-tab" data-bs-toggle="pill" data-bs-target="#pills-electricity" type="button" role="tab" aria-controls="pills-electricity" aria-selected="true">Electricity</button>
                 </li>
                 <li class="nav-item border sw-border-radius px-0" role="presentation">
-                    <button class="nav-link w-100 h6 mb-0" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">DTH</button>
+                    <button class="nav-link w-100 h6 mb-0" id="pills-gas-tab" data-bs-toggle="pill" data-bs-target="#pills-gas" type="button" role="tab" aria-controls="pills-gas" aria-selected="false">Gas</button>
                 </li>
                 <li class="nav-item border sw-border-radius px-0" role="presentation">
-                    <button class="nav-link w-100 h6 mb-0" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Pre-Paid</button>
+                    <button class="nav-link w-100 h6 mb-0" id="pills-water-tab" data-bs-toggle="pill" data-bs-target="#pills-water" type="button" role="tab" aria-controls="pills-water" aria-selected="false">Water</button>
+                </li>
+                <li class="nav-item border sw-border-radius px-0" role="presentation">
+                    <button class="nav-link w-100 h6 mb-0" id="pills-fasttag-tab" data-bs-toggle="pill" data-bs-target="#pills-fasttag" type="button" role="tab" aria-controls="pills-fasttag" aria-selected="false">Fast Tag</button>
+                </li>
+                <li class="nav-item border sw-border-radius px-0" role="presentation">
+                    <button class="nav-link w-100 h6 mb-0" id="pills-cabletv-tab" data-bs-toggle="pill" data-bs-target="#pills-cabletv" type="button" role="tab" aria-controls="pills-cabletv" aria-selected="false">Cable Tv</button>
+                </li>
+                <li class="nav-item border sw-border-radius px-0" role="presentation">
+                    <button class="nav-link w-100 h6 mb-0" id="pills-insurance-tab" data-bs-toggle="pill" data-bs-target="#pills-insurance" type="button" role="tab" aria-controls="pills-insurance" aria-selected="false">Insurance</button>
+                </li>
+                <li class="nav-item border sw-border-radius px-0" role="presentation">
+                    <button class="nav-link w-100 h6 mb-0" id="pills-landline-tab" data-bs-toggle="pill" data-bs-target="#pills-landline" type="button" role="tab" aria-controls="pills-landline" aria-selected="false">Landline Postpaid</button>
+                </li>
+                <li class="nav-item border sw-border-radius px-0" role="presentation">
+                    <button class="nav-link w-100 h6 mb-0" id="pills-emi-tab" data-bs-toggle="pill" data-bs-target="#pills-emi" type="button" role="tab" aria-controls="pills-emi" aria-selected="false">EMI</button>
                 </li>
             </ul>
-
         </div>
         <div class="col-md-9 col-sm-8 col-12">
             <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade show active px-2" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                    <h4 class="mb-4">Mobile Recharge</h4>
+                <div class="tab-pane fade show active px-2" id="pills-electricity" role="tabpanel" aria-labelledby="pills-electricity-tab">
+                    <h4 class="mb-4">Electricity Bill Payment</h4>
                     <div class="row">
                         <form id="formMobileRecharge" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load();modalRecharge.show()" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
                             <div class="form-group row">
@@ -82,8 +96,8 @@
                         </form>
                     </div>
                 </div>
-                <div class="tab-pane fade px-2" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                    <h4 class="mb-4">DTH Recharge</h4>
+                <div class="tab-pane fade px-2" id="pills-gas" role="tabpanel" aria-labelledby="pills-gas-tab">
+                    <h4 class="mb-4">Gas Bill Payment</h4>
                     <div class="row">
                         <form id="formDTHRecharge" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
                             <div class="form-group row">
@@ -139,7 +153,12 @@
                         </form>
                     </div>
                 </div>
-                <div class="tab-pane fade px-2" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">Prepaid.</div>
+                <div class="tab-pane fade px-2" id="pills-water" role="tabpanel" aria-labelledby="pills-water-tab">Water Bill Payment</div>
+                <div class="tab-pane fade px-2" id="pills-fasttag" role="tabpanel" aria-labelledby="pills-fasttag-tab">Fast Tag</div>
+                <div class="tab-pane fade px-2" id="pills-cabletv" role="tabpanel" aria-labelledby="pills-cabletv-tab">Cable Tv</div>
+                <div class="tab-pane fade px-2" id="pills-insurance" role="tabpanel" aria-labelledby="pills-insurance-tab">Insurance</div>
+                <div class="tab-pane fade px-2" id="pills-landline" role="tabpanel" aria-labelledby="pills-landline-tab">Landline Postpaid</div>
+                <div class="tab-pane fade px-2" id="pills-emi" role="tabpanel" aria-labelledby="pills-emi-tab">EMI</div>
             </div>
         </div>
     </div>
