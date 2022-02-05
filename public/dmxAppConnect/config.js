@@ -1515,6 +1515,56 @@ dmx.config({
         }
       ],
       "outputType": "array"
+    },
+    "repeatOp": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "operator_name"
+        },
+        {
+          "type": "number",
+          "name": "min_amount"
+        },
+        {
+          "type": "text",
+          "name": "max_amount"
+        },
+        {
+          "type": "text",
+          "name": "image"
+        }
+      ],
+      "outputType": "array"
+    },
+    "dvOpBBPS": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "operator_name"
+        },
+        {
+          "type": "number",
+          "name": "min_amount"
+        },
+        {
+          "type": "text",
+          "name": "max_amount"
+        },
+        {
+          "type": "text",
+          "name": "image"
+        }
+      ],
+      "outputType": "array"
     }
   }
 });

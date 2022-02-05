@@ -174,5 +174,10 @@ body{
       margin-left: -325px;
       bottom: -105px;
     }
-  
-
+  .bbps-services {
+    height: 350px !important;
+    overflow: auto !important;
+  }
+  .sw-bg-grey{
+    background: #ccc;
+  }

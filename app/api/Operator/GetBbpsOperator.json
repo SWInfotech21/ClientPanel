@@ -1,0 +1,353 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "service_type"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{$_GET.service_type}}",
+          "then": {
+            "steps": {
+              "name": "GetBbpsOp",
+              "module": "dbconnector",
+              "action": "select",
+              "options": {
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "m_operator",
+                      "column": "id"
+                    },
+                    {
+                      "table": "m_operator",
+                      "column": "operator_name"
+                    },
+                    {
+                      "table": "m_operator",
+                      "column": "min_amount"
+                    },
+                    {
+                      "table": "m_operator",
+                      "column": "max_amount"
+                    },
+                    {
+                      "table": "m_operator",
+                      "column": "image"
+                    }
+                  ],
+                  "table": {
+                    "name": "m_operator"
+                  },
+                  "joins": [
+                    {
+                      "table": "m_service",
+                      "column": "*",
+                      "alias": "ms",
+                      "type": "INNER",
+                      "clauses": {
+                        "condition": "AND",
+                        "rules": [
+                          {
+                            "table": "ms",
+                            "column": "id",
+                            "operator": "equal",
+                            "value": {
+                              "table": "m_operator",
+                              "column": "service_id"
+                            },
+                            "operation": "="
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "m_operator.status",
+                        "field": "m_operator.status",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": 1,
+                        "data": {
+                          "table": "m_operator",
+                          "column": "status",
+                          "type": "number"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "ms.is_active",
+                        "field": "ms.is_active",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": 1,
+                        "data": {
+                          "table": "ms",
+                          "column": "is_active",
+                          "type": "number"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "ms.is_bbps",
+                        "field": "ms.is_bbps",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": 1,
+                        "data": {
+                          "table": "ms",
+                          "column": "is_bbps",
+                          "type": "number"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "m_operator.service_id",
+                        "field": "m_operator.service_id",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": "{{$_GET.service_type}}",
+                        "data": {
+                          "table": "m_operator",
+                          "column": "service_id",
+                          "type": "number"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  },
+                  "query": "SELECT m_operator.id, m_operator.operator_name, m_operator.min_amount, m_operator.max_amount, m_operator.image\nFROM m_operator\nINNER JOIN m_service AS ms ON (ms.id = m_operator.service_id)\nWHERE m_operator.status = 1 AND ms.is_active = 1 AND ms.is_bbps = 1 AND m_operator.service_id = :P1 /* {{$_GET.service_type}} */\nORDER BY m_operator.operator_name ASC",
+                  "params": [
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P1",
+                      "value": "{{$_GET.service_type}}"
+                    }
+                  ],
+                  "orders": [
+                    {
+                      "table": "m_operator",
+                      "column": "operator_name",
+                      "direction": "ASC"
+                    }
+                  ]
+                },
+                "connection": "postgres_gcpServer"
+              },
+              "output": true,
+              "meta": [
+                {
+                  "type": "number",
+                  "name": "id"
+                },
+                {
+                  "type": "text",
+                  "name": "operator_name"
+                },
+                {
+                  "type": "number",
+                  "name": "min_amount"
+                },
+                {
+                  "type": "text",
+                  "name": "max_amount"
+                },
+                {
+                  "type": "text",
+                  "name": "image"
+                }
+              ],
+              "outputType": "array"
+            }
+          },
+          "else": {
+            "steps": {
+              "name": "GetBbpsOp",
+              "module": "dbconnector",
+              "action": "select",
+              "options": {
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "m_operator",
+                      "column": "id"
+                    },
+                    {
+                      "table": "m_operator",
+                      "column": "operator_name"
+                    },
+                    {
+                      "table": "m_operator",
+                      "column": "min_amount"
+                    },
+                    {
+                      "table": "m_operator",
+                      "column": "max_amount"
+                    },
+                    {
+                      "table": "m_operator",
+                      "column": "image"
+                    },
+                    {
+                      "table": "m_operator",
+                      "column": "service_id"
+                    }
+                  ],
+                  "table": {
+                    "name": "m_operator"
+                  },
+                  "joins": [
+                    {
+                      "table": "m_service",
+                      "column": "*",
+                      "alias": "ms",
+                      "type": "INNER",
+                      "clauses": {
+                        "condition": "AND",
+                        "rules": [
+                          {
+                            "table": "ms",
+                            "column": "id",
+                            "operator": "equal",
+                            "value": {
+                              "table": "m_operator",
+                              "column": "service_id"
+                            },
+                            "operation": "="
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "m_operator.status",
+                        "field": "m_operator.status",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": 1,
+                        "data": {
+                          "table": "m_operator",
+                          "column": "status",
+                          "type": "number"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "ms.is_active",
+                        "field": "ms.is_active",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": 1,
+                        "data": {
+                          "table": "ms",
+                          "column": "is_active",
+                          "type": "number"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "ms.is_bbps",
+                        "field": "ms.is_bbps",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": 1,
+                        "data": {
+                          "table": "ms",
+                          "column": "is_bbps",
+                          "type": "number"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  },
+                  "query": "SELECT m_operator.id, m_operator.operator_name, m_operator.min_amount, m_operator.max_amount, m_operator.image, m_operator.service_id\nFROM m_operator\nINNER JOIN m_service AS ms ON (ms.id = m_operator.service_id)\nWHERE m_operator.status = 1 AND ms.is_active = 1 AND ms.is_bbps = 1\nORDER BY m_operator.operator_name ASC",
+                  "params": [],
+                  "orders": [
+                    {
+                      "table": "m_operator",
+                      "column": "operator_name",
+                      "direction": "ASC",
+                      "recid": 1
+                    }
+                  ]
+                },
+                "connection": "postgres_gcpServer"
+              },
+              "output": true,
+              "meta": [
+                {
+                  "type": "number",
+                  "name": "id"
+                },
+                {
+                  "type": "text",
+                  "name": "operator_name"
+                },
+                {
+                  "type": "number",
+                  "name": "min_amount"
+                },
+                {
+                  "type": "text",
+                  "name": "max_amount"
+                },
+                {
+                  "type": "text",
+                  "name": "image"
+                },
+                {
+                  "type": "number",
+                  "name": "service_id"
+                }
+              ],
+              "outputType": "array"
+            }
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
+}
