@@ -1566,5 +1566,28 @@ dmx.config({
       ],
       "outputType": "array"
     }
+  },
+  "bbpsservices": {
+    "repeatClinic": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "service_name"
+        },
+        {
+          "type": "text",
+          "name": "service_type"
+        }
+      ],
+      "outputType": "array"
+    },
+    "repeat1": {
+      "meta": null,
+      "outputType": "text"
+    }
   }
 });

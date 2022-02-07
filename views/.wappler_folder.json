@@ -126,5 +126,9 @@
   "bbps.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "bbps-services.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

@@ -181,3 +181,14 @@ body{
   .sw-bg-grey{
     background: #ccc;
   }
+  .sw-img-location{
+    border-radius: 8px;
+    height: 92px;
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+  .sw-card-clinic {
+    border: none;
+    height: 200px !important; 
+    cursor: pointer;
+}

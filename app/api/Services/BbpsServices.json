@@ -104,6 +104,202 @@
             "name": "service_type"
           }
         ],
+        "outputType": "array",
+        "disabled": true
+      },
+      {
+        "name": "getBBPSOp",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_operator",
+                "column": "id",
+                "alias": "op_id"
+              },
+              {
+                "table": "m_operator",
+                "column": "operator_name"
+              },
+              {
+                "table": "m_operator",
+                "column": "service_id"
+              },
+              {
+                "table": "m_operator",
+                "column": "image"
+              },
+              {
+                "table": "m_operator",
+                "column": "min_amount"
+              },
+              {
+                "table": "m_operator",
+                "column": "max_amount"
+              }
+            ],
+            "table": {
+              "name": "m_operator"
+            },
+            "joins": [
+              {
+                "table": "m_service",
+                "column": "*",
+                "alias": "ms",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "ms",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "m_operator",
+                        "column": "service_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                }
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_operator.status",
+                  "field": "m_operator.status",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "m_operator",
+                    "column": "status",
+                    "type": "number"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "ms.is_active",
+                  "field": "ms.is_active",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "ms",
+                    "column": "is_active",
+                    "type": "number"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "ms.is_bbps",
+                  "field": "ms.is_bbps",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "ms",
+                    "column": "is_bbps",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT m_operator.id AS op_id, m_operator.operator_name, m_operator.service_id, m_operator.image, m_operator.min_amount, m_operator.max_amount\nFROM m_operator\nINNER JOIN m_service AS ms ON (ms.id = m_operator.service_id)\nWHERE m_operator.status = 1 AND ms.is_active = 1 AND ms.is_bbps = 1\nORDER BY m_operator.operator_name ASC",
+            "params": [],
+            "orders": [
+              {
+                "table": "m_operator",
+                "column": "operator_name",
+                "direction": "ASC",
+                "recid": 1
+              }
+            ]
+          },
+          "connection": "postgres_gcpServer"
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "op_id"
+          },
+          {
+            "type": "text",
+            "name": "operator_name"
+          },
+          {
+            "type": "number",
+            "name": "service_id"
+          },
+          {
+            "type": "text",
+            "name": "image"
+          },
+          {
+            "type": "number",
+            "name": "min_amount"
+          },
+          {
+            "type": "text",
+            "name": "max_amount"
+          }
+        ],
+        "outputType": "array",
+        "disabled": true
+      },
+      {
+        "name": "All",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "query": "select ms.id as services_id, ms.service_name, ms.service_type, \n\t(select array_to_json(array_agg(row_to_json(q))) from \n\t(select mo.id as op_id, mo.operator_name, mo.image as op_image from m_operator mo where ms.id=mo.service_id and mo.status=1 order by mo.operator_name asc) q) as op\nfrom m_service ms where ms.is_active = 1 and ms.is_bbps = 1 ;",
+            "params": []
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "services_id",
+            "type": "number"
+          },
+          {
+            "name": "service_name",
+            "type": "text"
+          },
+          {
+            "name": "service_type",
+            "type": "text"
+          },
+          {
+            "name": "op",
+            "type": "array",
+            "sub": [
+              {
+                "name": "op_id",
+                "type": "number"
+              },
+              {
+                "name": "operator_name",
+                "type": "text"
+              },
+              {
+                "name": "op_image",
+                "type": "text"
+              }
+            ]
+          }
+        ],
         "outputType": "array"
       }
     ]

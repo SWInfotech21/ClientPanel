@@ -147,6 +147,11 @@
       "layout": "main"
     },
     {
+      "path": "/bbps-services",
+      "page": "bbps-services",
+      "layout": "main"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }
