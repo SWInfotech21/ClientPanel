@@ -26,7 +26,7 @@
         <!-- <p class="align-items-center d-flex font-weight-bolder mb-2">Select Service (4)<span dmx-show="scLocSpecService.state.executing" class="spinner-border spinner-border-sm ml-2" role="status"></span></p> -->
         <div class="row m-0" is="dmx-repeat" id="repeatServices" dmx-bind:repeat="content.scServiceBBPS.data.All">
             <div class="col-md-3 col-sm-4 col-6 pb-3">
-                <div class="sw-card-pay text-center" dmx-on:click="dsAppInfo.clear();varTab.setValue('Operator');dsAppInfo.insert({servicesName: service_name, servicesId: service_id, servicesIndex: $index})">
+                <div class="sw-card-pay text-center" dmx-on:click="dsAppInfo.clear();varTab.setValue('Operator');dsAppInfo.insert({servicesName: service_name, servicesId: services_id, servicesIndex: $index})">
                     <img class="sw-img-location" dmx-bind:src="'https://portal.swpay.in'+content.scServiceBBPS.data.All[$index].service_type">
                     <div class="card-body px-0">
                         <p class="card-title text-primary mb-2 fs-2 sw-font-monospace">{{service_name}}</p>
@@ -67,13 +67,13 @@
             <div class="col-12 col-md-12 px-0">
                 <div class="mb-3">
                     <div class="d-flex w-100 align-items-center p-3 sw-patient-card-header">
-                        <img class="sw-avatar" dmx-bind:src="content.scServiceBBPS.data.All[dsAppInfo.data[0].servicesIndex].op[dsAppInfo.data[0].OperatorIndex].op_image" height="72" width="72">
+                        <img class="sw-avatar" dmx-bind:src="'https://portal.swpay.in/'+content.dsAppInfo.data[0].op_image" height="72" width="72">
                         <div class="d-flex flex-column justify-content-start pl-3">
                             <h5 class="mb-2 font-weight-bold">
-                                {{content.scServiceBBPS.data.All[dsAppInfo.data[0].servicesIndex].op[dsAppInfo.data[0].OperatorIndex].operator_name}}
+                                {{content.dsAppInfo.data[0].Operator}}
                             </h5>
                             <p class="sw-font-14 mb-1">
-                                {{content.scServiceBBPS.data.All[dsAppInfo.data[0].servicesIndex].service_name}}
+                                {{content.dsAppInfo.data[0].servicesName}}
                             </p>
                         </div>
                     </div>
