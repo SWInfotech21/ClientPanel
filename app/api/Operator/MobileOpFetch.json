@@ -301,7 +301,8 @@
               {
                 "table": "m_operator",
                 "column": "operator_name",
-                "direction": "ASC"
+                "direction": "ASC",
+                "recid": 1
               }
             ],
             "wheres": {
