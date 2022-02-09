@@ -67,7 +67,7 @@
                             <td dmx-text="netamt.toNumber().toFixed(2)"></td>
                             <td dmx-text="new_balance.toNumber().toFixed(2)"></td>
                             <td dmx-text="transaction_type"></td>
-                            <td><input type="submit" class="btn btn-sm btn-outline-danger" dmx-on:click="ddRechargeTrans.select(table_id)" data-bs-toggle="modal" data-bs-target="#modalComplain" style="width: 80px;" dmx-show="status == 'SUCCESS' || status == 'REFUND'" dmx-class:disabled="complain_status >= 1" dmx-bind:value="complain_status < 1 ? 'Complain' : complain_status == 1 ? 'Pending' : complain_status == 2 ? 'Refund' : complain_status == 3 ? 'Decline' : 'N/A'" id="ComplainBtn"></td>
+                            <td><input type="submit" class="btn btn-sm btn-outline-danger" dmx-on:click="ddRechargeTrans.select(table_id)" data-bs-toggle="modal" data-bs-target="#modalComplain" style="width: 80px;" dmx-show="status == 'SUCCESS' || status == 'PENDING'" dmx-class:disabled="complain_status >= 1" dmx-bind:value="complain_status < 1 ? 'Complain' : complain_status == 1 ? 'Pending' : complain_status == 2 ? 'Refund' : complain_status == 3 ? 'Decline' : 'N/A'" id="ComplainBtn"></td>
                             <td dmx-text="crdr_type"></td>
                             <td dmx-text="tr_date.formatDate('dd-MM-yyyy hh:mm:ss A')"></td>
                             <td dmx-text="operator_ref"></td>
