@@ -12,7 +12,7 @@
                     <button class="nav-link w-100 h6 mb-0" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">DTH</button>
                 </li>
                 <li class="nav-item border sw-border-radius col-4 px-0" role="presentation">
-                    <button class="nav-link w-100 h6 mb-0" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Pre-Paid</button>
+                    <button class="nav-link w-100 h6 mb-0" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Post-Paid</button>
                 </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
@@ -130,7 +130,64 @@
                         </form>
                     </div>
                 </div>
-                <div class="tab-pane fade px-2" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">Prepaid.</div>
+                <div class="tab-pane fade px-2" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                    <h4 class="mb-4">PostPaid Recharge</h4>
+                    <div class="row">
+                        <form id="formPostPaid" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">PostPaid Number</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-mobile"></i>
+                                        </div>
+                                    </div>
+                                    <input type="number" class="form-control" id="inpPostpaidMobile" name="mobile_number" placeholder="Enter 10 digit PostPaid No." maxlength="20" required="" title="Enter Subscriber Id" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid Subscriber Id">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">Amount (in Rs.)</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-rupee-sign"></i>
+                                        </div>
+                                    </div>
+                                    <input type="number" class="form-control" id="inpPostPaidAmount" name="recharge_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">Operator</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                    </div>
+                                    <select type="text" class="form-control form-select" id="inp_postpaid_opname" name="op_code" aria-describedby="inp_opname_help" placeholder="Enter Operator Name" maxlength="50" data-msg-required="Operator Name is required." dmx-on:click="scOperator.load({})" dmx-bind:options="content.scOperator.data.GetPostPaidOp" optiontext="operator_name" optionvalue="op_id">
+                                        <option value="">Select Operator</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">T-PIN</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                    </div>
+                                    <input type="number" class="form-control" id="PostPaidTPIN" name="mobile_tpin" placeholder="Enter T-Pin" maxlength="10" required="" title="Enter T-Pin" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid t-pin." maxlength="4">
+                                </div>
+                            </div>
+                            <div class="col"><button type="submit" class="btn btn-primary pull-left" dmx-bind:disabled="state.executing" id="btnPostPaidRecharge">Recharge<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
+
+                        </form>
+                    </div>
+
+                </div>
             </div>
         </div>
         <div class="col-md-6 col-12">
