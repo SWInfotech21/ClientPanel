@@ -1276,11 +1276,21 @@
                                                                                     "outputType": "text"
                                                                                   },
                                                                                   {
-                                                                                    "name": "DTCommAmt",
+                                                                                    "name": "DTCommTotal",
                                                                                     "module": "core",
                                                                                     "action": "setvalue",
                                                                                     "options": {
                                                                                       "value": "{{($_GET.amount.toNumber()*GetCommisionForDT.comm_per.toNumber()/100)+GetCommisionForDT.comm_val.toNumber()}}"
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "outputType": "text"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "DTCommAmt",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "{{DTCommTotal.toNumber()-RTCommAmt.toNumber()}}"
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text"
@@ -1306,11 +1316,21 @@
                                                                                     "outputType": "text"
                                                                                   },
                                                                                   {
-                                                                                    "name": "DTChargeAmt",
+                                                                                    "name": "DTChargeTotal",
                                                                                     "module": "core",
                                                                                     "action": "setvalue",
                                                                                     "options": {
                                                                                       "value": "{{($_GET.amount.toNumber()*GetCommisionForDT.service_charge_per.toNumber()/100)+GetCommisionForDT.service_charge_val.toNumber()}}"
+                                                                                    },
+                                                                                    "meta": [],
+                                                                                    "outputType": "text"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "DTChargeAmt",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "{{DTChargeTotal.toNumber()-RTChargeAmt.toNumber()}}"
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text"
@@ -1592,11 +1612,21 @@
                                                                                             "outputType": "text"
                                                                                           },
                                                                                           {
-                                                                                            "name": "MDTCommAmt",
+                                                                                            "name": "MDTCommTotal",
                                                                                             "module": "core",
                                                                                             "action": "setvalue",
                                                                                             "options": {
                                                                                               "value": "{{($_GET.amount.toNumber()*GetCommisionForMDT.comm_per.toNumber()/100)+GetCommisionForMDT.comm_val.toNumber()}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text"
+                                                                                          },
+                                                                                          {
+                                                                                            "name": "MDTCommAmt",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                              "value": "{{MDTCommTotal.toNumber()-DTCommTotal.toNumber()}}"
                                                                                             },
                                                                                             "meta": [],
                                                                                             "outputType": "text"
@@ -1622,11 +1652,21 @@
                                                                                             "outputType": "text"
                                                                                           },
                                                                                           {
-                                                                                            "name": "MDTChargeAmt",
+                                                                                            "name": "MDTChargeTotal",
                                                                                             "module": "core",
                                                                                             "action": "setvalue",
                                                                                             "options": {
                                                                                               "value": "{{($_GET.amount.toNumber()*GetCommisionForMDT.service_charge_per.toNumber()/100)+GetCommisionForMDT.service_charge_val.toNumber()}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text"
+                                                                                          },
+                                                                                          {
+                                                                                            "name": "MDTChargeAmt",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                              "value": "{{MDTChargeTotal.toNumber()-DTChargeTotal.toNumber()}}"
                                                                                             },
                                                                                             "meta": [],
                                                                                             "outputType": "text"

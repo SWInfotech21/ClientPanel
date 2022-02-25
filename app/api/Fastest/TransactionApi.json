@@ -2964,13 +2964,15 @@
                                                       },
                                                       "else": {
                                                         "steps": {
-                                                          "name": "RespAPI",
+                                                          "name": "Response",
                                                           "module": "core",
-                                                          "action": "response",
+                                                          "action": "setvalue",
                                                           "options": {
-                                                            "status": 401,
-                                                            "data": "API Inactive/ API Not Forwarded/ Operator API Code Not Updated"
-                                                          }
+                                                            "value": "API Inactive/ API Not Forwarded/ Operator API Code Not Updated"
+                                                          },
+                                                          "meta": [],
+                                                          "output": true,
+                                                          "outputType": "text"
                                                         }
                                                       }
                                                     },
@@ -2980,13 +2982,15 @@
                                               },
                                               "else": {
                                                 "steps": {
-                                                  "name": "RespCommision",
+                                                  "name": "Response",
                                                   "module": "core",
-                                                  "action": "response",
+                                                  "action": "setvalue",
                                                   "options": {
-                                                    "status": 401,
-                                                    "data": "Commision for this operator is not set"
-                                                  }
+                                                    "value": "Commision for this operator is not set"
+                                                  },
+                                                  "meta": [],
+                                                  "output": true,
+                                                  "outputType": "text"
                                                 }
                                               }
                                             },
@@ -2996,13 +3000,15 @@
                                       },
                                       "else": {
                                         "steps": {
-                                          "name": "RespWalletBal",
+                                          "name": "Response",
                                           "module": "core",
-                                          "action": "response",
+                                          "action": "setvalue",
                                           "options": {
-                                            "status": 401,
-                                            "data": "You do not have sufficient api balance!"
-                                          }
+                                            "value": "You do not have sufficient API balance!"
+                                          },
+                                          "meta": [],
+                                          "outputType": "text",
+                                          "output": true
                                         }
                                       }
                                     },
@@ -3024,14 +3030,15 @@
                                     "output": true
                                   },
                                   {
-                                    "name": "ResUniqueReqId",
+                                    "name": "Response",
                                     "module": "core",
-                                    "action": "response",
+                                    "action": "setvalue",
                                     "options": {
-                                      "status": 403,
-                                      "data": "Please enter a unique reqid"
+                                      "value": "Please enter a unique reqid"
                                     },
-                                    "output": true
+                                    "meta": [],
+                                    "output": true,
+                                    "outputType": "text"
                                   }
                                 ]
                               }
@@ -3042,13 +3049,15 @@
                       },
                       "else": {
                         "steps": {
-                          "name": "ResUnauth",
+                          "name": "Response",
                           "module": "core",
-                          "action": "response",
+                          "action": "setvalue",
                           "options": {
-                            "status": 401,
-                            "data": "Unauthorized user with IP {{UserIP}}"
-                          }
+                            "value": "Unauthorized user with IP {{UserIP}}"
+                          },
+                          "meta": [],
+                          "outputType": "text",
+                          "output": true
                         }
                       }
                     },
@@ -3057,13 +3066,15 @@
                 },
                 "else": {
                   "steps": {
-                    "name": "ResUnauth",
+                    "name": "Response",
                     "module": "core",
-                    "action": "response",
+                    "action": "setvalue",
                     "options": {
-                      "status": 401,
-                      "data": "Unauthorized Access!"
-                    }
+                      "value": "Unauthorized Access!"
+                    },
+                    "meta": [],
+                    "output": true,
+                    "outputType": "text"
                   }
                 }
               },
@@ -3073,14 +3084,15 @@
         },
         "catch": {
           "steps": {
-            "name": "RespUnauth",
+            "name": "Response",
             "module": "core",
-            "action": "response",
+            "action": "setvalue",
             "options": {
-              "status": 401,
-              "data": "Do not even try to do this, we are watching & recording your activity!"
+              "value": "Do not even try to do this, we are watching & recording your activity!"
             },
-            "output": true
+            "meta": [],
+            "output": true,
+            "outputType": "text"
           }
         }
       }

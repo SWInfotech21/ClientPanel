@@ -1224,11 +1224,21 @@
                                               "outputType": "text"
                                             },
                                             {
-                                              "name": "DTCommAmt",
+                                              "name": "DTCommTotal",
                                               "module": "core",
                                               "action": "setvalue",
                                               "options": {
                                                 "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForDT.comm_per.toNumber()/100)+GetCommisionForDT.comm_val.toNumber()}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text"
+                                            },
+                                            {
+                                              "name": "DTCommAmt",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{DTCommTotal.toNumber()-RTCommAmt.toNumber()}}"
                                               },
                                               "meta": [],
                                               "outputType": "text"
@@ -1254,11 +1264,21 @@
                                               "outputType": "text"
                                             },
                                             {
-                                              "name": "DTChargeAmt",
+                                              "name": "DTChargeTotal",
                                               "module": "core",
                                               "action": "setvalue",
                                               "options": {
                                                 "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForDT.service_charge_per.toNumber()/100)+GetCommisionForDT.service_charge_val.toNumber()}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text"
+                                            },
+                                            {
+                                              "name": "DTChargeAmt",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{DTChargeTotal.toNumber()-RTChargeAmt.toNumber()}}"
                                               },
                                               "meta": [],
                                               "outputType": "text"
@@ -1524,7 +1544,7 @@
                                                       "module": "core",
                                                       "action": "setvalue",
                                                       "options": {
-                                                        "value": "{{GetCommisionForMDT.comm_per}}"
+                                                        "value": "{{GetCommisionForMDT.comm_per.toNumber()}}"
                                                       },
                                                       "meta": [],
                                                       "outputType": "text"
@@ -1534,7 +1554,17 @@
                                                       "module": "core",
                                                       "action": "setvalue",
                                                       "options": {
-                                                        "value": "{{GetCommisionForMDT.comm_val}}"
+                                                        "value": "{{GetCommisionForMDT.comm_val.toNumber()}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "MDTCommTotal",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForMDT.comm_per.toNumber()/100)+GetCommisionForMDT.comm_val.toNumber()}}"
                                                       },
                                                       "meta": [],
                                                       "outputType": "text"
@@ -1544,7 +1574,7 @@
                                                       "module": "core",
                                                       "action": "setvalue",
                                                       "options": {
-                                                        "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForMDT.comm_per.toNumber()/100)+GetCommisionForMDT.comm_val.toNumber()}}"
+                                                        "value": "{{MDTCommTotal.toNumber()-DTCommTotal.toNumber()}}"
                                                       },
                                                       "meta": [],
                                                       "outputType": "text"
@@ -1570,11 +1600,21 @@
                                                       "outputType": "text"
                                                     },
                                                     {
-                                                      "name": "MDTChargeAmt",
+                                                      "name": "MDTChargeTotal",
                                                       "module": "core",
                                                       "action": "setvalue",
                                                       "options": {
                                                         "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForMDT.service_charge_per.toNumber()/100)+GetCommisionForMDT.service_charge_val.toNumber()}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "MDTChargeAmt",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{MDTChargeTotal.toNumber()-DTChargeTotal.toNumber()}}"
                                                       },
                                                       "meta": [],
                                                       "outputType": "text"
