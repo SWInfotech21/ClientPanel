@@ -941,8 +941,7 @@
                           {
                             "table": "tt_balance",
                             "column": "id",
-                            "direction": "DESC",
-                            "recid": 1
+                            "direction": "DESC"
                           }
                         ],
                         "wheres": {
@@ -1504,8 +1503,7 @@
                       "table": "tt_balance",
                       "column": "id",
                       "direction": "DESC",
-                      "condition": "",
-                      "recid": 1
+                      "condition": ""
                     }
                   ],
                   "wheres": {

@@ -3630,17 +3630,6 @@
                                                                                     "outputType": "number"
                                                                                   },
                                                                                   {
-                                                                                    "name": "ResSuccess",
-                                                                                    "module": "core",
-                                                                                    "action": "response",
-                                                                                    "options": {
-                                                                                      "status": 200,
-                                                                                      "data": "Recharge Success"
-                                                                                    },
-                                                                                    "output": true,
-                                                                                    "disabled": true
-                                                                                  },
-                                                                                  {
                                                                                     "name": "",
                                                                                     "module": "core",
                                                                                     "action": "condition",
