@@ -593,13 +593,15 @@
                                         },
                                         "else": {
                                           "steps": {
-                                            "name": "LoginError",
+                                            "name": "Resp",
                                             "module": "core",
-                                            "action": "response",
+                                            "action": "setvalue",
                                             "options": {
-                                              "status": 403,
-                                              "data": "Password Mismatched"
-                                            }
+                                              "value": "Password Mismatched"
+                                            },
+                                            "meta": [],
+                                            "outputType": "text",
+                                            "output": true
                                           }
                                         }
                                       },
@@ -609,13 +611,15 @@
                                 },
                                 "else": {
                                   "steps": {
-                                    "name": "DtInactive",
+                                    "name": "Resp",
                                     "module": "core",
-                                    "action": "response",
+                                    "action": "setvalue",
                                     "options": {
-                                      "status": 403,
-                                      "data": "Your Distributor(DT) inactive, Please contact technical support team"
-                                    }
+                                      "value": "Your Distributor(DT) inactive, Please contact technical support team"
+                                    },
+                                    "meta": [],
+                                    "outputType": "text",
+                                    "output": true
                                   }
                                 }
                               },
@@ -625,13 +629,15 @@
                         },
                         "else": {
                           "steps": {
-                            "name": "MdtInactive",
+                            "name": "Resp",
                             "module": "core",
-                            "action": "response",
+                            "action": "setvalue",
                             "options": {
-                              "status": 403,
-                              "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
-                            }
+                              "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                            },
+                            "meta": [],
+                            "outputType": "text",
+                            "output": true
                           }
                         }
                       },
@@ -641,13 +647,15 @@
                 },
                 "else": {
                   "steps": {
-                    "name": "LoginRes403",
+                    "name": "Resp",
                     "module": "core",
-                    "action": "response",
+                    "action": "setvalue",
                     "options": {
-                      "status": 403,
-                      "data": "User does not exists or user inactive, Please contact technical support team"
-                    }
+                      "value": "User does not exists or user inactive, Please contact technical support team"
+                    },
+                    "meta": [],
+                    "outputType": "text",
+                    "output": true
                   }
                 }
               },
@@ -658,13 +666,14 @@
         },
         "catch": {
           "steps": {
-            "name": "Unauthorized",
+            "name": "Resp",
             "module": "core",
-            "action": "response",
+            "action": "setvalue",
             "options": {
-              "status": 403,
-              "data": "Do not even try to do this, we are watching & recording your activity!"
+              "value": "Do not even try to do this, we are watching & recording your wrong activity!"
             },
+            "meta": [],
+            "outputType": "text",
             "output": true
           }
         }

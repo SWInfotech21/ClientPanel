@@ -4532,7 +4532,8 @@
                                                                     "value": "Please set the commision first for this operator"
                                                                   },
                                                                   "meta": [],
-                                                                  "outputType": "text"
+                                                                  "outputType": "text",
+                                                                  "output": true
                                                                 }
                                                               }
                                                             },
@@ -4654,7 +4655,7 @@
             "module": "core",
             "action": "setvalue",
             "options": {
-              "value": "Do not even try to do this, we are watching & recording your activity!"
+              "value": "Do not even try to do this, we are watching & recording your wrong activity!"
             },
             "meta": [],
             "outputType": "text",

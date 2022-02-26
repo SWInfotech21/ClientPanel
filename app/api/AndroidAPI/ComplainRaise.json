@@ -655,30 +655,17 @@
                                                   ]
                                                 },
                                                 "else": {
-                                                  "steps": [
-                                                    {
-                                                      "name": "Resp",
-                                                      "module": "core",
-                                                      "action": "setvalue",
-                                                      "options": {
-                                                        "value": "Complain Already Raised"
-                                                      },
-                                                      "meta": [],
-                                                      "output": true,
-                                                      "outputType": "text"
+                                                  "steps": {
+                                                    "name": "Resp",
+                                                    "module": "core",
+                                                    "action": "setvalue",
+                                                    "options": {
+                                                      "value": "Complain Already Raised"
                                                     },
-                                                    {
-                                                      "name": "Frequent",
-                                                      "module": "core",
-                                                      "action": "response",
-                                                      "options": {
-                                                        "status": 403,
-                                                        "data": "Complain Already Raised"
-                                                      },
-                                                      "output": true,
-                                                      "disabled": true
-                                                    }
-                                                  ]
+                                                    "meta": [],
+                                                    "output": true,
+                                                    "outputType": "text"
+                                                  }
                                                 }
                                               },
                                               "outputType": "boolean"
@@ -686,30 +673,17 @@
                                           ]
                                         },
                                         "else": {
-                                          "steps": [
-                                            {
-                                              "name": "Resp",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "Password Mismatched"
-                                              },
-                                              "meta": [],
-                                              "output": true,
-                                              "outputType": "text"
+                                          "steps": {
+                                            "name": "Resp",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                              "value": "Password Mismatched"
                                             },
-                                            {
-                                              "name": "LoginError",
-                                              "module": "core",
-                                              "action": "response",
-                                              "options": {
-                                                "status": 403,
-                                                "data": "Password Mismatched"
-                                              },
-                                              "output": true,
-                                              "disabled": true
-                                            }
-                                          ]
+                                            "meta": [],
+                                            "output": true,
+                                            "outputType": "text"
+                                          }
                                         }
                                       },
                                       "outputType": "boolean"
@@ -717,30 +691,17 @@
                                   ]
                                 },
                                 "else": {
-                                  "steps": [
-                                    {
-                                      "name": "Resp",
-                                      "module": "core",
-                                      "action": "setvalue",
-                                      "options": {
-                                        "value": "Your Distributor(DT) inactive, Please contact technical support team"
-                                      },
-                                      "meta": [],
-                                      "output": true,
-                                      "outputType": "text"
+                                  "steps": {
+                                    "name": "Resp",
+                                    "module": "core",
+                                    "action": "setvalue",
+                                    "options": {
+                                      "value": "Your Distributor(DT) inactive, Please contact technical support team"
                                     },
-                                    {
-                                      "name": "DtInactive",
-                                      "module": "core",
-                                      "action": "response",
-                                      "options": {
-                                        "status": 403,
-                                        "data": "Your Distributor(DT) inactive, Please contact technical support team"
-                                      },
-                                      "output": true,
-                                      "disabled": true
-                                    }
-                                  ]
+                                    "meta": [],
+                                    "output": true,
+                                    "outputType": "text"
+                                  }
                                 }
                               },
                               "outputType": "boolean"
@@ -748,30 +709,17 @@
                           ]
                         },
                         "else": {
-                          "steps": [
-                            {
-                              "name": "MdtInactive",
-                              "module": "core",
-                              "action": "response",
-                              "options": {
-                                "status": 403,
-                                "data": "Your Master Distributor(MDT) inactive, Please contact technical support team"
-                              },
-                              "output": true,
-                              "disabled": true
+                          "steps": {
+                            "name": "Resp",
+                            "module": "core",
+                            "action": "setvalue",
+                            "options": {
+                              "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
                             },
-                            {
-                              "name": "Resp",
-                              "module": "core",
-                              "action": "setvalue",
-                              "options": {
-                                "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
-                              },
-                              "meta": [],
-                              "outputType": "text",
-                              "output": true
-                            }
-                          ]
+                            "meta": [],
+                            "outputType": "text",
+                            "output": true
+                          }
                         }
                       },
                       "outputType": "boolean"
@@ -779,30 +727,17 @@
                   ]
                 },
                 "else": {
-                  "steps": [
-                    {
-                      "name": "Resp",
-                      "module": "core",
-                      "action": "setvalue",
-                      "options": {
-                        "value": "User does not exists or user inactive, Please contact technical support team"
-                      },
-                      "meta": [],
-                      "output": true,
-                      "outputType": "text"
+                  "steps": {
+                    "name": "Resp",
+                    "module": "core",
+                    "action": "setvalue",
+                    "options": {
+                      "value": "User does not exists or user inactive, Please contact technical support team"
                     },
-                    {
-                      "name": "LoginRes403",
-                      "module": "core",
-                      "action": "response",
-                      "options": {
-                        "status": 403,
-                        "data": "User does not exists or user inactive, Please contact technical support team"
-                      },
-                      "output": true,
-                      "disabled": true
-                    }
-                  ]
+                    "meta": [],
+                    "output": true,
+                    "outputType": "text"
+                  }
                 }
               },
               "outputType": "boolean",
@@ -811,30 +746,17 @@
           ]
         },
         "catch": {
-          "steps": [
-            {
-              "name": "Resp",
-              "module": "core",
-              "action": "setvalue",
-              "options": {
-                "value": "Do not even try to do this, we are watching & recording your activity!"
-              },
-              "meta": [],
-              "output": true,
-              "outputType": "text"
+          "steps": {
+            "name": "Resp",
+            "module": "core",
+            "action": "setvalue",
+            "options": {
+              "value": "Do not even try to do this, we are watching & recording your wrong activity!"
             },
-            {
-              "name": "Unauthorized",
-              "module": "core",
-              "action": "response",
-              "options": {
-                "status": 403,
-                "data": "Do not even try to do this, we are watching & recording your activity!"
-              },
-              "output": true,
-              "disabled": true
-            }
-          ]
+            "meta": [],
+            "output": true,
+            "outputType": "text"
+          }
         }
       }
     }

@@ -793,7 +793,7 @@
             "module": "core",
             "action": "setvalue",
             "options": {
-              "value": "Do not even try to do this, we are watching & recording your activity!"
+              "value": "Do not even try to do this, we are watching & recording your wrong activity!"
             },
             "meta": [],
             "output": true,
