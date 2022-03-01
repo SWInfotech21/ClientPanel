@@ -1,6 +1,19 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="recharge1" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" -->
 <meta name="ac:route" content="/recharge">
 <dmx-serverconnect id="scOperator" url="api/Operator/MobileOpFetch" noload></dmx-serverconnect>
+<dmx-serverconnect id="scMobileOffer" url="api/CheckAPIs/ROfferMobile" dmx-param:tel="content.formMobileRecharge.inpMobile.value" dmx-param:op="content.formMobileRecharge.inp_opname.selectedText" noload></dmx-serverconnect>
+<script is="dmx-flow" id="flowMobileRech" type="text/dmx-flow">
+    {
+    condition: {
+        if: "{{content.formMobileRecharge.inp_opname.selectedText && content.formMobileRecharge.inpMobile.value}}",
+        then: {
+            steps: {
+            run: {action: "{{scMobileOffer.load({})}}"}
+            }
+        }
+    }
+}
+</script>
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-6 col-12">
@@ -28,19 +41,7 @@
                                             <i class="fas fa-mobile-alt"></i>
                                         </div>
                                     </div>
-                                    <input type="number" class="form-control" id="inpMobile" name="mobile_number" placeholder="Enter Mobile No." maxlength="10" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="text-monospace col-3 pe-0">Amount (in Rs.)</label>
-                                <div class="input-group mb-2 col-9 ps-0">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text bg-primary text-light">
-                                            <i class="fas fa-rupee-sign"></i>
-                                        </div>
-                                    </div>
-                                    <input type="number" class="form-control" id="inpAmount" name="recharge_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
+                                    <input type="number" class="form-control" id="inpMobile" name="mobile_number" placeholder="Enter 10 Digit Mobile No." maxlength="10" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -55,6 +56,22 @@
                                         <option value="">Select Operator</option>
 
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">Amount (in Rs.)</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-rupee-sign"></i>
+                                        </div>
+                                    </div>
+                                    <input type="number" class="form-control" id="inpAmount" name="recharge_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
+                                    <div class="input-group-prepend" dmx-on:click="flowMobileRech.run();modalROffer.show()">
+                                        <div class="input-group-text bg-primary text-light">
+                                            Offers!
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -210,6 +227,37 @@
                 <h5 dmx-show="content.formMobileRecharge.lastError.response.error == 'true'">Status:{{content.formMobileRecharge.lastError.response.errorMessage}} {{content.formMobileRecharge.lastError.response.ip}}</h5>
                 <h5 dmx-show="content.formMobileRecharge.lastError.status == 0">Status:{{content.formMobileRecharge.data.apistatus}}</h5>
                 <h6>Remarks: {{content.formMobileRecharge.data.remarks}}</h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalROffer" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Available Offers <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scMobileOffer.state.executing"></span></h5>
+                <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body row mx-0">
+                <div class="col-6">
+                    Mobile: <b>{{content.scMobileOffer.data.ROfferApi.tel}}</b>
+                </div>
+                <div class="col-6">
+                    Operator: <b>{{content.scMobileOffer.data.ROfferApi.operator}}</b>
+                </div>
+
+                <div class="row mx-0 my-3" id="repeat1" is="dmx-repeat" dmx-bind:repeat="content.scMobileOffer.data.ROfferApi" key="rs">
+                    <div class="card col-6">
+                        <div class="card-body px-1 py-2">
+                            <h5 class="card-title text-info">Rs. {{content.scMobileOffer.data.ROfferApi.records[$index].rs}}</h5>
+                            <!-- <p class="card-text text-muted text-justify sw-line-height">{{content.scMobileOffer.data.ROfferApi.records[$index].desc}}</p> -->
+                            <!-- <a href="#" class="btn btn-primary">BUY</a> -->
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" data-dismiss="modal">Close</button>

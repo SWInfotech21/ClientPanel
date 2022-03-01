@@ -1589,5 +1589,19 @@ dmx.config({
       "meta": null,
       "outputType": "text"
     }
+  },
+  "recharge1": {
+    "repeat1": {
+      "meta": [],
+      "outputType": "text"
+    },
+    "repeat2": {
+      "meta": [],
+      "outputType": "text"
+    },
+    "repeat3": {
+      "meta": [],
+      "outputType": "text"
+    }
   }
 });

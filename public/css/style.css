@@ -192,3 +192,6 @@ body{
     height: 200px !important; 
     cursor: pointer;
 }
+.sw-line-height{
+    line-height: 18px;
+}

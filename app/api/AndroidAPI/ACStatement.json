@@ -356,7 +356,7 @@
                                             "options": {
                                               "connection": "postgres_gcpServer",
                                               "sql": {
-                                                "query": "select tb.old_balance, tb.netamt, tb.new_balance, tb.tr_date, tb.crdr_type, tb.pay_ref_id, tb.remarks,m_op.operator_name, \nms.service_name, tb.status \nfrom tt_balance tb \nleft join tt_recharge_trans as trt on (trt.id = tb.pay_ref_id::int)\nINNER JOIN m_operator AS m_op ON (m_op.id = trt.op_id AND m_op.service_id = trt.service_id) \nINNER JOIN m_service AS ms ON (ms.id = trt.service_id) \nwhere tb.user_id = @user_id and tb.tr_date>= @fromdate and tb.tr_date  <= @todate;",
+                                                "query": "select tb.old_balance, tb.netamt, tb.new_balance, tb.tr_date, tb.crdr_type, tb.pay_ref_id, tb.remarks,m_op.operator_name, \nms.service_name, tb.status \nfrom tt_balance tb \nleft join tt_recharge_trans as trt on (trt.id = tb.pay_ref_id::int)\nINNER JOIN m_operator AS m_op ON (m_op.id = trt.op_id AND m_op.service_id = trt.service_id) \nINNER JOIN m_service AS ms ON (ms.id = trt.service_id) \nwhere tb.user_id = @user_id and tb.tr_date>= @fromdate and tb.tr_date  <= @todate ORDER BY tb.id DESC;",
                                                 "params": [
                                                   {
                                                     "name": "@user_id",

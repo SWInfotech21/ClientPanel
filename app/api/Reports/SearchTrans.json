@@ -98,6 +98,10 @@
                     },
                     {
                       "table": "tt_recharge_trans",
+                      "column": "tr_id"
+                    },
+                    {
+                      "table": "tt_recharge_trans",
                       "column": "tr_date"
                     },
                     {
@@ -123,6 +127,10 @@
                     {
                       "table": "m_service",
                       "column": "service_name"
+                    },
+                    {
+                      "table": "m_op",
+                      "column": "image"
                     }
                   ],
                   "table": {
@@ -172,7 +180,7 @@
                       }
                     }
                   ],
-                  "query": "SELECT tt_recharge_trans.user_number, tt_recharge_trans.opening_balance, tt_recharge_trans.amount, tt_recharge_trans.net_amt, tt_recharge_trans.closing_balance, tt_recharge_trans.status, tt_recharge_trans.id, tt_recharge_trans.tr_date, tt_recharge_trans.comm_amt, tt_recharge_trans.charge_amt, tt_recharge_trans.tr_type, tt_recharge_trans.reason, m_op.operator_name, m_service.service_name\nFROM tt_recharge_trans\nLEFT JOIN m_operator AS m_op ON (m_op.id = tt_recharge_trans.op_id) LEFT JOIN m_service AS m_service ON (m_service.id = tt_recharge_trans.service_id)\nWHERE tt_recharge_trans.user_id = :P1 /* {{identity}} */ AND tt_recharge_trans.user_number = :P2 /* {{$_GET.inpsearch}} */\nORDER BY tt_recharge_trans.id DESC",
+                  "query": "SELECT tt_recharge_trans.user_number, tt_recharge_trans.opening_balance, tt_recharge_trans.amount, tt_recharge_trans.net_amt, tt_recharge_trans.closing_balance, tt_recharge_trans.status, tt_recharge_trans.id, tt_recharge_trans.tr_id, tt_recharge_trans.tr_date, tt_recharge_trans.comm_amt, tt_recharge_trans.charge_amt, tt_recharge_trans.tr_type, tt_recharge_trans.reason, m_op.operator_name, m_service.service_name, m_op.image\nFROM tt_recharge_trans\nLEFT JOIN m_operator AS m_op ON (m_op.id = tt_recharge_trans.op_id) LEFT JOIN m_service AS m_service ON (m_service.id = tt_recharge_trans.service_id)\nWHERE tt_recharge_trans.user_id = :P1 /* {{identity}} */ AND tt_recharge_trans.user_number = :P2 /* {{$_GET.inpsearch}} */\nORDER BY tt_recharge_trans.id DESC",
                   "params": [
                     {
                       "operator": "equal",
@@ -313,6 +321,10 @@
                       "name": "id"
                     },
                     {
+                      "type": "text",
+                      "name": "tr_id"
+                    },
+                    {
                       "type": "datetime",
                       "name": "tr_date"
                     },
@@ -339,6 +351,10 @@
                     {
                       "type": "text",
                       "name": "service_name"
+                    },
+                    {
+                      "type": "text",
+                      "name": "image"
                     }
                   ]
                 }
@@ -386,6 +402,10 @@
                     },
                     {
                       "table": "tt_recharge_trans",
+                      "column": "tr_id"
+                    },
+                    {
+                      "table": "tt_recharge_trans",
                       "column": "tr_date"
                     },
                     {
@@ -411,6 +431,10 @@
                     {
                       "table": "m_service",
                       "column": "service_name"
+                    },
+                    {
+                      "table": "m_op",
+                      "column": "image"
                     }
                   ],
                   "table": {
@@ -460,7 +484,7 @@
                       }
                     }
                   ],
-                  "query": "SELECT tt_recharge_trans.user_number, tt_recharge_trans.opening_balance, tt_recharge_trans.amount, tt_recharge_trans.net_amt, tt_recharge_trans.closing_balance, tt_recharge_trans.status, tt_recharge_trans.id, tt_recharge_trans.tr_date, tt_recharge_trans.comm_amt, tt_recharge_trans.charge_amt, tt_recharge_trans.tr_type, tt_recharge_trans.reason, m_op.operator_name, m_service.service_name\nFROM tt_recharge_trans\nLEFT JOIN m_operator AS m_op ON (m_op.id = tt_recharge_trans.op_id) LEFT JOIN m_service AS m_service ON (m_service.id = tt_recharge_trans.service_id)\nWHERE tt_recharge_trans.user_id = :P1 /* {{identity}} */ AND tt_recharge_trans.id = :P2 /* {{$_GET.inpsearch}} */\nORDER BY tt_recharge_trans.id DESC",
+                  "query": "SELECT tt_recharge_trans.user_number, tt_recharge_trans.opening_balance, tt_recharge_trans.amount, tt_recharge_trans.net_amt, tt_recharge_trans.closing_balance, tt_recharge_trans.status, tt_recharge_trans.id, tt_recharge_trans.tr_id, tt_recharge_trans.tr_date, tt_recharge_trans.comm_amt, tt_recharge_trans.charge_amt, tt_recharge_trans.tr_type, tt_recharge_trans.reason, m_op.operator_name, m_service.service_name, m_op.image\nFROM tt_recharge_trans\nLEFT JOIN m_operator AS m_op ON (m_op.id = tt_recharge_trans.op_id) LEFT JOIN m_service AS m_service ON (m_service.id = tt_recharge_trans.service_id)\nWHERE tt_recharge_trans.user_id = :P1 /* {{identity}} */ AND tt_recharge_trans.id = :P2 /* {{$_GET.inpsearch}} */\nORDER BY tt_recharge_trans.id DESC",
                   "params": [
                     {
                       "operator": "equal",
@@ -601,6 +625,10 @@
                       "name": "id"
                     },
                     {
+                      "type": "text",
+                      "name": "tr_id"
+                    },
+                    {
                       "type": "datetime",
                       "name": "tr_date"
                     },
@@ -627,6 +655,10 @@
                     {
                       "type": "text",
                       "name": "service_name"
+                    },
+                    {
+                      "type": "text",
+                      "name": "image"
                     }
                   ]
                 }
