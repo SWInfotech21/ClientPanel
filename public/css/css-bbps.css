@@ -890,66 +890,66 @@ background-color: #F2F9FB;}
  
 @media (min-width: 280px) {
     .sw-img-location {
-        height: 80px !important;
-        width: 75% !important;
+        height: 70px !important;
+        width: 100% !important;
     }
 }
 @media (min-width: 300px) {
     .sw-img-location {
-        height: 120px !important;
-        width: 75% !important;
+        height: 70px !important;
+        width: 100% !important;
     }
 }
 @media (min-width: 360px) {
     .sw-img-location {
-        height: 130px !important;
-        width: 85% !important;
+        height: 90px !important;
+        width: 90% !important;
     }
 }
 @media (min-width: 390px) {
     .sw-img-location {
-        height: 140px !important;
+        height: 90px !important;
         width: 80% !important;
     }
 }
 @media (min-width: 470px) {
     .sw-img-location {
-        height: 180px !important;
+        height: 110px !important;
         width: 75% !important;
     }
 }
 @media (min-width: 768px) {
     .sw-img-location {
-        height: 170px !important;
+        height: 100px !important;
         width: 100% !important;
     }
 }
 @media (min-width: 912px) {
     .sw-img-location {
-        height: 190px !important;
+        height: 120px !important;
         width: 95% !important;
     }
 }
 @media (min-width: 1024px) {
     .sw-img-location {
-        height: 160px !important;
+        height: 110px !important;
         width: 100% !important;
     }
 }
 @media (min-width: 1280px) {
     .sw-img-location {
-        height: 190px !important;
-        width: 80% !important;
+        height: 150px !important;
+        width: 100% !important;
     }
 }
 @media (min-width: 1330px) {
     .sw-img-location {
         height: 150px !important;
-        width: 60% !important;
+        width: 100% !important;
     }
 }@media (min-width: 1360px) {
     .sw-img-location {
-        height: 160px !important;
+        height: 170px !important;
     }
 }
 @media (max-width: 576px) {

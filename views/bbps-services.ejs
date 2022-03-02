@@ -25,11 +25,11 @@
     <div class="d-flex flex-column px-2 px-md-4 mt-2 mt-md-4 sw-content overflow-auto">
         <!-- <p class="align-items-center d-flex font-weight-bolder mb-2">Select Service (4)<span dmx-show="scLocSpecService.state.executing" class="spinner-border spinner-border-sm ml-2" role="status"></span></p> -->
         <div class="row m-0" is="dmx-repeat" id="repeatServices" dmx-bind:repeat="content.scServiceBBPS.data.All">
-            <div class="col-md-3 col-sm-4 col-6 pb-3">
+            <div class="col-md-2 col-sm-3 col-4 pb-3">
                 <div class="sw-card-pay text-center" dmx-on:click="dsAppInfo.clear();varTab.setValue('Operator');dsAppInfo.insert({servicesName: service_name, servicesId: services_id, servicesIndex: $index})">
                     <img class="sw-img-location" dmx-bind:src="'https://portal.swpay.in'+content.scServiceBBPS.data.All[$index].service_type">
                     <div class="card-body px-0">
-                        <p class="card-title text-primary mb-2 fs-2 sw-font-monospace">{{service_name}}</p>
+                        <p class="card-title text-primary mb-2 fs-5 sw-font-monospace">{{service_name}}</p>
                     </div>
                 </div>
             </div>
