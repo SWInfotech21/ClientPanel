@@ -130,5 +130,9 @@
   "bbps-services.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "recharges.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

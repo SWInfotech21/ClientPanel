@@ -24,11 +24,6 @@
       "layout": "main"
     },
     {
-      "path": "/Recharge/index",
-      "page": "Recharge/index",
-      "layout": "main"
-    },
-    {
       "path": "/recharge-history",
       "page": "recharge-history",
       "layout": "main",
@@ -109,6 +104,11 @@
       "page": "recharge",
       "layout": "main",
       "exec": "/api/PageAccess/PageForRT"
+    },
+    {
+      "path": "/recharges",
+      "page": "recharges",
+      "layout": "main"
     },
     {
       "path": "/403-forbidden",

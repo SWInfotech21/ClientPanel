@@ -14,6 +14,18 @@
   "exec": {
     "steps": [
       {
+        "name": "api",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://api.varic.com/communication/mobile-track",
+          "params": {
+            "mobile": "{{9508862529}}"
+          }
+        },
+        "output": true
+      },
+      {
         "name": "custom",
         "module": "dbconnector",
         "action": "select",
@@ -127,20 +139,6 @@
         "outputType": "text",
         "output": true,
         "disabled": true
-      },
-      {
-        "name": "api",
-        "module": "api",
-        "action": "send",
-        "options": {
-          "method": "POST",
-          "url": "https://corp.moneyart.in/TransactionStatus",
-          "params": {
-            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
-            "clientTransactionID": "{{'f8d1b39bb'}}"
-          }
-        },
-        "output": true
       }
     ]
   }
