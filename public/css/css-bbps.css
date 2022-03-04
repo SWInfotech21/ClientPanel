@@ -152,7 +152,7 @@ body {
 }
 
 .sw-avatar {
-  border-radius: 50%;
+  border-radius: 10%;
   -o-object-fit: cover;
      object-fit: cover;
   -o-object-position: center;

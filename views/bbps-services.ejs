@@ -4,7 +4,19 @@
 <dmx-serverconnect id="scServiceBBPS" url="api/Services/BbpsServices"></dmx-serverconnect>
 <dmx-datastore id="dsAppInfo" session="true"></dmx-datastore>
 <dmx-value id="varTab" dmx-bind:value="'Services'"></dmx-value>
-
+<dmx-serverconnect id="scFetchElectBill" url="api/CheckAPIs/ElectricityCheck" dmx-param:custid="content.crCustomerInfo.CustomerId.value" dmx-param:op="content.crCustomerInfo.OurOpCodeElectricity.value" noload></dmx-serverconnect>
+<script is="dmx-flow" id="flowElecBill" type="text/dmx-flow">
+    {
+    condition: {
+        if: "{{content.crCustomerInfo.CustomerId.value && content.crCustomerInfo.OurOpCodeElectricity.value}}",
+        then: {
+            steps: {
+            run: {action: "{{scFetchElectBill.load({})}}"}
+            }
+        }
+    }
+}
+</script>
 <div id="divAllTabs" class="row no-gutters pt-3 px-0 mx-0 align-items-end" dmx-hide="varTab.value == 'Paid'">
     <div class="col-lg-3 col-md-3 col-3" dmx-on:click="varTab.setValue('Services')">
         <!--dsAppInfo.clear()-->
@@ -47,7 +59,7 @@
         </div>
         <div id="repeatOperators" class="d-flex justify-content-between flex-wrap flex-row align-content-start align-items-end w-100" is="dmx-repeat" dmx-bind:repeat="content.crOperator.inputSearchOperator.value ? content.scServiceBBPS.data.All[dsAppInfo.data[0].servicesIndex].op.where(`operator_name.lowercase()`, content.crOperator.inputSearchOperator.value.lowercase(), 'contains') : content.scServiceBBPS.data.All[dsAppInfo.data[0].servicesIndex].op" key="op_id" dmx-show="varTab.value == 'Operator'">
             <div class="col-12 col-md-6 my-2 px-2">
-                <div class="sw-doc border d-flex sw-mouse-pointer w-100 align-items-center p-2" dmx-on:click="varTab.setValue('CustomerInfo');dsAppInfo.update({$id: 1},{op_id: op_id, Operator: operator_name, OperatorIndex: $index, OperatorPic: op_image});">
+                <div class="sw-doc border d-flex sw-mouse-pointer w-100 align-items-center p-2" dmx-on:click="varTab.setValue('CustomerInfo');dsAppInfo.update({$id: 1},{op_id: op_id, Operator: operator_name, OperatorIndex: $index, OperatorPic: op_image, OurOpCode: our_op_code});">
                     <img class="sw-avatar" dmx-bind:src="'https://portal.swpay.in'+op_image" height="72" width="72">
                     <div class="ml-3 d-flex flex-column justify-content-start">
                         <h5>{{operator_name}}</h5>
@@ -66,8 +78,8 @@
         <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100">
             <div class="col-12 col-md-12 px-0">
                 <div class="mb-3">
-                    <div class="d-flex w-100 align-items-center p-3 sw-patient-card-header">
-                        <img class="sw-avatar" dmx-bind:src="'https://portal.swpay.in/'+content.dsAppInfo.data[0].op_image" height="72" width="72">
+                    <div class="d-flex w-100 align-items-center p-3 sw-patient-card-header flex-wrap">
+                        <img class="sw-avatar" dmx-bind:src="'https://portal.swpay.in/'+content.dsAppInfo.data[0].OperatorPic" height="72" width="auto">
                         <div class="d-flex flex-column justify-content-start pl-3">
                             <h5 class="mb-2 font-weight-bold">
                                 {{content.dsAppInfo.data[0].Operator}}
@@ -80,40 +92,91 @@
                     <div class="w-100 align-items-start border-bottom p-2 px-sm-5 py-sm-3 sw-patient-card-body flex-wrap">
                         <h5 class="font-weight-bold sw-label-color flex-column ">{{content.scServiceBBPS.data.All[dsAppInfo.data[0].servicesIndex].service_name}} Bill Payment </h5>
                         <div class="flex-column mt-3">
-                            <form id="scfAddAppointment" is="dmx-serverconnect-form" action="api/AddAppt" dmx-populate="" method="post" dmx-on:success="varConfirmation.setValue(1);varTab.setValue('Booked');varAppointcreated.setValue(1)">
-                                <input type="hidden" name="Specialist" dmx-bind:value="{{dsApptInfo.data[0].spec_id}}">
-                                <input type="hidden" name="Location" dmx-bind:value="{{dsApptInfo.data[0].locationId}}">
-                                <input type="hidden" name="Consultationtype" dmx-bind:value="{{dsApptInfo.data[0].serviceId}}">
-                                <input type="hidden" id="Appointmentdate" name="Appointmentdate" dmx-bind:value="dsApptInfo.data[0].apptDate.addMinutes(-varTimeDiff.value).formatDate('yyyy-MM-dd')">
-                                <input type="hidden" id="Appointmenttime" name="Appointmenttime" dmx-bind:value="dsApptInfo.data[0].startTime">
-                                <input type="hidden" id="txtEndTime" name="EndTime" dmx-bind:value="dsApptInfo.data[0].startTime.addMinutes(dsApptInfo.data[0].duration).formatDate('HH:mm:ss')">
-                                <input type="hidden" name="Timediff" dmx-bind:value="varTimeDiff.value">
-                                <input type="hidden" name="Source" dmx-bind:value="browser1.referrer">
-
-                                <div class="row mx-0">
-                                    <div class="col-12 col-lg-6 pl-lg-0 pr-lg-2 px-0">
-                                        <div class="form-group">
-                                            <label class="sw-font-12 sw-font-weight-600">Customer Account Number *</label>
-                                            <input type="text" class="form-control" name="Patientname" id="firstname" placeholder="Enter Customer Account Number" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-lg-6 pl-lg-2 pr-lg-0 px-0">
-                                        <div class="form-group">
-                                            <label class="sw-font-12 sw-font-weight-600">Mobile Number *</label>
-                                            <input type="text" id="txtPhone" class="form-control" required="" name="Patientphonenumber" required="">
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex justify-content-end w-100 my-3">
-                                        <button class="btn sw-btn-secondary px-5" dmx-on:click="dsApptInfo.update({$id: 1},{patientIndex: $index})" dmx-bind:disabled="scfAddAppointment.state.executing" type="submit">Fetch Bill<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="scfAddAppointment.state.executing"></span></button>
+                            <input type="hidden" id="OurOpCodeElectricity" dmx-bind:value="{{dsAppInfo.data[0].OurOpCode}}">
+                            <div class="row mx-0">
+                                <div class="col-12 col-lg-6 pl-lg-0 pr-lg-2 px-0">
+                                    <div class="form-group">
+                                        <label class="sw-font-12 sw-font-weight-600">Customer Account Number</label>
+                                        <input type="text" class="form-control" name="CustomerId" id="CustomerId" placeholder="Enter Customer Account Number/ Id" required>
                                     </div>
                                 </div>
-                            </form>
+                                <div class="col-12 col-lg-6 pl-lg-2 pr-lg-0 px-0">
+                                    <div class="form-group">
+                                        <label class="sw-font-12 sw-font-weight-600">Mobile Number </label>
+                                        <input type="text" id="CustMobile" class="form-control" name="CustMobile">
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-end w-100 my-3">
+                                    <button class="btn sw-btn-dark px-5" dmx-on:click="flowElecBill.run(); varTab.setValue('Payment'); dsAppInfo.update({$id: 1},{customerIndex: $index, customerId: CustomerId.value})" dmx-bind:disabled="scFetchElectBill.state.executing" type="submit">Fetch Bill<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="scFetchElectBill.state.executing"></span></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-7 pr-md-0 pl-md-4 px-0 sw-PatientInfo">
+        </div>
+    </div>
+</div>
+<div class="position-absolute col-7 col-md-9 mt-5 text-center" dmx-show="scFetchElectBill.state.executing">
+    <img src="assets/images/loader.gif" height="300" width="300" class="mt-5">
+    <!-- <span class="spinner-border" role="status" style="width: 3rem; height: 3rem; color: #20c997;"></span> -->
+</div>
+<div id="crPayment" is="dmx-if" dmx-bind:condition="varTab.value == 'Payment' && content.scFetchElectBill.data.EleBillFetch.status == 1">
+    <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100" dmx-show="content.scFetchElectBill.data.EleBillFetch.records[0].status == 1" dmx-class:disabled="scFetchElectBill.state.executing">
+        <div class="d-flex w-100 align-items-center p-3 sw-patient-card-header">
+            <img class="sw-avatar" src="assets/images/icons/user-icon.svg" height="72" width="72">
+            <div class="d-flex flex-column justify-content-start pl-3">
+                <h5 class="mb-2 font-weight-bold">
+                    {{content.scFetchElectBill.data.EleBillFetch.records[0].CustomerName}}
+                </h5>
+                <p class="sw-font-14 mb-1">
+                    Bill No.: {{content.scFetchElectBill.data.EleBillFetch.records[0].BillNumber}}
+                </p>
+            </div>
+        </div>
+        <div class="d-flex w-100 align-items-start border-bottom p-3 sw-patient-card-body">
+            <i class="fas fa-money-bill mr-3 sw-text-secondary"></i>
+            <div class="d-flex flex-column justify-content-start">
+                <label class="sw-label-color font-weight-bold">Bill Amount: {{content.scFetchElectBill.data.EleBillFetch.records[0].Billamount}}</label>
+                <p class="m-0 text-break">
+                    Bill Date: {{content.scFetchElectBill.data.EleBillFetch.records[0].Billdate}}
+                </p>
+            </div>
+        </div>
+        <div class="d-flex w-100 align-items-start p-3 border-bottom sw-patient-card-body">
+            <i class="fas fa-calendar mr-3 sw-text-secondary"></i>
+            <div class="d-flex flex-column justify-content-start">
+                <label class="sw-label-color font-weight-bold">Due Date: {{content.scFetchElectBill.data.EleBillFetch.records[0].Duedate}}</label>
+                <p class="m-0">
+                    <!-- <span>{{dsApptInfo.data[0].apptDate.formatDate('dddd')}}</span> |
+                            <span>{{dsApptInfo.data[0].duration}} min</span><br /> -->
+                    <!-- dsApptInfo.data[0].apptDate.addMinutes(-timeDiff).formatDate('hh:mm') -->
+                </p>
+            </div>
+        </div>
+        <div class="d-flex w-100 align-items-start p-3 border-bottom card-footer sw-patient-card-body">
+            <div class="d-flex justify-content-end w-100 my-3">
+                <button class="btn sw-btn-dark px-5" dmx-on:click="#" dmx-bind:disabled="scFetchElectBill.state.executing" type="submit">Pay Now<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="scFetchElectBill.state.executing"></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100" dmx-show="content.scFetchElectBill.data.EleBillFetch.records[0].status == 0" dmx-class:disabled="scFetchElectBill.state.executing">
+        <div class="d-flex w-100 align-items-center p-3 sw-patient-card-header">
+            <img class="sw-avatar" src="assets/images/icons/user-icon.svg" height="72" width="72">
+            <div class="d-flex flex-column justify-content-start pl-3">
+                <h5 class="mb-2 font-weight-bold">
+                    {{content.scFetchElectBill.data.EleBillFetch.tel}}
+                </h5>
+                <p class="sw-font-14 mb-1">
+                    Operator: {{content.scFetchElectBill.data.EleBillFetch.operator}}
+                </p>
+            </div>
+        </div>
+        <div class="d-flex w-100 align-items-start p-3 border-bottom sw-patient-card-body">
+            <i class="fas fa-calendar mr-3 sw-text-secondary"></i>
+            <div class="d-flex flex-column justify-content-start">
+                <label class="sw-label-color font-weight-bold">Remarks: {{content.scFetchElectBill.data.EleBillFetch.records[0].desc}}</label>
 
             </div>
         </div>

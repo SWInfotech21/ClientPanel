@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "custid"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "op"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "api",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://www.mplan.in/api/electricinfo.php",
+          "params": {
+            "apikey": "{{'e9a86475efe3e85a90eba68c740c1c73'}}",
+            "offer": "{{'roffer'}}",
+            "tel": "{{$_GET.custid}}",
+            "operator": "{{$_GET.op}}"
+          }
+        },
+        "output": false
+      },
+      {
+        "name": "EleBillFetch",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{api.data.parseJSON()}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      }
+    ]
+  }
+}

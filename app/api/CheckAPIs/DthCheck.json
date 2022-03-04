@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "tel"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "op"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "api",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://www.mplan.in/api/Dthinfo.php",
+          "params": {
+            "apikey": "{{'e9a86475efe3e85a90eba68c740c1c73'}}",
+            "offer": "roffer",
+            "tel": "{{$_GET.tel}}",
+            "operator": "{{$_GET.op}}"
+          }
+        },
+        "output": false
+      },
+      {
+        "name": "DTHUserCheck",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{api.data.parseJSON()}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      }
+    ]
+  }
+}
