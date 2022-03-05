@@ -187,7 +187,7 @@
                           "user": "{{'Bucks'}}",
                           "key": "{{'797b4459a9XX'}}",
                           "mobile": "{{$_POST.forgot_mobile}}",
-                          "message": "{{'your One Time Password is: '+OTP+' Thank You'}}",
+                          "message": "{{'Your one time password is '+OTP+' \\nRegards S W Pays'}}",
                           "senderid": "{{'BUCKSP'}}",
                           "accusage": "1"
                         },

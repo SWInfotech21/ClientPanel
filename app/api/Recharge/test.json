@@ -12,24 +12,54 @@
     ]
   },
   "exec": {
-    "steps": {
-      "name": "apiAuth",
-      "module": "api",
-      "action": "send",
-      "options": {
-        "url": "https://adharpay.in/authenticate",
-        "method": "POST",
-        "params": {
-          "Token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
-          "RetailerID": "1",
-          "LogoUrl": "1",
-          "Copyright": "1",
-          "MerchantId": "1",
-          "FirmName": "1",
-          "ServiceId": "1"
-        }
+    "steps": [
+      {
+        "name": "apiAuth",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://adharpay.in/authenticate",
+          "method": "POST",
+          "params": {
+            "Token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+            "RetailerID": "1",
+            "LogoUrl": "1",
+            "Copyright": "1",
+            "MerchantId": "1",
+            "FirmName": "1",
+            "ServiceId": "1"
+          }
+        },
+        "output": true,
+        "disabled": true
       },
-      "output": true
-    }
+      {
+        "name": "apiDMT",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://apihub.moneyart.in/UserWalletBalance",
+          "method": "POST",
+          "params": {
+            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}"
+          }
+        },
+        "output": true
+      },
+      {
+        "name": "apiTr",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://apihub.moneyart.in/ValidateRemitter",
+          "params": {
+            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+            "mobileNo": "{{6396090835}}"
+          },
+          "method": "POST"
+        },
+        "output": true
+      }
+    ]
   }
 }

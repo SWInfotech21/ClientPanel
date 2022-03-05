@@ -1201,7 +1201,7 @@
                     "user": "{{'Bucks'}}",
                     "key": "{{'797b4459a9XX'}}",
                     "mobile": "{{$_POST.mobile}}",
-                    "message": "{{'Congratulations! Your account has been created in SW Pay website with user id '+$_POST.mobile+' and password '+password}}",
+                    "message": "{{'Dear Partner, Your Account has been created successfully. User Name: '+$_POST.mobile+' Password:  '+password+' TPIN: XXXX Thanks for using our service.\\nRegards S W Pays'}}",
                     "senderid": "{{'BUCKSP'}}",
                     "accusage": "1"
                   },

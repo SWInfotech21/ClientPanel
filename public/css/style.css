@@ -181,6 +181,9 @@ body{
   .sw-bg-grey{
     background: #ccc;
   }
+  .sw-bg-light{
+    background-color: #fff;
+  }
   .sw-img-location{
     border-radius: 8px;
     height: 92px;

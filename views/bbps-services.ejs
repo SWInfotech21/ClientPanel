@@ -4,14 +4,15 @@
 <dmx-serverconnect id="scServiceBBPS" url="api/Services/BbpsServices"></dmx-serverconnect>
 <dmx-datastore id="dsAppInfo" session="true"></dmx-datastore>
 <dmx-value id="varTab" dmx-bind:value="'Services'"></dmx-value>
-<dmx-serverconnect id="scFetchElectBill" url="api/CheckAPIs/ElectricityCheck" dmx-param:custid="content.crCustomerInfo.CustomerId.value" dmx-param:op="content.crCustomerInfo.OurOpCodeElectricity.value" noload></dmx-serverconnect>
+<dmx-value id="varPayment" dmx-bind:value="1"></dmx-value>
+<dmx-serverconnect id="scFetchBill" url="api/CheckAPIs/BbpsCheckBill" dmx-param:op_id="content.crCustomerInfo.OpCode.value" dmx-param:account="content.crCustomerInfo.CustomerId.value" noload></dmx-serverconnect>
 <script is="dmx-flow" id="flowElecBill" type="text/dmx-flow">
     {
     condition: {
-        if: "{{content.crCustomerInfo.CustomerId.value && content.crCustomerInfo.OurOpCodeElectricity.value}}",
+        if: "{{content.crCustomerInfo.CustomerId.value && content.crCustomerInfo.OpCode.value}}",
         then: {
             steps: {
-            run: {action: "{{scFetchElectBill.load({})}}"}
+            run: {action: "{{scFetchBill.load({})}}"}
             }
         }
     }
@@ -22,10 +23,10 @@
         <!--dsAppInfo.clear()-->
         <a class="btn btn-block sw-tabs sw-tabs-first py-2" href="#" dmx-class:disabled="varTab.value != 'Services'" dmx-class:sw-tabs-active="varTab.value == 'Services'">Select Service</a>
     </div>
-    <div class="col-lg-3 col-md-3 col-3" dmx-on:click="run({condition:{if:`dsApptInfo.data[0].locationId`,then:{steps:{run:{action:`varTab.setValue(\'Operator\')`}}}}})">
+    <div class="col-lg-3 col-md-3 col-3" dmx-on:click="run({condition:{if:`dsAppInfo.data[0].servicesId`,then:{steps:{run:{action:`varTab.setValue(\'Operator\')`}}}}})">
         <a class="btn btn-block sw-tabs sw-tabs-middle py-2" dmx-class:disabled="varTab.value != 'Operator'" href="#" dmx-class:sw-tabs-active="((varTab.value == 'Operator') || (varTab.value == 'Service'))">Select Operator</a>
     </div>
-    <div class="col-lg-3 col-md-3 col-3" dmx-on:click="run({condition:{if:`dsApptInfo.data[0].ConsultationtypeId`,then:{steps:{run:{action:`varTab.setValue(\'CustomerInfo\')`}}}}})">
+    <div class="col-lg-3 col-md-3 col-3" dmx-on:click="run({condition:{if:`dsAppInfo.data[0].op_id`,then:{steps:{run:{action:`varTab.setValue(\'CustomerInfo\')`}}}}})">
         <a class="btn btn-block sw-tabs sw-tabs-middle py-2" dmx-class:disabled="varTab.value != 'CustomerInfo'" href="#" dmx-class:sw-tabs-active="varTab.value == 'CustomerInfo'">Customer Info</a>
     </div>
     <div class="col-lg-3 col-md-3 col-3" dmx-on:click="">
@@ -59,7 +60,7 @@
         </div>
         <div id="repeatOperators" class="d-flex justify-content-between flex-wrap flex-row align-content-start align-items-end w-100" is="dmx-repeat" dmx-bind:repeat="content.crOperator.inputSearchOperator.value ? content.scServiceBBPS.data.All[dsAppInfo.data[0].servicesIndex].op.where(`operator_name.lowercase()`, content.crOperator.inputSearchOperator.value.lowercase(), 'contains') : content.scServiceBBPS.data.All[dsAppInfo.data[0].servicesIndex].op" key="op_id" dmx-show="varTab.value == 'Operator'">
             <div class="col-12 col-md-6 my-2 px-2">
-                <div class="sw-doc border d-flex sw-mouse-pointer w-100 align-items-center p-2" dmx-on:click="varTab.setValue('CustomerInfo');dsAppInfo.update({$id: 1},{op_id: op_id, Operator: operator_name, OperatorIndex: $index, OperatorPic: op_image, OurOpCode: our_op_code});">
+                <div class="sw-doc border d-flex sw-mouse-pointer w-100 align-items-center p-2" dmx-on:click="varTab.setValue('CustomerInfo');dsAppInfo.update({$id: 1},{op_id: op_id, Operator: operator_name, OperatorIndex: $index, OperatorPic: op_image});">
                     <img class="sw-avatar" dmx-bind:src="'https://portal.swpay.in'+op_image" height="72" width="72">
                     <div class="ml-3 d-flex flex-column justify-content-start">
                         <h5>{{operator_name}}</h5>
@@ -92,7 +93,7 @@
                     <div class="w-100 align-items-start border-bottom p-2 px-sm-5 py-sm-3 sw-patient-card-body flex-wrap">
                         <h5 class="font-weight-bold sw-label-color flex-column ">{{content.scServiceBBPS.data.All[dsAppInfo.data[0].servicesIndex].service_name}} Bill Payment </h5>
                         <div class="flex-column mt-3">
-                            <input type="hidden" id="OurOpCodeElectricity" dmx-bind:value="{{dsAppInfo.data[0].OurOpCode}}">
+                            <input type="hidden" id="OpCode" dmx-bind:value="{{dsAppInfo.data[0].op_id}}">
                             <div class="row mx-0">
                                 <div class="col-12 col-lg-6 pl-lg-0 pr-lg-2 px-0">
                                     <div class="form-group">
@@ -108,7 +109,7 @@
                                 </div>
 
                                 <div class="d-flex justify-content-end w-100 my-3">
-                                    <button class="btn sw-btn-dark px-5" dmx-on:click="flowElecBill.run(); varTab.setValue('Payment'); dsAppInfo.update({$id: 1},{customerIndex: $index, customerId: CustomerId.value})" dmx-bind:disabled="scFetchElectBill.state.executing" type="submit">Fetch Bill<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="scFetchElectBill.state.executing"></span></button>
+                                    <button class="btn sw-btn-dark px-5" dmx-on:click="flowElecBill.run(); varTab.setValue('Payment'); dsAppInfo.update({$id: 1},{customerIndex: $index, customerId: CustomerId.value})" dmx-bind:disabled="scFetchBill.state.executing" type="submit">Fetch Bill<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="scFetchBill.state.executing"></span></button>
                                 </div>
                             </div>
                         </div>
@@ -118,36 +119,36 @@
         </div>
     </div>
 </div>
-<div class="position-absolute col-7 col-md-9 mt-5 text-center" dmx-show="scFetchElectBill.state.executing">
+<div class="position-absolute col-7 col-md-9 mt-5 text-center" dmx-show="scFetchBill.state.executing">
     <img src="assets/images/loader.gif" height="300" width="300" class="mt-5">
     <!-- <span class="spinner-border" role="status" style="width: 3rem; height: 3rem; color: #20c997;"></span> -->
 </div>
-<div id="crPayment" is="dmx-if" dmx-bind:condition="varTab.value == 'Payment' && content.scFetchElectBill.data.EleBillFetch.status == 1">
-    <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100" dmx-show="content.scFetchElectBill.data.EleBillFetch.records[0].status == 1" dmx-class:disabled="scFetchElectBill.state.executing">
+<div id="crPayment" is="dmx-if" dmx-bind:condition="varTab.value == 'Payment' && content.scFetchBill.data.api.data">
+    <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100" dmx-show="(content.scFetchBill.data.api.data.status == 2 || content.scFetchBill.data.api.data.status == 1 ) && !scFetchBill.state.executing">
         <div class="d-flex w-100 align-items-center p-3 sw-patient-card-header">
             <img class="sw-avatar" src="assets/images/icons/user-icon.svg" height="72" width="72">
             <div class="d-flex flex-column justify-content-start pl-3">
                 <h5 class="mb-2 font-weight-bold">
-                    {{content.scFetchElectBill.data.EleBillFetch.records[0].CustomerName}}
+                    {{content.scFetchBill.data.api.data.customername}}
                 </h5>
                 <p class="sw-font-14 mb-1">
-                    Bill No.: {{content.scFetchElectBill.data.EleBillFetch.records[0].BillNumber}}
+                    Bill No.: {{content.scFetchBill.data.api.data.billnumber}}
                 </p>
             </div>
         </div>
         <div class="d-flex w-100 align-items-start border-bottom p-3 sw-patient-card-body">
             <i class="fas fa-money-bill mr-3 sw-text-secondary"></i>
             <div class="d-flex flex-column justify-content-start">
-                <label class="sw-label-color font-weight-bold">Bill Amount: {{content.scFetchElectBill.data.EleBillFetch.records[0].Billamount}}</label>
+                <label class="sw-label-color font-weight-bold">Bill Amount: {{content.scFetchBill.data.api.data.dueamount}}</label>
                 <p class="m-0 text-break">
-                    Bill Date: {{content.scFetchElectBill.data.EleBillFetch.records[0].Billdate}}
+                    Bill Date: {{content.scFetchBill.data.api.data.billdate}}
                 </p>
             </div>
         </div>
         <div class="d-flex w-100 align-items-start p-3 border-bottom sw-patient-card-body">
             <i class="fas fa-calendar mr-3 sw-text-secondary"></i>
             <div class="d-flex flex-column justify-content-start">
-                <label class="sw-label-color font-weight-bold">Due Date: {{content.scFetchElectBill.data.EleBillFetch.records[0].Duedate}}</label>
+                <label class="sw-label-color font-weight-bold">Due Date: {{content.scFetchBill.data.api.data.duedate}}</label>
                 <p class="m-0">
                     <!-- <span>{{dsApptInfo.data[0].apptDate.formatDate('dddd')}}</span> |
                             <span>{{dsApptInfo.data[0].duration}} min</span><br /> -->
@@ -157,28 +158,108 @@
         </div>
         <div class="d-flex w-100 align-items-start p-3 border-bottom card-footer sw-patient-card-body">
             <div class="d-flex justify-content-end w-100 my-3">
-                <button class="btn sw-btn-dark px-5" dmx-on:click="#" dmx-bind:disabled="scFetchElectBill.state.executing" type="submit">Pay Now<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="scFetchElectBill.state.executing"></span></button>
+                <button class="btn sw-btn-dark px-5" dmx-on:click="varTab.setValue('Confirmation')" dmx-bind:disabled="scFetch.state.executing" type="submit">Pay Now<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="scFetch.state.executing"></span></button>
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100" dmx-show="content.scFetchElectBill.data.EleBillFetch.records[0].status == 0" dmx-class:disabled="scFetchElectBill.state.executing">
+    <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100" dmx-show="content.scFetchBill.data.api.data.status == 3 && !scFetchBill.state.executing">
         <div class="d-flex w-100 align-items-center p-3 sw-patient-card-header">
             <img class="sw-avatar" src="assets/images/icons/user-icon.svg" height="72" width="72">
             <div class="d-flex flex-column justify-content-start pl-3">
                 <h5 class="mb-2 font-weight-bold">
-                    {{content.scFetchElectBill.data.EleBillFetch.tel}}
+                    {{content.scFetchBill.data.api.data.account}}
                 </h5>
                 <p class="sw-font-14 mb-1">
-                    Operator: {{content.scFetchElectBill.data.EleBillFetch.operator}}
+                    Operator: {{content.scFetchBill.data.api.data.agentid}}
                 </p>
             </div>
         </div>
         <div class="d-flex w-100 align-items-start p-3 border-bottom sw-patient-card-body">
             <i class="fas fa-calendar mr-3 sw-text-secondary"></i>
             <div class="d-flex flex-column justify-content-start">
-                <label class="sw-label-color font-weight-bold">Remarks: {{content.scFetchElectBill.data.EleBillFetch.records[0].desc}}</label>
+                <label class="sw-label-color font-weight-bold">Remarks: {{content.scFetchBill.data.api.data.msg}}</label>
 
             </div>
+        </div>
+    </div>
+</div>
+<div id="divApptDetail" class="d-block mt-4 sw-bg-light mx-5" dmx-show="varTab.value=='Confirmation'">
+    <div class="row" dmx-show="varPayment.value == 0">
+        <div class="col text-center"><img src="assets/images/mark-success.gif" height="200">
+            <p class="font-weight-bolder sw-font-20">Bill Payment Success</p>
+            <p class="sw-font-14">You can print the receipt from by clicking print button.</p>
+        </div>
+    </div>
+    <div class="row" dmx-show="varPayment.value == 1">
+        <div class="col text-center">
+            <img src="assets/images/mark-failure.gif" height="200">
+            <p class="font-weight-bolder sw-font-20">Failed!</p>
+            <p class="sw-font-14">Bill Payment Failed</p>
+        </div>
+    </div>
+    <div class="row mt-4 no-gutters">
+        <div class="col-md-6">
+            <div class="align-items-center d-flex p-3 sw-doctor">
+                <div class="flex-column px-2">
+                    <img dmx-bind:src="'https://portal.swpay.in/'+content.dsAppInfo.data[0].OperatorPic" width="60" class="sw-avatar">
+                </div>
+                <div class="flex-column px-2">
+                    <p class="sw-font-14 sw-font-weight-600 mb-1 text-secondary">
+                        {{content.dsAppInfo.data[0].Operator}}</p>
+                    <p class="sw-text-primary mb-1 sw-font-13">
+                        {{content.dsAppInfo.data[0].servicesName}}
+                    </p>
+                    <p class="sw-font-13 mb-1 text-secondary"> </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="align-items-center d-flex p-3 sw-doctor h-100">
+                <div class="flex-md-column sw-doctor-icon">
+                    <span><i class="far fa-calendar-alt fa-lg"></i></span>
+                </div>
+                <div class="flex-md-column px-2">
+                    <p class="sw-font-14 sw-font-weight-600 mb-1 text-secondary">
+                        Payment Date: {{varDateTime.datetime.formatDate('dd MMM yyyy hh:mm a')}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row  no-gutters">
+        <div class="col-md-6 sw-border-top">
+            <div class="align-items-center d-flex p-3 sw-doctor h-100">
+                <div class="flex-md-column sw-doctor-icon">
+                    <span><i class="fas fa-map-marker-alt fa-lg"></i></span>
+                </div>
+                <div class="flex-column px-2">
+                    <p class="sw-font-14 sw-font-weight-600 mb-1 text-secondary">
+                        {{dsApptInfo.data[0].location}}</p>
+                    <p class="sw-font-weight-600 sw-text-primary mb-1 sw-font-13">
+                        {{dsApptInfo.data[0].address}}, {{dsApptInfo.data[0].city}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6  sw-border-top">
+            <div class="align-items-center d-flex p-3 sw-doctor h-100">
+                <div class="flex-md-column  sw-doctor-icon">
+                    <span><i class="fas fa-info fa-lg"></i></span>
+                </div>
+                <div class="flex-md-column px-2">
+                    <p class="sw-font-14 sw-font-weight-600 mb-1 text-secondary">
+                        {{dsApptInfo.data[0].service.titlecase()}}</p>
+                    <p class="sw-font-weight-600 sw-text-primary mb-1 sw-font-13">
+                        {{dsApptInfo.data[0].duration}} minutes</p>
+                    <p class="mb-0 sw-font-weight-600 sw-font-19 text-danger">{{dsApptInfo.data[0].price.formatCurrency('AED ', '.', ',', 0)}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row my-4 justify-content-between">
+        <div class="col-md-3 col-sm-6 col-xs-6 mt-2">
+            <button class="btn sw-btn-secondary sw-font-14 btn-block">Back</button>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6 mt-2">
+            <button class="btn btn-block sw-btn-dark" type="submit">Print <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="state.executing"></span></button>
         </div>
     </div>
 </div>

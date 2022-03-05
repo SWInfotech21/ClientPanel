@@ -1,0 +1,144 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "op_id"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "account"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "ReqId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{NOW.md5(123456).substr(1, 9)}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "GetOpCode",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_op_api_rel",
+                "column": "api_code1",
+                "alias": "ouropcode"
+              },
+              {
+                "table": "t_op_api_rel",
+                "column": "api_code7",
+                "alias": "utilityopcode"
+              }
+            ],
+            "table": {
+              "name": "t_op_api_rel"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "t_op_api_rel.op_id",
+                  "field": "t_op_api_rel.op_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.op_id}}",
+                  "data": {
+                    "table": "t_op_api_rel",
+                    "column": "op_id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT api_code1 AS ouropcode, api_code7 AS utilityopcode\nFROM t_op_api_rel\nWHERE op_id = :P1 /* {{$_GET.op_id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.op_id}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "ouropcode"
+          },
+          {
+            "type": "text",
+            "name": "utilityopcode"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "api",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://utilityhub.app/API/FetchBill",
+          "params": {
+            "UserID": "{{214}}",
+            "Token": "{{'879cfb7ae02677efe36abde00dc77fac'}}",
+            "Account": "{{$_GET.account}}",
+            "Amount": "0",
+            "SPKey": "{{GetOpCode.utilityopcode}}",
+            "APIRequestID": "{{ReqId}}",
+            "Optional1": "",
+            "Optional2": "",
+            "Optional3": "",
+            "Optional4": "",
+            "GEOCode": "{{'23.8530,87.9727'}}",
+            "CustomerNumber": "",
+            "Pincode": "{{243601}}",
+            "Format": "1"
+          }
+        },
+        "output": true
+      }
+    ]
+  }
+}

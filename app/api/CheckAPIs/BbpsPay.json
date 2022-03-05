@@ -1,0 +1,25 @@
+{
+  "name": "apiPay",
+  "module": "api",
+  "action": "send",
+  "options": {
+    "url": "https://utilityhub.app/API/TransactionAPI",
+    "params": {
+      "UserID": "{{214}}",
+      "Token": "{{'879cfb7ae02677efe36abde00dc77fac'}}",
+      "Account": "{{45545445}}",
+      "Amount": "0",
+      "SPKey": "0",
+      "APIRequestID": "0",
+      "Optional1": "",
+      "Optional2": "",
+      "Optional3": "",
+      "Optional4": "",
+      "GEOCode": "{{'23.8530,87.9727'}}",
+      "CustomerNumber": "",
+      "Pincode": "{{243601}}",
+      "Format": "1"
+    }
+  },
+  "output": true
+}
