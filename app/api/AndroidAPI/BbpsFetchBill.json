@@ -30,7 +30,7 @@
             "core:required": {}
           }
         },
-        "name": "fromdate"
+        "name": "op_id"
       },
       {
         "type": "text",
@@ -39,7 +39,7 @@
             "core:required": {}
           }
         },
-        "name": "todate"
+        "name": "account"
       }
     ],
     "$_SERVER": [
@@ -369,37 +369,111 @@
                                       "options": {
                                         "if": "{{identity}}",
                                         "then": {
-                                          "steps": {
-                                            "name": "StatementReport",
-                                            "module": "dbupdater",
-                                            "action": "custom",
-                                            "options": {
-                                              "connection": "postgres_gcpServer",
-                                              "sql": {
-                                                "query": "select tb.old_balance, tb.netamt, tb.new_balance, tb.tr_date, tb.crdr_type, tb.pay_ref_id, tb.remarks,m_op.operator_name, \nms.service_name, tb.status \nfrom tt_balance tb \nleft join tt_recharge_trans as trt on (trt.id = tb.pay_ref_id::int)\nINNER JOIN m_operator AS m_op ON (m_op.id = trt.op_id AND m_op.service_id = trt.service_id) \nINNER JOIN m_service AS ms ON (ms.id = trt.service_id) \nwhere tb.user_id = @user_id and tb.tr_date>= @fromdate and tb.tr_date  <= @todate ORDER BY tb.id DESC;",
-                                                "params": [
-                                                  {
-                                                    "name": "@user_id",
-                                                    "value": "{{identity}}",
-                                                    "test": "1"
-                                                  },
-                                                  {
-                                                    "name": "@fromdate",
-                                                    "value": "{{$_GET.fromdate}}",
-                                                    "test": "2021-10-28 00:00:00"
-                                                  },
-                                                  {
-                                                    "name": "@todate",
-                                                    "value": "{{$_GET.todate}}",
-                                                    "test": "2021-10-28 23:59:59.999"
-                                                  }
-                                                ]
-                                              }
+                                          "steps": [
+                                            {
+                                              "name": "ReqId",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{NOW.md5(123456).substr(1, 9)}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text"
                                             },
-                                            "output": true,
-                                            "meta": [],
-                                            "outputType": "array"
-                                          }
+                                            {
+                                              "name": "GetOpCode",
+                                              "module": "dbconnector",
+                                              "action": "single",
+                                              "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "type": "SELECT",
+                                                  "columns": [
+                                                    {
+                                                      "table": "t_op_api_rel",
+                                                      "column": "api_code1",
+                                                      "alias": "ouropcode"
+                                                    },
+                                                    {
+                                                      "table": "t_op_api_rel",
+                                                      "column": "api_code7",
+                                                      "alias": "utilityopcode"
+                                                    }
+                                                  ],
+                                                  "table": {
+                                                    "name": "t_op_api_rel"
+                                                  },
+                                                  "joins": [],
+                                                  "wheres": {
+                                                    "condition": "AND",
+                                                    "rules": [
+                                                      {
+                                                        "id": "t_op_api_rel.op_id",
+                                                        "field": "t_op_api_rel.op_id",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": "{{$_GET.op_id}}",
+                                                        "data": {
+                                                          "table": "t_op_api_rel",
+                                                          "column": "op_id",
+                                                          "type": "number"
+                                                        },
+                                                        "operation": "="
+                                                      }
+                                                    ],
+                                                    "conditional": null,
+                                                    "valid": true
+                                                  },
+                                                  "query": "SELECT api_code1 AS ouropcode, api_code7 AS utilityopcode\nFROM t_op_api_rel\nWHERE op_id = :P1 /* {{$_GET.op_id}} */",
+                                                  "params": [
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P1",
+                                                      "value": "{{$_GET.op_id}}"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "output": true,
+                                              "meta": [
+                                                {
+                                                  "type": "text",
+                                                  "name": "ouropcode"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "utilityopcode"
+                                                }
+                                              ],
+                                              "outputType": "object"
+                                            },
+                                            {
+                                              "name": "api",
+                                              "module": "api",
+                                              "action": "send",
+                                              "options": {
+                                                "url": "https://utilityhub.app/API/FetchBill",
+                                                "params": {
+                                                  "UserID": "{{214}}",
+                                                  "Token": "{{'879cfb7ae02677efe36abde00dc77fac'}}",
+                                                  "Account": "{{$_GET.account}}",
+                                                  "Amount": "0",
+                                                  "SPKey": "{{GetOpCode.utilityopcode}}",
+                                                  "APIRequestID": "{{ReqId}}",
+                                                  "Optional1": "",
+                                                  "Optional2": "",
+                                                  "Optional3": "",
+                                                  "Optional4": "",
+                                                  "GEOCode": "{{'23.8530,87.9727'}}",
+                                                  "CustomerNumber": "",
+                                                  "Pincode": "{{243601}}",
+                                                  "Format": "1"
+                                                }
+                                              },
+                                              "output": true
+                                            }
+                                          ]
                                         },
                                         "else": {
                                           "steps": {

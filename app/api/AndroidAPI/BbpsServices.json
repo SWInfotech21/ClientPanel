@@ -7,19 +7,21 @@
     "$_GET": [
       {
         "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
         "name": "username"
       },
       {
         "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
         "name": "password"
-      },
-      {
-        "type": "text",
-        "name": "fromdate"
-      },
-      {
-        "type": "text",
-        "name": "todate"
       }
     ],
     "$_SERVER": [
