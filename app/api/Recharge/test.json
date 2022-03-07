@@ -22,16 +22,15 @@
           "method": "POST",
           "params": {
             "Token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
-            "RetailerID": "1",
-            "LogoUrl": "1",
-            "Copyright": "1",
-            "MerchantId": "1",
-            "FirmName": "1",
-            "ServiceId": "1"
+            "RetailerID": "{{'10101010301'}}",
+            "LogoUrl": "{{'BUCSPAY.COM'}}",
+            "Copyright": "{{'All rights reserved @ Cash On Cash'}}",
+            "MerchantId": "{{7409747265}}",
+            "FirmName": "{{'Cash On Cash'}}",
+            "ServiceId": "{{'MA17'}}"
           }
         },
-        "output": true,
-        "disabled": true
+        "output": true
       },
       {
         "name": "apiDMT",
@@ -44,10 +43,11 @@
             "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}"
           }
         },
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
-        "name": "apiTr",
+        "name": "apiTrDMT",
         "module": "api",
         "action": "send",
         "options": {
@@ -58,7 +58,8 @@
           },
           "method": "POST"
         },
-        "output": true
+        "output": true,
+        "disabled": true
       }
     ]
   }
