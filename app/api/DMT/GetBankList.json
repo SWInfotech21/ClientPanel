@@ -1,0 +1,28 @@
+[
+  {
+    "name": "",
+    "module": "auth",
+    "action": "restrict",
+    "options": {
+      "provider": "security",
+      "permissions": [
+        "write"
+      ],
+      "loginUrl": "/login",
+      "forbiddenUrl": "/403-forbidden"
+    }
+  },
+  {
+    "name": "apiBanks",
+    "module": "api",
+    "action": "send",
+    "options": {
+      "url": "https://apihub.moneyart.in/BankNameList",
+      "method": "POST",
+      "params": {
+        "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}"
+      }
+    },
+    "output": true
+  }
+]

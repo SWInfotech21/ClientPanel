@@ -134,5 +134,9 @@
   "recharges.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "dmt-service.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/dmt-service.ejs",
+      "linkedForm": "formDelBen"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "BenSenderIdDel",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "BenSenderIdDel"
+      },
+      {
+        "type": "text",
+        "fieldName": "BenIdDel",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "BenIdDel"
+      },
+      {
+        "type": "number",
+        "fieldName": "BenOTP",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            },
+            "core:number": {
+              "param": ""
+            }
+          }
+        },
+        "name": "BenOTP"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "apiDelBen",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "method": "POST",
+          "url": "https://apihub.moneyart.in/ConfirmRemoveRecipient",
+          "params": {
+            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+            "senderId": "{{$_POST.BenSenderIdDel}}",
+            "recipientId": "{{$_POST.BenIdDel}}",
+            "otp": "{{$_POST.BenOTP}}"
+          }
+        },
+        "output": true
+      }
+    ]
+  }
+}

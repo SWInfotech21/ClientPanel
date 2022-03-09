@@ -152,6 +152,11 @@
       "layout": "main"
     },
     {
+      "path": "/dmt-service",
+      "page": "dmt-service",
+      "layout": "main"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }

@@ -19,18 +19,19 @@
         "action": "send",
         "options": {
           "url": "https://adharpay.in/authenticate",
-          "method": "POST",
           "params": {
             "Token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
-            "RetailerID": "{{'10101010301'}}",
-            "LogoUrl": "{{'BUCSPAY.COM'}}",
-            "Copyright": "{{'All rights reserved @ Cash On Cash'}}",
-            "MerchantId": "{{7409747265}}",
+            "RetailerID": "{{100301}}",
+            "LogoUrl": "{{'https://buckspay.com'}}",
+            "Copyright": "{{'All rights reserved for Cash On Cash'}}",
+            "MerchantId": "{{'7409747265'}}",
             "FirmName": "{{'Cash On Cash'}}",
             "ServiceId": "{{'MA17'}}"
-          }
+          },
+          "method": "POST"
         },
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "apiDMT",
@@ -60,6 +61,19 @@
         },
         "output": true,
         "disabled": true
+      },
+      {
+        "name": "apiBankList",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "method": "POST",
+          "url": "https://apihub.moneyart.in/BankNameList",
+          "params": {
+            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}"
+          }
+        },
+        "output": true
       }
     ]
   }

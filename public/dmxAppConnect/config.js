@@ -1603,5 +1603,11 @@ dmx.config({
       "meta": [],
       "outputType": "text"
     }
+  },
+  "dmtservice": {
+    "dvBankList": {
+      "meta": null,
+      "outputType": "text"
+    }
   }
 });

@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/dmt-service.ejs",
+      "linkedForm": "formAddBen"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "BenSenderId",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "BenSenderId"
+      },
+      {
+        "type": "number",
+        "fieldName": "BenMobileAdd",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            },
+            "core:number": {
+              "param": ""
+            }
+          }
+        },
+        "name": "BenMobileAdd"
+      },
+      {
+        "type": "text",
+        "fieldName": "BenACAdd",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "BenACAdd"
+      },
+      {
+        "type": "text",
+        "fieldName": "BenNameAdd",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "BenNameAdd"
+      },
+      {
+        "type": "text",
+        "fieldName": "BenIFSCAdd",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "BenIFSCAdd"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "apiAddBen",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://apihub.moneyart.in/AddRecipients",
+          "params": {
+            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+            "senderId": "{{$_POST.BenSenderId}}",
+            "name": "{{$_POST.BenNameAdd}}",
+            "mobileno": "{{$_POST.BenMobileAdd}}",
+            "accountno": "{{$_POST.BenACAdd}}",
+            "ifsc": "{{$_POST.BenIFSCAdd}}"
+          },
+          "method": "POST"
+        },
+        "output": true
+      }
+    ]
+  }
+}

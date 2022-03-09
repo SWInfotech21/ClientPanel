@@ -1,0 +1,188 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dmtservice" appConnect="local" components="{dmxValidator:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxFormatter:{}}" -->
+<meta name="ac:route" content="/dmt-service">
+<dmx-value id="varBenefId" dmx-bind:value="0"></dmx-value>
+<!-- <dmx-serverconnect id="scBankList" url="api/DMT/GetBankList"></dmx-serverconnect>
+<dmx-data-view id="dvBankList" filter="(BankName.contains(Search.value.titlecase()))" dmx-bind:data="content.scBankList.data.apiBanks"></dmx-data-view> -->
+
+<main>
+    <div class="container-fluid">
+        <h5 class="mt-4">Domestic Money Transfer(DMT)
+            <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scLoginUser.state.executing"></span>
+        </h5>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">DMT / {{scLoginUser.data.LoginUserInfo.user_id}} / {{scLoginUser.data.LoginUserInfo.id}}</li>
+        </ol>
+    </div>
+    <div class="d-flex justify-content-between flex-wrap px-2 w-100">
+        <div class="w-100 border-bottom p-2 px-sm-5 py-sm-3 sw-container mb-3">
+            <form id="formGetBeneficiary" is="dmx-serverconnect-form" action="api/DMT/GetBeneficiary" dmx-populate="" method="post" dmx-on:success="" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="">
+                <div class="row mx-0 mt-3">
+                    <div class="col-12 col-md-6 px-0">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Mobile Number </label>
+                            <input type="number" id="CustMobile" class="form-control" name="CustMobile" placeholder="Enter 10 digit DMT registered mobile" required="" data-rule-number="">
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 my-3 align-self-end">
+                        <button class="btn sw-btn-dark px-5" dmx-on:click="#" dmx-bind:disabled="scBeneficiary.state.executing" type="submit">Get Details<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="scBeneficiary.state.executing"></span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="d-flex w-100 align-items-center justify-content-between p-2 sw-container-head" dmx-show="content.formGetBeneficiary.data.apiGetBeneficiary.data.StatusCode == 1">
+            <img class="sw-avatar" src="assets/images/icons/user-icon.svg" height="72" width="72">
+            <div class="d-flex flex-column justify-content-start pl-3">
+                <h5 class="mb-2 font-weight-bold">
+                    {{content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Name}} / {{content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.MobileNo}} / {{content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.RemitterID}}
+                </h5>
+                <p class="sw-font-14 mb-1">
+                    Available Limit: Rs. {{content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.AvailableLimit}} / Monthly Limit: Rs. {{content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.MonthlyLimit}}
+                </p>
+            </div>
+            <div class="d-flex flex-column justify-content-end pl-3">
+                <button class="btn sw-btn-dark px-5" type="submit" dmx-on:click="modalAddBen.show();modalAddBen.formAddBen.reset()">Add Beneficiary</button>
+            </div>
+        </div>
+        <div class="d-flex w-100 align-items-start p-3 border-bottom sw-container table-responsive" dmx-show="content.formGetBeneficiary.data.apiGetBeneficiary.data.StatusCode == 1">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Beneficiary Name</th>
+                        <th scope="col">Mobile</th>
+                        <th scope="col">A/C No.</th>
+                        <th scope="col">Bank Name</th>
+                        <th scope="col">IFSC</th>
+                        <th scope="col">Verified</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody is="dmx-repeat" id="repeatReceipants" dmx-bind:repeat="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data" dmx-show="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[0]">
+                    <tr>
+                        <th scope="row">{{$index+1}}</th>
+                        <td>{{content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].RPTID}}</td>
+                        <td>{{content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].Name}}</td>
+                        <td>{{content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].MobileNo}}</td>
+                        <td>{{content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].AccountNo}}</td>
+                        <td>{{content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].BankName}}</td>
+                        <td>{{content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].IFSC}}</td>
+                        <td dmx-text="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].IsValidate" dmx-class:text-dark="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].IsValidate == true" dmx-class:text-danger="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].IsValidate == false"></td>
+                        <td dmx-text="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].Status" dmx-class:text-dark="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].Status == 'Active'" dmx-class:text-danger="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].Status == 'InActive'"></td>
+                        <td>
+                            <a class="sw-col-dr px-1" href="#" dmx-on:click="#" data-bs-toggle="modal" data-bs-target="#modalBeneficiaryInfo"><i class="fas fa-info" title="Beneficiary Details"></i></a>
+                            <a class="text-danger px-1" href="#" dmx-on:click="formDelBenOTPSend.submit(true); modalDelBen.show(); varBenefId.setValue(content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].RPTID)" data-bs-toggle="modal" data-bs-target="#modalDelBen">
+                                <form id="formDelBenOTPSend" method="post" action="api/DMT/DelBenOTP" is="dmx-serverconnect-form" dmx-hide="content.formGetBeneficiary.data.apiGetBeneficiary.data">
+                                    <input type="hidden" id="BenSenderIdOTP" class="form-control" name="BenSenderIdOTP" required="" dmx-bind:value="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.RemitterID">
+                                    <input type="hidden" id="BenRecipientIdOTP" class="form-control" name="BenRecipientIdOTP" required="" dmx-bind:value="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].RPTID">
+                                </form>
+                                <i class="far fa-trash-alt" title="Delete Beneficiary"></i>
+                            </a>
+                            <a class="sw-col-dr px-1" href="#" dmx-on:click="ddUsers.select(id)" data-bs-toggle="modal" data-bs-target="#modalPayment"><i class="fas fa-share" title="Transfer"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="d-flex w-100 align-items-start p-3 border-bottom sw-container" dmx-show="content.formGetBeneficiary.data.apiGetBeneficiary.data.StatusCode == 2">
+            <h5 class="mb-2 font-weight-bold">
+                {{content.formGetBeneficiary.data.apiGetBeneficiary.data.Message}}
+            </h5>
+        </div>
+        <div class="modal fade" id="modalAddBen" is="dmx-bs5-modal" tabindex="-1" nokeyboard="true" nobackdrop="true" nocloseonclick="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add A New Beneficiary</h5>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalAddBen.hide()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formAddBen" is="dmx-serverconnect-form" action="api/DMT/AddBeneficiary" dmx-populate="" method="post" dmx-on:success="formAddBen.reset();scNotif.success(content.modalAddBen.formAddBen.data.apiAddBen.data.StatusCode == 0 ? content.modalAddBen.formAddBen.data.apiAddBen.data.Message : content.modalAddBen.formAddBen.data.apiAddBen.data.StatusCode == 1 ? content.modalAddBen.formAddBen.data.apiAddBen.data.Message : 'An Error Occured')" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="">
+                            <input type="hidden" id="BenSenderId" class="form-control" name="BenSenderId" required="" dmx-bind:value="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.RemitterID">
+                            <div class="row mx-0">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Mobile Number </label>
+                                        <input type="number" id="BenMobileAdd" class="form-control" name="BenMobileAdd" placeholder="Enter 10 digit mobile" required="" data-rule-number="">
+                                    </div>
+                                </div>
+                                <!-- <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Deposit Bank</label>
+                                        <input type="text" id="BenBankAdd" class="form-control" name="BenBankAdd" placeholder="Enter Deposite Bank Name" required="">
+                                    </div>
+                                </div> -->
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Account No.</label>
+                                        <input type="text" id="BenACAdd" class="form-control" name="BenACAdd" placeholder="Beneficiary Bank A/C No." required="">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Full Name</label>
+                                        <input type="text" id="BenNameAdd" class="form-control" name="BenNameAdd" placeholder="Beneficiary Name As On Bank" required="">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">IFSC</label>
+                                        <input type="text" id="BenIFSCAdd" class="form-control" name="BenIFSCAdd" placeholder="Enter IFSC Code" required="">
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2 text-center">
+                                    <button class="btn sw-btn-dark btn-sm" type="submit" dmx-bind:disabled="content.modalAddBen.formAddBen.state.executing">Submit <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalAddBen.formAddBen.state.executing"></span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row mx-0 text-right">
+                            <div class="col-12">
+                                <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalAddBen.hide()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modalDelBen" is="dmx-bs5-modal" tabindex="-1" nokeyboard="true" nobackdrop="true" nocloseonclick="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Beneficiary: {{varBenefId.value}}</h5>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalDelBen.hide()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formDelBen" is="dmx-serverconnect-form" action="api/DMT/DelBen" dmx-populate="" method="post" dmx-on:success="formDelBen.reset();scNotif.success(content.modalDelBen.formDelBen.data.apiDelBen.data.StatusCode == 0 ? content.modalDelBen.formDelBen.data.apiDelBen.data.Message : content.modalDelBen.formDelBen.data.apiDelBen.data.StatusCode == 1 ? content.modalDelBen.formDelBen.data.apiDelBen.data.Message : 'An Error Occured');modalDelBen.hide()" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="">
+                            <input type="hidden" id="BenSenderIdDel" class="form-control" name="BenSenderIdDel" required="" dmx-bind:value="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.RemitterID">
+                            <input type="hidden" id="BenIdDel" class="form-control" name="BenIdDel" required="" dmx-bind:value="varBenefId.value">
+                            <div class="row mx-0">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Enter OTP Send to Remitter Mobile</label>
+                                        <input type="number" id="BenOTP" class="form-control" name="BenOTP" required="" data-rule-number="">
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2 text-center">
+                                    <button class="btn sw-btn-dark btn-sm" type="submit" dmx-bind:disabled="content.modalDelBen.formDelBen.state.executing">Submit <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalDelBen.formDelBen.state.executing"></span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row mx-0 text-right">
+                            <div class="col-12">
+                                <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalDelBen.hide()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
