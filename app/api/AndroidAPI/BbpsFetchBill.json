@@ -453,6 +453,17 @@
                                               "outputType": "object"
                                             },
                                             {
+                                              "name": "mobile",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{$_GET.recharge_mobile}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
                                               "name": "api",
                                               "module": "api",
                                               "action": "send",
