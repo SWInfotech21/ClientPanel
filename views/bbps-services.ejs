@@ -285,19 +285,19 @@
                 <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="varTab.setValue('Services');modalBillPayment.hide()"></button>
             </div>
             <div class="modal-body">
-                <div class="row mx-0" dmx-show="content.crPayment.formAddBillPayment.data.apiUtilityHub.data.status == 1 || content.crPayment.formAddBillPayment.data.apiUtilityHub.data.status == 2">
+                <div class="row mx-0" dmx-show="content.crPayment.formAddBillPayment.data.apistatus == 'SUCCESS' || content.crPayment.formAddBillPayment.data.apistatus == 'PENDING' ">
                     <div class="col text-center">
                         <img src="assets/images/mark-success.gif" height="130">
                         <p class="font-weight-bolder sw-font-20">Payment Success</p>
                         <p class="sw-font-14">You can print the receipt from by clicking print button.</p>
-                        <p class="sw-font-14">Remarks: {{content.crPayment.formAddBillPayment.data.apiUtilityHub.data.msg}}</p>
+                        <p class="sw-font-14">Remarks: {{content.crPayment.formAddBillPayment.data.remarks}}</p>
                     </div>
                 </div>
-                <div class="row mx-0" dmx-show="content.crPayment.formAddBillPayment.data.apiUtilityHub.data.status == 3">
+                <div class="row mx-0" dmx-show="content.crPayment.formAddBillPayment.data.apistatus == 'FAILED' ">
                     <div class="col text-center">
                         <img src="assets/images/mark-failure.gif" height="130">
                         <p class="font-weight-bolder sw-font-20">Failed!</p>
-                        <p class="sw-font-14">Remarks: {{content.crPayment.formAddBillPayment.data.apiUtilityHub.data.msg}}</p>
+                        <p class="sw-font-14">Remarks: {{content.crPayment.formAddBillPayment.data.remarks}}</p>
                     </div>
                 </div>
                 <div class="row mt-2 no-gutters px-2 mx-0">

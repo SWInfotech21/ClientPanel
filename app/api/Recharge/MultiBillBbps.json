@@ -2961,17 +2961,6 @@
                                               "disabled": true
                                             },
                                             {
-                                              "name": "Resp",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "Bill Payment Success"
-                                              },
-                                              "meta": [],
-                                              "output": true,
-                                              "outputType": "text"
-                                            },
-                                            {
                                               "name": "",
                                               "module": "core",
                                               "action": "condition",
@@ -3829,17 +3818,6 @@
                                                 "url": "https://portal.swpay.in/api/RefreshTrans"
                                               },
                                               "output": false
-                                            },
-                                            {
-                                              "name": "Resp",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "Bill Payment Failed"
-                                              },
-                                              "meta": [],
-                                              "output": true,
-                                              "outputType": "text"
                                             }
                                           ]
                                         }
@@ -3850,15 +3828,14 @@
                                 },
                                 "else": {
                                   "steps": {
-                                    "name": "Resp",
+                                    "name": "RespAPI",
                                     "module": "core",
-                                    "action": "setvalue",
+                                    "action": "response",
                                     "options": {
-                                      "value": "API Inactive/ API Not Forwarded/ Operator API Code Not Updated"
+                                      "data": "API Inactive/ API Not Forwarded/ Operator API Code Not Updated",
+                                      "status": 401
                                     },
-                                    "meta": [],
-                                    "output": true,
-                                    "outputType": "text"
+                                    "output": true
                                   }
                                 }
                               },
@@ -3868,15 +3845,14 @@
                         },
                         "else": {
                           "steps": {
-                            "name": "Resp",
+                            "name": "RespCommision",
                             "module": "core",
-                            "action": "setvalue",
+                            "action": "response",
                             "options": {
-                              "value": "Please set the commision first for this operator"
+                              "status": 401,
+                              "data": "Please set the commision first for this operator"
                             },
-                            "meta": [],
-                            "output": true,
-                            "outputType": "text"
+                            "output": true
                           }
                         }
                       },
@@ -3886,15 +3862,14 @@
                 },
                 "else": {
                   "steps": {
-                    "name": "Resp",
+                    "name": "RespWalletBal",
                     "module": "core",
-                    "action": "setvalue",
+                    "action": "response",
                     "options": {
-                      "value": "You do not have sufficient wallet balance!"
+                      "status": 401,
+                      "data": "You do not have sufficient wallet balance!"
                     },
-                    "meta": [],
-                    "output": true,
-                    "outputType": "text"
+                    "output": true
                   }
                 }
               },
@@ -3903,15 +3878,14 @@
           },
           "else": {
             "steps": {
-              "name": "Resp",
+              "name": "RespTPIN",
               "module": "core",
-              "action": "setvalue",
+              "action": "response",
               "options": {
-                "value": "T-Pin Mismatched"
+                "data": "T-Pin Mismatched",
+                "status": 401
               },
-              "meta": [],
-              "output": true,
-              "outputType": "text"
+              "output": true
             }
           }
         },
