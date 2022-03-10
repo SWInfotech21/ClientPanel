@@ -57,7 +57,7 @@
                         <th scope="col">IFSC</th>
                         <th scope="col">Verified</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" style="width: 100px;">Action</th>
                     </tr>
                 </thead>
                 <tbody is="dmx-repeat" id="repeatReceipants" dmx-bind:repeat="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data" dmx-show="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[0]">
@@ -71,16 +71,18 @@
                         <td>{{content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].IFSC}}</td>
                         <td dmx-text="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].IsValidate" dmx-class:text-dark="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].IsValidate == true" dmx-class:text-danger="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].IsValidate == false"></td>
                         <td dmx-text="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].Status" dmx-class:text-dark="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].Status == 'Active'" dmx-class:text-danger="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].Status == 'InActive'"></td>
-                        <td>
-                            <a class="sw-col-dr px-1" href="#" dmx-on:click="#" data-bs-toggle="modal" data-bs-target="#modalBeneficiaryInfo"><i class="fas fa-info" title="Beneficiary Details"></i></a>
-                            <a class="text-danger px-1" href="#" dmx-on:click="formDelBenOTPSend.submit(true); modalDelBen.show(); varBenefId.setValue(content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].RPTID)" data-bs-toggle="modal" data-bs-target="#modalDelBen">
+                        <td class="p-2">
+                            <a class="text-danger p-1 align-self-center" href="#" dmx-on:click="formDelBenOTPSend.submit(true); modalDelBen.show(); varBenefId.setValue(content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].RPTID)" data-bs-toggle="modal" data-bs-target="#modalDelBen">
                                 <form id="formDelBenOTPSend" method="post" action="api/DMT/DelBenOTP" is="dmx-serverconnect-form" dmx-hide="content.formGetBeneficiary.data.apiGetBeneficiary.data">
                                     <input type="hidden" id="BenSenderIdOTP" class="form-control" name="BenSenderIdOTP" required="" dmx-bind:value="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.RemitterID">
                                     <input type="hidden" id="BenRecipientIdOTP" class="form-control" name="BenRecipientIdOTP" required="" dmx-bind:value="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].RPTID">
                                 </form>
                                 <i class="far fa-trash-alt" title="Delete Beneficiary"></i>
                             </a>
-                            <a class="sw-col-dr px-1" href="#" dmx-on:click="ddUsers.select(id)" data-bs-toggle="modal" data-bs-target="#modalPayment"><i class="fas fa-share" title="Transfer"></i></a>
+                            <a class="sw-col-dr p-1 align-self-center" href="#" dmx-on:click="ddUsers.select(id)" data-bs-toggle="modal" data-bs-target="#modalPayment"><i class="fas fa-share" title="Transfer"></i></a>
+                            <a class=" p-1 align-self-center text-success" href="#" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].RPTID); modalVerifyBen.show();" data-bs-toggle="modal" data-bs-target="#modalVerifyBen" dmx-show="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].IsValidate == false">
+                                <i class="fas fa-shield-alt" title="Varify Beneficiary Account using Rs. 1"></i>
+                            </a>
                         </td>
                     </tr>
                 </tbody>
@@ -183,6 +185,76 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modalVerifyBen" is="dmx-bs5-modal" tabindex="-1" nokeyboard="true" nobackdrop="true" nocloseonclick="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Verify Beneficiary:{{varBenefId.value}}</h5>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalVerifyBen.hide();formBenVerify.reset()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formVerifyBenAC" method="post" action="api/DMT/VerifyBen" is="dmx-serverconnect-form" dmx-hide="content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data">
+                            <input type="hidden" id="SenderIdVerify" class="form-control" name="SenderIdVerify" required="" dmx-bind:value="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.RemitterID">
+                            <input type="hidden" id="RecipientIdVerify" class="form-control" name="RecipientIdVerify" required="" dmx-bind:value="varBenefId.value">
+                            <div class="col-12 mt-2 text-center">
+                                <button class="btn sw-btn-dark w-100" type="submit" dmx-bind:disabled="content.modalVerifyBen.formVerifyBenAC.state.executing">Verify <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalVerifyBen.formVerifyBenAC.state.executing"></span></button>
+                            </div>
+                        </form>
+                        <form id="formBenVerifyResult" dmx-show="content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data">
+                            <div class="row mx-0">
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Beneficiary Name</label>
+                                        <input type="text" id="BenNameVerify" class="form-control" readonly="true" disabled="true" dmx-bind:value="content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data.Data.RecipientName">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Ben. Mobile</label>
+                                        <input type="text" id="BenMobileVerify" class="form-control" readonly="true" disabled="true" dmx-bind:value="content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data.Data.MobileNo">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Ben. Account No.</label>
+                                        <input type="text" id="BenBankACVerify" class="form-control" readonly="true" disabled="true" dmx-bind:value="content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data.Data.BankAccNo">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Ben. Bank Tr. Id</label>
+                                        <input type="text" id="BenBankTrIdVerify" class="form-control" readonly="true" disabled="true" dmx-bind:value="content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data.Data.BankTxnId">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Order Id</label>
+                                        <input type="text" id="BenOrderIdVerify" class="form-control" readonly="true" disabled="true" dmx-bind:value="content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data.Data.OrderId">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Tr. Ref. No.</label>
+                                        <input type="text" id="BenTrRefNoVerify" class="form-control" readonly="true" disabled="true" dmx-bind:value="content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data.Data.TxnRefNumber">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mx-0">
+                                <h5 dmx-class:text-danger="content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data.StatusCode == 0" dmx-class:text-succes="content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data.StatusCode == 1">{{content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data.Message}}</h5>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row mx-0 text-right">
+                            <div class="col-12">
+                                <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalVerifyBen.hide(); formBenVerify.reset()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </main>

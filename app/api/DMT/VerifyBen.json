@@ -1,0 +1,65 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/dmt-service.ejs",
+      "linkedForm": "formVerifyBenAC"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "SenderIdVerify",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "SenderIdVerify"
+      },
+      {
+        "type": "text",
+        "fieldName": "RecipientIdVerify",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "RecipientIdVerify"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "TransactionId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{NOW.md5(123456).substr(1, 12)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "apiVerifyBen",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "params": {
+            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+            "senderId": "{{$_POST.SenderIdVerify}}",
+            "recipientId": "{{$_POST.RecipientIdVerify}}",
+            "transactionId": "{{TransactionId}}"
+          },
+          "url": "https://apihub.moneyart.in/VerifyBeneficiary",
+          "method": "POST"
+        },
+        "output": true
+      }
+    ]
+  }
+}
