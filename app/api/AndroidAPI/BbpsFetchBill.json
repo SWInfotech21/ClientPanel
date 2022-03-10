@@ -40,6 +40,10 @@
           }
         },
         "name": "account"
+      },
+      {
+        "type": "text",
+        "name": "recharge_mobile"
       }
     ],
     "$_SERVER": [
@@ -466,7 +470,7 @@
                                                   "Optional3": "",
                                                   "Optional4": "",
                                                   "GEOCode": "{{'23.8530,87.9727'}}",
-                                                  "CustomerNumber": "",
+                                                  "CustomerNumber": "{{$_GET.recharge_mobile}}",
                                                   "Pincode": "{{243601}}",
                                                   "Format": "1"
                                                 }
