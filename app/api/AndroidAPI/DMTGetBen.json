@@ -355,20 +355,33 @@
                                       "options": {
                                         "if": "{{identity}}",
                                         "then": {
-                                          "steps": {
-                                            "name": "api",
-                                            "module": "api",
-                                            "action": "send",
-                                            "options": {
-                                              "url": "https://apihub.moneyart.in/ValidateRemitter",
-                                              "params": {
-                                                "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
-                                                "mobileNo": "{{$_GET.mobile}}"
+                                          "steps": [
+                                            {
+                                              "name": "api",
+                                              "module": "api",
+                                              "action": "send",
+                                              "options": {
+                                                "url": "https://apihub.moneyart.in/ValidateRemitter",
+                                                "params": {
+                                                  "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+                                                  "mobileNo": "{{$_GET.mobile}}"
+                                                },
+                                                "method": "POST"
                                               },
-                                              "method": "POST"
+                                              "output": false
                                             },
-                                            "output": true
-                                          }
+                                            {
+                                              "name": "GetBeneficiary",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{api.data}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            }
+                                          ]
                                         },
                                         "else": {
                                           "steps": {
