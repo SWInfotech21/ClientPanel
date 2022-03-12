@@ -1,6 +1,10 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dmtservice" appConnect="local" components="{dmxValidator:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxFormatter:{}}" -->
 <meta name="ac:route" content="/dmt-service">
 <dmx-value id="varBenefId" dmx-bind:value="0"></dmx-value>
+<dmx-value id="varBenBankName" dmx-bind:value="0"></dmx-value>
+<dmx-value id="varBenName" dmx-bind:value="0"></dmx-value>
+<dmx-value id="varBenAcNo" dmx-bind:value="0"></dmx-value>
+<dmx-value id="varVerifyModal" dmx-bind:value="0"></dmx-value>
 <!-- <dmx-serverconnect id="scBankList" url="api/DMT/GetBankList"></dmx-serverconnect>
 <dmx-data-view id="dvBankList" filter="(BankName.contains(Search.value.titlecase()))" dmx-bind:data="content.scBankList.data.apiBanks"></dmx-data-view> -->
 
@@ -79,7 +83,9 @@
                                 </form>
                                 <i class="far fa-trash-alt" title="Delete Beneficiary"></i>
                             </a>
-                            <a class="sw-col-dr p-1 align-self-center" href="#" dmx-on:click="ddUsers.select(id)" data-bs-toggle="modal" data-bs-target="#modalPayment"><i class="fas fa-share" title="Transfer"></i></a>
+
+                            <a class="sw-col-dr p-1 align-self-center" href="#" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].RPTID); varBenBankName.setValue(content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].BankName); varBenName.setValue(content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].Name); varBenAcNo.setValue(content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].AccountNo); modalTransBen.show();" data-bs-toggle="modal" data-bs-target="#modalTransBen"><i class="fas fa-hand-holding-usd" title="Do Transaction"></i></a>
+
                             <a class=" p-1 align-self-center text-success" href="#" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].RPTID); modalVerifyBen.show();" data-bs-toggle="modal" data-bs-target="#modalVerifyBen" dmx-show="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.Recipients[$index].IsValidate == false">
                                 <i class="fas fa-shield-alt" title="Varify Beneficiary Account using Rs. 1"></i>
                             </a>
@@ -189,18 +195,19 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Verify Beneficiary:{{varBenefId.value}}</h5>
-                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalVerifyBen.hide();formBenVerify.reset()"></button>
+                        <h5 class="modal-title">Verify Beneficiary:{{varBenefId.value}} <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalVerifyBen.formVerifyBenAC.state.executing"></span></h5>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalVerifyBen.hide();formVerifyBenAC.reset(); formBenVerifyResult.reset()"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="formVerifyBenAC" method="post" action="api/DMT/VerifyBen" is="dmx-serverconnect-form" dmx-hide="content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data">
+                        <form id="formVerifyBenAC" method="post" action="api/DMT/VerifyBen" is="dmx-serverconnect-form" dmx-show="varVerifyModal.value == 0">
                             <input type="hidden" id="SenderIdVerify" class="form-control" name="SenderIdVerify" required="" dmx-bind:value="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.RemitterID">
                             <input type="hidden" id="RecipientIdVerify" class="form-control" name="RecipientIdVerify" required="" dmx-bind:value="varBenefId.value">
+                            <div class="col-12 my-4"><b>Do you want to verify the account details before transaction?</b></div>
                             <div class="col-12 mt-2 text-center">
-                                <button class="btn sw-btn-dark w-100" type="submit" dmx-bind:disabled="content.modalVerifyBen.formVerifyBenAC.state.executing">Verify <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalVerifyBen.formVerifyBenAC.state.executing"></span></button>
+                                <button class="btn sw-btn-dark w-100" type="submit" dmx-bind:disabled="content.modalVerifyBen.formVerifyBenAC.state.executing" dmx-on:click="varVerifyModal.setValue(1) ">Verify <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalVerifyBen.formVerifyBenAC.state.executing"></span></button>
                             </div>
                         </form>
-                        <form id="formBenVerifyResult" dmx-show="content.modalVerifyBen.formVerifyBenAC.data.apiVerifyBen.data">
+                        <form id="formBenVerifyResult" dmx-show="varVerifyModal.value == 1 && !content.modalVerifyBen.formVerifyBenAC.state.executing">
                             <div class="row mx-0">
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
@@ -247,14 +254,78 @@
                     <div class="modal-footer">
                         <div class="row mx-0 text-right">
                             <div class="col-12">
-                                <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalVerifyBen.hide(); formBenVerify.reset()">Close</button>
+                                <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalVerifyBen.hide(); formVerifyBenAC.reset();formBenVerifyResult.reset(); varVerifyModal.setValue(0)">Close</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        <div class="modal fade" id="modalTransBen" is="dmx-bs5-modal" tabindex="-1" nokeyboard="true" nobackdrop="true" nocloseonclick="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">DMT Transaction:{{varBenefId.value}}</h5>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0); varBenBankName.setValue(0);"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formBenTrans" method="post" action="api/DMT/Transaction" is="dmx-serverconnect-form">
+                            <input type="hidden" id="SenderIdTrans" class="form-control" name="SenderIdTrans" required="" dmx-bind:value="content.formGetBeneficiary.data.apiGetBeneficiary.data.Data.RemitterID">
+                            <input type="hidden" id="RecipientIdTrans" class="form-control" name="RecipientIdTrans" required="" dmx-bind:value="varBenefId.value">
+                            <div class="row mx-0">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Beneficiary Name: <span class="text-muted">{{varBenName.value}}</span></label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Ben. Account No.: <span class="text-muted">{{varBenAcNo.value}}</span></label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Ben. Bank Name: <span class="text-muted">{{varBenBankName.value}}</span></label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Transaction Type</label>
+                                        <select id="BenOrderIdTrans" class="form-control form-select" name="trans_type" required="">
+                                            <option value="">Select</option>
+                                            <option value="IMPS">IMPS</option>
+                                            <option value="NEFT">NEFT</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Amount (in Rs.)</label>
+                                        <input type="text" id="BenTrAmount" class="form-control" name="BenTrAmount" required="" min="" data-rule-min="1" data-msg-min="Please enter a value greater than or equal to {1}.">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">T-Pin</label>
+                                        <input type="number" id="BenTrTPIN" class="form-control" name="BenTrTPIN" required="" data-rule-number="">
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2 text-center">
+                                    <button class="btn sw-btn-dark w-100" type="submit" dmx-bind:disabled="content.modalTransBen.formBenTrans.state.executing">Pay Now<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalTransBen.formBenTrans.state.executing"></span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row mx-0 text-right">
+                            <div class="col-12">
+                                <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0); varBenBankName.setValue(0);">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </main>

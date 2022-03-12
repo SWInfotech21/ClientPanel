@@ -73,6 +73,51 @@
             "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}"
           }
         },
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "A",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": 125
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "B",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": 5000
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "C",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{floor(A / B)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "D",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{A % B}}"
+        },
+        "meta": [],
+        "outputType": "text",
         "output": true
       }
     ]

@@ -1,0 +1,1732 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/dmt-service.ejs",
+      "linkedForm": "formBenTrans"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "SenderIdTrans",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "SenderIdTrans"
+      },
+      {
+        "type": "text",
+        "fieldName": "RecipientIdTrans",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "RecipientIdTrans"
+      },
+      {
+        "type": "text",
+        "fieldName": "BenTrAmount",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "BenTrAmount"
+      },
+      {
+        "type": "number",
+        "fieldName": "BenTrTPIN",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            },
+            "core:number": {
+              "param": ""
+            }
+          }
+        },
+        "name": "BenTrTPIN"
+      },
+      {
+        "type": "text",
+        "fieldName": "trans_type",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "trans_type"
+      }
+    ],
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "REMOTE_ADDR"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "SubmitTime",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{NOW}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "UserWalletBalCheck",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_users",
+                "column": "user_fname"
+              },
+              {
+                "table": "m_users",
+                "column": "user_mobile"
+              },
+              {
+                "table": "m_users",
+                "column": "user_tpin"
+              },
+              {
+                "table": "m_users",
+                "column": "scheme_id"
+              },
+              {
+                "table": "m_users",
+                "column": "balance_amt"
+              },
+              {
+                "table": "m_users",
+                "column": "created_by",
+                "alias": "retailer_creator_id"
+              }
+            ],
+            "table": {
+              "name": "m_users"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_users.id",
+                  "field": "m_users.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "m_users",
+                    "column": "id",
+                    "type": "number"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "m_users.u_status",
+                  "field": "m_users.u_status",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "1",
+                  "data": {
+                    "table": "m_users",
+                    "column": "u_status",
+                    "type": "text"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT user_fname, user_mobile, user_tpin, scheme_id, balance_amt, created_by AS retailer_creator_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */ AND u_status = '1'",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ]
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "text",
+            "name": "user_fname"
+          },
+          {
+            "type": "text",
+            "name": "user_mobile"
+          },
+          {
+            "type": "text",
+            "name": "user_tpin"
+          },
+          {
+            "type": "number",
+            "name": "scheme_id"
+          },
+          {
+            "type": "text",
+            "name": "balance_amt"
+          },
+          {
+            "type": "number",
+            "name": "retailer_creator_id"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{UserWalletBalCheck.user_tpin.toNumber() == $_POST.BenTrTPIN.toNumber()}}",
+          "then": {
+            "steps": {
+              "name": "",
+              "module": "core",
+              "action": "condition",
+              "options": {
+                "if": "{{UserWalletBalCheck.balance_amt.toNumber() >= $_POST.BenTrAmount.toNumber()}}",
+                "then": {
+                  "steps": [
+                    {
+                      "name": "RepeatQuotient",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{floor($_POST.BenTrAmount.toNumber() / 5000)}}"
+                      },
+                      "meta": [],
+                      "outputType": "text",
+                      "output": true
+                    },
+                    {
+                      "name": "Remainder",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{$_POST.BenTrAmount.toNumber() % 5000}}"
+                      },
+                      "meta": [],
+                      "outputType": "text",
+                      "output": true
+                    },
+                    {
+                      "name": "",
+                      "module": "core",
+                      "action": "condition",
+                      "options": {
+                        "if": "{{Remainder.toNumber()<=5000}}",
+                        "then": {
+                          "steps": [
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{$_POST.BenTrAmount.toNumber().between(1, 1000) || Remainder.toNumber().between(1, 1000)}}",
+                                "then": {
+                                  "steps": {
+                                    "name": "GetCommision",
+                                    "module": "dbconnector",
+                                    "action": "single",
+                                    "options": {
+                                      "connection": "postgres_gcpServer",
+                                      "sql": {
+                                        "type": "SELECT",
+                                        "columns": [
+                                          {
+                                            "table": "m_commission",
+                                            "column": "comm_per"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "comm_val"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "service_charge_per"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "service_charge_val"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "operator_id"
+                                          }
+                                        ],
+                                        "table": {
+                                          "name": "m_commission"
+                                        },
+                                        "joins": [
+                                          {
+                                            "table": "m_operator",
+                                            "column": "*",
+                                            "alias": "mop",
+                                            "type": "LEFT",
+                                            "clauses": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "table": "mop",
+                                                  "column": "id",
+                                                  "operator": "equal",
+                                                  "value": {
+                                                    "table": "m_commission",
+                                                    "column": "operator_id"
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "table": "m_service",
+                                            "column": "*",
+                                            "alias": "ms",
+                                            "type": "LEFT",
+                                            "clauses": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "table": "ms",
+                                                  "column": "id",
+                                                  "operator": "equal",
+                                                  "value": {
+                                                    "table": "mop",
+                                                    "column": "service_id"
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        "wheres": {
+                                          "condition": "AND",
+                                          "rules": [
+                                            {
+                                              "id": "m_commission.scheme_id",
+                                              "field": "m_commission.scheme_id",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": "{{UserWalletBalCheck.scheme_id}}",
+                                              "data": {
+                                                "table": "m_commission",
+                                                "column": "scheme_id",
+                                                "type": "number"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "m_commission.is_active",
+                                              "field": "m_commission.is_active",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": 1,
+                                              "data": {
+                                                "table": "m_commission",
+                                                "column": "is_active",
+                                                "type": "number"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "mop.max_amount",
+                                              "field": "mop.max_amount",
+                                              "type": "string",
+                                              "operator": "equal",
+                                              "value": "1000",
+                                              "data": {
+                                                "table": "mop",
+                                                "column": "max_amount",
+                                                "type": "text"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "ms.service_name",
+                                              "field": "ms.service_name",
+                                              "type": "string",
+                                              "operator": "equal",
+                                              "value": "{{'Money'}}",
+                                              "data": {
+                                                "table": "ms",
+                                                "column": "service_name",
+                                                "type": "text"
+                                              },
+                                              "operation": "="
+                                            }
+                                          ],
+                                          "conditional": null,
+                                          "valid": true
+                                        },
+                                        "query": "SELECT m_commission.comm_per, m_commission.comm_val, m_commission.service_charge_per, m_commission.service_charge_val, m_commission.operator_id\nFROM m_commission\nLEFT JOIN m_operator AS mop ON (mop.id = m_commission.operator_id) LEFT JOIN m_service AS ms ON (ms.id = mop.service_id)\nWHERE m_commission.scheme_id = :P1 /* {{UserWalletBalCheck.scheme_id}} */ AND m_commission.is_active = 1 AND mop.max_amount = '1000' AND ms.service_name = :P2 /* {{'Money'}} */",
+                                        "params": [
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P1",
+                                            "value": "{{UserWalletBalCheck.scheme_id}}"
+                                          },
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P2",
+                                            "value": "{{'Money'}}"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "output": true,
+                                    "meta": [
+                                      {
+                                        "type": "text",
+                                        "name": "comm_per"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "comm_val"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "service_charge_per"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "service_charge_val"
+                                      },
+                                      {
+                                        "type": "number",
+                                        "name": "operator_id"
+                                      }
+                                    ],
+                                    "outputType": "object"
+                                  }
+                                }
+                              },
+                              "outputType": "boolean"
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{$_POST.BenTrAmount.toNumber().between(1001, 2000) || Remainder.toNumber().between(1001, 2000)}}",
+                                "then": {
+                                  "steps": {
+                                    "name": "GetCommision",
+                                    "module": "dbconnector",
+                                    "action": "single",
+                                    "options": {
+                                      "connection": "postgres_gcpServer",
+                                      "sql": {
+                                        "type": "SELECT",
+                                        "columns": [
+                                          {
+                                            "table": "m_commission",
+                                            "column": "comm_per"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "comm_val"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "service_charge_per"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "service_charge_val"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "operator_id"
+                                          }
+                                        ],
+                                        "table": {
+                                          "name": "m_commission"
+                                        },
+                                        "joins": [
+                                          {
+                                            "table": "m_operator",
+                                            "column": "*",
+                                            "alias": "mop",
+                                            "type": "LEFT",
+                                            "clauses": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "table": "mop",
+                                                  "column": "id",
+                                                  "operator": "equal",
+                                                  "value": {
+                                                    "table": "m_commission",
+                                                    "column": "operator_id"
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "table": "m_service",
+                                            "column": "*",
+                                            "alias": "ms",
+                                            "type": "LEFT",
+                                            "clauses": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "table": "ms",
+                                                  "column": "id",
+                                                  "operator": "equal",
+                                                  "value": {
+                                                    "table": "mop",
+                                                    "column": "service_id"
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        "wheres": {
+                                          "condition": "AND",
+                                          "rules": [
+                                            {
+                                              "id": "m_commission.scheme_id",
+                                              "field": "m_commission.scheme_id",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": "{{UserWalletBalCheck.scheme_id}}",
+                                              "data": {
+                                                "table": "m_commission",
+                                                "column": "scheme_id",
+                                                "type": "number"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "m_commission.is_active",
+                                              "field": "m_commission.is_active",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": 1,
+                                              "data": {
+                                                "table": "m_commission",
+                                                "column": "is_active",
+                                                "type": "number"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "mop.max_amount",
+                                              "field": "mop.max_amount",
+                                              "type": "string",
+                                              "operator": "equal",
+                                              "value": "2000",
+                                              "data": {
+                                                "table": "mop",
+                                                "column": "max_amount",
+                                                "type": "text"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "ms.service_name",
+                                              "field": "ms.service_name",
+                                              "type": "string",
+                                              "operator": "equal",
+                                              "value": "{{'Money'}}",
+                                              "data": {
+                                                "table": "ms",
+                                                "column": "service_name",
+                                                "type": "text"
+                                              },
+                                              "operation": "="
+                                            }
+                                          ],
+                                          "conditional": null,
+                                          "valid": true
+                                        },
+                                        "query": "SELECT m_commission.comm_per, m_commission.comm_val, m_commission.service_charge_per, m_commission.service_charge_val, m_commission.operator_id\nFROM m_commission\nLEFT JOIN m_operator AS mop ON (mop.id = m_commission.operator_id) LEFT JOIN m_service AS ms ON (ms.id = mop.service_id)\nWHERE m_commission.scheme_id = :P1 /* {{UserWalletBalCheck.scheme_id}} */ AND m_commission.is_active = 1 AND mop.max_amount = '2000' AND ms.service_name = :P2 /* {{'Money'}} */",
+                                        "params": [
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P1",
+                                            "value": "{{UserWalletBalCheck.scheme_id}}"
+                                          },
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P2",
+                                            "value": "{{'Money'}}"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "output": true,
+                                    "meta": [
+                                      {
+                                        "type": "text",
+                                        "name": "comm_per"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "comm_val"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "service_charge_per"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "service_charge_val"
+                                      },
+                                      {
+                                        "type": "number",
+                                        "name": "operator_id"
+                                      }
+                                    ],
+                                    "outputType": "object"
+                                  }
+                                }
+                              },
+                              "outputType": "boolean"
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{$_POST.BenTrAmount.toNumber().between(2001, 3000) || Remainder.toNumber().between(2001, 3000)}}",
+                                "then": {
+                                  "steps": {
+                                    "name": "GetCommision",
+                                    "module": "dbconnector",
+                                    "action": "single",
+                                    "options": {
+                                      "connection": "postgres_gcpServer",
+                                      "sql": {
+                                        "type": "SELECT",
+                                        "columns": [
+                                          {
+                                            "table": "m_commission",
+                                            "column": "comm_per"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "comm_val"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "service_charge_per"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "service_charge_val"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "operator_id"
+                                          }
+                                        ],
+                                        "table": {
+                                          "name": "m_commission"
+                                        },
+                                        "joins": [
+                                          {
+                                            "table": "m_operator",
+                                            "column": "*",
+                                            "alias": "mop",
+                                            "type": "LEFT",
+                                            "clauses": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "table": "mop",
+                                                  "column": "id",
+                                                  "operator": "equal",
+                                                  "value": {
+                                                    "table": "m_commission",
+                                                    "column": "operator_id"
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "table": "m_service",
+                                            "column": "*",
+                                            "alias": "ms",
+                                            "type": "LEFT",
+                                            "clauses": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "table": "ms",
+                                                  "column": "id",
+                                                  "operator": "equal",
+                                                  "value": {
+                                                    "table": "mop",
+                                                    "column": "service_id"
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        "wheres": {
+                                          "condition": "AND",
+                                          "rules": [
+                                            {
+                                              "id": "m_commission.scheme_id",
+                                              "field": "m_commission.scheme_id",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": "{{UserWalletBalCheck.scheme_id}}",
+                                              "data": {
+                                                "table": "m_commission",
+                                                "column": "scheme_id",
+                                                "type": "number"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "m_commission.is_active",
+                                              "field": "m_commission.is_active",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": 1,
+                                              "data": {
+                                                "table": "m_commission",
+                                                "column": "is_active",
+                                                "type": "number"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "mop.max_amount",
+                                              "field": "mop.max_amount",
+                                              "type": "string",
+                                              "operator": "equal",
+                                              "value": "3000",
+                                              "data": {
+                                                "table": "mop",
+                                                "column": "max_amount",
+                                                "type": "text"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "ms.service_name",
+                                              "field": "ms.service_name",
+                                              "type": "string",
+                                              "operator": "equal",
+                                              "value": "{{'Money'}}",
+                                              "data": {
+                                                "table": "ms",
+                                                "column": "service_name",
+                                                "type": "text"
+                                              },
+                                              "operation": "="
+                                            }
+                                          ],
+                                          "conditional": null,
+                                          "valid": true
+                                        },
+                                        "query": "SELECT m_commission.comm_per, m_commission.comm_val, m_commission.service_charge_per, m_commission.service_charge_val, m_commission.operator_id\nFROM m_commission\nLEFT JOIN m_operator AS mop ON (mop.id = m_commission.operator_id) LEFT JOIN m_service AS ms ON (ms.id = mop.service_id)\nWHERE m_commission.scheme_id = :P1 /* {{UserWalletBalCheck.scheme_id}} */ AND m_commission.is_active = 1 AND mop.max_amount = '3000' AND ms.service_name = :P2 /* {{'Money'}} */",
+                                        "params": [
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P1",
+                                            "value": "{{UserWalletBalCheck.scheme_id}}"
+                                          },
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P2",
+                                            "value": "{{'Money'}}"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "output": true,
+                                    "meta": [
+                                      {
+                                        "type": "text",
+                                        "name": "comm_per"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "comm_val"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "service_charge_per"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "service_charge_val"
+                                      },
+                                      {
+                                        "type": "number",
+                                        "name": "operator_id"
+                                      }
+                                    ],
+                                    "outputType": "object"
+                                  }
+                                }
+                              },
+                              "outputType": "boolean"
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{$_POST.BenTrAmount.toNumber().between(3001, 4000) || Remainder.toNumber().between(3001, 4000)}}",
+                                "then": {
+                                  "steps": {
+                                    "name": "GetCommision",
+                                    "module": "dbconnector",
+                                    "action": "single",
+                                    "options": {
+                                      "connection": "postgres_gcpServer",
+                                      "sql": {
+                                        "type": "SELECT",
+                                        "columns": [
+                                          {
+                                            "table": "m_commission",
+                                            "column": "comm_per"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "comm_val"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "service_charge_per"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "service_charge_val"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "operator_id"
+                                          }
+                                        ],
+                                        "table": {
+                                          "name": "m_commission"
+                                        },
+                                        "joins": [
+                                          {
+                                            "table": "m_operator",
+                                            "column": "*",
+                                            "alias": "mop",
+                                            "type": "LEFT",
+                                            "clauses": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "table": "mop",
+                                                  "column": "id",
+                                                  "operator": "equal",
+                                                  "value": {
+                                                    "table": "m_commission",
+                                                    "column": "operator_id"
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "table": "m_service",
+                                            "column": "*",
+                                            "alias": "ms",
+                                            "type": "LEFT",
+                                            "clauses": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "table": "ms",
+                                                  "column": "id",
+                                                  "operator": "equal",
+                                                  "value": {
+                                                    "table": "mop",
+                                                    "column": "service_id"
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        "wheres": {
+                                          "condition": "AND",
+                                          "rules": [
+                                            {
+                                              "id": "m_commission.scheme_id",
+                                              "field": "m_commission.scheme_id",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": "{{UserWalletBalCheck.scheme_id}}",
+                                              "data": {
+                                                "table": "m_commission",
+                                                "column": "scheme_id",
+                                                "type": "number"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "m_commission.is_active",
+                                              "field": "m_commission.is_active",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": 1,
+                                              "data": {
+                                                "table": "m_commission",
+                                                "column": "is_active",
+                                                "type": "number"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "mop.max_amount",
+                                              "field": "mop.max_amount",
+                                              "type": "string",
+                                              "operator": "equal",
+                                              "value": "4000",
+                                              "data": {
+                                                "table": "mop",
+                                                "column": "max_amount",
+                                                "type": "text"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "ms.service_name",
+                                              "field": "ms.service_name",
+                                              "type": "string",
+                                              "operator": "equal",
+                                              "value": "{{'Money'}}",
+                                              "data": {
+                                                "table": "ms",
+                                                "column": "service_name",
+                                                "type": "text"
+                                              },
+                                              "operation": "="
+                                            }
+                                          ],
+                                          "conditional": null,
+                                          "valid": true
+                                        },
+                                        "query": "SELECT m_commission.comm_per, m_commission.comm_val, m_commission.service_charge_per, m_commission.service_charge_val, m_commission.operator_id\nFROM m_commission\nLEFT JOIN m_operator AS mop ON (mop.id = m_commission.operator_id) LEFT JOIN m_service AS ms ON (ms.id = mop.service_id)\nWHERE m_commission.scheme_id = :P1 /* {{UserWalletBalCheck.scheme_id}} */ AND m_commission.is_active = 1 AND mop.max_amount = '4000' AND ms.service_name = :P2 /* {{'Money'}} */",
+                                        "params": [
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P1",
+                                            "value": "{{UserWalletBalCheck.scheme_id}}"
+                                          },
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P2",
+                                            "value": "{{'Money'}}"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "output": true,
+                                    "meta": [
+                                      {
+                                        "type": "text",
+                                        "name": "comm_per"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "comm_val"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "service_charge_per"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "service_charge_val"
+                                      },
+                                      {
+                                        "type": "number",
+                                        "name": "operator_id"
+                                      }
+                                    ],
+                                    "outputType": "object"
+                                  }
+                                }
+                              },
+                              "outputType": "boolean"
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{$_POST.BenTrAmount.toNumber().between(4001, 5000) || Remainder.toNumber().between(4001, 5000)}}",
+                                "then": {
+                                  "steps": {
+                                    "name": "GetCommision",
+                                    "module": "dbconnector",
+                                    "action": "single",
+                                    "options": {
+                                      "connection": "postgres_gcpServer",
+                                      "sql": {
+                                        "type": "SELECT",
+                                        "columns": [
+                                          {
+                                            "table": "m_commission",
+                                            "column": "comm_per"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "comm_val"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "service_charge_per"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "service_charge_val"
+                                          },
+                                          {
+                                            "table": "m_commission",
+                                            "column": "operator_id"
+                                          }
+                                        ],
+                                        "table": {
+                                          "name": "m_commission"
+                                        },
+                                        "joins": [
+                                          {
+                                            "table": "m_operator",
+                                            "column": "*",
+                                            "alias": "mop",
+                                            "type": "LEFT",
+                                            "clauses": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "table": "mop",
+                                                  "column": "id",
+                                                  "operator": "equal",
+                                                  "value": {
+                                                    "table": "m_commission",
+                                                    "column": "operator_id"
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "table": "m_service",
+                                            "column": "*",
+                                            "alias": "ms",
+                                            "type": "LEFT",
+                                            "clauses": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "table": "ms",
+                                                  "column": "id",
+                                                  "operator": "equal",
+                                                  "value": {
+                                                    "table": "mop",
+                                                    "column": "service_id"
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        "wheres": {
+                                          "condition": "AND",
+                                          "rules": [
+                                            {
+                                              "id": "m_commission.scheme_id",
+                                              "field": "m_commission.scheme_id",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": "{{UserWalletBalCheck.scheme_id}}",
+                                              "data": {
+                                                "table": "m_commission",
+                                                "column": "scheme_id",
+                                                "type": "number"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "m_commission.is_active",
+                                              "field": "m_commission.is_active",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": 1,
+                                              "data": {
+                                                "table": "m_commission",
+                                                "column": "is_active",
+                                                "type": "number"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "mop.max_amount",
+                                              "field": "mop.max_amount",
+                                              "type": "string",
+                                              "operator": "equal",
+                                              "value": "5000",
+                                              "data": {
+                                                "table": "mop",
+                                                "column": "max_amount",
+                                                "type": "text"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "ms.service_name",
+                                              "field": "ms.service_name",
+                                              "type": "string",
+                                              "operator": "equal",
+                                              "value": "{{'Money'}}",
+                                              "data": {
+                                                "table": "ms",
+                                                "column": "service_name",
+                                                "type": "text"
+                                              },
+                                              "operation": "="
+                                            }
+                                          ],
+                                          "conditional": null,
+                                          "valid": true
+                                        },
+                                        "query": "SELECT m_commission.comm_per, m_commission.comm_val, m_commission.service_charge_per, m_commission.service_charge_val, m_commission.operator_id\nFROM m_commission\nLEFT JOIN m_operator AS mop ON (mop.id = m_commission.operator_id) LEFT JOIN m_service AS ms ON (ms.id = mop.service_id)\nWHERE m_commission.scheme_id = :P1 /* {{UserWalletBalCheck.scheme_id}} */ AND m_commission.is_active = 1 AND mop.max_amount = '5000' AND ms.service_name = :P2 /* {{'Money'}} */",
+                                        "params": [
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P1",
+                                            "value": "{{UserWalletBalCheck.scheme_id}}"
+                                          },
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P2",
+                                            "value": "{{'Money'}}"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "output": true,
+                                    "meta": [
+                                      {
+                                        "type": "text",
+                                        "name": "comm_per"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "comm_val"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "service_charge_per"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "service_charge_val"
+                                      },
+                                      {
+                                        "type": "number",
+                                        "name": "operator_id"
+                                      }
+                                    ],
+                                    "outputType": "object"
+                                  }
+                                }
+                              },
+                              "outputType": "boolean"
+                            }
+                          ]
+                        }
+                      },
+                      "outputType": "boolean"
+                    },
+                    {
+                      "name": "",
+                      "module": "core",
+                      "action": "condition",
+                      "options": {
+                        "if": "{{RepeatQuotient.toNumber() != 0 || Remainder.toNumber() != 0}}",
+                        "then": {
+                          "steps": [
+                            {
+                              "name": "TransactionId",
+                              "module": "core",
+                              "action": "setvalue",
+                              "options": {
+                                "value": "{{NOW.md5(123456).substr(1, 9)}}"
+                              },
+                              "meta": [],
+                              "outputType": "text",
+                              "output": false
+                            },
+                            {
+                              "name": "GetAdmin",
+                              "module": "dbconnector",
+                              "action": "single",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "SELECT",
+                                  "columns": [
+                                    {
+                                      "table": "m_users",
+                                      "column": "id",
+                                      "alias": "admin_id"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "user_id",
+                                      "alias": "admin_user_id"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "user_fname",
+                                      "alias": "admin_username"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "user_mobile",
+                                      "alias": "admin_mobile"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "user_email",
+                                      "alias": "admin_email"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "balance_amt",
+                                      "alias": "admin_balance_amt"
+                                    }
+                                  ],
+                                  "table": {
+                                    "name": "m_users"
+                                  },
+                                  "joins": [],
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "m_users.user_type",
+                                        "field": "m_users.user_type",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": 0,
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "user_type",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "SELECT id AS admin_id, user_id AS admin_user_id, user_fname AS admin_username, user_mobile AS admin_mobile, user_email AS admin_email, balance_amt AS admin_balance_amt\nFROM m_users\nWHERE user_type = 0",
+                                  "params": []
+                                }
+                              },
+                              "output": false,
+                              "meta": [
+                                {
+                                  "type": "number",
+                                  "name": "admin_id"
+                                },
+                                {
+                                  "type": "text",
+                                  "name": "admin_user_id"
+                                },
+                                {
+                                  "type": "text",
+                                  "name": "admin_username"
+                                },
+                                {
+                                  "type": "text",
+                                  "name": "admin_mobile"
+                                },
+                                {
+                                  "type": "text",
+                                  "name": "admin_email"
+                                },
+                                {
+                                  "type": "text",
+                                  "name": "admin_balance_amt"
+                                }
+                              ],
+                              "outputType": "object"
+                            },
+                            {
+                              "name": "GetRTCreator",
+                              "module": "dbconnector",
+                              "action": "single",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "SELECT",
+                                  "columns": [
+                                    {
+                                      "table": "m_users",
+                                      "column": "user_fname",
+                                      "alias": "rt_creator_user_name"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "user_mobile",
+                                      "alias": "rt_creator_user_mobile"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "user_email",
+                                      "alias": "rt_creator_user_email"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "user_type",
+                                      "alias": "rt_creator_user_type"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "balance_amt",
+                                      "alias": "rt_creator_balance_amt"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "scheme_id",
+                                      "alias": "rt_creator_scheme_id"
+                                    },
+                                    {
+                                      "table": "m_users",
+                                      "column": "created_by",
+                                      "alias": "dt_creator_id"
+                                    }
+                                  ],
+                                  "table": {
+                                    "name": "m_users"
+                                  },
+                                  "joins": [],
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "m_users.id",
+                                        "field": "m_users.id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{UserWalletBalCheck.retailer_creator_id}}",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      },
+                                      {
+                                        "id": "m_users.u_status",
+                                        "field": "m_users.u_status",
+                                        "type": "string",
+                                        "operator": "equal",
+                                        "value": "1",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "u_status",
+                                          "type": "text"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "SELECT user_fname AS rt_creator_user_name, user_mobile AS rt_creator_user_mobile, user_email AS rt_creator_user_email, user_type AS rt_creator_user_type, balance_amt AS rt_creator_balance_amt, scheme_id AS rt_creator_scheme_id, created_by AS dt_creator_id\nFROM m_users\nWHERE id = :P1 /* {{UserWalletBalCheck.retailer_creator_id}} */ AND u_status = '1'",
+                                  "params": [
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P1",
+                                      "value": "{{UserWalletBalCheck.retailer_creator_id}}"
+                                    }
+                                  ]
+                                }
+                              },
+                              "output": false,
+                              "meta": [
+                                {
+                                  "type": "text",
+                                  "name": "rt_creator_user_name"
+                                },
+                                {
+                                  "type": "text",
+                                  "name": "rt_creator_user_mobile"
+                                },
+                                {
+                                  "type": "text",
+                                  "name": "rt_creator_user_email"
+                                },
+                                {
+                                  "type": "number",
+                                  "name": "rt_creator_user_type"
+                                },
+                                {
+                                  "type": "text",
+                                  "name": "rt_creator_balance_amt"
+                                },
+                                {
+                                  "type": "number",
+                                  "name": "rt_creator_scheme_id"
+                                },
+                                {
+                                  "type": "number",
+                                  "name": "dt_creator_id"
+                                }
+                              ],
+                              "outputType": "object"
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{Remainder.toNumber() != 0}}",
+                                "then": {
+                                  "steps": {
+                                    "name": "GetOpAPICodeFwrd",
+                                    "module": "dbconnector",
+                                    "action": "single",
+                                    "options": {
+                                      "connection": "postgres_gcpServer",
+                                      "sql": {
+                                        "type": "SELECT",
+                                        "columns": [
+                                          {
+                                            "table": "t_op_api_rel",
+                                            "column": "api_code1"
+                                          },
+                                          {
+                                            "table": "t_op_api_rel",
+                                            "column": "api_code2"
+                                          },
+                                          {
+                                            "table": "t_op_api_rel",
+                                            "column": "api_code3"
+                                          },
+                                          {
+                                            "table": "t_op_api_rel",
+                                            "column": "api_code4"
+                                          },
+                                          {
+                                            "table": "t_op_api_rel",
+                                            "column": "api_code5"
+                                          },
+                                          {
+                                            "table": "t_op_api_rel",
+                                            "column": "api_code6"
+                                          },
+                                          {
+                                            "table": "t_op_api_rel",
+                                            "column": "api_code7"
+                                          },
+                                          {
+                                            "table": "t_op_api_rel",
+                                            "column": "api_code8"
+                                          },
+                                          {
+                                            "table": "m_api_fwd",
+                                            "column": "service_id"
+                                          },
+                                          {
+                                            "table": "m_api_fwd",
+                                            "column": "api_id"
+                                          },
+                                          {
+                                            "table": "m_api",
+                                            "column": "api_name"
+                                          },
+                                          {
+                                            "table": "m_api",
+                                            "column": "api_code"
+                                          },
+                                          {
+                                            "table": "m_api",
+                                            "column": "username"
+                                          },
+                                          {
+                                            "table": "m_api",
+                                            "column": "api_password"
+                                          }
+                                        ],
+                                        "table": {
+                                          "name": "t_op_api_rel"
+                                        },
+                                        "joins": [
+                                          {
+                                            "table": "m_api_forward",
+                                            "column": "*",
+                                            "alias": "m_api_fwd",
+                                            "type": "LEFT",
+                                            "clauses": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "table": "m_api_fwd",
+                                                  "column": "operator_id",
+                                                  "operator": "equal",
+                                                  "value": {
+                                                    "table": "t_op_api_rel",
+                                                    "column": "op_id"
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "table": "m_api",
+                                            "column": "*",
+                                            "alias": "m_api",
+                                            "type": "LEFT",
+                                            "clauses": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "table": "m_api",
+                                                  "column": "id",
+                                                  "operator": "equal",
+                                                  "value": {
+                                                    "table": "m_api_fwd",
+                                                    "column": "api_id"
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ],
+                                        "wheres": {
+                                          "condition": "AND",
+                                          "rules": [
+                                            {
+                                              "id": "t_op_api_rel.op_id",
+                                              "field": "t_op_api_rel.op_id",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": "{{GetCommision.operator_id}}",
+                                              "data": {
+                                                "table": "t_op_api_rel",
+                                                "column": "op_id",
+                                                "type": "number"
+                                              },
+                                              "operation": "="
+                                            },
+                                            {
+                                              "id": "m_api.status",
+                                              "field": "m_api.status",
+                                              "type": "double",
+                                              "operator": "equal",
+                                              "value": 1,
+                                              "data": {
+                                                "table": "m_api",
+                                                "column": "status",
+                                                "type": "number"
+                                              },
+                                              "operation": "="
+                                            }
+                                          ],
+                                          "conditional": null,
+                                          "valid": true
+                                        },
+                                        "query": "SELECT t_op_api_rel.api_code1, t_op_api_rel.api_code2, t_op_api_rel.api_code3, t_op_api_rel.api_code4, t_op_api_rel.api_code5, t_op_api_rel.api_code6, t_op_api_rel.api_code7, t_op_api_rel.api_code8, m_api_fwd.service_id, m_api_fwd.api_id, m_api.api_name, m_api.api_code, m_api.username, m_api.api_password\nFROM t_op_api_rel\nLEFT JOIN m_api_forward AS m_api_fwd ON (m_api_fwd.operator_id = t_op_api_rel.op_id) LEFT JOIN m_api AS m_api ON (m_api.id = m_api_fwd.api_id)\nWHERE t_op_api_rel.op_id = :P1 /* {{GetCommision.operator_id}} */ AND m_api.status = 1",
+                                        "params": [
+                                          {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P1",
+                                            "value": "{{GetCommision.operator_id}}"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "output": true,
+                                    "meta": [
+                                      {
+                                        "type": "text",
+                                        "name": "api_code1"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "api_code2"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "api_code3"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "api_code4"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "api_code5"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "api_code6"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "api_code7"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "api_code8"
+                                      },
+                                      {
+                                        "type": "number",
+                                        "name": "service_id"
+                                      },
+                                      {
+                                        "type": "number",
+                                        "name": "api_id"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "api_name"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "api_code"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "username"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "api_password"
+                                      }
+                                    ],
+                                    "outputType": "object"
+                                  }
+                                }
+                              },
+                              "outputType": "boolean"
+                            }
+                          ]
+                        }
+                      },
+                      "outputType": "boolean"
+                    }
+                  ]
+                },
+                "else": {
+                  "steps": {
+                    "name": "RespWalletBal",
+                    "module": "core",
+                    "action": "response",
+                    "options": {
+                      "status": 401,
+                      "data": "You do not have sufficient wallet balance!"
+                    },
+                    "output": true
+                  }
+                }
+              },
+              "outputType": "boolean"
+            }
+          },
+          "else": {
+            "steps": {
+              "name": "RespTPIN",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "data": "T-Pin Mismatched",
+                "status": 401
+              },
+              "output": true
+            }
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
+}
