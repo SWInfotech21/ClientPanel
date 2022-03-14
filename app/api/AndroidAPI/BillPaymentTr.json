@@ -93,6 +93,12 @@
         "name": "apibillid"
       }
     ],
+    "$_POST": [
+      {
+        "type": "datetime",
+        "name": "created_on"
+      }
+    ],
     "$_SERVER": [
       {
         "type": "text",
@@ -2558,6 +2564,144 @@
                                                                               }
                                                                             ],
                                                                             "output": false
+                                                                          },
+                                                                          {
+                                                                            "name": "BbpsInsert",
+                                                                            "module": "dbupdater",
+                                                                            "action": "insert",
+                                                                            "options": {
+                                                                              "connection": "postgres_gcpServer",
+                                                                              "sql": {
+                                                                                "type": "insert",
+                                                                                "values": [
+                                                                                  {
+                                                                                    "table": "bbps_info",
+                                                                                    "column": "pay_ref_id",
+                                                                                    "type": "number",
+                                                                                    "value": "{{RechTrans.identity}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "table": "bbps_info",
+                                                                                    "column": "account",
+                                                                                    "type": "text",
+                                                                                    "value": "{{$_GET.account}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "table": "bbps_info",
+                                                                                    "column": "agent_id",
+                                                                                    "type": "text",
+                                                                                    "value": "{{$_GET.agentid}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "table": "bbps_info",
+                                                                                    "column": "bill_no",
+                                                                                    "type": "text",
+                                                                                    "value": "{{$_GET.billnumber}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "table": "bbps_info",
+                                                                                    "column": "bill_date",
+                                                                                    "type": "text",
+                                                                                    "value": "{{$_GET.billdate}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "table": "bbps_info",
+                                                                                    "column": "due_date",
+                                                                                    "type": "text",
+                                                                                    "value": "{{$_GET.duedate}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "table": "bbps_info",
+                                                                                    "column": "dueamount",
+                                                                                    "type": "text",
+                                                                                    "value": "{{$_GET.recharge_amount}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "table": "bbps_info",
+                                                                                    "column": "customer_name",
+                                                                                    "type": "text",
+                                                                                    "value": "{{$_GET.customername}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "table": "bbps_info",
+                                                                                    "column": "api_bill_id",
+                                                                                    "type": "text",
+                                                                                    "value": "{{$_GET.apibillid}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "table": "bbps_info",
+                                                                                    "column": "created_on",
+                                                                                    "type": "datetime",
+                                                                                    "value": "{{NOW}}"
+                                                                                  }
+                                                                                ],
+                                                                                "table": "bbps_info",
+                                                                                "returning": "id",
+                                                                                "query": "INSERT INTO bbps_info\n(pay_ref_id, account, agent_id, bill_no, bill_date, due_date, dueamount, customer_name, api_bill_id, created_on) VALUES (:P1 /* {{RechTrans.identity}} */, :P2 /* {{$_GET.account}} */, :P3 /* {{$_GET.agentid}} */, :P4 /* {{$_GET.billnumber}} */, :P5 /* {{$_GET.billdate}} */, :P6 /* {{$_GET.duedate}} */, :P7 /* {{$_GET.recharge_amount}} */, :P8 /* {{$_GET.customername}} */, :P9 /* {{$_GET.apibillid}} */, :P10 /* {{NOW}} */)",
+                                                                                "params": [
+                                                                                  {
+                                                                                    "name": ":P1",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{RechTrans.identity}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": ":P2",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{$_GET.account}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": ":P3",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{$_GET.agentid}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": ":P4",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{$_GET.billnumber}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": ":P5",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{$_GET.billdate}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": ":P6",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{$_GET.duedate}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": ":P7",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{$_GET.recharge_amount}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": ":P8",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{$_GET.customername}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": ":P9",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{$_GET.apibillid}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": ":P10",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{NOW}}"
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            },
+                                                                            "meta": [
+                                                                              {
+                                                                                "name": "identity",
+                                                                                "type": "text"
+                                                                              },
+                                                                              {
+                                                                                "name": "affected",
+                                                                                "type": "number"
+                                                                              }
+                                                                            ]
                                                                           },
                                                                           {
                                                                             "name": "LiveApi",

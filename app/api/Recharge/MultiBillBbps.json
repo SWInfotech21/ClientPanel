@@ -2253,6 +2253,144 @@
                                       "output": false
                                     },
                                     {
+                                      "name": "BbpsInsert",
+                                      "module": "dbupdater",
+                                      "action": "insert",
+                                      "options": {
+                                        "connection": "postgres_gcpServer",
+                                        "sql": {
+                                          "type": "insert",
+                                          "values": [
+                                            {
+                                              "table": "bbps_info",
+                                              "column": "pay_ref_id",
+                                              "type": "number",
+                                              "value": "{{RechTrans.identity}}"
+                                            },
+                                            {
+                                              "table": "bbps_info",
+                                              "column": "account",
+                                              "type": "text",
+                                              "value": "{{$_POST.account}}"
+                                            },
+                                            {
+                                              "table": "bbps_info",
+                                              "column": "agent_id",
+                                              "type": "text",
+                                              "value": "{{$_POST.agentid}}"
+                                            },
+                                            {
+                                              "table": "bbps_info",
+                                              "column": "bill_no",
+                                              "type": "text",
+                                              "value": "{{$_POST.billnumber}}"
+                                            },
+                                            {
+                                              "table": "bbps_info",
+                                              "column": "bill_date",
+                                              "type": "text",
+                                              "value": "{{$_POST.billdate}}"
+                                            },
+                                            {
+                                              "table": "bbps_info",
+                                              "column": "due_date",
+                                              "type": "text",
+                                              "value": "{{$_POST.duedate}}"
+                                            },
+                                            {
+                                              "table": "bbps_info",
+                                              "column": "dueamount",
+                                              "type": "text",
+                                              "value": "{{$_POST.recharge_amount}}"
+                                            },
+                                            {
+                                              "table": "bbps_info",
+                                              "column": "customer_name",
+                                              "type": "text",
+                                              "value": "{{$_POST.customername}}"
+                                            },
+                                            {
+                                              "table": "bbps_info",
+                                              "column": "api_bill_id",
+                                              "type": "text",
+                                              "value": "{{$_POST.apibillid}}"
+                                            },
+                                            {
+                                              "table": "bbps_info",
+                                              "column": "created_on",
+                                              "type": "datetime",
+                                              "value": "{{NOW}}"
+                                            }
+                                          ],
+                                          "table": "bbps_info",
+                                          "returning": "id",
+                                          "query": "INSERT INTO bbps_info\n(pay_ref_id, account, agent_id, bill_no, bill_date, due_date, dueamount, customer_name, api_bill_id, created_on) VALUES (:P1 /* {{RechTrans.identity}} */, :P2 /* {{$_POST.account}} */, :P3 /* {{$_POST.agentid}} */, :P4 /* {{$_POST.billnumber}} */, :P5 /* {{$_POST.billdate}} */, :P6 /* {{$_POST.duedate}} */, :P7 /* {{$_POST.recharge_amount}} */, :P8 /* {{$_POST.customername}} */, :P9 /* {{$_POST.apibillid}} */, :P10 /* {{NOW}} */)",
+                                          "params": [
+                                            {
+                                              "name": ":P1",
+                                              "type": "expression",
+                                              "value": "{{RechTrans.identity}}"
+                                            },
+                                            {
+                                              "name": ":P2",
+                                              "type": "expression",
+                                              "value": "{{$_POST.account}}"
+                                            },
+                                            {
+                                              "name": ":P3",
+                                              "type": "expression",
+                                              "value": "{{$_POST.agentid}}"
+                                            },
+                                            {
+                                              "name": ":P4",
+                                              "type": "expression",
+                                              "value": "{{$_POST.billnumber}}"
+                                            },
+                                            {
+                                              "name": ":P5",
+                                              "type": "expression",
+                                              "value": "{{$_POST.billdate}}"
+                                            },
+                                            {
+                                              "name": ":P6",
+                                              "type": "expression",
+                                              "value": "{{$_POST.duedate}}"
+                                            },
+                                            {
+                                              "name": ":P7",
+                                              "type": "expression",
+                                              "value": "{{$_POST.recharge_amount}}"
+                                            },
+                                            {
+                                              "name": ":P8",
+                                              "type": "expression",
+                                              "value": "{{$_POST.customername}}"
+                                            },
+                                            {
+                                              "name": ":P9",
+                                              "type": "expression",
+                                              "value": "{{$_POST.apibillid}}"
+                                            },
+                                            {
+                                              "name": ":P10",
+                                              "type": "expression",
+                                              "value": "{{NOW}}"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "meta": [
+                                        {
+                                          "name": "identity",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "affected",
+                                          "type": "number"
+                                        }
+                                      ]
+                                    },
+                                    {
                                       "name": "LiveApi",
                                       "module": "api",
                                       "action": "send",
