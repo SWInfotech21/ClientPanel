@@ -1467,224 +1467,1058 @@
                               "options": {
                                 "if": "{{Remainder.toNumber() != 0}}",
                                 "then": {
-                                  "steps": {
-                                    "name": "GetOpAPICodeFwrd",
-                                    "module": "dbconnector",
-                                    "action": "single",
-                                    "options": {
-                                      "connection": "postgres_gcpServer",
-                                      "sql": {
-                                        "type": "SELECT",
-                                        "columns": [
-                                          {
-                                            "table": "t_op_api_rel",
-                                            "column": "api_code1"
-                                          },
-                                          {
-                                            "table": "t_op_api_rel",
-                                            "column": "api_code2"
-                                          },
-                                          {
-                                            "table": "t_op_api_rel",
-                                            "column": "api_code3"
-                                          },
-                                          {
-                                            "table": "t_op_api_rel",
-                                            "column": "api_code4"
-                                          },
-                                          {
-                                            "table": "t_op_api_rel",
-                                            "column": "api_code5"
-                                          },
-                                          {
-                                            "table": "t_op_api_rel",
-                                            "column": "api_code6"
-                                          },
-                                          {
-                                            "table": "t_op_api_rel",
-                                            "column": "api_code7"
-                                          },
-                                          {
-                                            "table": "t_op_api_rel",
-                                            "column": "api_code8"
-                                          },
-                                          {
-                                            "table": "m_api_fwd",
-                                            "column": "service_id"
-                                          },
-                                          {
-                                            "table": "m_api_fwd",
-                                            "column": "api_id"
-                                          },
-                                          {
-                                            "table": "m_api",
-                                            "column": "api_name"
-                                          },
-                                          {
-                                            "table": "m_api",
-                                            "column": "api_code"
-                                          },
-                                          {
-                                            "table": "m_api",
-                                            "column": "username"
-                                          },
-                                          {
-                                            "table": "m_api",
-                                            "column": "api_password"
-                                          }
-                                        ],
-                                        "table": {
-                                          "name": "t_op_api_rel"
-                                        },
-                                        "joins": [
-                                          {
-                                            "table": "m_api_forward",
-                                            "column": "*",
-                                            "alias": "m_api_fwd",
-                                            "type": "LEFT",
-                                            "clauses": {
-                                              "condition": "AND",
-                                              "rules": [
-                                                {
-                                                  "table": "m_api_fwd",
-                                                  "column": "operator_id",
-                                                  "operator": "equal",
-                                                  "value": {
-                                                    "table": "t_op_api_rel",
-                                                    "column": "op_id"
-                                                  },
-                                                  "operation": "="
-                                                }
-                                              ]
-                                            }
-                                          },
-                                          {
-                                            "table": "m_api",
-                                            "column": "*",
-                                            "alias": "m_api",
-                                            "type": "LEFT",
-                                            "clauses": {
-                                              "condition": "AND",
-                                              "rules": [
-                                                {
-                                                  "table": "m_api",
-                                                  "column": "id",
-                                                  "operator": "equal",
-                                                  "value": {
-                                                    "table": "m_api_fwd",
-                                                    "column": "api_id"
-                                                  },
-                                                  "operation": "="
-                                                }
-                                              ]
-                                            }
-                                          }
-                                        ],
-                                        "wheres": {
-                                          "condition": "AND",
-                                          "rules": [
+                                  "steps": [
+                                    {
+                                      "name": "GetOpAPICodeFwrd",
+                                      "module": "dbconnector",
+                                      "action": "single",
+                                      "options": {
+                                        "connection": "postgres_gcpServer",
+                                        "sql": {
+                                          "type": "SELECT",
+                                          "columns": [
                                             {
-                                              "id": "t_op_api_rel.op_id",
-                                              "field": "t_op_api_rel.op_id",
-                                              "type": "double",
-                                              "operator": "equal",
-                                              "value": "{{GetCommision.operator_id}}",
-                                              "data": {
-                                                "table": "t_op_api_rel",
-                                                "column": "op_id",
-                                                "type": "number"
-                                              },
-                                              "operation": "="
+                                              "table": "t_op_api_rel",
+                                              "column": "api_code1"
                                             },
                                             {
-                                              "id": "m_api.status",
-                                              "field": "m_api.status",
-                                              "type": "double",
-                                              "operator": "equal",
-                                              "value": 1,
-                                              "data": {
-                                                "table": "m_api",
-                                                "column": "status",
-                                                "type": "number"
-                                              },
-                                              "operation": "="
+                                              "table": "t_op_api_rel",
+                                              "column": "api_code2"
+                                            },
+                                            {
+                                              "table": "t_op_api_rel",
+                                              "column": "api_code3"
+                                            },
+                                            {
+                                              "table": "t_op_api_rel",
+                                              "column": "api_code4"
+                                            },
+                                            {
+                                              "table": "t_op_api_rel",
+                                              "column": "api_code5"
+                                            },
+                                            {
+                                              "table": "t_op_api_rel",
+                                              "column": "api_code6"
+                                            },
+                                            {
+                                              "table": "t_op_api_rel",
+                                              "column": "api_code7"
+                                            },
+                                            {
+                                              "table": "t_op_api_rel",
+                                              "column": "api_code8"
+                                            },
+                                            {
+                                              "table": "m_api_fwd",
+                                              "column": "service_id"
+                                            },
+                                            {
+                                              "table": "m_api_fwd",
+                                              "column": "api_id"
+                                            },
+                                            {
+                                              "table": "m_api",
+                                              "column": "api_name"
+                                            },
+                                            {
+                                              "table": "m_api",
+                                              "column": "api_code"
+                                            },
+                                            {
+                                              "table": "m_api",
+                                              "column": "username"
+                                            },
+                                            {
+                                              "table": "m_api",
+                                              "column": "api_password"
                                             }
                                           ],
-                                          "conditional": null,
-                                          "valid": true
+                                          "table": {
+                                            "name": "t_op_api_rel"
+                                          },
+                                          "joins": [
+                                            {
+                                              "table": "m_api_forward",
+                                              "column": "*",
+                                              "alias": "m_api_fwd",
+                                              "type": "LEFT",
+                                              "clauses": {
+                                                "condition": "AND",
+                                                "rules": [
+                                                  {
+                                                    "table": "m_api_fwd",
+                                                    "column": "operator_id",
+                                                    "operator": "equal",
+                                                    "value": {
+                                                      "table": "t_op_api_rel",
+                                                      "column": "op_id"
+                                                    },
+                                                    "operation": "="
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "table": "m_api",
+                                              "column": "*",
+                                              "alias": "m_api",
+                                              "type": "LEFT",
+                                              "clauses": {
+                                                "condition": "AND",
+                                                "rules": [
+                                                  {
+                                                    "table": "m_api",
+                                                    "column": "id",
+                                                    "operator": "equal",
+                                                    "value": {
+                                                      "table": "m_api_fwd",
+                                                      "column": "api_id"
+                                                    },
+                                                    "operation": "="
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          "wheres": {
+                                            "condition": "AND",
+                                            "rules": [
+                                              {
+                                                "id": "t_op_api_rel.op_id",
+                                                "field": "t_op_api_rel.op_id",
+                                                "type": "double",
+                                                "operator": "equal",
+                                                "value": "{{GetCommision.operator_id}}",
+                                                "data": {
+                                                  "table": "t_op_api_rel",
+                                                  "column": "op_id",
+                                                  "type": "number"
+                                                },
+                                                "operation": "="
+                                              },
+                                              {
+                                                "id": "m_api.status",
+                                                "field": "m_api.status",
+                                                "type": "double",
+                                                "operator": "equal",
+                                                "value": 1,
+                                                "data": {
+                                                  "table": "m_api",
+                                                  "column": "status",
+                                                  "type": "number"
+                                                },
+                                                "operation": "="
+                                              }
+                                            ],
+                                            "conditional": null,
+                                            "valid": true
+                                          },
+                                          "query": "SELECT t_op_api_rel.api_code1, t_op_api_rel.api_code2, t_op_api_rel.api_code3, t_op_api_rel.api_code4, t_op_api_rel.api_code5, t_op_api_rel.api_code6, t_op_api_rel.api_code7, t_op_api_rel.api_code8, m_api_fwd.service_id, m_api_fwd.api_id, m_api.api_name, m_api.api_code, m_api.username, m_api.api_password\nFROM t_op_api_rel\nLEFT JOIN m_api_forward AS m_api_fwd ON (m_api_fwd.operator_id = t_op_api_rel.op_id) LEFT JOIN m_api AS m_api ON (m_api.id = m_api_fwd.api_id)\nWHERE t_op_api_rel.op_id = :P1 /* {{GetCommision.operator_id}} */ AND m_api.status = 1",
+                                          "params": [
+                                            {
+                                              "operator": "equal",
+                                              "type": "expression",
+                                              "name": ":P1",
+                                              "value": "{{GetCommision.operator_id}}"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "output": true,
+                                      "meta": [
+                                        {
+                                          "type": "text",
+                                          "name": "api_code1"
                                         },
-                                        "query": "SELECT t_op_api_rel.api_code1, t_op_api_rel.api_code2, t_op_api_rel.api_code3, t_op_api_rel.api_code4, t_op_api_rel.api_code5, t_op_api_rel.api_code6, t_op_api_rel.api_code7, t_op_api_rel.api_code8, m_api_fwd.service_id, m_api_fwd.api_id, m_api.api_name, m_api.api_code, m_api.username, m_api.api_password\nFROM t_op_api_rel\nLEFT JOIN m_api_forward AS m_api_fwd ON (m_api_fwd.operator_id = t_op_api_rel.op_id) LEFT JOIN m_api AS m_api ON (m_api.id = m_api_fwd.api_id)\nWHERE t_op_api_rel.op_id = :P1 /* {{GetCommision.operator_id}} */ AND m_api.status = 1",
-                                        "params": [
-                                          {
-                                            "operator": "equal",
-                                            "type": "expression",
-                                            "name": ":P1",
-                                            "value": "{{GetCommision.operator_id}}"
-                                          }
-                                        ]
-                                      }
+                                        {
+                                          "type": "text",
+                                          "name": "api_code2"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "name": "api_code3"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "name": "api_code4"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "name": "api_code5"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "name": "api_code6"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "name": "api_code7"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "name": "api_code8"
+                                        },
+                                        {
+                                          "type": "number",
+                                          "name": "service_id"
+                                        },
+                                        {
+                                          "type": "number",
+                                          "name": "api_id"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "name": "api_name"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "name": "api_code"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "name": "username"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "name": "api_password"
+                                        }
+                                      ],
+                                      "outputType": "object"
                                     },
-                                    "output": true,
-                                    "meta": [
-                                      {
-                                        "type": "text",
-                                        "name": "api_code1"
+                                    {
+                                      "name": "",
+                                      "module": "core",
+                                      "action": "condition",
+                                      "options": {
+                                        "if": "{{GetOpAPICodeFwrd.api_id}}",
+                                        "then": {
+                                          "steps": [
+                                            {
+                                              "name": "RTCommAmt",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{(Remainder.toNumber()*GetCommision.comm_per.toNumber()/100)+GetCommision.comm_val.toNumber()}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text"
+                                            },
+                                            {
+                                              "name": "RTChargeAmt",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{(Remainder.toNumber()*GetCommision.service_charge_per.toNumber()/100)+GetCommision.service_charge_val.toNumber()}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": false
+                                            },
+                                            {
+                                              "name": "RTNetAmt",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{Remainder.toNumber()-RTCommAmt.toNumber()+RTChargeAmt.toNumber()}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": false
+                                            },
+                                            {
+                                              "name": "RTClosingBalance",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{UserWalletBalCheck.balance_amt.toNumber()-RTNetAmt.toNumber()}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": false
+                                            },
+                                            {
+                                              "name": "AdminClosingBalance",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{GetAdmin.admin_balance_amt.toNumber()+RTChargeAmt.toNumber()}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "",
+                                              "module": "core",
+                                              "action": "condition",
+                                              "options": {
+                                                "if": "{{GetRTCreator.rt_creator_user_type.toNumber() == 2}}",
+                                                "then": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "GetCommisionForDT",
+                                                      "module": "dbconnector",
+                                                      "action": "single",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "SELECT",
+                                                          "columns": [
+                                                            {
+                                                              "table": "m_commission",
+                                                              "column": "comm_per"
+                                                            },
+                                                            {
+                                                              "table": "m_commission",
+                                                              "column": "comm_val"
+                                                            },
+                                                            {
+                                                              "table": "m_commission",
+                                                              "column": "service_charge_per"
+                                                            },
+                                                            {
+                                                              "table": "m_commission",
+                                                              "column": "service_charge_val"
+                                                            }
+                                                          ],
+                                                          "table": {
+                                                            "name": "m_commission"
+                                                          },
+                                                          "joins": [],
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "m_commission.operator_id",
+                                                                "field": "m_commission.operator_id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{GetCommision.operator_id}}",
+                                                                "data": {
+                                                                  "table": "m_commission",
+                                                                  "column": "operator_id",
+                                                                  "type": "number"
+                                                                },
+                                                                "operation": "="
+                                                              },
+                                                              {
+                                                                "id": "m_commission.scheme_id",
+                                                                "field": "m_commission.scheme_id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{GetRTCreator.rt_creator_scheme_id}}",
+                                                                "data": {
+                                                                  "table": "m_commission",
+                                                                  "column": "scheme_id",
+                                                                  "type": "number"
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "query": "SELECT comm_per, comm_val, service_charge_per, service_charge_val\nFROM m_commission\nWHERE operator_id = :P1 /* {{GetCommision.operator_id}} */ AND scheme_id = :P2 /* {{GetRTCreator.rt_creator_scheme_id}} */",
+                                                          "params": [
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P1",
+                                                              "value": "{{GetCommision.operator_id}}"
+                                                            },
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P2",
+                                                              "value": "{{GetRTCreator.rt_creator_scheme_id}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "output": true,
+                                                      "meta": [
+                                                        {
+                                                          "type": "text",
+                                                          "name": "comm_per"
+                                                        },
+                                                        {
+                                                          "type": "text",
+                                                          "name": "comm_val"
+                                                        },
+                                                        {
+                                                          "type": "text",
+                                                          "name": "service_charge_per"
+                                                        },
+                                                        {
+                                                          "type": "text",
+                                                          "name": "service_charge_val"
+                                                        }
+                                                      ],
+                                                      "outputType": "object"
+                                                    },
+                                                    {
+                                                      "name": "DTCommPer",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{GetCommisionForDT.comm_per}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "DTCommVal",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{GetCommisionForDT.comm_val}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "DTCommTotal",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{(Remainder.toNumber()*GetCommisionForDT.comm_per.toNumber()/100)+GetCommisionForDT.comm_val.toNumber()}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "DTCommAmt",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{DTCommTotal.toNumber()-RTCommAmt.toNumber()}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "DTChargePer",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{GetCommisionForDT.service_charge_per}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "DTChargeVal",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{GetCommisionForDT.service_charge_val}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "DTChargeTotal",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{(Remainder.toNumber()*GetCommisionForDT.service_charge_per.toNumber()/100)+GetCommisionForDT.service_charge_val.toNumber()}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "DTChargeAmt",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{DTChargeTotal.toNumber()-RTChargeAmt.toNumber()}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "DTNetAmt",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{DTCommAmt.toNumber()-DTChargeAmt.toNumber()}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "DTClosingBalance",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{GetRTCreator.rt_creator_balance_amt.toNumber()+DTNetAmt.toNumber()}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "AdminClosingBalance",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{AdminClosingBalance.toNumber()+DTChargeAmt.toNumber()}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    },
+                                                    {
+                                                      "name": "GetDTCreator",
+                                                      "module": "dbconnector",
+                                                      "action": "single",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "SELECT",
+                                                          "columns": [
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "user_fname",
+                                                              "alias": "dt_user_name"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "user_mobile",
+                                                              "alias": "dt_user_mobile"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "user_type",
+                                                              "alias": "dt_user_type"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "scheme_id",
+                                                              "alias": "dt_scheme_id"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "balance_amt",
+                                                              "alias": "dt_balance_amt"
+                                                            },
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "created_by",
+                                                              "alias": "mdt_creator_id"
+                                                            }
+                                                          ],
+                                                          "table": {
+                                                            "name": "m_users"
+                                                          },
+                                                          "joins": [],
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "m_users.id",
+                                                                "field": "m_users.id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{GetRTCreator.dt_creator_id}}",
+                                                                "data": {
+                                                                  "table": "m_users",
+                                                                  "column": "id",
+                                                                  "type": "number"
+                                                                },
+                                                                "operation": "="
+                                                              },
+                                                              {
+                                                                "id": "m_users.u_status",
+                                                                "field": "m_users.u_status",
+                                                                "type": "string",
+                                                                "operator": "equal",
+                                                                "value": "1",
+                                                                "data": {
+                                                                  "table": "m_users",
+                                                                  "column": "u_status",
+                                                                  "type": "text"
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "query": "SELECT user_fname AS dt_user_name, user_mobile AS dt_user_mobile, user_type AS dt_user_type, scheme_id AS dt_scheme_id, balance_amt AS dt_balance_amt, created_by AS mdt_creator_id\nFROM m_users\nWHERE id = :P1 /* {{GetRTCreator.dt_creator_id}} */ AND u_status = '1'",
+                                                          "params": [
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P1",
+                                                              "value": "{{GetRTCreator.dt_creator_id}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "output": true,
+                                                      "meta": [
+                                                        {
+                                                          "type": "text",
+                                                          "name": "dt_user_name"
+                                                        },
+                                                        {
+                                                          "type": "text",
+                                                          "name": "dt_user_mobile"
+                                                        },
+                                                        {
+                                                          "type": "number",
+                                                          "name": "dt_user_type"
+                                                        },
+                                                        {
+                                                          "type": "number",
+                                                          "name": "dt_scheme_id"
+                                                        },
+                                                        {
+                                                          "type": "text",
+                                                          "name": "dt_balance_amt"
+                                                        },
+                                                        {
+                                                          "type": "number",
+                                                          "name": "mdt_creator_id"
+                                                        }
+                                                      ],
+                                                      "outputType": "object"
+                                                    },
+                                                    {
+                                                      "name": "",
+                                                      "module": "core",
+                                                      "action": "condition",
+                                                      "options": {
+                                                        "if": "{{GetDTCreator.dt_user_type.toNumber()==3}}",
+                                                        "then": {
+                                                          "steps": [
+                                                            {
+                                                              "name": "GetCommisionForMDT",
+                                                              "module": "dbconnector",
+                                                              "action": "single",
+                                                              "options": {
+                                                                "connection": "postgres_gcpServer",
+                                                                "sql": {
+                                                                  "type": "SELECT",
+                                                                  "columns": [
+                                                                    {
+                                                                      "table": "m_commission",
+                                                                      "column": "comm_per"
+                                                                    },
+                                                                    {
+                                                                      "table": "m_commission",
+                                                                      "column": "comm_val"
+                                                                    },
+                                                                    {
+                                                                      "table": "m_commission",
+                                                                      "column": "service_charge_per"
+                                                                    },
+                                                                    {
+                                                                      "table": "m_commission",
+                                                                      "column": "service_charge_val"
+                                                                    }
+                                                                  ],
+                                                                  "table": {
+                                                                    "name": "m_commission"
+                                                                  },
+                                                                  "joins": [],
+                                                                  "wheres": {
+                                                                    "condition": "AND",
+                                                                    "rules": [
+                                                                      {
+                                                                        "id": "m_commission.scheme_id",
+                                                                        "field": "m_commission.scheme_id",
+                                                                        "type": "double",
+                                                                        "operator": "equal",
+                                                                        "value": "{{GetDTCreator.dt_scheme_id}}",
+                                                                        "data": {
+                                                                          "table": "m_commission",
+                                                                          "column": "scheme_id",
+                                                                          "type": "number"
+                                                                        },
+                                                                        "operation": "="
+                                                                      },
+                                                                      {
+                                                                        "id": "m_commission.operator_id",
+                                                                        "field": "m_commission.operator_id",
+                                                                        "type": "double",
+                                                                        "operator": "equal",
+                                                                        "value": "{{GetCommision.operator_id}}",
+                                                                        "data": {
+                                                                          "table": "m_commission",
+                                                                          "column": "operator_id",
+                                                                          "type": "number"
+                                                                        },
+                                                                        "operation": "="
+                                                                      }
+                                                                    ],
+                                                                    "conditional": null,
+                                                                    "valid": true
+                                                                  },
+                                                                  "query": "SELECT comm_per, comm_val, service_charge_per, service_charge_val\nFROM m_commission\nWHERE scheme_id = :P1 /* {{GetDTCreator.dt_scheme_id}} */ AND operator_id = :P2 /* {{GetCommision.operator_id}} */",
+                                                                  "params": [
+                                                                    {
+                                                                      "operator": "equal",
+                                                                      "type": "expression",
+                                                                      "name": ":P1",
+                                                                      "value": "{{GetDTCreator.dt_scheme_id}}"
+                                                                    },
+                                                                    {
+                                                                      "operator": "equal",
+                                                                      "type": "expression",
+                                                                      "name": ":P2",
+                                                                      "value": "{{GetCommision.operator_id}}"
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "output": false,
+                                                              "meta": [
+                                                                {
+                                                                  "type": "text",
+                                                                  "name": "comm_per"
+                                                                },
+                                                                {
+                                                                  "type": "text",
+                                                                  "name": "comm_val"
+                                                                },
+                                                                {
+                                                                  "type": "text",
+                                                                  "name": "service_charge_per"
+                                                                },
+                                                                {
+                                                                  "type": "text",
+                                                                  "name": "service_charge_val"
+                                                                }
+                                                              ],
+                                                              "outputType": "object"
+                                                            },
+                                                            {
+                                                              "name": "MDTCommPer",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{GetCommisionForMDT.comm_per.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "MDTCommVal",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{GetCommisionForMDT.comm_val.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "MDTCommTotal",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{(Remainder.toNumber()*GetCommisionForMDT.comm_per.toNumber()/100)+GetCommisionForMDT.comm_val.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "MDTCommAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{MDTCommTotal.toNumber()-DTCommTotal.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "MDTChargePer",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{GetCommisionForMDT.service_charge_per.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "MDTChargeVal",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{GetCommisionForMDT.service_charge_val.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "MDTChargeTotal",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{(Remainder.toNumber()*GetCommisionForMDT.service_charge_per.toNumber()/100)+GetCommisionForMDT.service_charge_val.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "MDTChargeAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{MDTChargeTotal.toNumber()-DTChargeTotal.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "MDTNetAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{MDTCommAmt.toNumber()-MDTChargeAmt.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "MDTClosingBalance",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{GetDTCreator.dt_balance_amt.toNumber()+MDTNetAmt.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "AdminClosingBalance",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{AdminClosingBalance.toNumber()+MDTChargeAmt.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            }
+                                                          ]
+                                                        },
+                                                        "else": {
+                                                          "steps": [
+                                                            {
+                                                              "name": "MDTCommPer",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTCommVal",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTCommAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTChargePer",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTChargeVal",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTChargeAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTNetAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTClosingBalance",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "AdminClosingBalance",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{AdminClosingBalance}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "outputType": "boolean"
+                                                    }
+                                                  ]
+                                                },
+                                                "else": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "DTCommPer",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": 0
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "DTCommVal",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": 0
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "DTCommAmt",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": 0
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "DTChargePer",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": 0
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "DTChargeVal",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": 0
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "DTChargeAmt",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": 0
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "DTNetAmt",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": 0
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "AdminClosingBalance",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{AdminClosingBalance}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "outputType": "boolean"
+                                            }
+                                          ]
+                                        }
                                       },
-                                      {
-                                        "type": "text",
-                                        "name": "api_code2"
-                                      },
-                                      {
-                                        "type": "text",
-                                        "name": "api_code3"
-                                      },
-                                      {
-                                        "type": "text",
-                                        "name": "api_code4"
-                                      },
-                                      {
-                                        "type": "text",
-                                        "name": "api_code5"
-                                      },
-                                      {
-                                        "type": "text",
-                                        "name": "api_code6"
-                                      },
-                                      {
-                                        "type": "text",
-                                        "name": "api_code7"
-                                      },
-                                      {
-                                        "type": "text",
-                                        "name": "api_code8"
-                                      },
-                                      {
-                                        "type": "number",
-                                        "name": "service_id"
-                                      },
-                                      {
-                                        "type": "number",
-                                        "name": "api_id"
-                                      },
-                                      {
-                                        "type": "text",
-                                        "name": "api_name"
-                                      },
-                                      {
-                                        "type": "text",
-                                        "name": "api_code"
-                                      },
-                                      {
-                                        "type": "text",
-                                        "name": "username"
-                                      },
-                                      {
-                                        "type": "text",
-                                        "name": "api_password"
-                                      }
-                                    ],
-                                    "outputType": "object"
-                                  }
+                                      "outputType": "boolean"
+                                    }
+                                  ]
                                 }
                               },
                               "outputType": "boolean"
