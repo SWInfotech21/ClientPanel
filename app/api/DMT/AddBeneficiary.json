@@ -67,6 +67,14 @@
           }
         },
         "name": "BenIFSCAdd"
+      },
+      {
+        "type": "text",
+        "name": "created_by"
+      },
+      {
+        "type": "boolean",
+        "name": "ben_verify"
       }
     ]
   },
@@ -86,13 +94,110 @@
         }
       },
       {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "GetAPIDetails",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_api",
+                "column": "id"
+              },
+              {
+                "table": "m_api",
+                "column": "username"
+              },
+              {
+                "table": "m_api",
+                "column": "api_password"
+              }
+            ],
+            "table": {
+              "name": "m_api"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_api.api_code",
+                  "field": "m_api.api_code",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{'MA'}}",
+                  "data": {
+                    "table": "m_api",
+                    "column": "api_code",
+                    "type": "text"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "m_api.status",
+                  "field": "m_api.status",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "m_api",
+                    "column": "status",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT id, username, api_password\nFROM m_api\nWHERE api_code = :P1 /* {{'MA'}} */ AND status = 1",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{'MA'}}"
+              }
+            ]
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "text",
+            "name": "username"
+          },
+          {
+            "type": "text",
+            "name": "api_password"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
         "name": "apiAddBen",
         "module": "api",
         "action": "send",
         "options": {
           "url": "https://apihub.moneyart.in/AddRecipients",
           "params": {
-            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+            "token": "{{GetAPIDetails.api_password}}",
             "senderId": "{{$_POST.BenSenderId}}",
             "name": "{{$_POST.BenNameAdd}}",
             "mobileno": "{{$_POST.BenMobileAdd}}",
@@ -102,6 +207,155 @@
           "method": "POST"
         },
         "output": true
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{apiAddBen.data.StatusCode==1}}",
+          "then": {
+            "steps": {
+              "name": "AddBen",
+              "module": "dbupdater",
+              "action": "insert",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "insert",
+                  "values": [
+                    {
+                      "table": "dmt_beneficiary",
+                      "column": "ben_name",
+                      "type": "text",
+                      "value": "{{$_POST.BenNameAdd}}"
+                    },
+                    {
+                      "table": "dmt_beneficiary",
+                      "column": "ben_mobile",
+                      "type": "text",
+                      "value": "{{$_POST.BenMobileAdd}}"
+                    },
+                    {
+                      "table": "dmt_beneficiary",
+                      "column": "ben_ac_no",
+                      "type": "text",
+                      "value": "{{$_POST.BenACAdd}}"
+                    },
+                    {
+                      "table": "dmt_beneficiary",
+                      "column": "ben_ifsc",
+                      "type": "text",
+                      "value": "{{$_POST.BenIFSCAdd}}"
+                    },
+                    {
+                      "table": "dmt_beneficiary",
+                      "column": "remitter_id",
+                      "type": "text",
+                      "value": "{{$_POST.BenSenderId}}"
+                    },
+                    {
+                      "table": "dmt_beneficiary",
+                      "column": "ben_verify",
+                      "type": "boolean",
+                      "value": "{{false}}"
+                    },
+                    {
+                      "table": "dmt_beneficiary",
+                      "column": "status",
+                      "type": "text",
+                      "value": "{{'Active'}}"
+                    },
+                    {
+                      "table": "dmt_beneficiary",
+                      "column": "created_by",
+                      "type": "text",
+                      "value": "{{identity}}"
+                    },
+                    {
+                      "table": "dmt_beneficiary",
+                      "column": "created_on",
+                      "type": "datetime",
+                      "value": "{{NOW}}"
+                    },
+                    {
+                      "table": "dmt_beneficiary",
+                      "column": "ben_id",
+                      "type": "text",
+                      "value": "{{apiAddBen.data.Data.RecipientCode}}"
+                    }
+                  ],
+                  "table": "dmt_beneficiary",
+                  "returning": "id",
+                  "query": "INSERT INTO dmt_beneficiary\n(ben_name, ben_mobile, ben_ac_no, ben_ifsc, remitter_id, ben_verify, status, created_by, created_on, ben_id) VALUES (:P1 /* {{$_POST.BenNameAdd}} */, :P2 /* {{$_POST.BenMobileAdd}} */, :P3 /* {{$_POST.BenACAdd}} */, :P4 /* {{$_POST.BenIFSCAdd}} */, :P5 /* {{$_POST.BenSenderId}} */, :P6 /* {{false}} */, :P7 /* {{'Active'}} */, :P8 /* {{identity}} */, :P9 /* {{NOW}} */, :P10 /* {{apiAddBen.data.Data.RecipientCode}} */)",
+                  "params": [
+                    {
+                      "name": ":P1",
+                      "type": "expression",
+                      "value": "{{$_POST.BenNameAdd}}"
+                    },
+                    {
+                      "name": ":P2",
+                      "type": "expression",
+                      "value": "{{$_POST.BenMobileAdd}}"
+                    },
+                    {
+                      "name": ":P3",
+                      "type": "expression",
+                      "value": "{{$_POST.BenACAdd}}"
+                    },
+                    {
+                      "name": ":P4",
+                      "type": "expression",
+                      "value": "{{$_POST.BenIFSCAdd}}"
+                    },
+                    {
+                      "name": ":P5",
+                      "type": "expression",
+                      "value": "{{$_POST.BenSenderId}}"
+                    },
+                    {
+                      "name": ":P6",
+                      "type": "expression",
+                      "value": "{{false}}"
+                    },
+                    {
+                      "name": ":P7",
+                      "type": "expression",
+                      "value": "{{'Active'}}"
+                    },
+                    {
+                      "name": ":P8",
+                      "type": "expression",
+                      "value": "{{identity}}"
+                    },
+                    {
+                      "name": ":P9",
+                      "type": "expression",
+                      "value": "{{NOW}}"
+                    },
+                    {
+                      "name": ":P10",
+                      "type": "expression",
+                      "value": "{{apiAddBen.data.Data.RecipientCode}}"
+                    }
+                  ]
+                }
+              },
+              "meta": [
+                {
+                  "name": "identity",
+                  "type": "text"
+                },
+                {
+                  "name": "affected",
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        },
+        "outputType": "boolean"
       }
     ]
   }

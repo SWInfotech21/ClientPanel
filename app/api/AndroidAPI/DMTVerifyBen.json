@@ -42,6 +42,252 @@
         "name": "benid"
       }
     ],
+    "$_POST": [
+      {
+        "type": "number",
+        "name": "op_id"
+      },
+      {
+        "type": "number",
+        "name": "service_id"
+      },
+      {
+        "type": "number",
+        "name": "api_id"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
+      },
+      {
+        "type": "text",
+        "name": "user_number"
+      },
+      {
+        "type": "text",
+        "name": "details"
+      },
+      {
+        "type": "text",
+        "name": "opening_balance"
+      },
+      {
+        "type": "text",
+        "name": "amount"
+      },
+      {
+        "type": "text",
+        "name": "comm_per"
+      },
+      {
+        "type": "text",
+        "name": "comm_val"
+      },
+      {
+        "type": "text",
+        "name": "comm_amt"
+      },
+      {
+        "type": "text",
+        "name": "other_charge"
+      },
+      {
+        "type": "text",
+        "name": "charge_per"
+      },
+      {
+        "type": "text",
+        "name": "charge_amt"
+      },
+      {
+        "type": "text",
+        "name": "net_amt"
+      },
+      {
+        "type": "text",
+        "name": "closing_balance"
+      },
+      {
+        "type": "text",
+        "name": "tr_mode"
+      },
+      {
+        "type": "text",
+        "name": "tr_type"
+      },
+      {
+        "type": "text",
+        "name": "status"
+      },
+      {
+        "type": "text",
+        "name": "tr_id"
+      },
+      {
+        "type": "text",
+        "name": "reason"
+      },
+      {
+        "type": "text",
+        "name": "api_logs"
+      },
+      {
+        "type": "text",
+        "name": "is_processed"
+      },
+      {
+        "type": "text",
+        "name": "operator_ref"
+      },
+      {
+        "type": "text",
+        "name": "api_ref"
+      },
+      {
+        "type": "text",
+        "name": "revert_trans"
+      },
+      {
+        "type": "text",
+        "name": "ip_address"
+      },
+      {
+        "type": "number",
+        "name": "api_response_id"
+      },
+      {
+        "type": "text",
+        "name": "process_mode"
+      },
+      {
+        "type": "text",
+        "name": "live"
+      },
+      {
+        "type": "datetime",
+        "name": "tr_date"
+      },
+      {
+        "type": "datetime",
+        "name": "updated_on"
+      },
+      {
+        "type": "number",
+        "name": "transaction_by"
+      },
+      {
+        "type": "text",
+        "name": "extra1"
+      },
+      {
+        "type": "text",
+        "name": "extra2"
+      },
+      {
+        "type": "text",
+        "name": "extra3"
+      },
+      {
+        "type": "text",
+        "name": "dtcommper"
+      },
+      {
+        "type": "text",
+        "name": "dtcommval"
+      },
+      {
+        "type": "text",
+        "name": "dtcommamt"
+      },
+      {
+        "type": "text",
+        "name": "dtchargeper"
+      },
+      {
+        "type": "text",
+        "name": "dtchargeval"
+      },
+      {
+        "type": "text",
+        "name": "dtchargeamt"
+      },
+      {
+        "type": "text",
+        "name": "mdtcommper"
+      },
+      {
+        "type": "text",
+        "name": "mdtcommval"
+      },
+      {
+        "type": "text",
+        "name": "mdtcommamt"
+      },
+      {
+        "type": "text",
+        "name": "mdtchargeper"
+      },
+      {
+        "type": "text",
+        "name": "mdtchargeval"
+      },
+      {
+        "type": "text",
+        "name": "mdtchargeamt"
+      },
+      {
+        "type": "text",
+        "name": "crdr_type"
+      },
+      {
+        "type": "number",
+        "name": "pay_ref_id"
+      },
+      {
+        "type": "text",
+        "name": "remarks"
+      },
+      {
+        "type": "number",
+        "name": "created_by"
+      },
+      {
+        "type": "datetime",
+        "name": "created_on"
+      },
+      {
+        "type": "number",
+        "name": "updated_by"
+      },
+      {
+        "type": "number",
+        "name": "deleted_by"
+      },
+      {
+        "type": "datetime",
+        "name": "deleted_on"
+      },
+      {
+        "type": "text",
+        "name": "netamt"
+      },
+      {
+        "type": "number",
+        "name": "id"
+      },
+      {
+        "type": "text",
+        "name": "old_balance"
+      },
+      {
+        "type": "text",
+        "name": "new_balance"
+      },
+      {
+        "type": "text",
+        "name": "transaction_type"
+      }
+    ],
     "$_SERVER": [
       {
         "type": "text",
@@ -57,6 +303,16 @@
       "options": {
         "try": {
           "steps": [
+            {
+              "name": "SubmitTime",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{NOW}}"
+              },
+              "meta": [],
+              "outputType": "text"
+            },
             {
               "name": "getSalt",
               "module": "dbconnector",
@@ -86,13 +342,25 @@
                     {
                       "table": "m_users",
                       "column": "ds_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "scheme_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "balance_amt"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_mobile"
                     }
                   ],
                   "table": {
                     "name": "m_users"
                   },
                   "joins": [],
-                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_GET.username}} */",
+                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id, scheme_id, balance_amt, user_mobile\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_GET.username}} */",
                   "params": [
                     {
                       "operator": "equal",
@@ -173,6 +441,18 @@
                 {
                   "type": "text",
                   "name": "ds_id"
+                },
+                {
+                  "type": "number",
+                  "name": "scheme_id"
+                },
+                {
+                  "type": "text",
+                  "name": "balance_amt"
+                },
+                {
+                  "type": "text",
+                  "name": "user_mobile"
                 }
               ],
               "outputType": "object"
@@ -363,13 +643,147 @@
                                       "meta": []
                                     },
                                     {
+                                      "name": "GetDetails",
+                                      "module": "dbupdater",
+                                      "action": "custom",
+                                      "options": {
+                                        "connection": "postgres_gcpServer",
+                                        "sql": {
+                                          "query": "select mo.service_id as service_id, mo.id as op_id, ma.api_code as api_fwrd_code, ma.username, ma.api_password, toar.api_code1 as our_code, toar.api_code4 as api_ma_code, maf.api_id, mc.comm_per, mc.comm_val, mc.service_charge_per, mc.service_charge_val \nfrom m_commission mc \nleft join m_operator mo on (mo.id = mc.operator_id)\nleft join m_service ms on (ms.id = mo.service_id)\nleft join m_api_forward maf on maf.service_id = mo.service_id and maf.operator_id = mo.id \nleft join t_op_api_rel toar on toar.op_id = mc.operator_id\nleft join m_api ma on ma.id = maf.api_id\nwhere ms.service_name = @service and mo.operator_name = @operator and mc.scheme_id = @scheme_id",
+                                          "params": [
+                                            {
+                                              "name": "@service",
+                                              "value": "{{'Money'}}",
+                                              "test": "Money"
+                                            },
+                                            {
+                                              "name": "@operator",
+                                              "value": "{{'DMT Account Verification'}}",
+                                              "test": "DMT Account Verification"
+                                            },
+                                            {
+                                              "name": "@scheme_id",
+                                              "value": "{{getSalt.scheme_id}}",
+                                              "test": "3"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "output": true,
+                                      "meta": [
+                                        {
+                                          "name": "service_id",
+                                          "type": "number"
+                                        },
+                                        {
+                                          "name": "op_id",
+                                          "type": "number"
+                                        },
+                                        {
+                                          "name": "api_fwrd_code",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "username",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "api_password",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "our_code",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "api_ma_code",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "api_id",
+                                          "type": "number"
+                                        },
+                                        {
+                                          "name": "comm_per",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "comm_val",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "service_charge_per",
+                                          "type": "text"
+                                        },
+                                        {
+                                          "name": "service_charge_val",
+                                          "type": "text"
+                                        }
+                                      ],
+                                      "outputType": "array"
+                                    },
+                                    {
                                       "name": "",
                                       "module": "core",
                                       "action": "condition",
                                       "options": {
-                                        "if": "{{identity}}",
+                                        "if": "{{GetDetails[0].comm_per}}",
                                         "then": {
                                           "steps": [
+                                            {
+                                              "name": "Amount",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": 1
+                                              },
+                                              "meta": [],
+                                              "outputType": "text"
+                                            },
+                                            {
+                                              "name": "RTCommAmt",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{(Amount.toNumber()*GetDetails[0].comm_per.toNumber()/100)+GetDetails[0].comm_val.toNumber()}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "RTChargeAmt",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{(Amount.toNumber()*GetDetails[0].service_charge_per.toNumber()/100)+GetDetails[0].service_charge_val.toNumber()}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "RTPayableAmt",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{Amount.toNumber()+RTChargeAmt.toNumber()-RTCommAmt.toNumber()}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "RTClosingBalance",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{getSalt.balance_amt.toNumber()-RTPayableAmt.toNumber()}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
                                             {
                                               "name": "TransactionId",
                                               "module": "core",
@@ -382,7 +796,624 @@
                                               "output": false
                                             },
                                             {
-                                              "name": "apiVerifyBen",
+                                              "name": "RechTrans",
+                                              "module": "dbupdater",
+                                              "action": "insert",
+                                              "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "type": "insert",
+                                                  "values": [
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "op_id",
+                                                      "type": "number",
+                                                      "value": "{{GetDetails[0].op_id}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "service_id",
+                                                      "type": "number",
+                                                      "value": "{{GetDetails[0].service_id}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "api_id",
+                                                      "type": "number",
+                                                      "value": "{{GetDetails[0].api_id}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "user_id",
+                                                      "type": "number",
+                                                      "value": "{{identity}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "user_number",
+                                                      "type": "text",
+                                                      "value": "{{getSalt.user_mobile}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "details",
+                                                      "type": "text",
+                                                      "value": "{{$_GET.benid}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "opening_balance",
+                                                      "type": "text",
+                                                      "value": "{{getSalt.balance_amt}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "amount",
+                                                      "type": "text",
+                                                      "value": "{{Amount}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "comm_per",
+                                                      "type": "text",
+                                                      "value": "{{GetDetails[0].comm_per}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "comm_val",
+                                                      "type": "text",
+                                                      "value": "{{GetDetails[0].comm_val}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "comm_amt",
+                                                      "type": "text",
+                                                      "value": "{{RTCommAmt}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "other_charge",
+                                                      "type": "text",
+                                                      "value": "{{GetDetails[0].service_charge_val}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "charge_per",
+                                                      "type": "text",
+                                                      "value": "{{GetDetails[0].service_charge_per}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "charge_amt",
+                                                      "type": "text",
+                                                      "value": "{{RTChargeAmt}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "net_amt",
+                                                      "type": "text",
+                                                      "value": "{{RTPayableAmt}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "closing_balance",
+                                                      "type": "text",
+                                                      "value": "{{RTClosingBalance}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "tr_mode",
+                                                      "type": "text",
+                                                      "value": "{{'Android'}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "tr_type",
+                                                      "type": "text",
+                                                      "value": "{{'Cash'}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "status",
+                                                      "type": "text",
+                                                      "value": "{{'Pending'}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "tr_id",
+                                                      "type": "text",
+                                                      "value": "{{TransactionId}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "ip_address",
+                                                      "type": "text",
+                                                      "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "process_mode",
+                                                      "type": "text",
+                                                      "value": "{{'A2P'}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "live",
+                                                      "type": "text",
+                                                      "value": "{{'Live'}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "tr_date",
+                                                      "type": "datetime",
+                                                      "value": "{{NOW}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "transaction_by",
+                                                      "type": "number",
+                                                      "value": "{{identity}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "dtcommper",
+                                                      "type": "text",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "dtcommval",
+                                                      "type": "text",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "dtcommamt",
+                                                      "type": "text",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "dtchargeper",
+                                                      "type": "text",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "dtchargeval",
+                                                      "type": "text",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "dtchargeamt",
+                                                      "type": "text",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "mdtcommper",
+                                                      "type": "text",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "mdtcommval",
+                                                      "type": "text",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "mdtcommamt",
+                                                      "type": "text",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "mdtchargeper",
+                                                      "type": "text",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "mdtchargeval",
+                                                      "type": "text",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_recharge_trans",
+                                                      "column": "mdtchargeamt",
+                                                      "type": "text",
+                                                      "value": "{{0}}"
+                                                    }
+                                                  ],
+                                                  "table": "tt_recharge_trans",
+                                                  "returning": "id",
+                                                  "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, opening_balance, amount, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, tr_mode, tr_type, status, tr_id, ip_address, process_mode, live, tr_date, transaction_by, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt) VALUES (:P1 /* {{GetDetails[0].op_id}} */, :P2 /* {{GetDetails[0].service_id}} */, :P3 /* {{GetDetails[0].api_id}} */, :P4 /* {{identity}} */, :P5 /* {{getSalt.user_mobile}} */, :P6 /* {{$_GET.benid}} */, :P7 /* {{getSalt.balance_amt}} */, :P8 /* {{Amount}} */, :P9 /* {{GetDetails[0].comm_per}} */, :P10 /* {{GetDetails[0].comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetDetails[0].service_charge_val}} */, :P13 /* {{GetDetails[0].service_charge_per}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTPayableAmt}} */, :P16 /* {{RTClosingBalance}} */, :P17 /* {{'Android'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{TransactionId}} */, :P21 /* {{$_SERVER.REMOTE_ADDR}} */, :P22 /* {{'A2P'}} */, :P23 /* {{'Live'}} */, :P24 /* {{NOW}} */, :P25 /* {{identity}} */, :P26 /* {{0}} */, :P27 /* {{0}} */, :P28 /* {{0}} */, :P29 /* {{0}} */, :P30 /* {{0}} */, :P31 /* {{0}} */, :P32 /* {{0}} */, :P33 /* {{0}} */, :P34 /* {{0}} */, :P35 /* {{0}} */, :P36 /* {{0}} */, :P37 /* {{0}} */)",
+                                                  "params": [
+                                                    {
+                                                      "name": ":P1",
+                                                      "type": "expression",
+                                                      "value": "{{GetDetails[0].op_id}}"
+                                                    },
+                                                    {
+                                                      "name": ":P2",
+                                                      "type": "expression",
+                                                      "value": "{{GetDetails[0].service_id}}"
+                                                    },
+                                                    {
+                                                      "name": ":P3",
+                                                      "type": "expression",
+                                                      "value": "{{GetDetails[0].api_id}}"
+                                                    },
+                                                    {
+                                                      "name": ":P4",
+                                                      "type": "expression",
+                                                      "value": "{{identity}}"
+                                                    },
+                                                    {
+                                                      "name": ":P5",
+                                                      "type": "expression",
+                                                      "value": "{{getSalt.user_mobile}}"
+                                                    },
+                                                    {
+                                                      "name": ":P6",
+                                                      "type": "expression",
+                                                      "value": "{{$_GET.benid}}"
+                                                    },
+                                                    {
+                                                      "name": ":P7",
+                                                      "type": "expression",
+                                                      "value": "{{getSalt.balance_amt}}"
+                                                    },
+                                                    {
+                                                      "name": ":P8",
+                                                      "type": "expression",
+                                                      "value": "{{Amount}}"
+                                                    },
+                                                    {
+                                                      "name": ":P9",
+                                                      "type": "expression",
+                                                      "value": "{{GetDetails[0].comm_per}}"
+                                                    },
+                                                    {
+                                                      "name": ":P10",
+                                                      "type": "expression",
+                                                      "value": "{{GetDetails[0].comm_val}}"
+                                                    },
+                                                    {
+                                                      "name": ":P11",
+                                                      "type": "expression",
+                                                      "value": "{{RTCommAmt}}"
+                                                    },
+                                                    {
+                                                      "name": ":P12",
+                                                      "type": "expression",
+                                                      "value": "{{GetDetails[0].service_charge_val}}"
+                                                    },
+                                                    {
+                                                      "name": ":P13",
+                                                      "type": "expression",
+                                                      "value": "{{GetDetails[0].service_charge_per}}"
+                                                    },
+                                                    {
+                                                      "name": ":P14",
+                                                      "type": "expression",
+                                                      "value": "{{RTChargeAmt}}"
+                                                    },
+                                                    {
+                                                      "name": ":P15",
+                                                      "type": "expression",
+                                                      "value": "{{RTPayableAmt}}"
+                                                    },
+                                                    {
+                                                      "name": ":P16",
+                                                      "type": "expression",
+                                                      "value": "{{RTClosingBalance}}"
+                                                    },
+                                                    {
+                                                      "name": ":P17",
+                                                      "type": "expression",
+                                                      "value": "{{'Android'}}"
+                                                    },
+                                                    {
+                                                      "name": ":P18",
+                                                      "type": "expression",
+                                                      "value": "{{'Cash'}}"
+                                                    },
+                                                    {
+                                                      "name": ":P19",
+                                                      "type": "expression",
+                                                      "value": "{{'Pending'}}"
+                                                    },
+                                                    {
+                                                      "name": ":P20",
+                                                      "type": "expression",
+                                                      "value": "{{TransactionId}}"
+                                                    },
+                                                    {
+                                                      "name": ":P21",
+                                                      "type": "expression",
+                                                      "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                    },
+                                                    {
+                                                      "name": ":P22",
+                                                      "type": "expression",
+                                                      "value": "{{'A2P'}}"
+                                                    },
+                                                    {
+                                                      "name": ":P23",
+                                                      "type": "expression",
+                                                      "value": "{{'Live'}}"
+                                                    },
+                                                    {
+                                                      "name": ":P24",
+                                                      "type": "expression",
+                                                      "value": "{{NOW}}"
+                                                    },
+                                                    {
+                                                      "name": ":P25",
+                                                      "type": "expression",
+                                                      "value": "{{identity}}"
+                                                    },
+                                                    {
+                                                      "name": ":P26",
+                                                      "type": "expression",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "name": ":P27",
+                                                      "type": "expression",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "name": ":P28",
+                                                      "type": "expression",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "name": ":P29",
+                                                      "type": "expression",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "name": ":P30",
+                                                      "type": "expression",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "name": ":P31",
+                                                      "type": "expression",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "name": ":P32",
+                                                      "type": "expression",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "name": ":P33",
+                                                      "type": "expression",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "name": ":P34",
+                                                      "type": "expression",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "name": ":P35",
+                                                      "type": "expression",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "name": ":P36",
+                                                      "type": "expression",
+                                                      "value": "{{0}}"
+                                                    },
+                                                    {
+                                                      "name": ":P37",
+                                                      "type": "expression",
+                                                      "value": "{{0}}"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "meta": [
+                                                {
+                                                  "name": "identity",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "affected",
+                                                  "type": "number"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "name": "DrBalanceRT",
+                                              "module": "dbupdater",
+                                              "action": "insert",
+                                              "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "type": "insert",
+                                                  "values": [
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "user_id",
+                                                      "type": "number",
+                                                      "value": "{{identity}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "old_balance",
+                                                      "type": "text",
+                                                      "value": "{{getSalt.balance_amt}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "amount",
+                                                      "type": "text",
+                                                      "value": "{{Amount}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "new_balance",
+                                                      "type": "text",
+                                                      "value": "{{RTClosingBalance}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "transaction_type",
+                                                      "type": "text",
+                                                      "value": "{{'Money Transfer Verify'}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "tr_date",
+                                                      "type": "text",
+                                                      "value": "{{NOW}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "ip_address",
+                                                      "type": "text",
+                                                      "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "crdr_type",
+                                                      "type": "text",
+                                                      "value": "{{'Debit'}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "pay_ref_id",
+                                                      "type": "number",
+                                                      "value": "{{RechTrans.identity}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "remarks",
+                                                      "type": "text",
+                                                      "value": "{{'Number: '+getSalt.user_mobile+' | Amount: Rs. '+Amount+' | Verify Money Transfer | Ref. Id: '+RechTrans.identity+' | Comm Per: '+GetDetails[0].comm_per+' | Comm Val: '+GetDetails[0].comm_val+' | Charge Per: '+GetDetails[0].service_charge_per+' | Charge Val: '+GetDetails[0].service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt.: '+RTPayableAmt+' | Beneficiary Id: '+$_GET.benid+' | Remitter Id: '+$_GET.senderid}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "created_by",
+                                                      "type": "number",
+                                                      "value": "{{identity}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "created_on",
+                                                      "type": "datetime",
+                                                      "value": "{{NOW}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "netamt",
+                                                      "type": "text",
+                                                      "value": "{{RTPayableAmt}}"
+                                                    },
+                                                    {
+                                                      "table": "tt_balance",
+                                                      "column": "status",
+                                                      "type": "text",
+                                                      "value": "{{'FAILED'}}"
+                                                    }
+                                                  ],
+                                                  "table": "tt_balance",
+                                                  "returning": "id",
+                                                  "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{getSalt.balance_amt}} */, :P3 /* {{Amount}} */, :P4 /* {{RTClosingBalance}} */, :P5 /* {{'Money Transfer Verify'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+getSalt.user_mobile+' | Amount: Rs. '+Amount+' | Verify Money Transfer | Ref. Id: '+RechTrans.identity+' | Comm Per: '+GetDetails[0].comm_per+' | Comm Val: '+GetDetails[0].comm_val+' | Charge Per: '+GetDetails[0].service_charge_per+' | Charge Val: '+GetDetails[0].service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt.: '+RTPayableAmt+' | Beneficiary Id: '+$_GET.benid+' | Remitter Id: '+$_GET.senderid}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTPayableAmt}} */, :P14 /* {{'FAILED'}} */)",
+                                                  "params": [
+                                                    {
+                                                      "name": ":P1",
+                                                      "type": "expression",
+                                                      "value": "{{identity}}"
+                                                    },
+                                                    {
+                                                      "name": ":P2",
+                                                      "type": "expression",
+                                                      "value": "{{getSalt.balance_amt}}"
+                                                    },
+                                                    {
+                                                      "name": ":P3",
+                                                      "type": "expression",
+                                                      "value": "{{Amount}}"
+                                                    },
+                                                    {
+                                                      "name": ":P4",
+                                                      "type": "expression",
+                                                      "value": "{{RTClosingBalance}}"
+                                                    },
+                                                    {
+                                                      "name": ":P5",
+                                                      "type": "expression",
+                                                      "value": "{{'Money Transfer Verify'}}"
+                                                    },
+                                                    {
+                                                      "name": ":P6",
+                                                      "type": "expression",
+                                                      "value": "{{NOW}}"
+                                                    },
+                                                    {
+                                                      "name": ":P7",
+                                                      "type": "expression",
+                                                      "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                    },
+                                                    {
+                                                      "name": ":P8",
+                                                      "type": "expression",
+                                                      "value": "{{'Debit'}}"
+                                                    },
+                                                    {
+                                                      "name": ":P9",
+                                                      "type": "expression",
+                                                      "value": "{{RechTrans.identity}}"
+                                                    },
+                                                    {
+                                                      "name": ":P10",
+                                                      "type": "expression",
+                                                      "value": "{{'Number: '+getSalt.user_mobile+' | Amount: Rs. '+Amount+' | Verify Money Transfer | Ref. Id: '+RechTrans.identity+' | Comm Per: '+GetDetails[0].comm_per+' | Comm Val: '+GetDetails[0].comm_val+' | Charge Per: '+GetDetails[0].service_charge_per+' | Charge Val: '+GetDetails[0].service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt.: '+RTPayableAmt+' | Beneficiary Id: '+$_GET.benid+' | Remitter Id: '+$_GET.senderid}}"
+                                                    },
+                                                    {
+                                                      "name": ":P11",
+                                                      "type": "expression",
+                                                      "value": "{{identity}}"
+                                                    },
+                                                    {
+                                                      "name": ":P12",
+                                                      "type": "expression",
+                                                      "value": "{{NOW}}"
+                                                    },
+                                                    {
+                                                      "name": ":P13",
+                                                      "type": "expression",
+                                                      "value": "{{RTPayableAmt}}"
+                                                    },
+                                                    {
+                                                      "name": ":P14",
+                                                      "type": "expression",
+                                                      "value": "{{'FAILED'}}"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "meta": [
+                                                {
+                                                  "name": "identity",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "affected",
+                                                  "type": "number"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "name": "api",
                                               "module": "api",
                                               "action": "send",
                                               "options": {
@@ -402,11 +1433,714 @@
                                               "module": "core",
                                               "action": "setvalue",
                                               "options": {
-                                                "value": "{{apiVerifyBen.data}}"
+                                                "value": "{{api.data}}"
                                               },
                                               "meta": [],
                                               "outputType": "text",
                                               "output": true
+                                            },
+                                            {
+                                              "name": "apistatus",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{apiVerifyBen.StatusCode==1? 'SUCCESS' : apiVerifyBen.StatusCode==0? 'FAILED' : 'PENDING'}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text"
+                                            },
+                                            {
+                                              "name": "apiResponseTime",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{NOW.dateDiff('seconds', SubmitTime)}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text"
+                                            },
+                                            {
+                                              "name": "",
+                                              "module": "core",
+                                              "action": "condition",
+                                              "options": {
+                                                "if": "{{apiVerifyBen.StatusCode==1}}",
+                                                "then": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "UpBen",
+                                                      "module": "dbupdater",
+                                                      "action": "update",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "update",
+                                                          "values": [
+                                                            {
+                                                              "table": "dmt_beneficiary",
+                                                              "column": "ben_verify",
+                                                              "type": "boolean",
+                                                              "value": "{{true}}"
+                                                            },
+                                                            {
+                                                              "table": "dmt_beneficiary",
+                                                              "column": "updated_by",
+                                                              "type": "number",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "table": "dmt_beneficiary",
+                                                              "column": "updated_on",
+                                                              "type": "datetime",
+                                                              "value": "{{NOW}}"
+                                                            }
+                                                          ],
+                                                          "table": "dmt_beneficiary",
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "remitter_id",
+                                                                "field": "remitter_id",
+                                                                "type": "string",
+                                                                "operator": "equal",
+                                                                "value": "{{$_GET.senderid}}",
+                                                                "data": {
+                                                                  "column": "remitter_id"
+                                                                },
+                                                                "operation": "="
+                                                              },
+                                                              {
+                                                                "id": "ben_id",
+                                                                "field": "ben_id",
+                                                                "type": "string",
+                                                                "operator": "equal",
+                                                                "value": "{{$_GET.benid}}",
+                                                                "data": {
+                                                                  "column": "ben_id"
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "query": "UPDATE dmt_beneficiary\nSET ben_verify = :P1 /* {{true}} */, updated_by = :P2 /* {{identity}} */, updated_on = :P3 /* {{NOW}} */\nWHERE remitter_id = :P4 /* {{$_GET.senderid}} */ AND ben_id = :P5 /* {{$_GET.benid}} */",
+                                                          "params": [
+                                                            {
+                                                              "name": ":P1",
+                                                              "type": "expression",
+                                                              "value": "{{true}}"
+                                                            },
+                                                            {
+                                                              "name": ":P2",
+                                                              "type": "expression",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "name": ":P3",
+                                                              "type": "expression",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P4",
+                                                              "value": "{{$_GET.senderid}}"
+                                                            },
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P5",
+                                                              "value": "{{$_GET.benid}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "name": "UpRechTrans",
+                                                      "module": "dbupdater",
+                                                      "action": "update",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "update",
+                                                          "values": [
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "user_number",
+                                                              "type": "text",
+                                                              "value": "{{apiVerifyBen.Data.MobileNo}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "details",
+                                                              "type": "text",
+                                                              "value": "{{apiVerifyBen.Data.BankAccNo}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "status",
+                                                              "type": "text",
+                                                              "value": "{{apistatus}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "api_logs",
+                                                              "type": "text",
+                                                              "value": "{{GetDetails[0].api_fwrd_code}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "is_processed",
+                                                              "type": "text",
+                                                              "value": "{{apiVerifyBen.Data.BankTxnId}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "operator_ref",
+                                                              "type": "text",
+                                                              "value": "{{apiVerifyBen.Message}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "api_ref",
+                                                              "type": "text",
+                                                              "value": "{{apiVerifyBen.Data.OrderId}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "revert_trans",
+                                                              "type": "text",
+                                                              "value": "0"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "api_response_id",
+                                                              "type": "number",
+                                                              "value": "{{apiResponseTime}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "updated_on",
+                                                              "type": "datetime",
+                                                              "value": "{{NOW}}"
+                                                            }
+                                                          ],
+                                                          "table": "tt_recharge_trans",
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "id",
+                                                                "field": "id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{RechTrans.identity}}",
+                                                                "data": {
+                                                                  "column": "id"
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "query": "UPDATE tt_recharge_trans\nSET user_number = :P1 /* {{apiVerifyBen.Data.MobileNo}} */, details = :P2 /* {{apiVerifyBen.Data.BankAccNo}} */, status = :P3 /* {{apistatus}} */, api_logs = :P4 /* {{GetDetails[0].api_fwrd_code}} */, is_processed = :P5 /* {{apiVerifyBen.Data.BankTxnId}} */, operator_ref = :P6 /* {{apiVerifyBen.Message}} */, api_ref = :P7 /* {{apiVerifyBen.Data.OrderId}} */, revert_trans = '0', api_response_id = :P8 /* {{apiResponseTime}} */, updated_on = :P9 /* {{NOW}} */\nWHERE id = :P10 /* {{RechTrans.identity}} */",
+                                                          "params": [
+                                                            {
+                                                              "name": ":P1",
+                                                              "type": "expression",
+                                                              "value": "{{apiVerifyBen.Data.MobileNo}}"
+                                                            },
+                                                            {
+                                                              "name": ":P2",
+                                                              "type": "expression",
+                                                              "value": "{{apiVerifyBen.Data.BankAccNo}}"
+                                                            },
+                                                            {
+                                                              "name": ":P3",
+                                                              "type": "expression",
+                                                              "value": "{{apistatus}}"
+                                                            },
+                                                            {
+                                                              "name": ":P4",
+                                                              "type": "expression",
+                                                              "value": "{{GetDetails[0].api_fwrd_code}}"
+                                                            },
+                                                            {
+                                                              "name": ":P5",
+                                                              "type": "expression",
+                                                              "value": "{{apiVerifyBen.Data.BankTxnId}}"
+                                                            },
+                                                            {
+                                                              "name": ":P6",
+                                                              "type": "expression",
+                                                              "value": "{{apiVerifyBen.Message}}"
+                                                            },
+                                                            {
+                                                              "name": ":P7",
+                                                              "type": "expression",
+                                                              "value": "{{apiVerifyBen.Data.OrderId}}"
+                                                            },
+                                                            {
+                                                              "name": ":P8",
+                                                              "type": "expression",
+                                                              "value": "{{apiResponseTime}}"
+                                                            },
+                                                            {
+                                                              "name": ":P9",
+                                                              "type": "expression",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P10",
+                                                              "value": "{{RechTrans.identity}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "name": "UpDrBalanceRT",
+                                                      "module": "dbupdater",
+                                                      "action": "update",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "update",
+                                                          "values": [
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "status",
+                                                              "type": "text",
+                                                              "value": "{{apistatus}}"
+                                                            }
+                                                          ],
+                                                          "table": "tt_balance",
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "id",
+                                                                "field": "id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{DrBalanceRT.identity}}",
+                                                                "data": {
+                                                                  "column": "id"
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "query": "UPDATE tt_balance\nSET status = :P1 /* {{apistatus}} */\nWHERE id = :P2 /* {{DrBalanceRT.identity}} */",
+                                                          "params": [
+                                                            {
+                                                              "name": ":P1",
+                                                              "type": "expression",
+                                                              "value": "{{apistatus}}"
+                                                            },
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P2",
+                                                              "value": "{{DrBalanceRT.identity}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "name": "TrUserUpdateRT",
+                                                      "module": "dbupdater",
+                                                      "action": "update",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "update",
+                                                          "values": [
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "balance_amt",
+                                                              "type": "text",
+                                                              "value": "{{RTClosingBalance}}"
+                                                            }
+                                                          ],
+                                                          "table": "m_users",
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "id",
+                                                                "field": "id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{identity}}",
+                                                                "data": {
+                                                                  "column": "id"
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{RTClosingBalance}} */\nWHERE id = :P2 /* {{identity}} */",
+                                                          "params": [
+                                                            {
+                                                              "name": ":P1",
+                                                              "type": "expression",
+                                                              "value": "{{RTClosingBalance}}"
+                                                            },
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P2",
+                                                              "value": "{{identity}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "name": "LiveApi",
+                                                      "module": "api",
+                                                      "action": "send",
+                                                      "options": {
+                                                        "url": "https://portal.swpay.in/api/RefreshTrans"
+                                                      },
+                                                      "output": true
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "outputType": "boolean"
+                                            },
+                                            {
+                                              "name": "",
+                                              "module": "core",
+                                              "action": "condition",
+                                              "options": {
+                                                "if": "{{apiVerifyBen.StatusCode==0}}",
+                                                "then": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "balance",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{getSalt.balance_amt.toNumber()}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "UpRechTrans_Failed",
+                                                      "module": "dbupdater",
+                                                      "action": "update",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "update",
+                                                          "values": [
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "closing_balance",
+                                                              "type": "text",
+                                                              "value": "{{balance}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "status",
+                                                              "type": "text",
+                                                              "value": "{{'FAILED'}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "api_logs",
+                                                              "type": "text",
+                                                              "value": "{{GetDetails[0].api_fwrd_code}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "api_response_id",
+                                                              "type": "number",
+                                                              "value": "{{apiResponseTime}}"
+                                                            }
+                                                          ],
+                                                          "table": "tt_recharge_trans",
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "id",
+                                                                "field": "id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{RechTrans.identity}}",
+                                                                "data": {
+                                                                  "column": "id"
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "query": "UPDATE tt_recharge_trans\nSET closing_balance = :P1 /* {{balance}} */, status = :P2 /* {{'FAILED'}} */, api_logs = :P3 /* {{GetDetails[0].api_fwrd_code}} */, api_response_id = :P4 /* {{apiResponseTime}} */\nWHERE id = :P5 /* {{RechTrans.identity}} */",
+                                                          "params": [
+                                                            {
+                                                              "name": ":P1",
+                                                              "type": "expression",
+                                                              "value": "{{balance}}"
+                                                            },
+                                                            {
+                                                              "name": ":P2",
+                                                              "type": "expression",
+                                                              "value": "{{'FAILED'}}"
+                                                            },
+                                                            {
+                                                              "name": ":P3",
+                                                              "type": "expression",
+                                                              "value": "{{GetDetails[0].api_fwrd_code}}"
+                                                            },
+                                                            {
+                                                              "name": ":P4",
+                                                              "type": "expression",
+                                                              "value": "{{apiResponseTime}}"
+                                                            },
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P5",
+                                                              "value": "{{RechTrans.identity}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "name": "CrBalanceRT",
+                                                      "module": "dbupdater",
+                                                      "action": "insert",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "insert",
+                                                          "values": [
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "user_id",
+                                                              "type": "number",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "old_balance",
+                                                              "type": "text",
+                                                              "value": "{{RTClosingBalance}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "amount",
+                                                              "type": "text",
+                                                              "value": "{{Amount}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "new_balance",
+                                                              "type": "text",
+                                                              "value": "{{balance}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "transaction_type",
+                                                              "type": "text",
+                                                              "value": "{{'Money Transfer Verify Refund'}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "tr_date",
+                                                              "type": "text",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "ip_address",
+                                                              "type": "text",
+                                                              "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "crdr_type",
+                                                              "type": "text",
+                                                              "value": "{{'Credit'}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "pay_ref_id",
+                                                              "type": "number",
+                                                              "value": "{{RechTrans.identity}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "remarks",
+                                                              "type": "text",
+                                                              "value": "{{$_POST.remarks}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "created_by",
+                                                              "type": "number",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "created_on",
+                                                              "type": "datetime",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "netamt",
+                                                              "type": "text",
+                                                              "value": "{{RTPayableAmt}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "status",
+                                                              "type": "text",
+                                                              "value": "{{'REFUND'}}"
+                                                            }
+                                                          ],
+                                                          "table": "tt_balance",
+                                                          "returning": "id",
+                                                          "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{RTClosingBalance}} */, :P3 /* {{Amount}} */, :P4 /* {{balance}} */, :P5 /* {{'Money Transfer Verify Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{$_POST.remarks}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTPayableAmt}} */, :P14 /* {{'REFUND'}} */)",
+                                                          "params": [
+                                                            {
+                                                              "name": ":P1",
+                                                              "type": "expression",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "name": ":P2",
+                                                              "type": "expression",
+                                                              "value": "{{RTClosingBalance}}"
+                                                            },
+                                                            {
+                                                              "name": ":P3",
+                                                              "type": "expression",
+                                                              "value": "{{Amount}}"
+                                                            },
+                                                            {
+                                                              "name": ":P4",
+                                                              "type": "expression",
+                                                              "value": "{{balance}}"
+                                                            },
+                                                            {
+                                                              "name": ":P5",
+                                                              "type": "expression",
+                                                              "value": "{{'Money Transfer Verify Refund'}}"
+                                                            },
+                                                            {
+                                                              "name": ":P6",
+                                                              "type": "expression",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "name": ":P7",
+                                                              "type": "expression",
+                                                              "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                            },
+                                                            {
+                                                              "name": ":P8",
+                                                              "type": "expression",
+                                                              "value": "{{'Credit'}}"
+                                                            },
+                                                            {
+                                                              "name": ":P9",
+                                                              "type": "expression",
+                                                              "value": "{{RechTrans.identity}}"
+                                                            },
+                                                            {
+                                                              "name": ":P10",
+                                                              "type": "expression",
+                                                              "value": "{{$_POST.remarks}}"
+                                                            },
+                                                            {
+                                                              "name": ":P11",
+                                                              "type": "expression",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "name": ":P12",
+                                                              "type": "expression",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "name": ":P13",
+                                                              "type": "expression",
+                                                              "value": "{{RTPayableAmt}}"
+                                                            },
+                                                            {
+                                                              "name": ":P14",
+                                                              "type": "expression",
+                                                              "value": "{{'REFUND'}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "identity",
+                                                          "type": "text"
+                                                        },
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "outputType": "boolean"
                                             }
                                           ]
                                         },
