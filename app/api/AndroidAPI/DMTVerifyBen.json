@@ -2208,6 +2208,15 @@
                                                           "type": "number"
                                                         }
                                                       ]
+                                                    },
+                                                    {
+                                                      "name": "LiveApi",
+                                                      "module": "api",
+                                                      "action": "send",
+                                                      "options": {
+                                                        "url": "https://portal.swpay.in/api/RefreshTrans"
+                                                      },
+                                                      "output": false
                                                     }
                                                   ]
                                                 }

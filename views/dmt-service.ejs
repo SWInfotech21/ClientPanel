@@ -7,13 +7,16 @@
 <dmx-value id="varBenMobile" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varTransStatus" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varVerifyModal" dmx-bind:value="0"></dmx-value>
+<dmx-value id="varRemitterAdd" dmx-bind:value="0"></dmx-value>
 <!-- <dmx-serverconnect id="scBankList" url="api/DMT/GetBankList"></dmx-serverconnect>
 <dmx-data-view id="dvBankList" filter="(BankName.contains(Search.value.titlecase()))" dmx-bind:data="content.scBankList.data.apiBanks"></dmx-data-view> -->
 
 <main>
     <div class="container-fluid">
-        <h5 class="mt-4">Domestic Money Transfer(DMT)
-            <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scLoginUser.state.executing"></span>
+        <h5 class="mt-4 d-flex justify-content-between">Domestic Money Transfer(DMT)
+            <span class="border-3 spinner-border spinner-border-sm" role="status" dmx-show="scLoginUser.state.executing"></span>
+
+            <button class="btn sw-btn-dark px-5 mr-2" dmx-on:click="modalAddRem.show();modalAddRem.formAddRem.reset()">Add Remitter</button>
         </h5>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">DMT / {{scLoginUser.data.LoginUserInfo.user_id}} / {{scLoginUser.data.LoginUserInfo.id}}</li>
@@ -289,6 +292,11 @@
                         <div class="row mx-0" dmx-show="varTransStatus.value == 1">
                             <div class="col-12">
                                 <div class="form-group">
+                                    <label class="font-weight-bold">Amount: Rs. <span class="text-muted">{{content.modalTransBen.formBenTrans.data.bank_tr_amount}}</span></label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
                                     <label class="font-weight-bold">Beneficiary Name: <span class="text-muted">{{content.modalTransBen.formBenTrans.data.ben_name}}</span></label>
                                 </div>
                             </div>
@@ -299,12 +307,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="font-weight-bold">Ben. Bank Name: <span class="text-muted">{{content.modalTransBen.formBenTrans.data.ben_name}}</span></label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Amount: <span class="text-muted">{{content.modalTransBen.formBenTrans.data.bank_tr_amount}}</span></label>
+                                    <label class="font-weight-bold">Ben. Bank A/C No.: <span class="text-muted">{{content.modalTransBen.formBenTrans.data.bank_ac_no}}</span></label>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -366,6 +369,72 @@
                         <div class="row mx-0 text-right">
                             <div class="col-12">
                                 <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0);varBenMobile.setValue(0); varBenBankName.setValue(0);">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modalAddRem" is="dmx-bs5-modal" tabindex="-1" nokeyboard="true" nobackdrop="true" nocloseonclick="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add A New Remitter</h5>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalAddRem.hide();formOTPRem.reset();formAddRem.reset();varRemitterAdd.setValue(0)"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="api/DMT/AddRemOTP" id="formOTPRem" method="post" is="dmx-serverconnect-form" dmx-show="varRemitterAdd.value==0" dmx-on:success="varRemitterAdd.setValue(1)">
+                            <div class="row mx-0">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Mobile Number </label>
+                                        <input type="number" id="RemMobileOTP" class="form-control" name="RemMobileOTP" placeholder="Enter 10 digit mobile" required="" data-rule-number="">
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2 text-center">
+                                    <button class="btn sw-btn-dark btn-sm" type="submit" dmx-bind:disabled="content.modalAddRem.formOTPRem.state.executing">Submit <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalAddRem.formOTPRem.state.executing"></span></button>
+                                </div>
+                            </div>
+                        </form>
+                        <h5 class="text-info text-center" dmx-show="varRemitterAdd.value==1">{{content.modalAddRem.formOTPRem.data.apiRemOTP.Message}}</h5>
+                        <h5 class="text-info text-center" dmx-show="varRemitterAdd.value==2">{{content.modalAddRem.formAddRem.data.RemitterAdd.Message}}</h5>
+                        <form id="formAddRem" is="dmx-serverconnect-form" action="api/DMT/AddRemitter" dmx-populate="" method="post" dmx-on:success="formAddRem.reset(); varRemitterAdd.setValue(2); scNotif.success(content.modalAddRem.formAddRem.data.RemitterAdd.StatusCode == 0 ? content.modalAddRem.formAddRem.data.RemitterAdd.Message : content.modalAddRem.formAddRem.data.RemitterAdd.StatusCode == 1 ? content.modalAddRem.formAddRem.data.RemitterAdd.Message : 'An Error Occured')" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="" dmx-show="varRemitterAdd.value==1">
+
+                            <div class="row mx-0">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Mobile Number </label>
+                                        <input type="text" id="RemMobileAdd" class="form-control" name="RemMobileAdd" placeholder="Enter 10 digit mobile" required="" data-rule-number="" dmx-bind:value="content.modalAddRem.formOTPRem.RemMobileOTP.value" readonly="true">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Remitter Name</label>
+                                        <input type="text" id="RemNameAdd" class="form-control" name="RemNameAdd" required="">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">PIN Code</label>
+                                        <input type="number" id="RemPINAdd" class="form-control" name="RemPINAdd" required="">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">OTP</label>
+                                        <input type="text" id="RemOTP" class="form-control" name="RemOTP" required="" maxlength="6" data-rule-number="" minlength="6">
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2 text-center">
+                                    <button class="btn sw-btn-dark btn-sm" type="submit" dmx-bind:disabled="content.modalAddRem.formAddRem.state.executing">Submit <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalAddRem.formAddRem.state.executing"></span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row mx-0 text-right">
+                            <div class="col-12">
+                                <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalAddRem.hide();formOTPRem.reset();formAddRem.reset();varRemitterAdd.setValue(0)">Close</button>
                             </div>
                         </div>
                     </div>

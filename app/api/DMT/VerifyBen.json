@@ -1614,7 +1614,7 @@
                                 "table": "tt_balance",
                                 "column": "ip_address",
                                 "type": "text",
-                                "value": "{{$_POST.ip_address}}"
+                                "value": "{{$_SERVER.REMOTE_ADDR}}"
                               },
                               {
                                 "table": "tt_balance",
@@ -1661,7 +1661,7 @@
                             ],
                             "table": "tt_balance",
                             "returning": "id",
-                            "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{RTClosingBalance}} */, :P3 /* {{Amount}} */, :P4 /* {{balance}} */, :P5 /* {{'Money Transfer Verify Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_POST.ip_address}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number:  '+GetUser.user_mobile+' | Amount: Rs. '+Amount+' | Verify Money Transfer | Ref. Id: '+RechTrans.identity+' | Comm Per: '+GetDetails[0].comm_per+' | Comm Val: '+GetDetails[0].comm_val+' | Charge Per: '+GetDetails[0].service_charge_per+' | Charge Val: '+GetDetails[0].service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt.: '+RTPayableAmt+' | Beneficiary Id:  '+$_POST.RecipientIdVerify+' | Remitter Id: '+$_POST.SenderIdVerify}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTPayableAmt}} */, :P14 /* {{'REFUND'}} */)",
+                            "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{RTClosingBalance}} */, :P3 /* {{Amount}} */, :P4 /* {{balance}} */, :P5 /* {{'Money Transfer Verify Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number:  '+GetUser.user_mobile+' | Amount: Rs. '+Amount+' | Verify Money Transfer | Ref. Id: '+RechTrans.identity+' | Comm Per: '+GetDetails[0].comm_per+' | Comm Val: '+GetDetails[0].comm_val+' | Charge Per: '+GetDetails[0].service_charge_per+' | Charge Val: '+GetDetails[0].service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt.: '+RTPayableAmt+' | Beneficiary Id:  '+$_POST.RecipientIdVerify+' | Remitter Id: '+$_POST.SenderIdVerify}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTPayableAmt}} */, :P14 /* {{'REFUND'}} */)",
                             "params": [
                               {
                                 "name": ":P1",
@@ -1696,7 +1696,7 @@
                               {
                                 "name": ":P7",
                                 "type": "expression",
-                                "value": "{{$_POST.ip_address}}"
+                                "value": "{{$_SERVER.REMOTE_ADDR}}"
                               },
                               {
                                 "name": ":P8",

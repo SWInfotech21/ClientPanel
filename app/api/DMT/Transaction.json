@@ -3547,6 +3547,12 @@
                                                               "column": "status",
                                                               "type": "text",
                                                               "value": "{{apistatus}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_balance",
+                                                              "column": "new_balance",
+                                                              "type": "text",
+                                                              "value": "{{RTClosingBalance}}"
                                                             }
                                                           ],
                                                           "table": "tt_balance",
@@ -3568,7 +3574,7 @@
                                                             "conditional": null,
                                                             "valid": true
                                                           },
-                                                          "query": "UPDATE tt_balance\nSET status = :P1 /* {{apistatus}} */\nWHERE id = :P2 /* {{DrBalanceRT.identity}} */",
+                                                          "query": "UPDATE tt_balance\nSET status = :P1 /* {{apistatus}} */, new_balance = :P2 /* {{RTClosingBalance}} */\nWHERE id = :P3 /* {{DrBalanceRT.identity}} */",
                                                           "params": [
                                                             {
                                                               "name": ":P1",
@@ -3576,9 +3582,14 @@
                                                               "value": "{{apistatus}}"
                                                             },
                                                             {
+                                                              "name": ":P2",
+                                                              "type": "expression",
+                                                              "value": "{{RTClosingBalance}}"
+                                                            },
+                                                            {
                                                               "operator": "equal",
                                                               "type": "expression",
-                                                              "name": ":P2",
+                                                              "name": ":P3",
                                                               "value": "{{DrBalanceRT.identity}}"
                                                             }
                                                           ]
