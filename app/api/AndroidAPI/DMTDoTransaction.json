@@ -1973,8 +1973,7 @@
                                                                               "value": "{{GetAdmin.admin_balance_amt.toNumber()+RTChargeAmt.toNumber()}}"
                                                                             },
                                                                             "meta": [],
-                                                                            "outputType": "text",
-                                                                            "output": true
+                                                                            "outputType": "text"
                                                                           },
                                                                           {
                                                                             "name": "",
@@ -2774,7 +2773,7 @@
                                                                                     "table": "tt_recharge_trans",
                                                                                     "column": "details",
                                                                                     "type": "text",
-                                                                                    "value": "{{$_GET.bankacno}}"
+                                                                                    "value": "{{$_GET.beneficiaryid}}"
                                                                                   },
                                                                                   {
                                                                                     "table": "tt_recharge_trans",
@@ -2973,11 +2972,17 @@
                                                                                     "column": "is_processed",
                                                                                     "type": "text",
                                                                                     "value": "{{'N/A'}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "table": "tt_recharge_trans",
+                                                                                    "column": "extra2",
+                                                                                    "type": "text",
+                                                                                    "value": "{{$_GET.bankacno}}"
                                                                                   }
                                                                                 ],
                                                                                 "table": "tt_recharge_trans",
                                                                                 "returning": "id",
-                                                                                "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed) VALUES (:P1 /* {{GetCommision.operator_id}} */, :P2 /* {{GetOpAPICodeFwrd.service_id}} */, :P3 /* {{GetOpAPICodeFwrd.api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_GET.mobileno}} */, :P6 /* {{$_GET.bankacno}} */, :P7 /* {{Remainder}} */, :P8 /* {{'Android'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{TransactionId}} */, :P12 /* {{'Transfer of Rs. '+Remainder+' by  '+getSalt.user_mobile+' |  to A'+$_GET.bankacno+' '}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2C'}} */, :P15 /* {{NOW}} */, :P16 /* {{identity}} */, :P17 /* {{getSalt.balance_amt}} */, :P18 /* {{GetCommision.comm_per}} */, :P19 /* {{GetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{GetCommision.service_charge_val}} */, :P22 /* {{GetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{getSalt.balance_amt}} */, :P26 /* {{DTCommPer}} */, :P27 /* {{DTCommVal}} */, :P28 /* {{DTCommAmt}} */, :P29 /* {{DTChargePer}} */, :P30 /* {{DTChargeVal}} */, :P31 /* {{DTChargeAmt}} */, :P32 /* {{MDTCommPer}} */, :P33 /* {{MDTCommVal}} */, :P34 /* {{MDTCommAmt}} */, :P35 /* {{MDTChargePer}} */, :P36 /* {{MDTChargeVal}} */, :P37 /* {{MDTChargeAmt}} */, :P38 /* {{'N/A'}} */)",
+                                                                                "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed, extra2) VALUES (:P1 /* {{GetCommision.operator_id}} */, :P2 /* {{GetOpAPICodeFwrd.service_id}} */, :P3 /* {{GetOpAPICodeFwrd.api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_GET.mobileno}} */, :P6 /* {{$_GET.beneficiaryid}} */, :P7 /* {{Remainder}} */, :P8 /* {{'Android'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{TransactionId}} */, :P12 /* {{'Transfer of Rs. '+Remainder+' by  '+getSalt.user_mobile+' |  to A'+$_GET.bankacno+' '}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2C'}} */, :P15 /* {{NOW}} */, :P16 /* {{identity}} */, :P17 /* {{getSalt.balance_amt}} */, :P18 /* {{GetCommision.comm_per}} */, :P19 /* {{GetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{GetCommision.service_charge_val}} */, :P22 /* {{GetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{getSalt.balance_amt}} */, :P26 /* {{DTCommPer}} */, :P27 /* {{DTCommVal}} */, :P28 /* {{DTCommAmt}} */, :P29 /* {{DTChargePer}} */, :P30 /* {{DTChargeVal}} */, :P31 /* {{DTChargeAmt}} */, :P32 /* {{MDTCommPer}} */, :P33 /* {{MDTCommVal}} */, :P34 /* {{MDTCommAmt}} */, :P35 /* {{MDTChargePer}} */, :P36 /* {{MDTChargeVal}} */, :P37 /* {{MDTChargeAmt}} */, :P38 /* {{'N/A'}} */, :P39 /* {{$_GET.bankacno}} */)",
                                                                                 "params": [
                                                                                   {
                                                                                     "name": ":P1",
@@ -3007,7 +3012,7 @@
                                                                                   {
                                                                                     "name": ":P6",
                                                                                     "type": "expression",
-                                                                                    "value": "{{$_GET.bankacno}}"
+                                                                                    "value": "{{$_GET.beneficiaryid}}"
                                                                                   },
                                                                                   {
                                                                                     "name": ":P7",
@@ -3168,6 +3173,11 @@
                                                                                     "name": ":P38",
                                                                                     "type": "expression",
                                                                                     "value": "{{'N/A'}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": ":P39",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{$_GET.bankacno}}"
                                                                                   }
                                                                                 ]
                                                                               }
@@ -3215,7 +3225,7 @@
                                                                                     "table": "tt_balance",
                                                                                     "column": "new_balance",
                                                                                     "type": "text",
-                                                                                    "value": "{{getSalt.balance_amt}}"
+                                                                                    "value": "{{RTClosingBalance}}"
                                                                                   },
                                                                                   {
                                                                                     "table": "tt_balance",
@@ -3280,7 +3290,7 @@
                                                                                 ],
                                                                                 "table": "tt_balance",
                                                                                 "returning": "id",
-                                                                                "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{getSalt.balance_amt}} */, :P3 /* {{Remainder}} */, :P4 /* {{getSalt.balance_amt}} */, :P5 /* {{'Money Transfer'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number:  '+$_GET.mobileno+' | Amount: '+Remainder+'\\n | Money Transfer | Ref. Id: '+RechTrans.identity+' | Comm Per:'+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val:   '+GetCommision.service_charge_val+' \\n | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'FAILED'}} */)",
+                                                                                "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{getSalt.balance_amt}} */, :P3 /* {{Remainder}} */, :P4 /* {{RTClosingBalance}} */, :P5 /* {{'Money Transfer'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number:  '+$_GET.mobileno+' | Amount: '+Remainder+'\\n | Money Transfer | Ref. Id: '+RechTrans.identity+' | Comm Per:'+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val:   '+GetCommision.service_charge_val+' \\n | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'FAILED'}} */)",
                                                                                 "params": [
                                                                                   {
                                                                                     "name": ":P1",
@@ -3300,7 +3310,7 @@
                                                                                   {
                                                                                     "name": ":P4",
                                                                                     "type": "expression",
-                                                                                    "value": "{{getSalt.balance_amt}}"
+                                                                                    "value": "{{RTClosingBalance}}"
                                                                                   },
                                                                                   {
                                                                                     "name": ":P5",
@@ -4775,7 +4785,7 @@
                                                                                             "table": "tt_balance",
                                                                                             "column": "old_balance",
                                                                                             "type": "text",
-                                                                                            "value": "{{getSalt.balance_amt}}"
+                                                                                            "value": "{{RTClosingBalance}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_balance",
@@ -4852,7 +4862,7 @@
                                                                                         ],
                                                                                         "table": "tt_balance",
                                                                                         "returning": "id",
-                                                                                        "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{getSalt.balance_amt}} */, :P3 /* {{Remainder}} */, :P4 /* {{getSalt.balance_amt}} */, :P5 /* {{'Money Transfer Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.mobileno+' | Amount:\\n '+Remainder+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'REFUND'}} */)",
+                                                                                        "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{RTClosingBalance}} */, :P3 /* {{Remainder}} */, :P4 /* {{getSalt.balance_amt}} */, :P5 /* {{'Money Transfer Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.mobileno+' | Amount:\\n '+Remainder+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'REFUND'}} */)",
                                                                                         "params": [
                                                                                           {
                                                                                             "name": ":P1",
@@ -4862,7 +4872,7 @@
                                                                                           {
                                                                                             "name": ":P2",
                                                                                             "type": "expression",
-                                                                                            "value": "{{getSalt.balance_amt}}"
+                                                                                            "value": "{{RTClosingBalance}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P3",
