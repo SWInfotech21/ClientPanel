@@ -30,7 +30,8 @@
           },
           "method": "POST"
         },
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "apiDMT",
@@ -72,8 +73,7 @@
             "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}"
           }
         },
-        "output": true,
-        "disabled": true
+        "output": true
       },
       {
         "name": "A",

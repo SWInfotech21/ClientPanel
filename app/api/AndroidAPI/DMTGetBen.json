@@ -386,7 +386,7 @@
                                               "module": "core",
                                               "action": "condition",
                                               "options": {
-                                                "if": "{{GetBeneficiary.Data.StatusCode==2}}",
+                                                "if": "{{GetBeneficiary.StatusCode==2}}",
                                                 "then": {
                                                   "steps": [
                                                     {
