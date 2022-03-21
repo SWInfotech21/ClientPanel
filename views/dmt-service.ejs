@@ -120,12 +120,6 @@
                                         <input type="number" id="BenMobileAdd" class="form-control" name="BenMobileAdd" placeholder="Enter 10 digit mobile" required="" data-rule-number="">
                                     </div>
                                 </div>
-                                <!-- <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Deposit Bank</label>
-                                        <input type="text" id="BenBankAdd" class="form-control" name="BenBankAdd" placeholder="Enter Deposite Bank Name" required="">
-                                    </div>
-                                </div> -->
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold">Account No.</label>
@@ -141,7 +135,9 @@
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold">IFSC</label>
-                                        <input type="text" id="BenIFSCAdd" class="form-control" name="BenIFSCAdd" placeholder="Enter IFSC Code" required="">
+                                        <!-- <input type="text" id="BenIFSCAdd" class="form-control" name="BenIFSCAdd" placeholder="Enter IFSC Code" required=""> -->
+                                        <select id="selectAddBank" class="sw-select2 form-select fs-6 text-gray-500" name="BenIFSCAdd" required="" dmx-bind:options="content.scBankList.data.apiBanks.data" optiontext="BankName.titlecase()" optionvalue="IfscCode">
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-12 mt-2 text-center">
