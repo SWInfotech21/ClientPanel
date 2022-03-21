@@ -398,7 +398,7 @@
                         </form>
                         <h5 class="text-info text-center" dmx-show="varRemitterAdd.value==1">{{content.modalAddRem.formOTPRem.data.apiRemOTP.Message}}</h5>
                         <h5 class="text-info text-center" dmx-show="varRemitterAdd.value==2">{{content.modalAddRem.formAddRem.data.RemitterAdd.Message}}</h5>
-                        <form id="formAddRem" is="dmx-serverconnect-form" action="api/DMT/AddRemitter" dmx-populate="" method="post" dmx-on:success="formAddRem.reset(); varRemitterAdd.setValue(2); scNotif.success(content.modalAddRem.formAddRem.data.RemitterAdd.StatusCode == 0 ? content.modalAddRem.formAddRem.data.RemitterAdd.Message : content.modalAddRem.formAddRem.data.RemitterAdd.StatusCode == 1 ? content.modalAddRem.formAddRem.data.RemitterAdd.Message : 'An Error Occured')" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="" dmx-show="varRemitterAdd.value==1">
+                        <form id="formAddRem" is="dmx-serverconnect-form" action="api/DMT/AddRemitter" dmx-populate="" method="post" dmx-on:success="formAddRem.reset(); varRemitterAdd.setValue(2); scNotif.success(content.modalAddRem.formAddRem.data.RemitterAdd.StatusCode == 0 ? content.modalAddRem.formAddRem.data.RemitterAdd.Message : content.modalAddRem.formAddRem.data.RemitterAdd.StatusCode == 1 ? content.modalAddRem.formAddRem.data.RemitterAdd.Message : 'An Error Occured')" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="" dmx-show="varRemitterAdd.value==1 && content.modalAddRem.formOTPRem.data.apiRemOTP.StatusCode==1">
 
                             <div class="row mx-0">
                                 <div class="col-12 col-md-6">

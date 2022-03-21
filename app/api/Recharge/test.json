@@ -23,15 +23,14 @@
             "Token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
             "RetailerID": "{{100301}}",
             "LogoUrl": "{{'https://buckspay.com'}}",
-            "Copyright": "{{'All rights reserved for Cash On Cash'}}",
+            "Copyright": "{{'All'}}",
             "MerchantId": "{{'7409747265'}}",
-            "FirmName": "{{'Cash On Cash'}}",
-            "ServiceId": "{{'MA17'}}"
+            "FirmName": "{{'CashOnCash'}}",
+            "ServiceId": "{{'152'}}"
           },
           "method": "POST"
         },
-        "output": true,
-        "disabled": true
+        "output": true
       },
       {
         "name": "apiDMT",
@@ -73,7 +72,8 @@
             "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}"
           }
         },
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "A",
@@ -84,7 +84,8 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "B",
@@ -95,7 +96,8 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "C",
@@ -106,7 +108,8 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "D",
@@ -117,7 +120,8 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": true,
+        "disabled": true
       }
     ]
   }

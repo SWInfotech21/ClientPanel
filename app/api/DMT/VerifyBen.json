@@ -4,16 +4,6 @@
       "linkedFile": "/views/dmt-service.ejs",
       "linkedForm": "formVerifyBenAC"
     },
-    "$_GET": [
-      {
-        "type": "text",
-        "name": "senderid"
-      },
-      {
-        "type": "text",
-        "name": "benid"
-      }
-    ],
     "$_POST": [
       {
         "type": "text",
@@ -38,22 +28,6 @@
           }
         },
         "name": "RecipientIdVerify"
-      },
-      {
-        "type": "number",
-        "name": "updated_by"
-      },
-      {
-        "type": "text",
-        "name": "ip_address"
-      },
-      {
-        "type": "text",
-        "name": "remarks"
-      },
-      {
-        "type": "text",
-        "name": "api_ref"
       }
     ],
     "$_SERVER": [
@@ -560,11 +534,17 @@
                         "column": "mdtchargeamt",
                         "type": "text",
                         "value": "{{0}}"
+                      },
+                      {
+                        "table": "tt_recharge_trans",
+                        "column": "remitter_id",
+                        "type": "text",
+                        "value": "{{$_POST.SenderIdVerify}}"
                       }
                     ],
                     "table": "tt_recharge_trans",
                     "returning": "id",
-                    "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, opening_balance, amount, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, tr_mode, tr_type, status, tr_id, reason, ip_address, process_mode, live, tr_date, transaction_by, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt) VALUES (:P1 /* {{GetDetails[0].op_id}} */, :P2 /* {{GetDetails[0].service_id}} */, :P3 /* {{GetDetails[0].api_id}} */, :P4 /* {{identity}} */, :P5 /* {{GetUser.user_mobile}} */, :P6 /* {{$_POST.RecipientIdVerify}} */, :P7 /* {{GetUser.balance_amt}} */, :P8 /* {{Amount}} */, :P9 /* {{GetDetails[0].comm_per}} */, :P10 /* {{GetDetails[0].comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetDetails[0].service_charge_val}} */, :P13 /* {{GetDetails[0].service_charge_per}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTPayableAmt}} */, :P16 /* {{RTClosingBalance.toNumber()}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{TransactionId}} */, :P21 /* {{'Transfer of Rs. '+Amount+' by '+GetUser.user_mobile+'  to '+$_POST.RecipientIdVerify+' for Money Transfer Verification | Net Amt. '+RTPayableAmt}} */, :P22 /* {{$_SERVER.REMOTE_ADDR}} */, :P23 /* {{'A2P'}} */, :P24 /* {{'Live'}} */, :P25 /* {{NOW}} */, :P26 /* {{identity}} */, :P27 /* {{0}} */, :P28 /* {{0}} */, :P29 /* {{0}} */, :P30 /* {{0}} */, :P31 /* {{0}} */, :P32 /* {{0}} */, :P33 /* {{0}} */, :P34 /* {{0}} */, :P35 /* {{0}} */, :P36 /* {{0}} */, :P37 /* {{0}} */, :P38 /* {{0}} */)",
+                    "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, opening_balance, amount, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, tr_mode, tr_type, status, tr_id, reason, ip_address, process_mode, live, tr_date, transaction_by, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, remitter_id) VALUES (:P1 /* {{GetDetails[0].op_id}} */, :P2 /* {{GetDetails[0].service_id}} */, :P3 /* {{GetDetails[0].api_id}} */, :P4 /* {{identity}} */, :P5 /* {{GetUser.user_mobile}} */, :P6 /* {{$_POST.RecipientIdVerify}} */, :P7 /* {{GetUser.balance_amt}} */, :P8 /* {{Amount}} */, :P9 /* {{GetDetails[0].comm_per}} */, :P10 /* {{GetDetails[0].comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetDetails[0].service_charge_val}} */, :P13 /* {{GetDetails[0].service_charge_per}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTPayableAmt}} */, :P16 /* {{RTClosingBalance.toNumber()}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{TransactionId}} */, :P21 /* {{'Transfer of Rs. '+Amount+' by '+GetUser.user_mobile+'  to '+$_POST.RecipientIdVerify+' for Money Transfer Verification | Net Amt. '+RTPayableAmt}} */, :P22 /* {{$_SERVER.REMOTE_ADDR}} */, :P23 /* {{'A2P'}} */, :P24 /* {{'Live'}} */, :P25 /* {{NOW}} */, :P26 /* {{identity}} */, :P27 /* {{0}} */, :P28 /* {{0}} */, :P29 /* {{0}} */, :P30 /* {{0}} */, :P31 /* {{0}} */, :P32 /* {{0}} */, :P33 /* {{0}} */, :P34 /* {{0}} */, :P35 /* {{0}} */, :P36 /* {{0}} */, :P37 /* {{0}} */, :P38 /* {{0}} */, :P39 /* {{$_POST.SenderIdVerify}} */)",
                     "params": [
                       {
                         "name": ":P1",
@@ -755,6 +735,11 @@
                         "name": ":P38",
                         "type": "expression",
                         "value": "{{0}}"
+                      },
+                      {
+                        "name": ":P39",
+                        "type": "expression",
+                        "value": "{{$_POST.SenderIdVerify}}"
                       }
                     ]
                   }
@@ -1178,7 +1163,7 @@
                               },
                               {
                                 "table": "tt_recharge_trans",
-                                "column": "extra2",
+                                "column": "bank_ac_no",
                                 "type": "text",
                                 "value": "{{apiVerifyBen.Data.BankAccNo}}"
                               }
@@ -1202,7 +1187,7 @@
                               "conditional": null,
                               "valid": true
                             },
-                            "query": "UPDATE tt_recharge_trans\nSET user_number = :P1 /* {{apiVerifyBen.Data.MobileNo}} */, status = :P2 /* {{apistatus}} */, api_logs = :P3 /* {{GetDetails[0].api_fwrd_code}} */, is_processed = :P4 /* {{apiVerifyBen.Data.BankTxnId}} */, operator_ref = :P5 /* {{apiVerifyBen.Message}} */, api_ref = :P6 /* {{apiVerifyBen.Data.OrderId}} */, revert_trans = '0', api_response_id = :P7 /* {{apiResponseTime}} */, updated_on = :P8 /* {{NOW}} */, extra2 = :P9 /* {{apiVerifyBen.Data.BankAccNo}} */\nWHERE id = :P10 /* {{RechTrans.identity}} */",
+                            "query": "UPDATE tt_recharge_trans\nSET user_number = :P1 /* {{apiVerifyBen.Data.MobileNo}} */, status = :P2 /* {{apistatus}} */, api_logs = :P3 /* {{GetDetails[0].api_fwrd_code}} */, is_processed = :P4 /* {{apiVerifyBen.Data.BankTxnId}} */, operator_ref = :P5 /* {{apiVerifyBen.Message}} */, api_ref = :P6 /* {{apiVerifyBen.Data.OrderId}} */, revert_trans = '0', api_response_id = :P7 /* {{apiResponseTime}} */, updated_on = :P8 /* {{NOW}} */, bank_ac_no = :P9 /* {{apiVerifyBen.Data.BankAccNo}} */\nWHERE id = :P10 /* {{RechTrans.identity}} */",
                             "params": [
                               {
                                 "name": ":P1",
