@@ -380,6 +380,44 @@
                                               "meta": [],
                                               "outputType": "text",
                                               "output": true
+                                            },
+                                            {
+                                              "name": "",
+                                              "module": "core",
+                                              "action": "condition",
+                                              "options": {
+                                                "if": "{{GetBeneficiary.Data.StatusCode==2}}",
+                                                "then": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "apiOTP",
+                                                      "module": "api",
+                                                      "action": "send",
+                                                      "options": {
+                                                        "method": "POST",
+                                                        "params": {
+                                                          "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+                                                          "mobileNo": "{{$_GET.mobile}}"
+                                                        },
+                                                        "url": "https://apihub.moneyart.in/RemitterSendOtp"
+                                                      },
+                                                      "output": false
+                                                    },
+                                                    {
+                                                      "name": "apiAddRemOTP",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{apiOTP.data}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "outputType": "boolean"
                                             }
                                           ]
                                         },

@@ -48,6 +48,44 @@
           "method": "POST"
         },
         "output": true
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{apiGetBeneficiary.data.StatusCode==2}}",
+          "then": {
+            "steps": [
+              {
+                "name": "api",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "url": "https://apihub.moneyart.in/RemitterSendOtp",
+                  "params": {
+                    "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+                    "mobileNo": "{{$_POST.CustMobile}}"
+                  },
+                  "method": "POST"
+                },
+                "output": false
+              },
+              {
+                "name": "apiRemOTP",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
       }
     ]
   }
