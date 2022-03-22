@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dmtservice" appConnect="local" components="{dmxValidator:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxFormatter:{}}" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dmtservice" appConnect="local" components="{dmxValidator:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxFormatter:{},dmxSockets:{}}" -->
 <meta name="ac:route" content="/dmt-service">
 <dmx-value id="varBenefId" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varBenBankName" dmx-bind:value="0"></dmx-value>
@@ -6,9 +6,11 @@
 <dmx-value id="varBenAcNo" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varBenMobile" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varTransStatus" dmx-bind:value="0"></dmx-value>
+<dmx-value id="varShowLive" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varVerifyModal" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varRemitterAdd" dmx-bind:value="0"></dmx-value>
 <dmx-serverconnect id="scBankList" url="api/DMT/GetBankList"></dmx-serverconnect>
+<dmx-serverconnect id="scLiveDMT" url="api/DMT/LiveTransDMT" sockets="true"></dmx-serverconnect>
 <dmx-data-view id="dvBankList" filter="(BankName.contains(Search.value.titlecase()))" dmx-bind:data="content.scBankList.data.apiBanks"></dmx-data-view>
 
 <main>
@@ -266,14 +268,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">DMT Transaction:{{varBenefId.value}}</h5>
-                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0); varBenMobile.setValue(0); varBenBankName.setValue(0);varTransStatus.setValue(0);"></button>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0); varBenMobile.setValue(0); varBenBankName.setValue(0);varTransStatus.setValue(0);varShowLive.setValue(0);"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row mx-0" dmx-show="content.modalTransBen.formBenTrans.data.apistatus == 'SUCCESS' || content.modalTransBen.formBenTrans.data.apistatus == 'PENDING' && varTransStatus.value == 1">
                             <div class="col text-center">
                                 <img src="assets/images/mark-success.gif" height="130">
                                 <p class="font-weight-bolder sw-font-20">Payment Success</p>
-                                <p class="sw-font-14">You can print the receipt from by clicking print button.</p>
+                                <!-- <p class="sw-font-14">You can print the receipt from by clicking print button.</p> -->
                                 <p class="sw-font-14">Remarks: {{content.modalTransBen.formBenTrans.data.remarks}}</p>
                             </div>
                         </div>
@@ -287,7 +289,7 @@
                         <div class="row mx-0" dmx-show="varTransStatus.value == 1">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="font-weight-bold">Amount: Rs. <span class="text-muted">{{content.modalTransBen.formBenTrans.BenTrAmount.value}}</span></label>
+                                    <label class="font-weight-bold">Amount: Rs. <span class="text-muted">{{content.modalTransBen.formBenTrans.data.bank_tr_amount}}</span></label>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -355,15 +357,42 @@
                                     </div>
                                 </div>
                                 <div class="col-12 mt-2 text-center">
-                                    <button class="btn sw-btn-dark w-100" type="submit" dmx-bind:disabled="content.modalTransBen.formBenTrans.state.executing" dmx-class:no-drop="content.modalTransBen.formBenTrans.state.executing">Pay Now<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalTransBen.formBenTrans.state.executing"></span></button>
+                                    <button class="btn sw-btn-dark w-100" type="submit" dmx-bind:disabled="content.modalTransBen.formBenTrans.state.executing" dmx-class:no-drop="content.modalTransBen.formBenTrans.state.executing" dmx-on:click="varShowLive.setValue(1)">Pay Now<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalTransBen.formBenTrans.state.executing"></span></button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <div class="row mx-0 text-right">
-                            <div class="col-12">
-                                <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0);varBenMobile.setValue(0); varBenBankName.setValue(0);varTransStatus.setValue(0);">Close</button>
+                        <div class="row mx-0" dmx-show="varShowLive.value == 1">
+                            <h4>Live Transactions</h4>
+                            <div class="col-12 px-0" style="width: 450px;">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Mobile</th>
+                                                <th scope="col">Amt.</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Time</th>
+                                                <th scope="col">Beneficiary Id</th>
+                                                <th scope="col">Bank A/C</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody is="dmx-repeat" dmx-bind:repeat="content.scLiveDMT.data.LiveDMT" id="tableRepeatLive" key="id">
+                                            <tr>
+                                                <th scope="row">{{$index+1}}</th>
+                                                <td dmx-text:value="recharge_mobile"></td>
+                                                <td dmx-text:value="amount"></td>
+                                                <td dmx-text:value="status" dmx-class:text-success="status=='SUCCESS'" dmx-class:text-primary="status=='PENDING'" dmx-class:text-danger="status=='FAILED'"></td>
+                                                <td dmx-text:value="tr_date.formatDate('dd-MM-yyyy hh:mm:ss A')"></td>
+                                                <td dmx-text:value="beneficiary_id"></td>
+                                                <td dmx-text:value="bank_ac_no"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
                         </div>
                     </div>

@@ -1681,6 +1681,79 @@ dmx.config({
     "dvBankList": {
       "meta": null,
       "outputType": "text"
+    },
+    "tableRepeatLive": {
+      "meta": [
+        {
+          "name": "id",
+          "type": "number"
+        },
+        {
+          "name": "recharge_mobile",
+          "type": "text"
+        },
+        {
+          "name": "opening_balance",
+          "type": "text"
+        },
+        {
+          "name": "amount",
+          "type": "text"
+        },
+        {
+          "name": "comm_amt",
+          "type": "text"
+        },
+        {
+          "name": "charge_amt",
+          "type": "text"
+        },
+        {
+          "name": "net_amt",
+          "type": "text"
+        },
+        {
+          "name": "closing_balance",
+          "type": "text"
+        },
+        {
+          "name": "tr_mode",
+          "type": "text"
+        },
+        {
+          "name": "status",
+          "type": "text"
+        },
+        {
+          "name": "api_ref",
+          "type": "text"
+        },
+        {
+          "name": "tr_date",
+          "type": "text"
+        },
+        {
+          "name": "operator_name",
+          "type": "text"
+        },
+        {
+          "name": "service_name",
+          "type": "text"
+        },
+        {
+          "name": "user_id",
+          "type": "text"
+        },
+        {
+          "name": "user_fname",
+          "type": "text"
+        },
+        {
+          "name": "user_mobile",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
     }
   }
 });

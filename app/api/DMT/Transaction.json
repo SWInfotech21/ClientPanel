@@ -3203,6 +3203,14 @@
                                               "output": false
                                             },
                                             {
+                                              "name": "refresh1",
+                                              "module": "sockets",
+                                              "action": "refresh",
+                                              "options": {
+                                                "action": "DMT/LiveTransDMT"
+                                              }
+                                            },
+                                            {
                                               "name": "AdminChargesAmt",
                                               "module": "core",
                                               "action": "setvalue",
@@ -3853,6 +3861,14 @@
                                                         "url": "https://portal.swpay.in/api/RefreshTrans"
                                                       },
                                                       "output": false
+                                                    },
+                                                    {
+                                                      "name": "refresh2",
+                                                      "module": "sockets",
+                                                      "action": "refresh",
+                                                      "options": {
+                                                        "action": "DMT/LiveTransDMT"
+                                                      }
                                                     },
                                                     {
                                                       "name": "AdminClosingBalUserUp",
@@ -4761,6 +4777,14 @@
                                                         "url": "https://portal.swpay.in/api/RefreshTrans"
                                                       },
                                                       "output": false
+                                                    },
+                                                    {
+                                                      "name": "refresh3",
+                                                      "module": "sockets",
+                                                      "action": "refresh",
+                                                      "options": {
+                                                        "action": "DMT/LiveTransDMT"
+                                                      }
                                                     }
                                                   ]
                                                 }
@@ -6872,6 +6896,14 @@
                                               "output": false
                                             },
                                             {
+                                              "name": "refresh4",
+                                              "module": "sockets",
+                                              "action": "refresh",
+                                              "options": {
+                                                "action": "DMT/LiveTransDMT"
+                                              }
+                                            },
+                                            {
                                               "name": "AdminChargesAmt",
                                               "module": "core",
                                               "action": "setvalue",
@@ -7522,6 +7554,14 @@
                                                         "url": "https://portal.swpay.in/api/RefreshTrans"
                                                       },
                                                       "output": false
+                                                    },
+                                                    {
+                                                      "name": "refresh5",
+                                                      "module": "sockets",
+                                                      "action": "refresh",
+                                                      "options": {
+                                                        "action": "DMT/LiveTransDMT"
+                                                      }
                                                     },
                                                     {
                                                       "name": "AdminClosingBalUserUp_copy",
@@ -8430,6 +8470,14 @@
                                                         "url": "https://portal.swpay.in/api/RefreshTrans"
                                                       },
                                                       "output": false
+                                                    },
+                                                    {
+                                                      "name": "refresh6",
+                                                      "module": "sockets",
+                                                      "action": "refresh",
+                                                      "options": {
+                                                        "action": "DMT/LiveTransDMT"
+                                                      }
                                                     }
                                                   ]
                                                 }
