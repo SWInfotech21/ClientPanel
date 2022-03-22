@@ -9,6 +9,9 @@ body {
   background: #E5E5E5;
 }
 
+.no-drop {
+    cursor: no-drop;
+    }
 .sw-container {
   background: #FFF;
   max-width: 800px;

@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="col-12 col-md-6 my-3 align-self-end">
-                        <button class="btn sw-btn-dark px-5" dmx-on:click="#" dmx-bind:disabled="scBeneficiary.state.executing" type="submit">Get Details<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="scBeneficiary.state.executing"></span></button>
+                        <button class="btn sw-btn-dark px-5" dmx-on:click="#" dmx-bind:disabled="scBeneficiary.state.executing" type="submit" dmx-class:no-drop="scBeneficiary.state.executing">Get Details<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="scBeneficiary.state.executing"></span></button>
                     </div>
                 </div>
             </form>
@@ -142,7 +142,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 mt-2 text-center">
-                                    <button class="btn sw-btn-dark btn-sm" type="submit" dmx-bind:disabled="content.modalAddBen.formAddBen.state.executing">Submit <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalAddBen.formAddBen.state.executing"></span></button>
+                                    <button class="btn sw-btn-dark btn-sm" type="submit" dmx-bind:disabled="content.modalAddBen.formAddBen.state.executing" dmx-class:no-drop="content.modalAddBen.formAddBen.state.executing">Submit <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalAddBen.formAddBen.state.executing"></span></button>
                                 </div>
                             </div>
                         </form>
@@ -176,7 +176,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 mt-2 text-center">
-                                    <button class="btn sw-btn-dark btn-sm" type="submit" dmx-bind:disabled="content.modalDelBen.formDelBen.state.executing">Submit <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalDelBen.formDelBen.state.executing"></span></button>
+                                    <button class="btn sw-btn-dark btn-sm" type="submit" dmx-bind:disabled="content.modalDelBen.formDelBen.state.executing" dmx-class:no-drop="content.modalDelBen.formDelBen.state.executing">Submit <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalDelBen.formDelBen.state.executing"></span></button>
                                 </div>
                             </div>
                         </form>
@@ -204,7 +204,7 @@
                             <input type="hidden" id="RecipientIdVerify" class="form-control" name="RecipientIdVerify" required="" dmx-bind:value="varBenefId.value">
                             <div class="col-12 my-4"><b>Verify the account details before transaction?</b></div>
                             <div class="col-12 mt-2 text-center">
-                                <button class="btn sw-btn-dark w-100" type="submit" dmx-bind:disabled="content.modalVerifyBen.formVerifyBenAC.state.executing" dmx-on:click="varVerifyModal.setValue(1) ">Verify <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalVerifyBen.formVerifyBenAC.state.executing"></span></button>
+                                <button class="btn sw-btn-dark w-100" type="submit" dmx-bind:disabled="content.modalVerifyBen.formVerifyBenAC.state.executing" dmx-on:click="varVerifyModal.setValue(1) " dmx-class:no-drop="content.modalVerifyBen.formVerifyBenAC.state.executing">Verify <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalVerifyBen.formVerifyBenAC.state.executing"></span></button>
                             </div>
                         </form>
                         <form id="formBenVerifyResult" dmx-show="varVerifyModal.value == 1 && !content.modalVerifyBen.formVerifyBenAC.state.executing">
@@ -266,7 +266,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">DMT Transaction:{{varBenefId.value}}</h5>
-                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0); varBenMobile.setValue(0); varBenBankName.setValue(0);"></button>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0); varBenMobile.setValue(0); varBenBankName.setValue(0);varTransStatus.setValue(0);"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row mx-0" dmx-show="content.modalTransBen.formBenTrans.data.apistatus == 'SUCCESS' || content.modalTransBen.formBenTrans.data.apistatus == 'PENDING' && varTransStatus.value == 1">
@@ -287,7 +287,7 @@
                         <div class="row mx-0" dmx-show="varTransStatus.value == 1">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="font-weight-bold">Amount: Rs. <span class="text-muted">{{content.modalTransBen.formBenTrans.data.bank_tr_amount}}</span></label>
+                                    <label class="font-weight-bold">Amount: Rs. <span class="text-muted">{{content.modalTransBen.formBenTrans.BenTrAmount.value}}</span></label>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -355,7 +355,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 mt-2 text-center">
-                                    <button class="btn sw-btn-dark w-100" type="submit" dmx-bind:disabled="content.modalTransBen.formBenTrans.state.executing">Pay Now<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalTransBen.formBenTrans.state.executing"></span></button>
+                                    <button class="btn sw-btn-dark w-100" type="submit" dmx-bind:disabled="content.modalTransBen.formBenTrans.state.executing" dmx-class:no-drop="content.modalTransBen.formBenTrans.state.executing">Pay Now<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalTransBen.formBenTrans.state.executing"></span></button>
                                 </div>
                             </div>
                         </form>
@@ -363,7 +363,7 @@
                     <div class="modal-footer">
                         <div class="row mx-0 text-right">
                             <div class="col-12">
-                                <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0);varBenMobile.setValue(0); varBenBankName.setValue(0);">Close</button>
+                                <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0);varBenMobile.setValue(0); varBenBankName.setValue(0);varTransStatus.setValue(0);">Close</button>
                             </div>
                         </div>
                     </div>
@@ -408,7 +408,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 mt-2 text-center">
-                                    <button class="btn sw-btn-dark btn-sm" type="submit" dmx-bind:disabled="content.modalAddRem.formAddRem.state.executing">Submit <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalAddRem.formAddRem.state.executing"></span></button>
+                                    <button class="btn sw-btn-dark btn-sm" type="submit" dmx-bind:disabled="content.modalAddRem.formAddRem.state.executing" dmx-class:no-drop="content.modalAddRem.formAddRem.state.executing">Submit <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalAddRem.formAddRem.state.executing"></span></button>
                                 </div>
                             </div>
                         </form>

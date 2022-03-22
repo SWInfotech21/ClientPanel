@@ -47,7 +47,9 @@ body{
   width: 100%;
 }
 
-
+.no-drop {
+    cursor: no-drop;
+    }
 .pm-certificate-container {
   position: relative;
   width: 800px;
