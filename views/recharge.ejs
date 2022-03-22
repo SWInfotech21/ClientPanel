@@ -2,6 +2,7 @@
 <meta name="ac:route" content="/recharge">
 <dmx-value id="varROfferAmt" dmx-bind:value="0"></dmx-value>
 <dmx-serverconnect id="scOperator" url="api/Operator/MobileOpFetch" noload></dmx-serverconnect>
+<dmx-serverconnect id="scRechargeLive" url="api/Reports/LiveRechargeTr"></dmx-serverconnect>
 <dmx-serverconnect id="scMobileOffer" url="api/CheckAPIs/ROfferMobile" dmx-param:tel="content.formMobileRecharge.inpMobile.value" dmx-param:op="content.formMobileRecharge.inp_opname.selectedText" noload></dmx-serverconnect>
 <script is="dmx-flow" id="flowMobileRech" type="text/dmx-flow">
     {
@@ -244,7 +245,40 @@
             </div>
         </div>
         <div class="col-md-6 col-12">
-            <img src="assets/images/swpay.png" class="col-9 img-fluid mt-5">
+            <h4 class="text-center">Live Transactions (Mobile/DTH/PostPaid)</h4>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Mobile/Id</th>
+                            <th scope="col">Operator</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Transaction Date</th>
+                            <th scope="col">Tr. Mode</th>
+                            <th scope="col">Op. Bal.</th>
+                            <th scope="col">Net Amt.</th>
+                            <th scope="col">Closing Bal.</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" dmx-bind:repeat="content.scRechargeLive.data.RechargeLive" id="tableRepeatLive" key="id">
+                        <tr>
+                            <th scope="row">{{$index+1}}</th>
+                            <td dmx-text:value="recharge_mobile"></td>
+                            <td dmx-text:value="operator_name+' | '+service_name"></td>
+                            <td dmx-text:value="amount.toNumber().toFixed(2)"></td>
+                            <td dmx-text:value="status" dmx-class:text-success="status=='SUCCESS'" dmx-class:text-primary="status=='PENDING'" dmx-class:text-danger="status=='FAILED'"></td>
+                            <td dmx-text:value="tr_date.formatDate('dd-MM-yyyy hh:mm:ss A')"></td>
+                            <td dmx-text:value="tr_mode"></td>
+                            <td dmx-text:value="opening_balance.toNumber().toFixed(2)"></td>
+                            <td dmx-text:value="net_amt.toNumber().toFixed(2)"></td>
+                            <td dmx-text:value="closing_balance.toNumber().toFixed(2)"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
 </div>
