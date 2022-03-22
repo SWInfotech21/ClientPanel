@@ -1,8 +1,8 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="recharge1" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="recharge1" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{},dmxSockets:{}}" -->
 <meta name="ac:route" content="/recharge">
 <dmx-value id="varROfferAmt" dmx-bind:value="0"></dmx-value>
 <dmx-serverconnect id="scOperator" url="api/Operator/MobileOpFetch" noload></dmx-serverconnect>
-<dmx-serverconnect id="scRechargeLive" url="api/Reports/LiveRechargeTr"></dmx-serverconnect>
+<dmx-serverconnect id="scRechargeLive" url="api/Reports/LiveRechargeTr" sockets="true"></dmx-serverconnect>
 <dmx-serverconnect id="scMobileOffer" url="api/CheckAPIs/ROfferMobile" dmx-param:tel="content.formMobileRecharge.inpMobile.value" dmx-param:op="content.formMobileRecharge.inp_opname.selectedText" noload></dmx-serverconnect>
 <script is="dmx-flow" id="flowMobileRech" type="text/dmx-flow">
     {
