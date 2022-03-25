@@ -248,6 +248,58 @@
     "outputType": "object"
   },
   {
+    "name": "UsageAmt",
+    "module": "dbupdater",
+    "action": "custom",
+    "options": {
+      "connection": "postgres_gcpServer",
+      "sql": {
+        "query": "select sum(amount::float) as usageamt from tt_recharge_trans trt \nwhere trt.transaction_by = @identity and trt.status = 'SUCCESS' \nand to_char( trt.tr_date, 'yyyy-MM-dd') = to_char(CURRENT_DATE, 'yyyy-MM-dd') ;",
+        "params": [
+          {
+            "name": "@identity",
+            "value": "{{identity}}",
+            "test": "66"
+          }
+        ]
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "name": "usageamt",
+        "type": "number"
+      }
+    ],
+    "outputType": "array"
+  },
+  {
+    "name": "PaymentLoad",
+    "module": "dbupdater",
+    "action": "custom",
+    "options": {
+      "connection": "postgres_gcpServer",
+      "sql": {
+        "query": "select sum(amount::float) as loadamt from tt_recharge_trans trt \nleft join m_operator mo on (mo.id = trt.op_id)\nwhere trt.user_id = @identity and trt.status = 'SUCCESS' \nand to_char( trt.tr_date, 'yyyy-MM-dd') = to_char(CURRENT_DATE, 'yyyy-MM-dd') and mo.operator_name = 'Wallet Credit';",
+        "params": [
+          {
+            "name": "@identity",
+            "value": "{{identity}}",
+            "test": "66"
+          }
+        ]
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "name": "loadamt",
+        "type": "number"
+      }
+    ],
+    "outputType": "array"
+  },
+  {
     "name": "OpeningBalance",
     "module": "dbupdater",
     "action": "custom",
