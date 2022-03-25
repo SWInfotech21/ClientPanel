@@ -78,14 +78,6 @@
             <form is="dmx-serverconnect-form" method="post" class="sign-up-form" action="api/Users/SignUp" dmx-on:success="browser1.goto('signup')" dmx-on:unauthorized="formLogin.reset;" dmx-on:forbidden="Notification.danger('Please try again!')">
                 <h2 class="title">Sign up</h2>
                 <div class="input-field">
-                    <i class="fa fa-user-friends"></i>
-                    <select type="text" class=" form-control" id="user_type" name="usertype_id" required="true" autocomplete="off">
-                        <option value="1">MDT</option>
-                        <option value="2">DT</option>
-                        <option value="3">RT</option>
-                    </select>
-                </div>
-                <div class="input-field">
                     <i class="fas fa-user"></i>
                     <input type="text" class="form-control" id="user_name" name="fname" placeholder="Enter user name" required="true">
                 </div>
