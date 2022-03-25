@@ -1502,8 +1502,7 @@
                     {
                       "table": "tt_balance",
                       "column": "id",
-                      "direction": "DESC",
-                      "condition": ""
+                      "direction": "DESC"
                     }
                   ],
                   "wheres": {

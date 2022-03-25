@@ -445,6 +445,14 @@
                                                       "table": "m_users",
                                                       "column": "created_by",
                                                       "alias": "retailer_creator_id"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "md_id"
+                                                    },
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "ds_id"
                                                     }
                                                   ],
                                                   "table": {
@@ -484,7 +492,7 @@
                                                     "conditional": null,
                                                     "valid": true
                                                   },
-                                                  "query": "SELECT user_fname, user_mobile, user_tpin, scheme_id, balance_amt, created_by AS retailer_creator_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */ AND u_status = '1'",
+                                                  "query": "SELECT user_fname, user_mobile, user_tpin, scheme_id, balance_amt, created_by AS retailer_creator_id, md_id, ds_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */ AND u_status = '1'",
                                                   "params": [
                                                     {
                                                       "operator": "equal",
@@ -520,6 +528,14 @@
                                                 {
                                                   "type": "number",
                                                   "name": "retailer_creator_id"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "md_id"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "ds_id"
                                                 }
                                               ],
                                               "outputType": "object"
@@ -809,13 +825,13 @@
                                                                           "name": "m_users"
                                                                         },
                                                                         "joins": [],
-                                                                        "query": "SELECT user_fname AS rt_coeator_user_name, user_mobile AS rt_coeator_user_mobile, user_email AS rt_coeator_user_email, user_type AS rt_coeator_user_type, balance_amt AS rt_coeator_balance_amt, scheme_id AS rt_coeator_scheme_id, created_by AS dt_coeator_id\nFROM m_users\nWHERE id = :P1 /* {{UserWalletBalCheck.retailer_creator_id}} */ AND u_status = '1'",
+                                                                        "query": "SELECT user_fname AS rt_coeator_user_name, user_mobile AS rt_coeator_user_mobile, user_email AS rt_coeator_user_email, user_type AS rt_coeator_user_type, balance_amt AS rt_coeator_balance_amt, scheme_id AS rt_coeator_scheme_id, created_by AS dt_coeator_id\nFROM m_users\nWHERE id = :P1 /* {{UserWalletBalCheck.ds_id}} */ AND u_status = '1'",
                                                                         "params": [
                                                                           {
                                                                             "operator": "equal",
                                                                             "type": "expression",
                                                                             "name": ":P1",
-                                                                            "value": "{{UserWalletBalCheck.retailer_creator_id}}"
+                                                                            "value": "{{UserWalletBalCheck.ds_id}}"
                                                                           }
                                                                         ],
                                                                         "wheres": {
@@ -826,7 +842,7 @@
                                                                               "field": "m_users.id",
                                                                               "type": "double",
                                                                               "operator": "equal",
-                                                                              "value": "{{UserWalletBalCheck.retailer_creator_id}}",
+                                                                              "value": "{{UserWalletBalCheck.ds_id}}",
                                                                               "data": {
                                                                                 "table": "m_users",
                                                                                 "column": "id",
@@ -1417,7 +1433,7 @@
                                                                                               "field": "m_users.id",
                                                                                               "type": "double",
                                                                                               "operator": "equal",
-                                                                                              "value": "{{GetRTCreator.dt_coeator_id}}",
+                                                                                              "value": "{{UserWalletBalCheck.md_id}}",
                                                                                               "data": {
                                                                                                 "table": "m_users",
                                                                                                 "column": "id",
@@ -1442,13 +1458,13 @@
                                                                                           "conditional": null,
                                                                                           "valid": true
                                                                                         },
-                                                                                        "query": "SELECT user_fname AS dt_user_name, user_mobile AS dt_user_mobile, user_type AS dt_user_type, scheme_id AS dt_scheme_id, balance_amt AS dt_balance_amt, created_by AS mdt_creator_id\nFROM m_users\nWHERE id = :P1 /* {{GetRTCreator.dt_coeator_id}} */ AND u_status = '1'",
+                                                                                        "query": "SELECT user_fname AS dt_user_name, user_mobile AS dt_user_mobile, user_type AS dt_user_type, scheme_id AS dt_scheme_id, balance_amt AS dt_balance_amt, created_by AS mdt_creator_id\nFROM m_users\nWHERE id = :P1 /* {{UserWalletBalCheck.md_id}} */ AND u_status = '1'",
                                                                                         "params": [
                                                                                           {
                                                                                             "operator": "equal",
                                                                                             "type": "expression",
                                                                                             "name": ":P1",
-                                                                                            "value": "{{GetRTCreator.dt_coeator_id}}"
+                                                                                            "value": "{{UserWalletBalCheck.md_id}}"
                                                                                           }
                                                                                         ]
                                                                                       }
@@ -2052,7 +2068,7 @@
                                                                                     "table": "tt_recharge_trans",
                                                                                     "column": "closing_balance",
                                                                                     "type": "text",
-                                                                                    "value": "{{UserWalletBalCheck.balance_amt.toNumber()}}"
+                                                                                    "value": "{{RTClosingBalance}}"
                                                                                   },
                                                                                   {
                                                                                     "table": "tt_recharge_trans",
@@ -2135,7 +2151,7 @@
                                                                                 ],
                                                                                 "table": "tt_recharge_trans",
                                                                                 "returning": "id",
-                                                                                "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed) VALUES (:P1 /* {{$_GET.op}} */, :P2 /* {{GetOpAPICodeFwrd.service_id}} */, :P3 /* {{GetOpAPICodeFwrd.api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_GET.mobile}} */, :P6 /* {{UserWalletBalCheck.user_fname}} */, :P7 /* {{$_GET.amount}} */, :P8 /* {{'Android'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{TransactionId}} */, :P12 /* {{'Recharge of Rs. '+$_GET.amount+' by  '+UserWalletBalCheck.user_mobile+' | '+UserWalletBalCheck.user_fname}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2C'}} */, :P15 /* {{NOW}} */, :P16 /* {{identity}} */, :P17 /* {{UserWalletBalCheck.balance_amt}} */, :P18 /* {{GetCommision.comm_per}} */, :P19 /* {{GetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{GetCommision.service_charge_val}} */, :P22 /* {{GetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{UserWalletBalCheck.balance_amt.toNumber()}} */, :P26 /* {{DTCommPer}} */, :P27 /* {{DTCommVal}} */, :P28 /* {{DTCommAmt}} */, :P29 /* {{DTChargePer}} */, :P30 /* {{DTChargeVal}} */, :P31 /* {{DTChargeAmt}} */, :P32 /* {{MDTCommPer}} */, :P33 /* {{MDTCommVal}} */, :P34 /* {{MDTCommAmt}} */, :P35 /* {{MDTChargePer}} */, :P36 /* {{MDTChargeVal}} */, :P37 /* {{MDTChargeAmt}} */, :P38 /* {{'N/A'}} */)",
+                                                                                "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed) VALUES (:P1 /* {{$_GET.op}} */, :P2 /* {{GetOpAPICodeFwrd.service_id}} */, :P3 /* {{GetOpAPICodeFwrd.api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_GET.mobile}} */, :P6 /* {{UserWalletBalCheck.user_fname}} */, :P7 /* {{$_GET.amount}} */, :P8 /* {{'Android'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{TransactionId}} */, :P12 /* {{'Recharge of Rs. '+$_GET.amount+' by  '+UserWalletBalCheck.user_mobile+' | '+UserWalletBalCheck.user_fname}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2C'}} */, :P15 /* {{NOW}} */, :P16 /* {{identity}} */, :P17 /* {{UserWalletBalCheck.balance_amt}} */, :P18 /* {{GetCommision.comm_per}} */, :P19 /* {{GetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{GetCommision.service_charge_val}} */, :P22 /* {{GetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{RTClosingBalance}} */, :P26 /* {{DTCommPer}} */, :P27 /* {{DTCommVal}} */, :P28 /* {{DTCommAmt}} */, :P29 /* {{DTChargePer}} */, :P30 /* {{DTChargeVal}} */, :P31 /* {{DTChargeAmt}} */, :P32 /* {{MDTCommPer}} */, :P33 /* {{MDTCommVal}} */, :P34 /* {{MDTCommAmt}} */, :P35 /* {{MDTChargePer}} */, :P36 /* {{MDTChargeVal}} */, :P37 /* {{MDTChargeAmt}} */, :P38 /* {{'N/A'}} */)",
                                                                                 "params": [
                                                                                   {
                                                                                     "name": ":P1",
@@ -2260,7 +2276,7 @@
                                                                                   {
                                                                                     "name": ":P25",
                                                                                     "type": "expression",
-                                                                                    "value": "{{UserWalletBalCheck.balance_amt.toNumber()}}"
+                                                                                    "value": "{{RTClosingBalance}}"
                                                                                   },
                                                                                   {
                                                                                     "name": ":P26",
@@ -2373,7 +2389,7 @@
                                                                                     "table": "tt_balance",
                                                                                     "column": "new_balance",
                                                                                     "type": "text",
-                                                                                    "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                                    "value": "{{RTClosingBalance}}"
                                                                                   },
                                                                                   {
                                                                                     "table": "tt_balance",
@@ -2438,7 +2454,7 @@
                                                                                 ],
                                                                                 "table": "tt_balance",
                                                                                 "returning": "id",
-                                                                                "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{UserWalletBalCheck.balance_amt}} */, :P5 /* {{'Recharge'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.mobile+' | Amount: '+$_GET.amount+' |Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'FAILED'}} */)",
+                                                                                "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{RTClosingBalance}} */, :P5 /* {{'Recharge'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.mobile+' | Amount: '+$_GET.amount+' |Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'FAILED'}} */)",
                                                                                 "params": [
                                                                                   {
                                                                                     "name": ":P1",
@@ -2458,7 +2474,7 @@
                                                                                   {
                                                                                     "name": ":P4",
                                                                                     "type": "expression",
-                                                                                    "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                                    "value": "{{RTClosingBalance}}"
                                                                                   },
                                                                                   {
                                                                                     "name": ":P5",
@@ -4325,7 +4341,7 @@
                                                                                             "table": "tt_balance",
                                                                                             "column": "old_balance",
                                                                                             "type": "text",
-                                                                                            "value": "{{balance}}"
+                                                                                            "value": "{{RTClosingBalance}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_balance",
@@ -4402,7 +4418,7 @@
                                                                                         ],
                                                                                         "table": "tt_balance",
                                                                                         "returning": "id",
-                                                                                        "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{balance}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{balance}} */, :P5 /* {{'Recharge Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.mobile+' | Amount:\\n '+$_GET.amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'REFUND'}} */)",
+                                                                                        "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{RTClosingBalance}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{balance}} */, :P5 /* {{'Recharge Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.mobile+' | Amount:\\n '+$_GET.amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'REFUND'}} */)",
                                                                                         "params": [
                                                                                           {
                                                                                             "name": ":P1",
@@ -4412,7 +4428,7 @@
                                                                                           {
                                                                                             "name": ":P2",
                                                                                             "type": "expression",
-                                                                                            "value": "{{balance}}"
+                                                                                            "value": "{{RTClosingBalance}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P3",
