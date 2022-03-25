@@ -118,7 +118,7 @@
                                     <input type="number" class="form-control" id="mobileTPIN" name="mobile_tpin" placeholder="Enter T-Pin" maxlength="10" required="" title="Enter T-Pin" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid t-pin." maxlength="4">
                                 </div>
                             </div>
-                            <div class="col"><button type="submit" class="btn btn-primary pull-left" dmx-bind:disabled="state.executing" id="btnmrecharge">Recharge<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
+                            <div class="col text-center"><button type="submit" class="btn btn-primary pull-left px-5" dmx-bind:disabled="state.executing" id="btnmrecharge">Recharge<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
 
                         </form>
                     </div>
@@ -245,7 +245,7 @@
             </div>
         </div>
         <div class="col-md-6 col-12">
-            <h4 class="text-center">Live Transactions</h4>
+            <h4 class="text-center">Live Transactions <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scRechargeLive.state.executing"></span></h4>
             <h6 class="text-center">(Mobile/DTH/PostPaid)</h6>
             <div class="table-responsive">
                 <table class="table">

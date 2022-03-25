@@ -27,10 +27,6 @@
       {
         "type": "text",
         "name": "salt"
-      },
-      {
-        "type": "text",
-        "name": "usertype_id"
       }
     ]
   },
@@ -84,7 +80,7 @@
               "table": "m_signup",
               "column": "usertype_id",
               "type": "text",
-              "value": "{{$_POST.usertype_id}}"
+              "value": "{{3}}"
             },
             {
               "table": "m_signup",
@@ -94,7 +90,7 @@
             }
           ],
           "table": "m_signup",
-          "query": "INSERT INTO m_signup\n(mobile, email, fname, address, mpassword, salt, usertype_id, created_on) VALUES (:P1 /* {{$_POST.mobile}} */, :P2 /* {{$_POST.email}} */, :P3 /* {{$_POST.fname}} */, :P4 /* {{$_POST.address}} */, :P5 /* {{$_POST.mpassword.sha256(NOW)}} */, :P6 /* {{NOW}} */, :P7 /* {{$_POST.usertype_id}} */, :P8 /* {{NOW}} */)",
+          "query": "INSERT INTO m_signup\n(mobile, email, fname, address, mpassword, salt, usertype_id, created_on) VALUES (:P1 /* {{$_POST.mobile}} */, :P2 /* {{$_POST.email}} */, :P3 /* {{$_POST.fname}} */, :P4 /* {{$_POST.address}} */, :P5 /* {{$_POST.mpassword.sha256(NOW)}} */, :P6 /* {{NOW}} */, :P7 /* {{3}} */, :P8 /* {{NOW}} */)",
           "params": [
             {
               "name": ":P1",
@@ -129,7 +125,7 @@
             {
               "name": ":P7",
               "type": "expression",
-              "value": "{{$_POST.usertype_id}}"
+              "value": "{{3}}"
             },
             {
               "name": ":P8",
