@@ -454,7 +454,7 @@
             ]
           }
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
             "type": "text",
@@ -819,7 +819,7 @@
                                   }
                                 }
                               },
-                              "output": false,
+                              "output": true,
                               "meta": [
                                 {
                                   "type": "text",
@@ -1229,7 +1229,8 @@
                                                 "value": "{{GetCommisionForDT.comm_per}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text"
+                                              "outputType": "text",
+                                              "output": true
                                             },
                                             {
                                               "name": "DTCommVal",
@@ -1239,7 +1240,8 @@
                                                 "value": "{{GetCommisionForDT.comm_val}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text"
+                                              "outputType": "text",
+                                              "output": true
                                             },
                                             {
                                               "name": "DTCommTotal",
@@ -1249,7 +1251,8 @@
                                                 "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForDT.comm_per.toNumber()/100)+GetCommisionForDT.comm_val.toNumber()}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text"
+                                              "outputType": "text",
+                                              "output": true
                                             },
                                             {
                                               "name": "DTCommAmt",
@@ -1259,7 +1262,8 @@
                                                 "value": "{{DTCommTotal.toNumber()-RTCommAmt.toNumber()}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text"
+                                              "outputType": "text",
+                                              "output": true
                                             },
                                             {
                                               "name": "DTChargePer",
@@ -1269,7 +1273,8 @@
                                                 "value": "{{GetCommisionForDT.service_charge_per}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text"
+                                              "outputType": "text",
+                                              "output": true
                                             },
                                             {
                                               "name": "DTChargeVal",
@@ -1279,7 +1284,8 @@
                                                 "value": "{{GetCommisionForDT.service_charge_val}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text"
+                                              "outputType": "text",
+                                              "output": true
                                             },
                                             {
                                               "name": "DTChargeTotal",
@@ -1289,7 +1295,8 @@
                                                 "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForDT.service_charge_per.toNumber()/100)+GetCommisionForDT.service_charge_val.toNumber()}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text"
+                                              "outputType": "text",
+                                              "output": true
                                             },
                                             {
                                               "name": "DTChargeAmt",
@@ -1299,7 +1306,8 @@
                                                 "value": "{{DTChargeTotal.toNumber()-RTChargeAmt.toNumber()}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text"
+                                              "outputType": "text",
+                                              "output": true
                                             },
                                             {
                                               "name": "DTNetAmt",
@@ -1309,7 +1317,8 @@
                                                 "value": "{{DTCommAmt.toNumber()-DTChargeAmt.toNumber()}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text"
+                                              "outputType": "text",
+                                              "output": true
                                             },
                                             {
                                               "name": "DTClosingBalance",
@@ -1319,7 +1328,8 @@
                                                 "value": "{{GetRTCreator.rt_coeator_balance_amt.toNumber()+DTCommAmt.toNumber()-DTChargeAmt.toNumber()}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text"
+                                              "outputType": "text",
+                                              "output": true
                                             },
                                             {
                                               "name": "AdminClosingBalance",
@@ -1419,7 +1429,7 @@
                                                   ]
                                                 }
                                               },
-                                              "output": false,
+                                              "output": true,
                                               "meta": [
                                                 {
                                                   "type": "text",
@@ -1565,7 +1575,8 @@
                                                         "value": "{{GetCommisionForMDT.comm_per.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text"
+                                                      "outputType": "text",
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "MDTCommVal",
@@ -1575,7 +1586,8 @@
                                                         "value": "{{GetCommisionForMDT.comm_val.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text"
+                                                      "outputType": "text",
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "MDTCommTotal",
@@ -1585,7 +1597,8 @@
                                                         "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForMDT.comm_per.toNumber()/100)+GetCommisionForMDT.comm_val.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text"
+                                                      "outputType": "text",
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "MDTCommAmt",
@@ -1595,7 +1608,8 @@
                                                         "value": "{{MDTCommTotal.toNumber()-DTCommTotal.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text"
+                                                      "outputType": "text",
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "MDTChargePer",
@@ -1605,7 +1619,8 @@
                                                         "value": "{{GetCommisionForMDT.service_charge_per}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text"
+                                                      "outputType": "text",
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "MDTChargeVal",
@@ -1615,7 +1630,8 @@
                                                         "value": "{{GetCommisionForMDT.service_charge_val}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text"
+                                                      "outputType": "text",
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "MDTChargeTotal",
@@ -1625,7 +1641,8 @@
                                                         "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForMDT.service_charge_per.toNumber()/100)+GetCommisionForMDT.service_charge_val.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text"
+                                                      "outputType": "text",
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "MDTChargeAmt",
@@ -1635,7 +1652,8 @@
                                                         "value": "{{MDTChargeTotal.toNumber()-DTChargeTotal.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text"
+                                                      "outputType": "text",
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "MDTNetAmt",
@@ -1645,7 +1663,8 @@
                                                         "value": "{{MDTCommAmt.toNumber()-MDTChargeAmt.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text"
+                                                      "outputType": "text",
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "MDTClosingBalance",
@@ -1655,7 +1674,8 @@
                                                         "value": "{{GetDTCreator.dt_balance_amt.toNumber()+MDTCommAmt.toNumber()-MDTChargeAmt.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text"
+                                                      "outputType": "text",
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "AdminClosingBalance",
@@ -2018,7 +2038,7 @@
                                               "table": "tt_recharge_trans",
                                               "column": "closing_balance",
                                               "type": "text",
-                                              "value": "{{RTClosingBalance}}"
+                                              "value": "{{UserWalletBalCheck.balance_amt}}"
                                             },
                                             {
                                               "table": "tt_recharge_trans",
@@ -2101,7 +2121,7 @@
                                           ],
                                           "table": "tt_recharge_trans",
                                           "returning": "id",
-                                          "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed) VALUES (:P1 /* {{$_POST.op_code}} */, :P2 /* {{GetOpAPICodeFwrd.service_id}} */, :P3 /* {{GetOpAPICodeFwrd.api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_POST.mobile_number}} */, :P6 /* {{UserWalletBalCheck.user_fname}} */, :P7 /* {{$_POST.recharge_amount}} */, :P8 /* {{'Web'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{TransactionId}} */, :P12 /* {{'Recharge of Rs. '+$_POST.recharge_amount+' by  '+UserWalletBalCheck.user_mobile+' | '+UserWalletBalCheck.user_fname}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2C'}} */, :P15 /* {{NOW}} */, :P16 /* {{identity}} */, :P17 /* {{UserWalletBalCheck.balance_amt}} */, :P18 /* {{GetCommision.comm_per}} */, :P19 /* {{GetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{GetCommision.service_charge_val}} */, :P22 /* {{GetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{RTClosingBalance}} */, :P26 /* {{DTCommPer}} */, :P27 /* {{DTCommVal}} */, :P28 /* {{DTCommAmt}} */, :P29 /* {{DTChargePer}} */, :P30 /* {{DTChargeVal}} */, :P31 /* {{DTChargeAmt}} */, :P32 /* {{MDTCommPer}} */, :P33 /* {{MDTCommVal}} */, :P34 /* {{MDTCommAmt}} */, :P35 /* {{MDTChargePer}} */, :P36 /* {{MDTChargeVal}} */, :P37 /* {{MDTChargeAmt}} */, :P38 /* {{'N/A'}} */)",
+                                          "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed) VALUES (:P1 /* {{$_POST.op_code}} */, :P2 /* {{GetOpAPICodeFwrd.service_id}} */, :P3 /* {{GetOpAPICodeFwrd.api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_POST.mobile_number}} */, :P6 /* {{UserWalletBalCheck.user_fname}} */, :P7 /* {{$_POST.recharge_amount}} */, :P8 /* {{'Web'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{TransactionId}} */, :P12 /* {{'Recharge of Rs. '+$_POST.recharge_amount+' by  '+UserWalletBalCheck.user_mobile+' | '+UserWalletBalCheck.user_fname}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2C'}} */, :P15 /* {{NOW}} */, :P16 /* {{identity}} */, :P17 /* {{UserWalletBalCheck.balance_amt}} */, :P18 /* {{GetCommision.comm_per}} */, :P19 /* {{GetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{GetCommision.service_charge_val}} */, :P22 /* {{GetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{UserWalletBalCheck.balance_amt}} */, :P26 /* {{DTCommPer}} */, :P27 /* {{DTCommVal}} */, :P28 /* {{DTCommAmt}} */, :P29 /* {{DTChargePer}} */, :P30 /* {{DTChargeVal}} */, :P31 /* {{DTChargeAmt}} */, :P32 /* {{MDTCommPer}} */, :P33 /* {{MDTCommVal}} */, :P34 /* {{MDTCommAmt}} */, :P35 /* {{MDTChargePer}} */, :P36 /* {{MDTChargeVal}} */, :P37 /* {{MDTChargeAmt}} */, :P38 /* {{'N/A'}} */)",
                                           "params": [
                                             {
                                               "name": ":P1",
@@ -2226,7 +2246,7 @@
                                             {
                                               "name": ":P25",
                                               "type": "expression",
-                                              "value": "{{RTClosingBalance}}"
+                                              "value": "{{UserWalletBalCheck.balance_amt}}"
                                             },
                                             {
                                               "name": ":P26",
@@ -3735,7 +3755,7 @@
                                                           "type": "number"
                                                         }
                                                       ],
-                                                      "output": false
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "DtUserBal",
@@ -3974,7 +3994,7 @@
                                                                   "type": "number"
                                                                 }
                                                               ],
-                                                              "output": false
+                                                              "output": true
                                                             },
                                                             {
                                                               "name": "MdtUserAmtUp",
