@@ -352,6 +352,14 @@
                                           {
                                             "table": "m_users",
                                             "column": "balance_amt"
+                                          },
+                                          {
+                                            "table": "m_users",
+                                            "column": "md_id"
+                                          },
+                                          {
+                                            "table": "m_users",
+                                            "column": "ds_id"
                                           }
                                         ],
                                         "table": {
@@ -391,7 +399,7 @@
                                           "conditional": null,
                                           "valid": true
                                         },
-                                        "query": "SELECT user_fname, user_mobile, scheme_id, balance_amt\nFROM m_users\nWHERE id = :P1 /* {{$_GET.userid}} */ AND u_status = '1'",
+                                        "query": "SELECT user_fname, user_mobile, scheme_id, balance_amt, md_id, ds_id\nFROM m_users\nWHERE id = :P1 /* {{$_GET.userid}} */ AND u_status = '1'",
                                         "params": [
                                           {
                                             "operator": "equal",
@@ -419,6 +427,14 @@
                                       {
                                         "type": "text",
                                         "name": "balance_amt"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "md_id"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "ds_id"
                                       }
                                     ],
                                     "outputType": "object"
@@ -1325,7 +1341,7 @@
                                                                     "table": "tt_balance",
                                                                     "column": "new_balance",
                                                                     "type": "text",
-                                                                    "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                    "value": "{{RTClosingBalance}}"
                                                                   },
                                                                   {
                                                                     "table": "tt_balance",
@@ -1390,7 +1406,7 @@
                                                                 ],
                                                                 "table": "tt_balance",
                                                                 "returning": "id",
-                                                                "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{$_GET.userid}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{UserWalletBalCheck.balance_amt}} */, :P5 /* {{'Recharge'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.account+' | Amount:\\n '+$_GET.amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{$_GET.userid}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'FAILED'}} */)",
+                                                                "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{$_GET.userid}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{RTClosingBalance}} */, :P5 /* {{'Recharge'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.account+' | Amount:\\n '+$_GET.amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{$_GET.userid}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'FAILED'}} */)",
                                                                 "params": [
                                                                   {
                                                                     "name": ":P1",
@@ -1410,7 +1426,7 @@
                                                                   {
                                                                     "name": ":P4",
                                                                     "type": "expression",
-                                                                    "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                                    "value": "{{RTClosingBalance}}"
                                                                   },
                                                                   {
                                                                     "name": ":P5",
@@ -2782,7 +2798,7 @@
                                                                             "table": "tt_balance",
                                                                             "column": "old_balance",
                                                                             "type": "text",
-                                                                            "value": "{{balance}}"
+                                                                            "value": "{{RTClosingBalance}}"
                                                                           },
                                                                           {
                                                                             "table": "tt_balance",
@@ -2859,7 +2875,7 @@
                                                                         ],
                                                                         "table": "tt_balance",
                                                                         "returning": "id",
-                                                                        "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{$_GET.userid}} */, :P2 /* {{balance}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{balance}} */, :P5 /* {{'Recharge Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.account+' | Amount:\\n '+$_GET.amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{$_GET.userid}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'REFUND'}} */)",
+                                                                        "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{$_GET.userid}} */, :P2 /* {{RTClosingBalance}} */, :P3 /* {{$_GET.amount}} */, :P4 /* {{balance}} */, :P5 /* {{'Recharge Refund'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_GET.account+' | Amount:\\n '+$_GET.amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{$_GET.userid}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'REFUND'}} */)",
                                                                         "params": [
                                                                           {
                                                                             "name": ":P1",
@@ -2869,7 +2885,7 @@
                                                                           {
                                                                             "name": ":P2",
                                                                             "type": "expression",
-                                                                            "value": "{{balance}}"
+                                                                            "value": "{{RTClosingBalance}}"
                                                                           },
                                                                           {
                                                                             "name": ":P3",
