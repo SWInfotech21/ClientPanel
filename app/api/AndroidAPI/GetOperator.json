@@ -569,6 +569,10 @@
                                                     {
                                                       "table": "m_operator",
                                                       "column": "operator_name"
+                                                    },
+                                                    {
+                                                      "table": "m_operator",
+                                                      "column": "image"
                                                     }
                                                   ],
                                                   "table": {
@@ -638,7 +642,7 @@
                                                       "recid": 1
                                                     }
                                                   ],
-                                                  "query": "SELECT m_operator.id, m_operator.operator_name\nFROM m_operator\nINNER JOIN m_service AS m_service ON (m_service.id = m_operator.service_id)\nWHERE m_service.service_name = :P1 /* {{'DTH'}} */ AND m_operator.status = 1\nORDER BY m_operator.operator_name ASC",
+                                                  "query": "SELECT m_operator.id, m_operator.operator_name, m_operator.image\nFROM m_operator\nINNER JOIN m_service AS m_service ON (m_service.id = m_operator.service_id)\nWHERE m_service.service_name = :P1 /* {{'DTH'}} */ AND m_operator.status = 1\nORDER BY m_operator.operator_name ASC",
                                                   "params": [
                                                     {
                                                       "operator": "equal",
@@ -659,6 +663,10 @@
                                                 {
                                                   "type": "text",
                                                   "name": "operator_name"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "image"
                                                 }
                                               ],
                                               "outputType": "array"
@@ -679,6 +687,10 @@
                                                     {
                                                       "table": "m_operator",
                                                       "column": "operator_name"
+                                                    },
+                                                    {
+                                                      "table": "m_operator",
+                                                      "column": "image"
                                                     }
                                                   ],
                                                   "table": {
@@ -761,7 +773,7 @@
                                                       "recid": 1
                                                     }
                                                   ],
-                                                  "query": "SELECT m_operator.id AS op_id, m_operator.operator_name\nFROM m_operator\nINNER JOIN m_service AS m_service ON (m_service.id = m_operator.service_id)\nWHERE m_service.service_name = 'Postpaid' AND m_operator.status = 1 AND m_service.is_active = 1\nORDER BY m_operator.operator_name ASC",
+                                                  "query": "SELECT m_operator.id AS op_id, m_operator.operator_name, m_operator.image\nFROM m_operator\nINNER JOIN m_service AS m_service ON (m_service.id = m_operator.service_id)\nWHERE m_service.service_name = 'Postpaid' AND m_operator.status = 1 AND m_service.is_active = 1\nORDER BY m_operator.operator_name ASC",
                                                   "params": []
                                                 },
                                                 "connection": "postgres_gcpServer"
@@ -775,6 +787,10 @@
                                                 {
                                                   "type": "text",
                                                   "name": "operator_name"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "image"
                                                 }
                                               ],
                                               "outputType": "array"
