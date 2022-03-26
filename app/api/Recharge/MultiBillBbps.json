@@ -2426,7 +2426,7 @@
                                                 "params": {
                                                   "UserID": "{{GetOpAPICodeFwrd.username}}",
                                                   "Token": "{{GetOpAPICodeFwrd.api_password}}",
-                                                  "Account": "",
+                                                  "Account": "{{$_POST.account}}",
                                                   "Amount": "{{$_POST.recharge_amount}}",
                                                   "SPKey": "{{GetOpAPICodeFwrd.api_code7}}",
                                                   "APIRequestID": "{{TransactionId}}",
@@ -2440,7 +2440,7 @@
                                                   "Format": "1"
                                                 }
                                               },
-                                              "output": false
+                                              "output": true
                                             },
                                             {
                                               "name": "stat",
