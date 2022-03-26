@@ -14,6 +14,18 @@
   "exec": {
     "steps": [
       {
+        "name": "OTP",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{TIMESTAMP.substr(0, 6).randomize()}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
         "name": "apiAuth",
         "module": "api",
         "action": "send",
@@ -73,7 +85,8 @@
             "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}"
           }
         },
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "A",

@@ -387,6 +387,10 @@
                                                   {
                                                     "table": "m_op",
                                                     "column": "operator_name"
+                                                  },
+                                                  {
+                                                    "table": "tt_recharge_trans",
+                                                    "column": "tr_id"
                                                   }
                                                 ],
                                                 "table": {
@@ -495,7 +499,7 @@
                                                   "conditional": null,
                                                   "valid": true
                                                 },
-                                                "query": "SELECT tt_recharge_trans.id, tt_recharge_trans.opening_balance, tt_recharge_trans.amount, tt_recharge_trans.closing_balance, tt_recharge_trans.reason, tt_recharge_trans.tr_date, m_user.user_fname AS tr_by, m_user.user_mobile AS tr_by_mobile, m_op.operator_name\nFROM tt_recharge_trans\nLEFT JOIN m_users AS m_user ON (m_user.id = tt_recharge_trans.transaction_by) LEFT JOIN m_operator AS m_op ON (m_op.id = tt_recharge_trans.op_id)\nWHERE tt_recharge_trans.user_id = :P1 /* {{identity}} */ AND m_op.operator_name = :P2 /* {{'Wallet Debit'}} */ AND tt_recharge_trans.tr_date >= :P3 /* {{$_GET.fromdate}} */ AND tt_recharge_trans.tr_date <= :P4 /* {{$_GET.todate}} */\nORDER BY tt_recharge_trans.id DESC",
+                                                "query": "SELECT tt_recharge_trans.id, tt_recharge_trans.opening_balance, tt_recharge_trans.amount, tt_recharge_trans.closing_balance, tt_recharge_trans.reason, tt_recharge_trans.tr_date, m_user.user_fname AS tr_by, m_user.user_mobile AS tr_by_mobile, m_op.operator_name, tt_recharge_trans.tr_id\nFROM tt_recharge_trans\nLEFT JOIN m_users AS m_user ON (m_user.id = tt_recharge_trans.transaction_by) LEFT JOIN m_operator AS m_op ON (m_op.id = tt_recharge_trans.op_id)\nWHERE tt_recharge_trans.user_id = :P1 /* {{identity}} */ AND m_op.operator_name = :P2 /* {{'Wallet Debit'}} */ AND tt_recharge_trans.tr_date >= :P3 /* {{$_GET.fromdate}} */ AND tt_recharge_trans.tr_date <= :P4 /* {{$_GET.todate}} */\nORDER BY tt_recharge_trans.id DESC",
                                                 "params": [
                                                   {
                                                     "operator": "equal",
@@ -621,6 +625,10 @@
                                                   {
                                                     "type": "text",
                                                     "name": "operator_name"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "tr_id"
                                                   }
                                                 ]
                                               }
