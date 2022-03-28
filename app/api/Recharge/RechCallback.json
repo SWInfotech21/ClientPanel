@@ -1,5 +1,31 @@
 {
   "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "reqid"
+      },
+      {
+        "type": "text",
+        "name": "status"
+      },
+      {
+        "type": "text",
+        "name": "remark"
+      },
+      {
+        "type": "text",
+        "name": "balance"
+      },
+      {
+        "type": "text",
+        "name": "mn"
+      },
+      {
+        "type": "text",
+        "name": "field1"
+      }
+    ],
     "$_POST": [
       {
         "type": "text",
@@ -30,7 +56,8 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "api_refId",
@@ -41,7 +68,8 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "status",
@@ -52,7 +80,8 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "operatorRef",
@@ -63,7 +92,8 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "insert",
@@ -84,7 +114,7 @@
                 "table": "api_response",
                 "column": "recharge_mobile",
                 "type": "text",
-                "value": "1"
+                "value": "{{$_GET.mn}}"
               },
               {
                 "table": "api_response",
@@ -102,19 +132,19 @@
                 "table": "api_response",
                 "column": "status",
                 "type": "text",
-                "value": "{{status}}"
+                "value": "{{$_GET.status}}"
               },
               {
                 "table": "api_response",
                 "column": "order_id",
                 "type": "text",
-                "value": "{{tr_id}}"
+                "value": "{{$_GET.reqid}}"
               },
               {
                 "table": "api_response",
                 "column": "balance",
                 "type": "text",
-                "value": "{{operatorRef}}"
+                "value": "{{$_GET.balance}}"
               },
               {
                 "table": "api_response",
@@ -126,13 +156,13 @@
                 "table": "api_response",
                 "column": "apirefid",
                 "type": "text",
-                "value": "{{api_refId}}"
+                "value": "{{$_GET.field1}}"
               },
               {
                 "table": "api_response",
                 "column": "remarks",
                 "type": "text",
-                "value": "1"
+                "value": "{{$_GET.remark}}"
               },
               {
                 "table": "api_response",
@@ -148,30 +178,40 @@
               }
             ],
             "table": "api_response",
-            "query": "INSERT INTO api_response\n(user_id, recharge_mobile, operator, amount, status, order_id, balance, ec, apirefid, remarks, time, live_id) VALUES ('1', '1', '1', '1', :P1 /* {{status}} */, :P2 /* {{tr_id}} */, :P3 /* {{operatorRef}} */, '1', :P4 /* {{api_refId}} */, '1', :P5 /* {{NOW}} */, '1')",
+            "query": "INSERT INTO api_response\n(user_id, recharge_mobile, operator, amount, status, order_id, balance, ec, apirefid, remarks, time, live_id) VALUES ('1', :P1 /* {{$_GET.mn}} */, '1', '1', :P2 /* {{$_GET.status}} */, :P3 /* {{$_GET.reqid}} */, :P4 /* {{$_GET.balance}} */, '1', :P5 /* {{$_GET.field1}} */, :P6 /* {{$_GET.remark}} */, :P7 /* {{NOW}} */, '1')",
             "params": [
               {
                 "name": ":P1",
                 "type": "expression",
-                "value": "{{status}}"
+                "value": "{{$_GET.mn}}"
               },
               {
                 "name": ":P2",
                 "type": "expression",
-                "value": "{{tr_id}}"
+                "value": "{{$_GET.status}}"
               },
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{operatorRef}}"
+                "value": "{{$_GET.reqid}}"
               },
               {
                 "name": ":P4",
                 "type": "expression",
-                "value": "{{api_refId}}"
+                "value": "{{$_GET.balance}}"
               },
               {
                 "name": ":P5",
+                "type": "expression",
+                "value": "{{$_GET.field1}}"
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_GET.remark}}"
+              },
+              {
+                "name": ":P7",
                 "type": "expression",
                 "value": "{{NOW}}"
               }
