@@ -188,7 +188,8 @@
             "type": "number"
           }
         ],
-        "output": true
+        "output": true,
+        "disabled": true
       }
     ]
   }
