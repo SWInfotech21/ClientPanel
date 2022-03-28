@@ -57,7 +57,7 @@
               "name": "m_users"
             },
             "joins": [],
-            "query": "SELECT user_mobile, id\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_POST.forgot_mobile}} */ AND u_status = '1' AND updated_by IS NOT NULL",
+            "query": "SELECT user_mobile, id\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_POST.forgot_mobile}} */ AND u_status = '1' AND user_type BETWEEN 1 AND 3",
             "params": [
               {
                 "operator": "equal",
@@ -96,17 +96,20 @@
                   "operation": "="
                 },
                 {
-                  "id": "m_users.updated_by",
-                  "field": "m_users.updated_by",
-                  "type": "string",
-                  "operator": "is_not_null",
-                  "value": null,
+                  "id": "m_users.user_type",
+                  "field": "m_users.user_type",
+                  "type": "double",
+                  "operator": "between",
+                  "value": [
+                    1,
+                    3
+                  ],
                   "data": {
                     "table": "m_users",
-                    "column": "updated_by",
-                    "type": "text"
+                    "column": "user_type",
+                    "type": "number"
                   },
-                  "operation": "IS NOT NULL"
+                  "operation": "BETWEEN"
                 }
               ],
               "conditional": null,
