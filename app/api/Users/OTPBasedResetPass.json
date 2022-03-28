@@ -128,7 +128,8 @@
                       "name": ":P5",
                       "value": "{{$_SESSION.mobile_session}}"
                     }
-                  ]
+                  ],
+                  "returning": "id"
                 }
               },
               "meta": [
@@ -173,7 +174,8 @@
                 "status": 403,
                 "data": "OTP mis-matched"
               },
-              "output": true
+              "output": true,
+              "disabled": true
             },
             {
               "name": "Status",
