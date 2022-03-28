@@ -64,6 +64,131 @@
         "meta": [],
         "outputType": "text",
         "output": true
+      },
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "api_response",
+                "column": "user_id",
+                "type": "text",
+                "value": "1"
+              },
+              {
+                "table": "api_response",
+                "column": "recharge_mobile",
+                "type": "text",
+                "value": "1"
+              },
+              {
+                "table": "api_response",
+                "column": "operator",
+                "type": "text",
+                "value": "1"
+              },
+              {
+                "table": "api_response",
+                "column": "amount",
+                "type": "text",
+                "value": "1"
+              },
+              {
+                "table": "api_response",
+                "column": "status",
+                "type": "text",
+                "value": "{{status}}"
+              },
+              {
+                "table": "api_response",
+                "column": "order_id",
+                "type": "text",
+                "value": "{{tr_id}}"
+              },
+              {
+                "table": "api_response",
+                "column": "balance",
+                "type": "text",
+                "value": "{{operatorRef}}"
+              },
+              {
+                "table": "api_response",
+                "column": "ec",
+                "type": "text",
+                "value": "1"
+              },
+              {
+                "table": "api_response",
+                "column": "apirefid",
+                "type": "text",
+                "value": "{{api_refId}}"
+              },
+              {
+                "table": "api_response",
+                "column": "remarks",
+                "type": "text",
+                "value": "1"
+              },
+              {
+                "table": "api_response",
+                "column": "time",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "api_response",
+                "column": "live_id",
+                "type": "text",
+                "value": "1"
+              }
+            ],
+            "table": "api_response",
+            "query": "INSERT INTO api_response\n(user_id, recharge_mobile, operator, amount, status, order_id, balance, ec, apirefid, remarks, time, live_id) VALUES ('1', '1', '1', '1', :P1 /* {{status}} */, :P2 /* {{tr_id}} */, :P3 /* {{operatorRef}} */, '1', :P4 /* {{api_refId}} */, '1', :P5 /* {{NOW}} */, '1')",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{status}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{tr_id}}"
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{operatorRef}}"
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{api_refId}}"
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{NOW}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "output": true
       }
     ]
   }
