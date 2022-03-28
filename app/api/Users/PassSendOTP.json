@@ -175,10 +175,8 @@
                     "key": "{{'797b4459a9XX'}}",
                     "mobile": "{{$_POST.forgot_mobile}}",
                     "message": "{{'Your one time password is '+OTP+' \\nRegards S W Pays'}}",
-                    "senderid": "{{'BUCKSP'}}",
-                    "accusage": "1",
-                    "entityid": "{{1201159793395035000}}",
-                    "tempid": "{{1207164639871422700}}"
+                    "senderid": "{{'SWPAYS'}}",
+                    "accusage": "1"
                   },
                   "passErrors": false
                 },
