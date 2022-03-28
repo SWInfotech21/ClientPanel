@@ -508,6 +508,79 @@
                 "output": false
               },
               {
+                "name": "insertOTP",
+                "module": "dbupdater",
+                "action": "insert",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "insert",
+                    "values": [
+                      {
+                        "table": "forgot_otp",
+                        "column": "mobile",
+                        "type": "text",
+                        "value": "{{$_POST.forgot_mobile}}"
+                      },
+                      {
+                        "table": "forgot_otp",
+                        "column": "otp",
+                        "type": "text",
+                        "value": "{{OTP}}"
+                      },
+                      {
+                        "table": "forgot_otp",
+                        "column": "entytime",
+                        "type": "datetime",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "table": "forgot_otp",
+                        "column": "status",
+                        "type": "number",
+                        "value": "{{1}}"
+                      }
+                    ],
+                    "table": "forgot_otp",
+                    "returning": "id",
+                    "query": "INSERT INTO forgot_otp\n(mobile, otp, entytime, status) VALUES (:P1 /* {{$_POST.forgot_mobile}} */, :P2 /* {{OTP}} */, :P3 /* {{NOW}} */, :P4 /* {{1}} */)",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{$_POST.forgot_mobile}}"
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{OTP}}"
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "name": ":P4",
+                        "type": "expression",
+                        "value": "{{1}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "identity",
+                    "type": "text"
+                  },
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ],
+                "output": false
+              },
+              {
                 "name": "Status",
                 "module": "core",
                 "action": "setvalue",
