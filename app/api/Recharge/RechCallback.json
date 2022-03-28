@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "clientTxnRef"
+      },
+      {
+        "type": "text",
+        "name": "refId"
+      },
+      {
+        "type": "text",
+        "name": "status"
+      },
+      {
+        "type": "text",
+        "name": "operatorRef"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "tr_id",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_POST.clientTxnRef}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "api_refId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_POST.refId}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "status",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_POST.status}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "operatorRef",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_POST.operatorRef}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      }
+    ]
+  }
+}
