@@ -407,7 +407,8 @@
               }
             ],
             "table": {
-              "name": "m_users"
+              "name": "m_users",
+              "alias": "m_users"
             },
             "joins": [],
             "wheres": {
@@ -443,7 +444,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT user_fname, user_mobile, user_tpin, scheme_id, balance_amt, created_by AS retailer_creator_id, md_id AS mdt_id, ds_id AS dt_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */ AND u_status = '1'",
+            "query": "SELECT user_fname, user_mobile, user_tpin, scheme_id, balance_amt, created_by AS retailer_creator_id, md_id AS mdt_id, ds_id AS dt_id\nFROM m_users AS m_users\nWHERE id = :P1 /* {{identity}} */ AND u_status = '1'",
             "params": [
               {
                 "operator": "equal",
@@ -451,7 +452,8 @@
                 "name": ":P1",
                 "value": "{{identity}}"
               }
-            ]
+            ],
+            "primary": "id"
           }
         },
         "output": true,
@@ -3185,7 +3187,8 @@
                                                       "name": ":P12",
                                                       "value": "{{RechTrans.identity}}"
                                                     }
-                                                  ]
+                                                  ],
+                                                  "returning": "id"
                                                 }
                                               },
                                               "meta": [
@@ -3582,7 +3585,7 @@
                                               "module": "core",
                                               "action": "condition",
                                               "options": {
-                                                "if": "{{GetRTCreator.rt_creator_user_type.toNumber()==2}}",
+                                                "if": "{{UserWalletBalCheck.dt_id>0}}",
                                                 "then": {
                                                   "steps": [
                                                     {
@@ -3805,7 +3808,8 @@
                                                               "name": ":P2",
                                                               "value": "{{UserWalletBalCheck.retailer_creator_id}}"
                                                             }
-                                                          ]
+                                                          ],
+                                                          "returning": "id"
                                                         }
                                                       },
                                                       "meta": [
@@ -3826,7 +3830,7 @@
                                               "module": "core",
                                               "action": "condition",
                                               "options": {
-                                                "if": "{{GetDTCreator.dt_user_type.toNumber()==1}}",
+                                                "if": "{{UserWalletBalCheck.mdt_id>0}}",
                                                 "then": {
                                                   "steps": [
                                                     {
