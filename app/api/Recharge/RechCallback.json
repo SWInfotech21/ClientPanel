@@ -3198,6 +3198,15 @@
           }
         },
         "outputType": "boolean"
+      },
+      {
+        "name": "apiLive",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://portal.swpay.in/api/RefreshTrans"
+        },
+        "output": true
       }
     ]
   }
