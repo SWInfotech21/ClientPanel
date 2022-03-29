@@ -116,7 +116,8 @@
               {
                 "table": "forgot_otp",
                 "column": "id",
-                "direction": "DESC"
+                "direction": "DESC",
+                "recid": 1
               }
             ]
           }
@@ -264,6 +265,52 @@
                         }
                       ],
                       "output": false
+                    },
+                    {
+                      "name": "OTPDEL",
+                      "module": "dbupdater",
+                      "action": "delete",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "delete",
+                          "table": "forgot_otp",
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "mobile",
+                                "field": "mobile",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "{{$_POST.mobile}}",
+                                "data": {
+                                  "column": "mobile"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "returning": "id",
+                          "query": "DELETE\nFROM forgot_otp\nWHERE mobile = :P1 /* {{$_POST.mobile}} */",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{$_POST.mobile}}"
+                            }
+                          ]
+                        }
+                      },
+                      "meta": [
+                        {
+                          "name": "affected",
+                          "type": "number"
+                        }
+                      ]
                     },
                     {
                       "name": "Status",
