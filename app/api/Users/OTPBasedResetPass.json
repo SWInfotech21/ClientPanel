@@ -50,17 +50,6 @@
   "exec": {
     "steps": [
       {
-        "name": "PostOTP",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{$_POST.otp}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
         "name": "GetOTP",
         "module": "dbconnector",
         "action": "single",
@@ -156,7 +145,7 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": false
       },
       {
         "name": "",
@@ -385,7 +374,7 @@
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "Time Out"
+                  "value": "OTP expired, please try again"
                 },
                 "meta": [],
                 "output": true,
