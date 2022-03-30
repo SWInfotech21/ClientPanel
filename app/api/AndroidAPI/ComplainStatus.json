@@ -1,0 +1,884 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/login.ejs",
+      "linkedForm": "formLogin"
+    },
+    "$_GET": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "username"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "password"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "fromdate"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "todate"
+      },
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ],
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "REMOTE_ADDR"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "trycatch",
+      "options": {
+        "try": {
+          "steps": [
+            {
+              "name": "getSalt",
+              "module": "dbconnector",
+              "action": "single",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "m_users",
+                      "column": "salt",
+                      "alias": "saltvalue"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_tpin"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "md_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "ds_id"
+                    }
+                  ],
+                  "table": {
+                    "name": "m_users"
+                  },
+                  "joins": [],
+                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_GET.username}} */",
+                  "params": [
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P1",
+                      "value": "{{$_GET.username}}"
+                    }
+                  ],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "m_users.user_type",
+                        "field": "m_users.user_type",
+                        "type": "double",
+                        "operator": "between",
+                        "value": [
+                          1,
+                          3
+                        ],
+                        "data": {
+                          "table": "m_users",
+                          "column": "user_type",
+                          "type": "number"
+                        },
+                        "operation": "BETWEEN"
+                      },
+                      {
+                        "id": "m_users.u_status",
+                        "field": "m_users.u_status",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "1",
+                        "data": {
+                          "table": "m_users",
+                          "column": "u_status",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "m_users.blank2",
+                        "field": "m_users.blank2",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "{{$_GET.username}}",
+                        "data": {
+                          "table": "m_users",
+                          "column": "blank2",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  }
+                }
+              },
+              "output": false,
+              "meta": [
+                {
+                  "type": "text",
+                  "name": "saltvalue"
+                },
+                {
+                  "type": "text",
+                  "name": "user_tpin"
+                },
+                {
+                  "type": "number",
+                  "name": "id"
+                },
+                {
+                  "type": "text",
+                  "name": "md_id"
+                },
+                {
+                  "type": "text",
+                  "name": "ds_id"
+                }
+              ],
+              "outputType": "object"
+            },
+            {
+              "name": "",
+              "module": "core",
+              "action": "condition",
+              "options": {
+                "if": "{{getSalt.saltvalue}}",
+                "then": {
+                  "steps": [
+                    {
+                      "name": "GetMdt",
+                      "module": "dbconnector",
+                      "action": "single",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "m_users",
+                              "column": "id",
+                              "alias": "countmdt",
+                              "aggregate": "COUNT"
+                            }
+                          ],
+                          "table": {
+                            "name": "m_users"
+                          },
+                          "joins": [],
+                          "groupBy": [],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "m_users.id",
+                                "field": "m_users.id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{getSalt.md_id.toNumber()}}",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "id",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "m_users.u_status",
+                                "field": "m_users.u_status",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "1",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "u_status",
+                                  "type": "text"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{getSalt.md_id.toNumber()}}"
+                            }
+                          ]
+                        }
+                      },
+                      "output": false,
+                      "meta": [
+                        {
+                          "type": "number",
+                          "name": "countmdt"
+                        }
+                      ],
+                      "outputType": "object"
+                    },
+                    {
+                      "name": "",
+                      "module": "core",
+                      "action": "condition",
+                      "options": {
+                        "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
+                        "then": {
+                          "steps": [
+                            {
+                              "name": "GetDt",
+                              "module": "dbconnector",
+                              "action": "single",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "SELECT",
+                                  "columns": [
+                                    {
+                                      "table": "m_users",
+                                      "column": "id",
+                                      "alias": "countdt",
+                                      "aggregate": "COUNT"
+                                    }
+                                  ],
+                                  "table": {
+                                    "name": "m_users"
+                                  },
+                                  "joins": [],
+                                  "groupBy": [],
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "m_users.id",
+                                        "field": "m_users.id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{getSalt.ds_id.toNumber()}}",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      },
+                                      {
+                                        "id": "m_users.u_status",
+                                        "field": "m_users.u_status",
+                                        "type": "string",
+                                        "operator": "equal",
+                                        "value": "1",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "u_status",
+                                          "type": "text"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
+                                  "params": [
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P1",
+                                      "value": "{{getSalt.ds_id.toNumber()}}"
+                                    }
+                                  ]
+                                }
+                              },
+                              "output": false,
+                              "meta": [
+                                {
+                                  "type": "number",
+                                  "name": "countdt"
+                                }
+                              ],
+                              "outputType": "object"
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
+                                "then": {
+                                  "steps": [
+                                    {
+                                      "name": "identity",
+                                      "module": "auth",
+                                      "action": "login",
+                                      "options": {
+                                        "provider": "securityAndroid",
+                                        "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
+                                        "username": "{{$_GET.username}}",
+                                        "remember": ""
+                                      },
+                                      "output": false,
+                                      "meta": []
+                                    },
+                                    {
+                                      "name": "",
+                                      "module": "core",
+                                      "action": "condition",
+                                      "options": {
+                                        "if": "{{identity}}",
+                                        "then": {
+                                          "steps": {
+                                            "name": "ComplainTr",
+                                            "module": "dbconnector",
+                                            "action": "paged",
+                                            "options": {
+                                              "sql": {
+                                                "type": "SELECT",
+                                                "columns": [
+                                                  {
+                                                    "table": "tt_recharge_trans",
+                                                    "column": "id"
+                                                  },
+                                                  {
+                                                    "table": "tt_recharge_trans",
+                                                    "column": "user_number"
+                                                  },
+                                                  {
+                                                    "table": "tt_recharge_trans",
+                                                    "column": "details"
+                                                  },
+                                                  {
+                                                    "table": "tt_recharge_trans",
+                                                    "column": "amount"
+                                                  },
+                                                  {
+                                                    "table": "tt_recharge_trans",
+                                                    "column": "status"
+                                                  },
+                                                  {
+                                                    "table": "tt_recharge_trans",
+                                                    "column": "tr_id"
+                                                  },
+                                                  {
+                                                    "table": "tt_recharge_trans",
+                                                    "column": "bank_ac_no"
+                                                  },
+                                                  {
+                                                    "table": "tt_recharge_trans",
+                                                    "column": "remitter_id"
+                                                  },
+                                                  {
+                                                    "table": "t_ticket",
+                                                    "column": "support_type"
+                                                  },
+                                                  {
+                                                    "table": "t_ticket",
+                                                    "column": "message"
+                                                  },
+                                                  {
+                                                    "table": "t_ticket",
+                                                    "column": "adddate"
+                                                  },
+                                                  {
+                                                    "table": "t_ticket",
+                                                    "column": "status",
+                                                    "alias": "complain_statius"
+                                                  },
+                                                  {
+                                                    "table": "t_ticket",
+                                                    "column": "adddate"
+                                                  },
+                                                  {
+                                                    "table": "t_ticket",
+                                                    "column": "response"
+                                                  },
+                                                  {
+                                                    "table": "t_ticket",
+                                                    "column": "reply_date"
+                                                  },
+                                                  {
+                                                    "table": "m_op",
+                                                    "column": "operator_name"
+                                                  }
+                                                ],
+                                                "table": {
+                                                  "name": "tt_recharge_trans",
+                                                  "alias": "tt_recharge_trans"
+                                                },
+                                                "primary": "id",
+                                                "joins": [
+                                                  {
+                                                    "table": "t_ticket",
+                                                    "column": "*",
+                                                    "alias": "t_ticket",
+                                                    "type": "INNER",
+                                                    "clauses": {
+                                                      "condition": "AND",
+                                                      "rules": [
+                                                        {
+                                                          "table": "t_ticket",
+                                                          "column": "tran_id",
+                                                          "operator": "equal",
+                                                          "value": {
+                                                            "table": "tt_recharge_trans",
+                                                            "column": "id"
+                                                          },
+                                                          "operation": "="
+                                                        },
+                                                        {
+                                                          "table": "t_ticket",
+                                                          "column": "user_id",
+                                                          "operator": "equal",
+                                                          "value": {
+                                                            "table": "tt_recharge_trans",
+                                                            "column": "user_id"
+                                                          },
+                                                          "operation": "="
+                                                        }
+                                                      ]
+                                                    },
+                                                    "primary": "id"
+                                                  },
+                                                  {
+                                                    "table": "m_operator",
+                                                    "column": "*",
+                                                    "alias": "m_op",
+                                                    "type": "LEFT",
+                                                    "clauses": {
+                                                      "condition": "AND",
+                                                      "rules": [
+                                                        {
+                                                          "table": "m_op",
+                                                          "column": "id",
+                                                          "operator": "equal",
+                                                          "value": {
+                                                            "table": "tt_recharge_trans",
+                                                            "column": "op_id"
+                                                          },
+                                                          "operation": "="
+                                                        },
+                                                        {
+                                                          "table": "m_op",
+                                                          "column": "service_id",
+                                                          "operator": "equal",
+                                                          "value": {
+                                                            "table": "tt_recharge_trans",
+                                                            "column": "service_id"
+                                                          },
+                                                          "operation": "="
+                                                        }
+                                                      ]
+                                                    },
+                                                    "primary": "id"
+                                                  }
+                                                ],
+                                                "wheres": {
+                                                  "condition": "AND",
+                                                  "rules": [
+                                                    {
+                                                      "id": "t_ticket.created_on",
+                                                      "field": "t_ticket.created_on",
+                                                      "type": "datetime",
+                                                      "operator": "between",
+                                                      "value": [
+                                                        "{{$_GET.fromdate+' 00:00:00'}}",
+                                                        "{{$_GET.todate+' 23:59:59'}}"
+                                                      ],
+                                                      "data": {
+                                                        "table": "t_ticket",
+                                                        "column": "created_on",
+                                                        "type": "datetime",
+                                                        "columnObj": {
+                                                          "type": "timestamp",
+                                                          "primary": false,
+                                                          "nullable": false,
+                                                          "name": "created_on"
+                                                        }
+                                                      },
+                                                      "operation": "BETWEEN"
+                                                    },
+                                                    {
+                                                      "id": "t_ticket.user_id",
+                                                      "field": "t_ticket.user_id",
+                                                      "type": "double",
+                                                      "operator": "equal",
+                                                      "value": "{{identity}}",
+                                                      "data": {
+                                                        "table": "t_ticket",
+                                                        "column": "user_id",
+                                                        "type": "number",
+                                                        "columnObj": {
+                                                          "type": "integer",
+                                                          "primary": false,
+                                                          "nullable": false,
+                                                          "name": "user_id"
+                                                        }
+                                                      },
+                                                      "operation": "="
+                                                    },
+                                                    {
+                                                      "condition": "OR",
+                                                      "rules": [
+                                                        {
+                                                          "id": "tt_recharge_trans.extra2",
+                                                          "field": "tt_recharge_trans.extra2",
+                                                          "type": "string",
+                                                          "operator": "equal",
+                                                          "value": "1",
+                                                          "data": {
+                                                            "table": "tt_recharge_trans",
+                                                            "column": "extra2",
+                                                            "type": "text",
+                                                            "columnObj": {
+                                                              "type": "string",
+                                                              "primary": false,
+                                                              "nullable": true,
+                                                              "name": "extra2"
+                                                            }
+                                                          },
+                                                          "operation": "="
+                                                        },
+                                                        {
+                                                          "id": "tt_recharge_trans.extra2",
+                                                          "field": "tt_recharge_trans.extra2",
+                                                          "type": "string",
+                                                          "operator": "equal",
+                                                          "value": "2",
+                                                          "data": {
+                                                            "table": "tt_recharge_trans",
+                                                            "column": "extra2",
+                                                            "type": "text",
+                                                            "columnObj": {
+                                                              "type": "string",
+                                                              "primary": false,
+                                                              "nullable": true,
+                                                              "name": "extra2"
+                                                            }
+                                                          },
+                                                          "operation": "="
+                                                        },
+                                                        {
+                                                          "id": "tt_recharge_trans.extra2",
+                                                          "field": "tt_recharge_trans.extra2",
+                                                          "type": "string",
+                                                          "operator": "equal",
+                                                          "value": "3",
+                                                          "data": {
+                                                            "table": "tt_recharge_trans",
+                                                            "column": "extra2",
+                                                            "type": "text",
+                                                            "columnObj": {
+                                                              "type": "string",
+                                                              "primary": false,
+                                                              "nullable": true,
+                                                              "name": "extra2"
+                                                            }
+                                                          },
+                                                          "operation": "="
+                                                        }
+                                                      ],
+                                                      "conditional": null
+                                                    }
+                                                  ],
+                                                  "conditional": null,
+                                                  "valid": true
+                                                },
+                                                "orders": [
+                                                  {
+                                                    "table": "t_ticket",
+                                                    "column": "id",
+                                                    "direction": "DESC"
+                                                  }
+                                                ],
+                                                "query": "SELECT tt_recharge_trans.id, tt_recharge_trans.user_number, tt_recharge_trans.details, tt_recharge_trans.amount, tt_recharge_trans.status, tt_recharge_trans.tr_id, tt_recharge_trans.bank_ac_no, tt_recharge_trans.remitter_id, t_ticket.support_type, t_ticket.message, t_ticket.adddate, t_ticket.status AS complain_statius, t_ticket.adddate, t_ticket.response, t_ticket.reply_date, m_op.operator_name\nFROM tt_recharge_trans AS tt_recharge_trans\nINNER JOIN t_ticket AS t_ticket ON (t_ticket.tran_id = tt_recharge_trans.id AND t_ticket.user_id = tt_recharge_trans.user_id) LEFT JOIN m_operator AS m_op ON (m_op.id = tt_recharge_trans.op_id AND m_op.service_id = tt_recharge_trans.service_id)\nWHERE t_ticket.created_on BETWEEN :P1 /* {{$_GET.fromdate+' 00:00:00'}} */ AND :P2 /* {{$_GET.todate+' 23:59:59'}} */ AND t_ticket.user_id = :P3 /* {{identity}} */ AND (tt_recharge_trans.extra2 = '1' OR tt_recharge_trans.extra2 = '2' OR tt_recharge_trans.extra2 = '3')\nORDER BY t_ticket.id DESC",
+                                                "params": [
+                                                  {
+                                                    "operator": "between",
+                                                    "type": "expression",
+                                                    "name": ":P1",
+                                                    "value": "{{$_GET.fromdate+' 00:00:00'}}"
+                                                  },
+                                                  {
+                                                    "operator": "between",
+                                                    "type": "expression",
+                                                    "name": ":P2",
+                                                    "value": "{{$_GET.todate+' 23:59:59'}}"
+                                                  },
+                                                  {
+                                                    "operator": "equal",
+                                                    "type": "expression",
+                                                    "name": ":P3",
+                                                    "value": "{{identity}}"
+                                                  }
+                                                ]
+                                              },
+                                              "connection": "postgres_gcpServer"
+                                            },
+                                            "output": true,
+                                            "meta": [
+                                              {
+                                                "name": "offset",
+                                                "type": "number"
+                                              },
+                                              {
+                                                "name": "limit",
+                                                "type": "number"
+                                              },
+                                              {
+                                                "name": "total",
+                                                "type": "number"
+                                              },
+                                              {
+                                                "name": "page",
+                                                "type": "object",
+                                                "sub": [
+                                                  {
+                                                    "name": "offset",
+                                                    "type": "object",
+                                                    "sub": [
+                                                      {
+                                                        "name": "first",
+                                                        "type": "number"
+                                                      },
+                                                      {
+                                                        "name": "prev",
+                                                        "type": "number"
+                                                      },
+                                                      {
+                                                        "name": "next",
+                                                        "type": "number"
+                                                      },
+                                                      {
+                                                        "name": "last",
+                                                        "type": "number"
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "name": "current",
+                                                    "type": "number"
+                                                  },
+                                                  {
+                                                    "name": "total",
+                                                    "type": "number"
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "name": "data",
+                                                "type": "array",
+                                                "sub": [
+                                                  {
+                                                    "type": "number",
+                                                    "name": "id"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "user_number"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "details"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "amount"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "status"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "tr_id"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "bank_ac_no"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "remitter_id"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "support_type"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "message"
+                                                  },
+                                                  {
+                                                    "type": "datetime",
+                                                    "name": "adddate"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "complain_statius"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "response"
+                                                  },
+                                                  {
+                                                    "type": "datetime",
+                                                    "name": "reply_date"
+                                                  },
+                                                  {
+                                                    "type": "text",
+                                                    "name": "operator_name"
+                                                  }
+                                                ]
+                                              }
+                                            ],
+                                            "outputType": "object"
+                                          }
+                                        },
+                                        "else": {
+                                          "steps": {
+                                            "name": "Resp",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                              "value": "Password Mismatched"
+                                            },
+                                            "meta": [],
+                                            "output": true,
+                                            "outputType": "text"
+                                          }
+                                        }
+                                      },
+                                      "outputType": "boolean"
+                                    }
+                                  ]
+                                },
+                                "else": {
+                                  "steps": {
+                                    "name": "Resp",
+                                    "module": "core",
+                                    "action": "setvalue",
+                                    "options": {
+                                      "value": "Your Distributor(DT) inactive, Please contact technical support team"
+                                    },
+                                    "meta": [],
+                                    "outputType": "text",
+                                    "output": true
+                                  }
+                                }
+                              },
+                              "outputType": "boolean"
+                            }
+                          ]
+                        },
+                        "else": {
+                          "steps": {
+                            "name": "Resp",
+                            "module": "core",
+                            "action": "setvalue",
+                            "options": {
+                              "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                            },
+                            "meta": [],
+                            "output": true,
+                            "outputType": "text"
+                          }
+                        }
+                      },
+                      "outputType": "boolean"
+                    }
+                  ]
+                },
+                "else": {
+                  "steps": {
+                    "name": "Resp",
+                    "module": "core",
+                    "action": "setvalue",
+                    "options": {
+                      "value": "User does not exists or user inactive, Please contact technical support team"
+                    },
+                    "meta": [],
+                    "outputType": "text",
+                    "output": true
+                  }
+                }
+              },
+              "outputType": "boolean",
+              "output": false
+            }
+          ]
+        },
+        "catch": {
+          "steps": {
+            "name": "Resp",
+            "module": "core",
+            "action": "setvalue",
+            "options": {
+              "value": "Do not even try to do this, we are watching & recording your wrong activity!"
+            },
+            "meta": [],
+            "output": true,
+            "outputType": "text"
+          }
+        }
+      }
+    }
+  }
+}

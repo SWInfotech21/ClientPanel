@@ -138,5 +138,9 @@
   "dmt-service.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "complain-status.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

@@ -1759,5 +1759,143 @@ dmx.config({
       ],
       "outputType": "array"
     }
+  },
+  "complainstatus": {
+    "dvComplainStatus": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "user_number"
+        },
+        {
+          "type": "text",
+          "name": "details"
+        },
+        {
+          "type": "text",
+          "name": "amount"
+        },
+        {
+          "type": "text",
+          "name": "tr_status"
+        },
+        {
+          "type": "text",
+          "name": "tr_id"
+        },
+        {
+          "type": "text",
+          "name": "bank_ac_no"
+        },
+        {
+          "type": "text",
+          "name": "remitter_id"
+        },
+        {
+          "type": "text",
+          "name": "support_type"
+        },
+        {
+          "type": "text",
+          "name": "message"
+        },
+        {
+          "type": "datetime",
+          "name": "adddate"
+        },
+        {
+          "type": "text",
+          "name": "complain_status"
+        },
+        {
+          "type": "text",
+          "name": "response"
+        },
+        {
+          "type": "datetime",
+          "name": "reply_date"
+        },
+        {
+          "type": "text",
+          "name": "operator_name"
+        }
+      ],
+      "outputType": "array"
+    },
+    "tableRepeat1": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "user_number"
+        },
+        {
+          "type": "text",
+          "name": "details"
+        },
+        {
+          "type": "text",
+          "name": "amount"
+        },
+        {
+          "type": "text",
+          "name": "tr_status"
+        },
+        {
+          "type": "text",
+          "name": "tr_id"
+        },
+        {
+          "type": "text",
+          "name": "support_type"
+        },
+        {
+          "type": "text",
+          "name": "message"
+        },
+        {
+          "type": "datetime",
+          "name": "adddate"
+        },
+        {
+          "type": "text",
+          "name": "complain_status"
+        },
+        {
+          "type": "text",
+          "name": "response"
+        },
+        {
+          "type": "datetime",
+          "name": "reply_date"
+        },
+        {
+          "type": "text",
+          "name": "operator_name"
+        }
+      ],
+      "outputType": "array"
+    },
+    "query": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      }
+    ]
   }
 });
