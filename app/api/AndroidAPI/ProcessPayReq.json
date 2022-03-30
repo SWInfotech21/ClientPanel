@@ -576,7 +576,7 @@
                                               "module": "core",
                                               "action": "condition",
                                               "options": {
-                                                "if": "{{GetDebitUser.balance_amt.toNumber() > GetPaymentReq.credit_amount.toNumber()}}",
+                                                "if": "{{GetDebitUser.balance_amt.toNumber()>GetPaymentReq.credit_amount.toNumber()||$_GET.allow_status==3||$_GET.allow_status==4}}",
                                                 "then": {
                                                   "steps": {
                                                     "name": "",

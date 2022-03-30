@@ -275,7 +275,7 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{GetDebitUser.balance_amt.toNumber() > GetPaymentReq.credit_amount.toNumber()}}",
+          "if": "{{GetDebitUser.balance_amt.toNumber()>GetPaymentReq.credit_amount.toNumber()||$_POST.allow_status==3||$_POST.allow_status==4}}",
           "then": {
             "steps": {
               "name": "",
@@ -1749,7 +1749,8 @@
                                         "name": ":P4",
                                         "value": "{{$_POST.pay_req_id}}"
                                       }
-                                    ]
+                                    ],
+                                    "returning": "id"
                                   }
                                 },
                                 "meta": [

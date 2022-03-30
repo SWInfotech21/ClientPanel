@@ -53,7 +53,7 @@
             <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="content.scManagePayReq.data.GetPayReq.data" id="tableRepeat1" dmx-state="qm" dmx-sort="offset" dmx-order="sort">
                 <tr>
                     <td dmx-text="$index+1"></td>
-                    <td><a class="sw-col-ar" href="#" dmx-on:click="ddManagePayReq.select(id)" data-bs-toggle="modal" data-bs-target="#modalPayReq"><i class="fas fa-edit" title="Payment Request Manage"></i></a> </td>
+                    <td><a class="sw-col-ar" href="#" dmx-on:click="ddManagePayReq.select(id);modalPayReq.show()" data-bs-toggle="modal" data-bs-target="#modalPayReq"><i class="fas fa-edit" title="Payment Request Manage"></i></a> </td>
                     <td dmx-text="req_user_id+' | '+req_user_name+' | '+req_user_mobile"></td>
                     <td dmx-text="request_time.formatDate('dd-MM-yyyy hh:mm:ss A')"></td>
                     <td dmx-text="amount.toNumber().formatCurrency('₹', '.', ',', 2)"></td>

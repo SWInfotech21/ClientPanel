@@ -1252,11 +1252,15 @@ dmx.config({
         },
         {
           "type": "text",
-          "name": "ip_address"
+          "name": "ip_address1"
         },
         {
           "type": "text",
-          "name": "call_back_url"
+          "name": "ip_address2"
+        },
+        {
+          "type": "text",
+          "name": "ip_address3"
         },
         {
           "type": "text",
@@ -1267,7 +1271,7 @@ dmx.config({
           "name": "status"
         }
       ],
-      "outputType": "array"
+      "outputType": "object"
     },
     "ddFetchToken": {
       "meta": [

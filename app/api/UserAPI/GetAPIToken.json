@@ -47,7 +47,7 @@
       {
         "name": "FetchToken",
         "module": "dbconnector",
-        "action": "paged",
+        "action": "single",
         "options": {
           "sql": {
             "type": "SELECT",
@@ -58,11 +58,15 @@
               },
               {
                 "table": "t_api_token",
-                "column": "ip_address"
+                "column": "ip_address1"
               },
               {
                 "table": "t_api_token",
-                "column": "call_back_url"
+                "column": "ip_address2"
+              },
+              {
+                "table": "t_api_token",
+                "column": "ip_address3"
               },
               {
                 "table": "t_api_token",
@@ -74,9 +78,28 @@
               }
             ],
             "table": {
-              "name": "t_api_token"
+              "name": "t_api_token",
+              "alias": "t_api_token"
             },
             "joins": [],
+            "orders": [
+              {
+                "table": "t_api_token",
+                "column": "id",
+                "direction": "DESC",
+                "recid": 1
+              }
+            ],
+            "query": "SELECT id, ip_address1, ip_address2, ip_address3, api_token, status\nFROM t_api_token AS t_api_token\nWHERE user_id = :P1 /* {{identity}} */\nORDER BY id DESC",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ],
+            "primary": "id",
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -89,112 +112,53 @@
                   "data": {
                     "table": "t_api_token",
                     "column": "user_id",
-                    "type": "number"
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": false,
+                      "unique": false,
+                      "name": "user_id"
+                    }
                   },
                   "operation": "="
                 }
               ],
               "conditional": null,
               "valid": true
-            },
-            "orders": [
-              {
-                "table": "t_api_token",
-                "column": "id",
-                "direction": "DESC",
-                "recid": 1
-              }
-            ],
-            "query": "SELECT id, ip_address, call_back_url, api_token, status\nFROM t_api_token\nWHERE user_id = :P1 /* {{identity}} */\nORDER BY id DESC",
-            "params": [
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P1",
-                "value": "{{identity}}"
-              }
-            ]
+            }
           },
           "connection": "postgres_gcpServer"
         },
         "output": true,
         "meta": [
           {
-            "name": "offset",
-            "type": "number"
+            "type": "number",
+            "name": "id"
           },
           {
-            "name": "limit",
-            "type": "number"
+            "type": "text",
+            "name": "ip_address1"
           },
           {
-            "name": "total",
-            "type": "number"
+            "type": "text",
+            "name": "ip_address2"
           },
           {
-            "name": "page",
-            "type": "object",
-            "sub": [
-              {
-                "name": "offset",
-                "type": "object",
-                "sub": [
-                  {
-                    "name": "first",
-                    "type": "number"
-                  },
-                  {
-                    "name": "prev",
-                    "type": "number"
-                  },
-                  {
-                    "name": "next",
-                    "type": "number"
-                  },
-                  {
-                    "name": "last",
-                    "type": "number"
-                  }
-                ]
-              },
-              {
-                "name": "current",
-                "type": "number"
-              },
-              {
-                "name": "total",
-                "type": "number"
-              }
-            ]
+            "type": "text",
+            "name": "ip_address3"
           },
           {
-            "name": "data",
-            "type": "array",
-            "sub": [
-              {
-                "type": "number",
-                "name": "id"
-              },
-              {
-                "type": "text",
-                "name": "ip_address"
-              },
-              {
-                "type": "text",
-                "name": "call_back_url"
-              },
-              {
-                "type": "text",
-                "name": "api_token"
-              },
-              {
-                "type": "number",
-                "name": "status"
-              }
-            ]
+            "type": "text",
+            "name": "api_token"
+          },
+          {
+            "type": "number",
+            "name": "status"
           }
         ],
-        "outputType": "object"
+        "outputType": "object",
+        "type": "dbconnector_single"
       }
     ]
   }

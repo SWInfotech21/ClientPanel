@@ -2397,7 +2397,7 @@
                                               "table": "tt_balance",
                                               "column": "remarks",
                                               "type": "text",
-                                              "value": "{{'Number: '+$_POST.mobile_number+' | Amount:\\n '+$_POST.recharge_amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}}"
+                                              "value": "{{'Number: '+$_POST.mobile_number+' | Amount: '+$_POST.recharge_amount+' | Recharge | Ref. Id: '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}}"
                                             },
                                             {
                                               "table": "tt_balance",
@@ -2426,7 +2426,7 @@
                                           ],
                                           "table": "tt_balance",
                                           "returning": "id",
-                                          "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{RTClosingBalance}} */, :P5 /* {{'Recharge'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_POST.mobile_number+' | Amount:\\n '+$_POST.recharge_amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'FAILED'}} */)",
+                                          "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{RTClosingBalance}} */, :P5 /* {{'Recharge'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_POST.mobile_number+' | Amount: '+$_POST.recharge_amount+' | Recharge | Ref. Id: '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'FAILED'}} */)",
                                           "params": [
                                             {
                                               "name": ":P1",
@@ -2476,7 +2476,7 @@
                                             {
                                               "name": ":P10",
                                               "type": "expression",
-                                              "value": "{{'Number: '+$_POST.mobile_number+' | Amount:\\n '+$_POST.recharge_amount+' | Recharge | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}}"
+                                              "value": "{{'Number: '+$_POST.mobile_number+' | Amount: '+$_POST.recharge_amount+' | Recharge | Ref. Id: '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}}"
                                             },
                                             {
                                               "name": ":P11",
