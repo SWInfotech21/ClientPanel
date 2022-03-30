@@ -1163,11 +1163,6 @@
           }
         }
       },
-      "m_api_users": {
-        "db": {
-          "schema": "public"
-        }
-      },
       "m_bank": {
         "db": {
           "schema": "public"
@@ -2169,27 +2164,33 @@
               "type": "increments",
               "default": "",
               "primary": true,
-              "nullable": false
+              "nullable": false,
+              "unique": true
             }
           },
           "user_id": {
             "db": {
               "type": "integer",
               "primary": false,
+              "nullable": false,
+              "unique": false
+            }
+          },
+          "ip_address1": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
               "nullable": false
             }
           },
-          "ip_address": {
+          "ip_address2": {
             "db": {
               "type": "string",
+              "maxLength": -5,
               "primary": false,
-              "nullable": false
-            }
-          },
-          "call_back_url": {
-            "db": {
-              "type": "string",
-              "primary": false,
+              "unique": false,
               "nullable": true
             }
           },
@@ -2197,20 +2198,25 @@
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": false
+              "nullable": false,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "status": {
             "db": {
               "type": "integer",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "unique": false
             }
           },
-          "remarks": {
+          "ip_address3": {
             "db": {
               "type": "string",
+              "maxLength": -5,
               "primary": false,
+              "unique": false,
               "nullable": true
             }
           },
@@ -2218,49 +2224,57 @@
             "db": {
               "type": "integer",
               "primary": false,
-              "nullable": false
+              "nullable": false,
+              "unique": false
             }
           },
           "created_on": {
             "db": {
               "type": "timestamp",
               "primary": false,
-              "nullable": false
+              "nullable": false,
+              "unique": false
             }
           },
           "updated_by": {
             "db": {
               "type": "integer",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "unique": false
             }
           },
           "updated_on": {
             "db": {
               "type": "timestamp",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "unique": false
             }
           },
           "deleted_by": {
             "db": {
               "type": "integer",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "unique": false
             }
           },
           "deleted_on": {
             "db": {
               "type": "timestamp",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "unique": false
             }
           },
           "salt": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": false
+              "nullable": false,
+              "maxLength": -5,
+              "unique": false
             }
           }
         }

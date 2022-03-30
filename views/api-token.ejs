@@ -1,31 +1,49 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="apitoken" appConnect="local" components="{dmxDataTraversal:{}}" -->
 <meta name="ac:route" content="/api-token">
+<dmx-value id="varToken" dmx-bind:value="0"></dmx-value>
 <dmx-serverconnect id="scFetchToken" url="api/UserAPI/GetAPIToken"></dmx-serverconnect>
 <dmx-data-view id="dvFetchToken" dmx-bind:data="content.scFetchToken.data.FetchToken.data"></dmx-data-view>
 <dmx-data-detail id="ddFetchToken" dmx-bind:data="content.dvFetchToken.data" key="id"></dmx-data-detail>
 <div class="container">
-    <div class="row">
+    <div class="row mx-0">
         <div class="col">
-            <h1 class="mt-4">API Token<span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scUserSchemPrio.state.executing"></span>
+            <h1 class="mt-4">IP & API Token<span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scUserSchemPrio.state.executing"></span>
             </h1>
 
             <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item active">Generate API Token</li>
+                <li class="breadcrumb-item active">Generate IP</li>
             </ol>
         </div>
-        <div class="card mx-3">
-            <div class="card-body px-0">
-                <form is="dmx-serverconnect-form" id="formAddCredit" method="post" action="api/UserAPI/AddEditToken" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="formAddCredit.data ? scNotif.success('New Token Successfully Added') : scNotif.success('Credit Updated');formAddCredit.reset();scFetchToken.load()" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(content.formAddCredit.lastError.response)">
+        <div class="card px-0">
+            <div class="card-header bg-secondary">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">API Token</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="token" aria-label="Username" aria-describedby="basic-addon1" dmx-bind:value="scLoginUser.data.LoginUserInfo.blank4" dmx-show="varToken.value==1">
+                    <input type="password" class="form-control" placeholder="token" aria-label="Username" aria-describedby="basic-addon1" dmx-bind:value="scLoginUser.data.LoginUserInfo.blank4" dmx-show="varToken.value==0">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon1" dmx-show="varToken.value==1" dmx-on:click="varToken.setValue(0)"><i class="fa fa-eye"></i></span>
+                        <span class="input-group-text" id="basic-addon" dmx-show="varToken.value==0" dmx-on:click="varToken.setValue(1)"><i class="far fa-eye-slash"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form is="dmx-serverconnect-form" id="formAddIP" method="post" action="api/UserAPI/AddEditIP" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="formAddIP.data ? scNotif.success('New Token Successfully Added') : scNotif.success('IP Updated');formAddIP.reset();scFetchToken.load()" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(content.formAddIP.lastError.response)">
                     <div class="row">
-                        <div class="col-12 col-lg-4 p-2">
-                            <label>IP Address</label>
-                            <input id="ip_address" name="ip_address" class="form-control" placeholder="E.g: 00.00.00.00" required="" type="text">
+                        <div class="col-12 col-md-4 p-2">
+                            <label>IP Address1</label>
+                            <input id="ip_address1" name="ip_address1" class="form-control" placeholder="E.g: 00.00.00.00" required="" type="text">
                         </div>
-                        <div class="col-12 col-lg-4 p-2">
-                            <label>Callback URL</label>
-                            <input type="text" id="callback_url" name="call_back_url" class="form-control" placeholder="Add domain/ subdomain (optional)">
+                        <div class="col-12 col-md-4 p-2">
+                            <label>IP Address2</label>
+                            <input id="ip_address2" name="ip_address2" class="form-control" placeholder="E.g: 00.00.00.00" required="" type="text">
                         </div>
-                        <div class="col-4 p-0">
+                        <div class="col-12 col-md-4 p-2">
+                            <label>IP Address3</label>
+                            <input id="ip_address3" name="ip_address3" class="form-control" placeholder="E.g: 00.00.00.00" required="" type="text">
+                        </div>
+                        <div class="col-12 text-center">
                             <button id="btn1" class="btn btn-info mt-md-4" type="submit" dmx-bind:disabled="state.executing" dmx-on:click="scAdminTrans.load()">Submit<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
 
                         </div>
