@@ -44,6 +44,19 @@
     }
 }
 </script>
+<dmx-serverconnect id="scBSNLCheck" url="api/CheckAPIs/BSNLCheck" noload dmx-param:tel="content.formPostPaid.inpPostpaidMobile.value" dmx-param:op="content.formPostPaid.inp_postpaid_opname.value" dmx-param:stdcode="content.formPostPaid.inpPostpaidstdcode.value"></dmx-serverconnect>
+<script is="dmx-flow" id="flowBSNLCheck" type="text/dmx-flow">
+    {
+    condition: {
+        if: "{{content.formPostPaid.inpPostpaidMobile.value && content.formPostPaid.inp_postpaid_opname.value && content.formPostPaid.inpPostpaidstdcode.value}}",
+        then: {
+            steps: {
+            run: {action: "{{scBSNLCheck.load({})}}"}
+            }
+        }
+    }
+}
+</script>
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-6 col-12">
@@ -163,7 +176,7 @@
                                         </div>
                                     </div>
                                     <input type="number" class="form-control" id="inpDTHAmount" name="recharge_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
-                                    <div class="input-group-prepend" dmx-on:click="flowDTHCheck.run();modalDTHCheck.show()">
+                                    <div class="input-group-prepend" dmx-on:click="flowDTHCheck.run();modalDTHCheck.show()" title="Check DTH Customer Info.">
                                         <div class="input-group-text bg-primary text-light">
                                             Check
                                         </div>
@@ -198,19 +211,10 @@
                                             <i class="fas fa-mobile"></i>
                                         </div>
                                     </div>
-                                    <input type="number" class="form-control" id="inpPostpaidMobile" name="mobile_number" placeholder="Enter 10 digit PostPaid No." maxlength="20" required="" title="Enter Subscriber Id" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid Subscriber Id">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="text-monospace col-3 pe-0">Amount (in Rs.)</label>
-                                <div class="input-group mb-2 col-9 ps-0">
                                     <div class="input-group-prepend">
-                                        <div class="input-group-text bg-primary text-light">
-                                            <i class="fas fa-rupee-sign"></i>
-                                        </div>
+                                        <input type="number" class="form-control" id="inpPostpaidMobile" name="mobile_number" placeholder="Enter 6 digit PostPaid No." maxlength="20" required="" title="Enter PostPaid No." autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid PostPaid No.">
                                     </div>
-                                    <input type="number" class="form-control" id="inpPostPaidAmount" name="recharge_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
+                                    <input type="number" class="form-control" id="inpPostpaidstdcode" name="stdcode" placeholder="STD Code" maxlength="6" required="" title="Enter STD Code" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid STD Code">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -225,6 +229,22 @@
                                         <option value="">Select Operator</option>
 
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">Amount (in Rs.)</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-rupee-sign"></i>
+                                        </div>
+                                    </div>
+                                    <input type="number" class="form-control" id="inpPostPaidAmount" name="recharge_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
+                                    <div class="input-group-prepend" dmx-on:click="flowBSNLCheck.run();modalBSNLCheck.show()" title="Check Only BSNL Land Line">
+                                        <div class="input-group-text bg-primary text-light">
+                                            Check
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row">
