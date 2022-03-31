@@ -15,9 +15,8 @@
 
 
     <script src="dmxAppConnect/dmxDatastore/dmxDatastore.js" defer=""></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.1/moment.min.js"></script>
     <link rel="stylesheet" href="dmxAppConnect/dmxDatePicker/daterangepicker.min.css" />
-
 
 
     <script src="dmxAppConnect/dmxDatePicker/daterangepicker.min.js" defer=""></script>
@@ -93,6 +92,7 @@
 
     <dmx-serverconnect id="scLogout" url="api/Users/logout" noload dmx-on:success="browserMain.goto('login')"></dmx-serverconnect>
     <dmx-datetime id="varDateTime"></dmx-datetime>
+    <dmx-datetime id="dateNow" interval="days"></dmx-datetime>
     <meta charset="UTF-8">
     <title>SW Pay</title>
     <dmx-serverconnect id="scLoginUser" url="api/Users/userinfo" dmx-on:unauthorized="browserMain.goto('/login')" dmx-on:forbidden="browserMain.goto('/login')" dmx-on:error="browserMain.goto('/login')"></dmx-serverconnect>

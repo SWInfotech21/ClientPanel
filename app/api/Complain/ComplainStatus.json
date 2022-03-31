@@ -256,8 +256,8 @@
                   "type": "datetime",
                   "operator": "between",
                   "value": [
-                    "{{$_GET.fromdate+' 00:00:00'}}",
-                    "{{$_GET.todate+' 23:59:59'}}"
+                    "{{$_GET.fromdate}}",
+                    "{{$_GET.todate}}"
                   ],
                   "data": {
                     "table": "t_ticket",
@@ -295,19 +295,19 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT tt_recharge_trans.id, tt_recharge_trans.user_number, tt_recharge_trans.details, tt_recharge_trans.amount, tt_recharge_trans.status AS tr_status, tt_recharge_trans.tr_id, tt_recharge_trans.bank_ac_no, tt_recharge_trans.remitter_id, t_ticket.support_type, t_ticket.message, t_ticket.adddate, t_ticket.status AS complain_status, t_ticket.response, t_ticket.reply_date, mo.operator_name\nFROM tt_recharge_trans AS tt_recharge_trans\nLEFT JOIN t_ticket AS t_ticket ON (t_ticket.tran_id = tt_recharge_trans.id) LEFT JOIN m_operator AS mo ON (mo.id = tt_recharge_trans.op_id AND mo.service_id = tt_recharge_trans.service_id)\nWHERE (tt_recharge_trans.extra2 = '1' OR tt_recharge_trans.extra2 = '2' OR tt_recharge_trans.extra2 = '3') AND t_ticket.created_on BETWEEN :P1 /* {{$_GET.fromdate+' 00:00:00'}} */ AND :P2 /* {{$_GET.todate+' 23:59:59'}} */ AND t_ticket.user_id = :P3 /* {{identity}} */",
+            "query": "SELECT tt_recharge_trans.id, tt_recharge_trans.user_number, tt_recharge_trans.details, tt_recharge_trans.amount, tt_recharge_trans.status AS tr_status, tt_recharge_trans.tr_id, tt_recharge_trans.bank_ac_no, tt_recharge_trans.remitter_id, t_ticket.support_type, t_ticket.message, t_ticket.adddate, t_ticket.status AS complain_status, t_ticket.response, t_ticket.reply_date, mo.operator_name\nFROM tt_recharge_trans AS tt_recharge_trans\nLEFT JOIN t_ticket AS t_ticket ON (t_ticket.tran_id = tt_recharge_trans.id) LEFT JOIN m_operator AS mo ON (mo.id = tt_recharge_trans.op_id AND mo.service_id = tt_recharge_trans.service_id)\nWHERE (tt_recharge_trans.extra2 = '1' OR tt_recharge_trans.extra2 = '2' OR tt_recharge_trans.extra2 = '3') AND t_ticket.created_on BETWEEN :P1 /* {{$_GET.fromdate}} */ AND :P2 /* {{$_GET.todate}} */ AND t_ticket.user_id = :P3 /* {{identity}} */",
             "params": [
               {
                 "operator": "between",
                 "type": "expression",
                 "name": ":P1",
-                "value": "{{$_GET.fromdate+' 00:00:00'}}"
+                "value": "{{$_GET.fromdate}}"
               },
               {
                 "operator": "between",
                 "type": "expression",
                 "name": ":P2",
-                "value": "{{$_GET.todate+' 23:59:59'}}"
+                "value": "{{$_GET.todate}}"
               },
               {
                 "operator": "equal",

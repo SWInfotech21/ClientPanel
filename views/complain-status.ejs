@@ -1,20 +1,10 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="complainstatus" appConnect="local" components="{dmxDatePicker:{},dmxBootstrap5TableGenerator:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
 <meta name="ac:route" content="/complain-status">
 <dmx-query-manager id="qm"></dmx-query-manager>
-<dmx-serverconnect id="scComplainStatus" url="api/Complain/ComplainStatus" dmx-param:offset="qm.data.offset" dmx-param:sort="qm.data.sort" dmx-param:dir="qm.data.dir" dmx-param:fromdate="content.fromDate.value" dmx-param:todate="content.toDate.value" noload></dmx-serverconnect>
-<script is="dmx-flow" id="flowStatement" type="text/dmx-flow">{
-  condition: {
-    if: "{{fromDate.value && toDate.value}}",
-    then: {
-      steps: {
-        run: {action: "{{scComplainStatus.load({})}}"}
-      }
-    }
-  }
-}</script>
-<dmx-data-view id="dvComplainStatus" dmx-bind:data="content.scComplainStatus.data.getComplainTr.data"></dmx-data-view>
-<dmx-data-detail id="ddRechargeTrans" dmx-bind:data="dvComplainStatus.data" key="id"></dmx-data-detail>
+<dmx-serverconnect id="scComplainStatus" url="api/Complain/ComplainStatus" dmx-param:offset="qm.data.offset" dmx-param:sort="qm.data.sort" dmx-param:dir="qm.data.dir" dmx-param:fromdate="content.formPendingDate.daterange.start" dmx-param:todate="content.formPendingDate.daterange.end"></dmx-serverconnect>
 
+<dmx-data-view id="dvComplainStatus" dmx-bind:data="content.scComplainStatus.data.getComplainTr.data" filter="(user_number.contains(formSearchUser.Search.value) || tr_status.contains(formSearchUser.Search.value.uppercase()) || tr_id.contains(formSearchUser.Search.value) || remitter_id.contains(formSearchUser.Search.value) || bank_ac_no.contains(formSearchUser.Search.value))"></dmx-data-view>
+<dmx-data-detail id="ddRechargeTrans" dmx-bind:data="dvComplainStatus.data" key="id"></dmx-data-detail>
 <div class="row align-items-center justify-content-between px-4 mb-3 sd-secondary-header mx-0">
     <div class="col-12 col-md-auto me-auto ps-4">
         <h1 class="ms-md-1 mt-md-3 text-dark fs-2 sd-fw-800 d-flex align-items-center">
@@ -23,10 +13,17 @@
         </h1>
     </div>
     <div class="col-auto order-2 order-md-1 d-flex align-items-center justify-content-start justify-content-md-center px-0 px-lg-2">
+        <form id="formPendingDate"><label class="sw-datepicker">
+                <span class="btn bg-light"><img src="assets/images/icons/calendar.svg" class="img-fluid" width="20px"></span>
+                <input type="text" is="dmx-date-range-picker" format="DD MMM YY" class="" placeholder="Nov 2021 - Dec 2021" id="daterange" dmx-bind:startdate="dateNow.datetime.addDays(0)" dmx-bind:enddate="dateNow.datetime.formatDate('yyyy-MM-dd 23:59:59')" autoapply="true">
+            </label>
+        </form>
+    </div>
+    <!-- <div class="col-auto order-2 order-md-1 d-flex align-items-center justify-content-start justify-content-md-center px-0 px-lg-2">
         <label>From Date:</label><input type="date" name="fromdate" id="fromDate" class="w-25" required="">
         &emsp;<label>To Date:</label><input type="date" name="todate" id="toDate" class="w-25" required="">
         &emsp;<button id="btnFilter" class="btn btn-primary btn-sm" dmx-on:click="flowStatement.run()">Search</button>
-    </div>
+    </div> -->
     <div class="col-auto order-1 order-md-3 d-flex align-items-center justify-content-center">
         <form id="formSearchUser" class="sd-search-form">
             <div class="d-flex justify-content-end mb-3 mb-lg-0 mb-md-0">
