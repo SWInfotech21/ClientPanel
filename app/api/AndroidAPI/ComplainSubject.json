@@ -368,10 +368,15 @@
                                                   {
                                                     "table": "complain_subject",
                                                     "column": "subject"
+                                                  },
+                                                  {
+                                                    "table": "complain_subject",
+                                                    "column": "id"
                                                   }
                                                 ],
                                                 "table": {
-                                                  "name": "complain_subject"
+                                                  "name": "complain_subject",
+                                                  "alias": "complain_subject"
                                                 },
                                                 "joins": [],
                                                 "wheres": {
@@ -398,11 +403,13 @@
                                                   {
                                                     "table": "complain_subject",
                                                     "column": "id",
-                                                    "direction": "ASC"
+                                                    "direction": "ASC",
+                                                    "recid": 1
                                                   }
                                                 ],
-                                                "query": "SELECT subject\nFROM complain_subject\nWHERE status = 1\nORDER BY id ASC",
-                                                "params": []
+                                                "query": "SELECT subject, id\nFROM complain_subject AS complain_subject\nWHERE status = 1\nORDER BY id ASC",
+                                                "params": [],
+                                                "primary": "id"
                                               },
                                               "connection": "postgres_gcpServer"
                                             },
@@ -411,6 +418,10 @@
                                               {
                                                 "type": "text",
                                                 "name": "subject"
+                                              },
+                                              {
+                                                "type": "number",
+                                                "name": "id"
                                               }
                                             ],
                                             "outputType": "array"
