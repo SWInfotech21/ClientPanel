@@ -1,6 +1,4 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="recharge1" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{},dmxSockets:{}}" -->
-<!-- {{1201159793395035000}}
-{{1207164639871422700}} -->
 <meta name="ac:route" content="/recharge">
 <dmx-value id="varROfferAmt" dmx-bind:value="0"></dmx-value>
 <dmx-serverconnect id="scOperator" url="api/Operator/MobileOpFetch" noload></dmx-serverconnect>
@@ -500,6 +498,7 @@
                             <p class="card-text text-muted text-justify sw-line-height">Monthly Recharge: {{scDTHCheck.data.DTHUserCheck.records[0].MonthlyRecharge}}</p>
                             <p class="card-text text-muted text-justify sw-line-height">Next Recharge Date: {{scDTHCheck.data.DTHUserCheck.records[0].NextRechargeDate}}</p>
                             <p class="card-text text-muted text-justify sw-line-height">Plan Details: {{scDTHCheck.data.DTHUserCheck.records[0].planname}}</p>
+                            <p class="card-text text-primary text-justify sw-line-height">Status: {{scDTHCheck.data.DTHUserCheck.records[0].status}}</p>
                         </div>
                     </div>
                 </div>
