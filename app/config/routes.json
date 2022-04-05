@@ -167,6 +167,11 @@
       "layout": "main"
     },
     {
+      "path": "/complain-other",
+      "page": "complain-other",
+      "layout": "main"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }

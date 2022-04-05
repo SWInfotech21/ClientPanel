@@ -146,5 +146,9 @@
   "complain-raise.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "complain-other.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

@@ -1897,5 +1897,73 @@ dmx.config({
         "name": "sort"
       }
     ]
+  },
+  "complainother": {
+    "dvOtherComplain": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "support_type"
+        },
+        {
+          "type": "text",
+          "name": "message"
+        },
+        {
+          "type": "text",
+          "name": "status"
+        },
+        {
+          "type": "datetime",
+          "name": "adddate"
+        },
+        {
+          "type": "text",
+          "name": "response"
+        },
+        {
+          "type": "datetime",
+          "name": "reply_date"
+        }
+      ],
+      "outputType": "array"
+    },
+    "tableRepeat1": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "support_type"
+        },
+        {
+          "type": "text",
+          "name": "message"
+        },
+        {
+          "type": "text",
+          "name": "status"
+        },
+        {
+          "type": "datetime",
+          "name": "adddate"
+        },
+        {
+          "type": "text",
+          "name": "response"
+        },
+        {
+          "type": "datetime",
+          "name": "reply_date"
+        }
+      ],
+      "outputType": "array"
+    }
   }
 });
