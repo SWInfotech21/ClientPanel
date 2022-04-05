@@ -396,180 +396,317 @@
                                       "options": {
                                         "if": "{{identity}}",
                                         "then": {
-                                          "steps": [
-                                            {
-                                              "name": "",
-                                              "module": "core",
-                                              "action": "condition",
-                                              "options": {
-                                                "if": "{{$_POST.ComplainId}}",
-                                                "then": {
-                                                  "steps": [
-                                                    {
-                                                      "name": "ComplainAdd",
-                                                      "module": "dbupdater",
-                                                      "action": "insert",
-                                                      "options": {
-                                                        "connection": "postgres_gcpServer",
-                                                        "sql": {
-                                                          "type": "insert",
-                                                          "values": [
-                                                            {
-                                                              "table": "t_ticket",
-                                                              "column": "user_id",
-                                                              "type": "number",
-                                                              "value": "{{identity}}"
-                                                            },
-                                                            {
-                                                              "table": "t_ticket",
-                                                              "column": "support_type",
-                                                              "type": "text",
-                                                              "value": "{{$_POST.subject}}"
-                                                            },
-                                                            {
-                                                              "table": "t_ticket",
-                                                              "column": "message",
-                                                              "type": "text",
-                                                              "value": "{{$_POST.complainReason}}"
-                                                            },
-                                                            {
-                                                              "table": "t_ticket",
-                                                              "column": "tran_id",
-                                                              "type": "text",
-                                                              "value": "{{$_POST.ComplainId}}"
-                                                            },
-                                                            {
-                                                              "table": "t_ticket",
-                                                              "column": "status",
-                                                              "type": "text",
-                                                              "value": "{{1}}"
-                                                            },
-                                                            {
-                                                              "table": "t_ticket",
-                                                              "column": "adddate",
-                                                              "type": "datetime",
-                                                              "value": "{{NOW}}"
-                                                            },
-                                                            {
-                                                              "table": "t_ticket",
-                                                              "column": "created_on",
-                                                              "type": "datetime",
-                                                              "value": "{{NOW}}"
-                                                            }
-                                                          ],
-                                                          "table": "t_ticket",
-                                                          "returning": "id",
-                                                          "query": "INSERT INTO t_ticket\n(user_id, support_type, message, tran_id, status, adddate, created_on) VALUES (:P1 /* {{identity}} */, :P2 /* {{$_POST.subject}} */, :P3 /* {{$_POST.complainReason}} */, :P4 /* {{$_POST.ComplainId}} */, :P5 /* {{1}} */, :P6 /* {{NOW}} */, :P7 /* {{NOW}} */)",
-                                                          "params": [
-                                                            {
-                                                              "name": ":P1",
-                                                              "type": "expression",
-                                                              "value": "{{identity}}"
-                                                            },
-                                                            {
-                                                              "name": ":P2",
-                                                              "type": "expression",
-                                                              "value": "{{$_POST.subject}}"
-                                                            },
-                                                            {
-                                                              "name": ":P3",
-                                                              "type": "expression",
-                                                              "value": "{{$_POST.complainReason}}"
-                                                            },
-                                                            {
-                                                              "name": ":P4",
-                                                              "type": "expression",
-                                                              "value": "{{$_POST.ComplainId}}"
-                                                            },
-                                                            {
-                                                              "name": ":P5",
-                                                              "type": "expression",
-                                                              "value": "{{1}}"
-                                                            },
-                                                            {
-                                                              "name": ":P6",
-                                                              "type": "expression",
-                                                              "value": "{{NOW}}"
-                                                            },
-                                                            {
-                                                              "name": ":P7",
-                                                              "type": "expression",
-                                                              "value": "{{NOW}}"
-                                                            }
-                                                          ]
-                                                        }
-                                                      },
-                                                      "meta": [
-                                                        {
-                                                          "name": "identity",
-                                                          "type": "text"
+                                          "steps": {
+                                            "name": "",
+                                            "module": "core",
+                                            "action": "condition",
+                                            "options": {
+                                              "if": "{{$_POST.ComplainId}}",
+                                              "then": {
+                                                "steps": [
+                                                  {
+                                                    "name": "GetTrDetails",
+                                                    "module": "dbconnector",
+                                                    "action": "single",
+                                                    "options": {
+                                                      "connection": "postgres_gcpServer",
+                                                      "sql": {
+                                                        "type": "SELECT",
+                                                        "columns": [
+                                                          {
+                                                            "table": "tt_recharge_trans",
+                                                            "column": "id",
+                                                            "alias": "CountIds",
+                                                            "aggregate": "COUNT"
+                                                          }
+                                                        ],
+                                                        "table": {
+                                                          "name": "tt_recharge_trans",
+                                                          "alias": "tt_recharge_trans"
                                                         },
-                                                        {
-                                                          "name": "affected",
-                                                          "type": "number"
-                                                        }
-                                                      ],
-                                                      "output": false
-                                                    },
-                                                    {
-                                                      "name": "RechTransUp",
-                                                      "module": "dbupdater",
-                                                      "action": "update",
-                                                      "options": {
-                                                        "connection": "postgres_gcpServer",
-                                                        "sql": {
-                                                          "type": "update",
-                                                          "values": [
+                                                        "primary": "id",
+                                                        "joins": [],
+                                                        "groupBy": [],
+                                                        "wheres": {
+                                                          "condition": "AND",
+                                                          "rules": [
                                                             {
-                                                              "table": "tt_recharge_trans",
-                                                              "column": "extra2",
-                                                              "type": "text",
-                                                              "value": "1"
+                                                              "id": "tt_recharge_trans.id",
+                                                              "field": "tt_recharge_trans.id",
+                                                              "type": "double",
+                                                              "operator": "equal",
+                                                              "value": "{{$_POST.ComplainId}}",
+                                                              "data": {
+                                                                "table": "tt_recharge_trans",
+                                                                "column": "id",
+                                                                "type": "number",
+                                                                "columnObj": {
+                                                                  "type": "increments",
+                                                                  "default": "",
+                                                                  "primary": true,
+                                                                  "nullable": false,
+                                                                  "name": "id"
+                                                                }
+                                                              },
+                                                              "operation": "="
+                                                            },
+                                                            {
+                                                              "id": "tt_recharge_trans.extra2",
+                                                              "field": "tt_recharge_trans.extra2",
+                                                              "type": "string",
+                                                              "operator": "is_null",
+                                                              "value": null,
+                                                              "data": {
+                                                                "table": "tt_recharge_trans",
+                                                                "column": "extra2",
+                                                                "type": "text",
+                                                                "columnObj": {
+                                                                  "type": "string",
+                                                                  "primary": false,
+                                                                  "nullable": true,
+                                                                  "name": "extra2"
+                                                                }
+                                                              },
+                                                              "operation": "IS NULL"
                                                             }
                                                           ],
-                                                          "table": "tt_recharge_trans",
-                                                          "wheres": {
-                                                            "condition": "AND",
-                                                            "rules": [
+                                                          "conditional": null,
+                                                          "valid": true
+                                                        },
+                                                        "query": "SELECT COUNT(id) AS CountIds\nFROM tt_recharge_trans AS tt_recharge_trans\nWHERE id = :P1 /* {{$_POST.ComplainId}} */ AND extra2 IS NULL",
+                                                        "params": [
+                                                          {
+                                                            "operator": "equal",
+                                                            "type": "expression",
+                                                            "name": ":P1",
+                                                            "value": "{{$_POST.ComplainId}}"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "output": false,
+                                                    "meta": [
+                                                      {
+                                                        "type": "number",
+                                                        "name": "CountIds"
+                                                      }
+                                                    ],
+                                                    "outputType": "object"
+                                                  },
+                                                  {
+                                                    "name": "",
+                                                    "module": "core",
+                                                    "action": "condition",
+                                                    "options": {
+                                                      "if": "{{GetTrDetails.CountIds>0}}",
+                                                      "then": {
+                                                        "steps": [
+                                                          {
+                                                            "name": "ComplainAdd",
+                                                            "module": "dbupdater",
+                                                            "action": "insert",
+                                                            "options": {
+                                                              "connection": "postgres_gcpServer",
+                                                              "sql": {
+                                                                "type": "insert",
+                                                                "values": [
+                                                                  {
+                                                                    "table": "t_ticket",
+                                                                    "column": "user_id",
+                                                                    "type": "number",
+                                                                    "value": "{{identity}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_ticket",
+                                                                    "column": "support_type",
+                                                                    "type": "text",
+                                                                    "value": "{{$_POST.subject}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_ticket",
+                                                                    "column": "message",
+                                                                    "type": "text",
+                                                                    "value": "{{$_POST.complainReason}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_ticket",
+                                                                    "column": "tran_id",
+                                                                    "type": "text",
+                                                                    "value": "{{$_POST.ComplainId}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_ticket",
+                                                                    "column": "status",
+                                                                    "type": "text",
+                                                                    "value": "{{1}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_ticket",
+                                                                    "column": "adddate",
+                                                                    "type": "datetime",
+                                                                    "value": "{{NOW}}"
+                                                                  },
+                                                                  {
+                                                                    "table": "t_ticket",
+                                                                    "column": "created_on",
+                                                                    "type": "datetime",
+                                                                    "value": "{{NOW}}"
+                                                                  }
+                                                                ],
+                                                                "table": "t_ticket",
+                                                                "returning": "id",
+                                                                "query": "INSERT INTO t_ticket\n(user_id, support_type, message, tran_id, status, adddate, created_on) VALUES (:P1 /* {{identity}} */, :P2 /* {{$_POST.subject}} */, :P3 /* {{$_POST.complainReason}} */, :P4 /* {{$_POST.ComplainId}} */, :P5 /* {{1}} */, :P6 /* {{NOW}} */, :P7 /* {{NOW}} */)",
+                                                                "params": [
+                                                                  {
+                                                                    "name": ":P1",
+                                                                    "type": "expression",
+                                                                    "value": "{{identity}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P2",
+                                                                    "type": "expression",
+                                                                    "value": "{{$_POST.subject}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P3",
+                                                                    "type": "expression",
+                                                                    "value": "{{$_POST.complainReason}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P4",
+                                                                    "type": "expression",
+                                                                    "value": "{{$_POST.ComplainId}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P5",
+                                                                    "type": "expression",
+                                                                    "value": "{{1}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P6",
+                                                                    "type": "expression",
+                                                                    "value": "{{NOW}}"
+                                                                  },
+                                                                  {
+                                                                    "name": ":P7",
+                                                                    "type": "expression",
+                                                                    "value": "{{NOW}}"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            },
+                                                            "meta": [
                                                               {
-                                                                "id": "id",
-                                                                "field": "id",
-                                                                "type": "double",
-                                                                "operator": "equal",
-                                                                "value": "{{$_POST.ComplainId}}",
-                                                                "data": {
-                                                                  "column": "id"
-                                                                },
-                                                                "operation": "="
+                                                                "name": "identity",
+                                                                "type": "text"
+                                                              },
+                                                              {
+                                                                "name": "affected",
+                                                                "type": "number"
                                                               }
                                                             ],
-                                                            "conditional": null,
-                                                            "valid": true
+                                                            "output": false
                                                           },
-                                                          "query": "UPDATE tt_recharge_trans\nSET extra2 = '1'\nWHERE id = :P1 /* {{$_POST.ComplainId}} */",
-                                                          "params": [
-                                                            {
-                                                              "operator": "equal",
-                                                              "type": "expression",
-                                                              "name": ":P1",
-                                                              "value": "{{$_POST.ComplainId}}"
-                                                            }
-                                                          ],
-                                                          "returning": "id"
-                                                        }
+                                                          {
+                                                            "name": "RechTransUp",
+                                                            "module": "dbupdater",
+                                                            "action": "update",
+                                                            "options": {
+                                                              "connection": "postgres_gcpServer",
+                                                              "sql": {
+                                                                "type": "update",
+                                                                "values": [
+                                                                  {
+                                                                    "table": "tt_recharge_trans",
+                                                                    "column": "extra2",
+                                                                    "type": "text",
+                                                                    "value": "1"
+                                                                  }
+                                                                ],
+                                                                "table": "tt_recharge_trans",
+                                                                "wheres": {
+                                                                  "condition": "AND",
+                                                                  "rules": [
+                                                                    {
+                                                                      "id": "id",
+                                                                      "field": "id",
+                                                                      "type": "double",
+                                                                      "operator": "equal",
+                                                                      "value": "{{$_POST.ComplainId}}",
+                                                                      "data": {
+                                                                        "column": "id"
+                                                                      },
+                                                                      "operation": "="
+                                                                    }
+                                                                  ],
+                                                                  "conditional": null,
+                                                                  "valid": true
+                                                                },
+                                                                "query": "UPDATE tt_recharge_trans\nSET extra2 = '1'\nWHERE id = :P1 /* {{$_POST.ComplainId}} */",
+                                                                "params": [
+                                                                  {
+                                                                    "operator": "equal",
+                                                                    "type": "expression",
+                                                                    "name": ":P1",
+                                                                    "value": "{{$_POST.ComplainId}}"
+                                                                  }
+                                                                ],
+                                                                "returning": "id"
+                                                              }
+                                                            },
+                                                            "meta": [
+                                                              {
+                                                                "name": "affected",
+                                                                "type": "number"
+                                                              }
+                                                            ],
+                                                            "output": false
+                                                          },
+                                                          {
+                                                            "name": "Status",
+                                                            "module": "core",
+                                                            "action": "setvalue",
+                                                            "options": {
+                                                              "value": 200
+                                                            },
+                                                            "meta": [],
+                                                            "output": true,
+                                                            "outputType": "text"
+                                                          },
+                                                          {
+                                                            "name": "Resp",
+                                                            "module": "core",
+                                                            "action": "setvalue",
+                                                            "options": {
+                                                              "value": "Complain Raised Successfully"
+                                                            },
+                                                            "meta": [],
+                                                            "output": true,
+                                                            "outputType": "text"
+                                                          }
+                                                        ]
                                                       },
-                                                      "meta": [
-                                                        {
-                                                          "name": "affected",
-                                                          "type": "number"
+                                                      "else": {
+                                                        "steps": {
+                                                          "name": "Resp",
+                                                          "module": "core",
+                                                          "action": "setvalue",
+                                                          "options": {
+                                                            "value": "Transaction Id Mismatched or Complain Already Raised"
+                                                          },
+                                                          "meta": [],
+                                                          "output": true,
+                                                          "outputType": "text"
                                                         }
-                                                      ],
-                                                      "output": false
-                                                    }
-                                                  ]
-                                                },
-                                                "else": {
-                                                  "steps": {
+                                                      }
+                                                    },
+                                                    "outputType": "boolean"
+                                                  }
+                                                ]
+                                              },
+                                              "else": {
+                                                "steps": [
+                                                  {
                                                     "name": "ComplainAdd",
                                                     "module": "dbupdater",
                                                     "action": "insert",
@@ -663,34 +800,34 @@
                                                       }
                                                     ],
                                                     "output": false
+                                                  },
+                                                  {
+                                                    "name": "Status",
+                                                    "module": "core",
+                                                    "action": "setvalue",
+                                                    "options": {
+                                                      "value": 200
+                                                    },
+                                                    "meta": [],
+                                                    "output": true,
+                                                    "outputType": "text"
+                                                  },
+                                                  {
+                                                    "name": "Resp",
+                                                    "module": "core",
+                                                    "action": "setvalue",
+                                                    "options": {
+                                                      "value": "Complain Raised Successfully"
+                                                    },
+                                                    "meta": [],
+                                                    "output": true,
+                                                    "outputType": "text"
                                                   }
-                                                }
-                                              },
-                                              "outputType": "boolean"
+                                                ]
+                                              }
                                             },
-                                            {
-                                              "name": "Status",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": 200
-                                              },
-                                              "meta": [],
-                                              "output": true,
-                                              "outputType": "text"
-                                            },
-                                            {
-                                              "name": "Resp",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "Complain Raised Successfully"
-                                              },
-                                              "meta": [],
-                                              "output": true,
-                                              "outputType": "text"
-                                            }
-                                          ]
+                                            "outputType": "boolean"
+                                          }
                                         },
                                         "else": {
                                           "steps": {
