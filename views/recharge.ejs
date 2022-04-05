@@ -97,6 +97,11 @@
                                         <option value="">Select Operator</option>
 
                                     </select>
+                                    <div class="input-group-prepend" dmx-on:click="flowMobilePlans.run();modalRPlans.show()">
+                                        <div class="input-group-text bg-warning">
+                                            Plans!
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -108,11 +113,6 @@
                                         </div>
                                     </div>
                                     <input type="number" class="form-control" id="inpAmount" name="recharge_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount." dmx-bind:value="varROfferAmt.value">
-                                    <div class="input-group-prepend" dmx-on:click="flowMobilePlans.run();modalRPlans.show()">
-                                        <div class="input-group-text bg-warning">
-                                            Plans!
-                                        </div>
-                                    </div>
                                     <div class="input-group-prepend" dmx-on:click="flowMobileRech.run();modalROffer.show()">
                                         <div class="input-group-text bg-primary text-light">
                                             Offers!

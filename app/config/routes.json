@@ -162,6 +162,11 @@
       "layout": "main"
     },
     {
+      "path": "/complain-raise",
+      "page": "complain-raise",
+      "layout": "main"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }
