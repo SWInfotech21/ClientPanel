@@ -3267,7 +3267,8 @@
                                               },
                                               "output": true,
                                               "meta": [],
-                                              "outputType": "array"
+                                              "outputType": "array",
+                                              "disabled": true
                                             },
                                             {
                                               "name": "repeat",
@@ -3817,9 +3818,33 @@
                                                   "type": "text"
                                                 },
                                                 {
-                                                  "name": "API",
+                                                  "name": "apistatus",
                                                   "type": "text",
                                                   "sub": []
+                                                },
+                                                {
+                                                  "name": "apifiredid",
+                                                  "type": "text",
+                                                  "sub": []
+                                                },
+                                                {
+                                                  "name": "remarks",
+                                                  "type": "text",
+                                                  "sub": []
+                                                },
+                                                {
+                                                  "name": "api_ref",
+                                                  "type": "text",
+                                                  "sub": []
+                                                },
+                                                {
+                                                  "name": "ec",
+                                                  "type": "text",
+                                                  "sub": []
+                                                },
+                                                {
+                                                  "name": "apiMoneyArt",
+                                                  "type": "text"
                                                 }
                                               ],
                                               "outputType": "array"
