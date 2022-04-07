@@ -4,6 +4,16 @@
       "linkedFile": "/views/recharge.ejs",
       "linkedForm": "formMobileRecharge"
     },
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ],
     "$_POST": [
       {
         "type": "number",
@@ -598,7 +608,8 @@
                               "name": ":P2",
                               "value": "{{UserWalletBalCheck.scheme_id}}"
                             }
-                          ]
+                          ],
+                          "primary": "id"
                         }
                       },
                       "output": false,
@@ -956,7 +967,8 @@
                                             "operation": "="
                                           }
                                         ]
-                                      }
+                                      },
+                                      "primary": "id"
                                     }
                                   ],
                                   "query": "SELECT t_op_api_rel.api_code1, t_op_api_rel.api_code2, t_op_api_rel.api_code3, t_op_api_rel.api_code4, t_op_api_rel.api_code5, t_op_api_rel.api_code6, m_api_fwd.service_id, m_api_fwd.api_id, m_api.api_name, m_api.api_code, m_api.username, m_api.api_password\nFROM t_op_api_rel\nLEFT JOIN m_api_forward AS m_api_fwd ON (m_api_fwd.operator_id = t_op_api_rel.op_id) LEFT JOIN m_api AS m_api ON (m_api.id = m_api_fwd.api_id)\nWHERE t_op_api_rel.op_id = :P1 /* {{$_POST.op_code}} */ AND m_api.status = 1",
@@ -1000,7 +1012,8 @@
                                     ],
                                     "conditional": null,
                                     "valid": true
-                                  }
+                                  },
+                                  "primary": "id"
                                 }
                               },
                               "output": false,
@@ -1232,7 +1245,7 @@
                                               },
                                               "meta": [],
                                               "outputType": "text",
-                                              "output": true
+                                              "output": false
                                             },
                                             {
                                               "name": "DTCommVal",
@@ -1243,7 +1256,7 @@
                                               },
                                               "meta": [],
                                               "outputType": "text",
-                                              "output": true
+                                              "output": false
                                             },
                                             {
                                               "name": "DTCommTotal",
@@ -1253,8 +1266,7 @@
                                                 "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForDT.comm_per.toNumber()/100)+GetCommisionForDT.comm_val.toNumber()}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text",
-                                              "output": true
+                                              "outputType": "text"
                                             },
                                             {
                                               "name": "DTCommAmt",
@@ -1264,8 +1276,7 @@
                                                 "value": "{{DTCommTotal.toNumber()-RTCommAmt.toNumber()}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text",
-                                              "output": true
+                                              "outputType": "text"
                                             },
                                             {
                                               "name": "DTChargePer",
@@ -1275,8 +1286,7 @@
                                                 "value": "{{GetCommisionForDT.service_charge_per}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text",
-                                              "output": true
+                                              "outputType": "text"
                                             },
                                             {
                                               "name": "DTChargeVal",
@@ -1286,8 +1296,7 @@
                                                 "value": "{{GetCommisionForDT.service_charge_val}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text",
-                                              "output": true
+                                              "outputType": "text"
                                             },
                                             {
                                               "name": "DTChargeTotal",
@@ -1297,8 +1306,7 @@
                                                 "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForDT.service_charge_per.toNumber()/100)+GetCommisionForDT.service_charge_val.toNumber()}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text",
-                                              "output": true
+                                              "outputType": "text"
                                             },
                                             {
                                               "name": "DTChargeAmt",
@@ -1308,8 +1316,7 @@
                                                 "value": "{{DTChargeTotal.toNumber()-RTChargeAmt.toNumber()}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text",
-                                              "output": true
+                                              "outputType": "text"
                                             },
                                             {
                                               "name": "DTNetAmt",
@@ -1319,8 +1326,7 @@
                                                 "value": "{{DTCommAmt.toNumber()-DTChargeAmt.toNumber()}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text",
-                                              "output": true
+                                              "outputType": "text"
                                             },
                                             {
                                               "name": "DTClosingBalance",
@@ -1330,8 +1336,7 @@
                                                 "value": "{{GetRTCreator.rt_coeator_balance_amt.toNumber()+DTCommAmt.toNumber()-DTChargeAmt.toNumber()}}"
                                               },
                                               "meta": [],
-                                              "outputType": "text",
-                                              "output": true
+                                              "outputType": "text"
                                             },
                                             {
                                               "name": "AdminClosingBalance",
@@ -1577,8 +1582,7 @@
                                                         "value": "{{GetCommisionForMDT.comm_per.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text",
-                                                      "output": true
+                                                      "outputType": "text"
                                                     },
                                                     {
                                                       "name": "MDTCommVal",
@@ -1588,8 +1592,7 @@
                                                         "value": "{{GetCommisionForMDT.comm_val.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text",
-                                                      "output": true
+                                                      "outputType": "text"
                                                     },
                                                     {
                                                       "name": "MDTCommTotal",
@@ -1599,8 +1602,7 @@
                                                         "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForMDT.comm_per.toNumber()/100)+GetCommisionForMDT.comm_val.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text",
-                                                      "output": true
+                                                      "outputType": "text"
                                                     },
                                                     {
                                                       "name": "MDTCommAmt",
@@ -1610,8 +1612,7 @@
                                                         "value": "{{MDTCommTotal.toNumber()-DTCommTotal.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text",
-                                                      "output": true
+                                                      "outputType": "text"
                                                     },
                                                     {
                                                       "name": "MDTChargePer",
@@ -1621,8 +1622,7 @@
                                                         "value": "{{GetCommisionForMDT.service_charge_per}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text",
-                                                      "output": true
+                                                      "outputType": "text"
                                                     },
                                                     {
                                                       "name": "MDTChargeVal",
@@ -1632,8 +1632,7 @@
                                                         "value": "{{GetCommisionForMDT.service_charge_val}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text",
-                                                      "output": true
+                                                      "outputType": "text"
                                                     },
                                                     {
                                                       "name": "MDTChargeTotal",
@@ -1643,8 +1642,7 @@
                                                         "value": "{{($_POST.recharge_amount.toNumber()*GetCommisionForMDT.service_charge_per.toNumber()/100)+GetCommisionForMDT.service_charge_val.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text",
-                                                      "output": true
+                                                      "outputType": "text"
                                                     },
                                                     {
                                                       "name": "MDTChargeAmt",
@@ -1654,8 +1652,7 @@
                                                         "value": "{{MDTChargeTotal.toNumber()-DTChargeTotal.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text",
-                                                      "output": true
+                                                      "outputType": "text"
                                                     },
                                                     {
                                                       "name": "MDTNetAmt",
@@ -1665,8 +1662,7 @@
                                                         "value": "{{MDTCommAmt.toNumber()-MDTChargeAmt.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text",
-                                                      "output": true
+                                                      "outputType": "text"
                                                     },
                                                     {
                                                       "name": "MDTClosingBalance",
@@ -1676,8 +1672,7 @@
                                                         "value": "{{GetDTCreator.dt_balance_amt.toNumber()+MDTCommAmt.toNumber()-MDTChargeAmt.toNumber()}}"
                                                       },
                                                       "meta": [],
-                                                      "outputType": "text",
-                                                      "output": true
+                                                      "outputType": "text"
                                                     },
                                                     {
                                                       "name": "AdminClosingBalance",
@@ -2999,6 +2994,835 @@
                                               "meta": [],
                                               "outputType": "text",
                                               "output": true
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "outputType": "boolean"
+                                    },
+                                    {
+                                      "name": "",
+                                      "module": "core",
+                                      "action": "condition",
+                                      "options": {
+                                        "if": "{{GetOpAPICodeFwrd.api_code=='RRR'}}",
+                                        "then": {
+                                          "steps": [
+                                            {
+                                              "name": "GetRandomAPI",
+                                              "module": "dbconnector",
+                                              "action": "select",
+                                              "options": {
+                                                "sql": {
+                                                  "type": "SELECT",
+                                                  "columns": [
+                                                    {
+                                                      "table": "t_random_root",
+                                                      "column": "api_id"
+                                                    },
+                                                    {
+                                                      "table": "ma",
+                                                      "column": "api_code"
+                                                    },
+                                                    {
+                                                      "table": "ma",
+                                                      "column": "username"
+                                                    },
+                                                    {
+                                                      "table": "ma",
+                                                      "column": "api_password"
+                                                    },
+                                                    {
+                                                      "table": "toar",
+                                                      "column": "api_code1"
+                                                    },
+                                                    {
+                                                      "table": "toar",
+                                                      "column": "api_code2"
+                                                    },
+                                                    {
+                                                      "table": "toar",
+                                                      "column": "api_code3"
+                                                    },
+                                                    {
+                                                      "table": "toar",
+                                                      "column": "api_code4"
+                                                    },
+                                                    {
+                                                      "table": "toar",
+                                                      "column": "api_code5"
+                                                    },
+                                                    {
+                                                      "table": "toar",
+                                                      "column": "api_code6"
+                                                    },
+                                                    {
+                                                      "table": "toar",
+                                                      "column": "api_code7"
+                                                    }
+                                                  ],
+                                                  "table": {
+                                                    "name": "t_random_root"
+                                                  },
+                                                  "primary": "id",
+                                                  "joins": [
+                                                    {
+                                                      "table": "m_api",
+                                                      "column": "*",
+                                                      "alias": "ma",
+                                                      "type": "LEFT",
+                                                      "clauses": {
+                                                        "condition": "AND",
+                                                        "rules": [
+                                                          {
+                                                            "table": "ma",
+                                                            "column": "id",
+                                                            "operator": "equal",
+                                                            "value": {
+                                                              "table": "t_random_root",
+                                                              "column": "api_id"
+                                                            },
+                                                            "operation": "="
+                                                          }
+                                                        ]
+                                                      },
+                                                      "primary": "id"
+                                                    },
+                                                    {
+                                                      "table": "t_op_api_rel",
+                                                      "column": "*",
+                                                      "alias": "toar",
+                                                      "type": "LEFT",
+                                                      "clauses": {
+                                                        "condition": "AND",
+                                                        "rules": [
+                                                          {
+                                                            "table": "toar",
+                                                            "column": "op_id",
+                                                            "operator": "equal",
+                                                            "value": {
+                                                              "table": "t_random_root",
+                                                              "column": "op_id"
+                                                            },
+                                                            "operation": "="
+                                                          }
+                                                        ]
+                                                      },
+                                                      "primary": "id"
+                                                    }
+                                                  ],
+                                                  "wheres": {
+                                                    "condition": "AND",
+                                                    "rules": [
+                                                      {
+                                                        "id": "t_random_root.service_id",
+                                                        "field": "t_random_root.service_id",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": "{{GetOpAPICodeFwrd.service_id}}",
+                                                        "data": {
+                                                          "table": "t_random_root",
+                                                          "column": "service_id",
+                                                          "type": "number",
+                                                          "columnObj": {
+                                                            "type": "integer",
+                                                            "primary": false,
+                                                            "unique": false,
+                                                            "nullable": false,
+                                                            "name": "service_id"
+                                                          }
+                                                        },
+                                                        "operation": "="
+                                                      },
+                                                      {
+                                                        "id": "t_random_root.op_id",
+                                                        "field": "t_random_root.op_id",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": "{{$_POST.op_code}}",
+                                                        "data": {
+                                                          "table": "t_random_root",
+                                                          "column": "op_id",
+                                                          "type": "number",
+                                                          "columnObj": {
+                                                            "type": "integer",
+                                                            "primary": false,
+                                                            "unique": false,
+                                                            "nullable": true,
+                                                            "name": "op_id"
+                                                          }
+                                                        },
+                                                        "operation": "="
+                                                      },
+                                                      {
+                                                        "id": "ma.status",
+                                                        "field": "ma.status",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": 1,
+                                                        "data": {
+                                                          "table": "ma",
+                                                          "column": "status",
+                                                          "type": "number",
+                                                          "columnObj": {
+                                                            "type": "integer",
+                                                            "primary": false,
+                                                            "nullable": false,
+                                                            "unique": false,
+                                                            "name": "status"
+                                                          }
+                                                        },
+                                                        "operation": "="
+                                                      }
+                                                    ],
+                                                    "conditional": null,
+                                                    "valid": true
+                                                  },
+                                                  "query": "SELECT t_random_root.api_id, ma.api_code, ma.username, ma.api_password, toar.api_code1, toar.api_code2, toar.api_code3, toar.api_code4, toar.api_code5, toar.api_code6, toar.api_code7\nFROM t_random_root\nLEFT JOIN m_api AS ma ON (ma.id = t_random_root.api_id) LEFT JOIN t_op_api_rel AS toar ON (toar.op_id = t_random_root.op_id)\nWHERE t_random_root.service_id = :P1 /* {{GetOpAPICodeFwrd.service_id}} */ AND t_random_root.op_id = :P2 /* {{$_POST.op_code}} */ AND ma.status = 1",
+                                                  "params": [
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P1",
+                                                      "value": "{{GetOpAPICodeFwrd.service_id}}"
+                                                    },
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P2",
+                                                      "value": "{{$_POST.op_code}}"
+                                                    }
+                                                  ]
+                                                },
+                                                "connection": "postgres_gcpServer"
+                                              },
+                                              "output": true,
+                                              "meta": [
+                                                {
+                                                  "type": "number",
+                                                  "name": "api_id"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "api_code"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "username"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "api_password"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "api_code1"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "api_code2"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "api_code3"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "api_code4"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "api_code5"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "api_code6"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "api_code7"
+                                                }
+                                              ],
+                                              "outputType": "array"
+                                            },
+                                            {
+                                              "name": "GetRandomAPIs",
+                                              "module": "dbupdater",
+                                              "action": "custom",
+                                              "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "query": "SELECT trr.api_id, ma.api_code, ma.username, ma.api_password, toar.api_code1, toar.api_code2,toar.api_code3, toar.api_code4, \ntoar.api_code5, toar.api_code6, toar.api_code7,toar.api_code8 from t_random_root trr\nleft join m_api ma on (ma.id=trr.api_id)\nleft join t_op_api_rel toar on (toar.op_id=trr.op_id)\nwhere trr.op_id = @op and trr.service_id =@service and ma.status =1",
+                                                  "params": [
+                                                    {
+                                                      "name": "@op",
+                                                      "value": "{{$_POST.op_code}}"
+                                                    },
+                                                    {
+                                                      "name": "@service",
+                                                      "value": "{{GetOpAPICodeFwrd.service_id}}"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "output": true,
+                                              "meta": [],
+                                              "outputType": "array"
+                                            },
+                                            {
+                                              "name": "repeat",
+                                              "module": "core",
+                                              "action": "repeat",
+                                              "options": {
+                                                "repeat": "{{GetRandomAPI}}",
+                                                "outputFields": [],
+                                                "exec": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "",
+                                                      "module": "core",
+                                                      "action": "condition",
+                                                      "options": {
+                                                        "if": "{{api_code=='SN'}}",
+                                                        "then": {
+                                                          "steps": [
+                                                            {
+                                                              "name": "apisn",
+                                                              "module": "api",
+                                                              "action": "send",
+                                                              "options": {
+                                                                "url": "https://www.sonakshiworld.com/apiservice.asmx/Recharge",
+                                                                "params": {
+                                                                  "apiToken": "{{api_password}}",
+                                                                  "mn": "{{$_POST.mobile_number}}",
+                                                                  "op": "{{api_code2}}",
+                                                                  "amt": "{{$_POST.recharge_amount}}",
+                                                                  "reqid": "{{TransactionId}}",
+                                                                  "field1": "",
+                                                                  "field2": ""
+                                                                }
+                                                              },
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "xml",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apisn.data.xmlToJSON()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "apistatus",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{xml.Result.status[0]}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "apifiredid",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{xml.Result.apirefid[0]}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "remarks",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{xml.Result.remark[0]}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "api_ref",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{xml.Result.field1[0]}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "ec",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{xml.Result.ec[0]}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "api_log",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "SN"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "apibalance",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{xml.Result.balance[0]}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "outputType": "boolean"
+                                                    },
+                                                    {
+                                                      "name": "",
+                                                      "module": "core",
+                                                      "action": "condition",
+                                                      "options": {
+                                                        "if": "{{api_code=='AMBI'}}",
+                                                        "then": {
+                                                          "steps": [
+                                                            {
+                                                              "name": "apiambi",
+                                                              "module": "api",
+                                                              "action": "send",
+                                                              "options": {
+                                                                "url": "https://ambikamultiservices.com/API/TransactionAPI",
+                                                                "params": {
+                                                                  "UserID": "{{username}}",
+                                                                  "Token": "{{api_password}}",
+                                                                  "Account": "{{$_POST.mobile_number}}",
+                                                                  "Amount": "{{$_POST.recharge_amount}}",
+                                                                  "SPKey": "{{api_code5}}",
+                                                                  "APIRequestID": "{{TransactionId}}"
+                                                                }
+                                                              },
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "stat",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apiambi.data.status}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "apistatus",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{stat == 2? 'SUCCESS' : stat == 1? 'PENDING' : 'FAILED'}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "apifiredid",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apiambi.data.opid}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "remarks",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apiambi.data.msg}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "ec",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apiambi.data.errorcode}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "api_log",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "AMBI"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "apibalance",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apiambi.data.bal}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "api_ref",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apiambi.data.rpid}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "outputType": "boolean"
+                                                    },
+                                                    {
+                                                      "name": "",
+                                                      "module": "core",
+                                                      "action": "condition",
+                                                      "options": {
+                                                        "if": "{{api_code=='MA'}}",
+                                                        "then": {
+                                                          "steps": [
+                                                            {
+                                                              "name": "apiMoneyArt",
+                                                              "module": "api",
+                                                              "action": "send",
+                                                              "options": {
+                                                                "url": "http://corp.moneyart.in/Recharge",
+                                                                "params": {
+                                                                  "token": "{{username}}",
+                                                                  "number": "{{$_POST.mobile_number}}",
+                                                                  "amount": "{{$_POST.recharge_amount}}",
+                                                                  "apiCode": "{{api_code4}}",
+                                                                  "requestID": "{{TransactionId}}",
+                                                                  "field1": ""
+                                                                },
+                                                                "method": "POST"
+                                                              },
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "stat",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apiMoneyArt.data.Data.Status}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "apistatus",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{stat == 'Success'? 'SUCCESS' : stat == 'Failure'? 'FAILED' : 'PENDING'}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "apifiredid",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apiMoneyArt.data.Data.OperatorRef}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "remarks",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apiMoneyArt.data.Message}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "ec",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apiMoneyArt.data.StatusCode}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "api_log",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "MA"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "apibalance",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apiMoneyArt.data.Data.Balance}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "api_ref",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apiMoneyArt.data.Data.TxnRef}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "outputType": "boolean"
+                                                    },
+                                                    {
+                                                      "name": "",
+                                                      "module": "core",
+                                                      "action": "condition",
+                                                      "options": {
+                                                        "if": "{{api_code=='MRO'}}",
+                                                        "then": {
+                                                          "steps": [
+                                                            {
+                                                              "name": "apimrobotic",
+                                                              "module": "api",
+                                                              "action": "send",
+                                                              "options": {
+                                                                "url": "https://mrobotics.in/api/recharge_get",
+                                                                "params": {
+                                                                  "api_token": "{{api_password}}",
+                                                                  "mobile_no": "{{$_POST.mobile_number}}",
+                                                                  "amount": "{{$_POST.recharge_amount}}",
+                                                                  "company_id": "{{api_code3}}",
+                                                                  "order_id": "{{TransactionId}}",
+                                                                  "is_stv": "{{false}}"
+                                                                }
+                                                              },
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "stat",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apimrobotic.data.status}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "apistatus",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{stat == 'success' ? 'SUCCESS' : stat == 'pending'? 'PENDING' : 'FAILED'}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "apifiredid",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apimrobotic.data.id}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "remarks",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apimrobotic.data.response}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "ec",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apimrobotic.data.lapu_id}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            },
+                                                            {
+                                                              "name": "api_log",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "MRO"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "apibalance",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apimrobotic.data.balance}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "api_ref",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{apimrobotic.data.tnx_id}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": true
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "outputType": "boolean"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "output": true,
+                                              "meta": [
+                                                {
+                                                  "name": "$index",
+                                                  "type": "number"
+                                                },
+                                                {
+                                                  "name": "$number",
+                                                  "type": "number"
+                                                },
+                                                {
+                                                  "name": "$name",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "$value",
+                                                  "type": "object"
+                                                },
+                                                {
+                                                  "name": "api_id",
+                                                  "type": "number"
+                                                },
+                                                {
+                                                  "name": "api_code",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "username",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "api_password",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "api_code1",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "api_code2",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "api_code3",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "api_code4",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "api_code5",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "api_code6",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "api_code7",
+                                                  "type": "text"
+                                                },
+                                                {
+                                                  "name": "API",
+                                                  "type": "text",
+                                                  "sub": []
+                                                }
+                                              ],
+                                              "outputType": "array"
                                             }
                                           ]
                                         }
