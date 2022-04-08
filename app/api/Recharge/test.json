@@ -14,6 +14,38 @@
   "exec": {
     "steps": [
       {
+        "name": "apistatus",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "FAILED"
+        },
+        "meta": [],
+        "output": true,
+        "outputType": "text"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "while",
+        "options": {
+          "while": "{{apistatus!='SUCCESS'||apistatus!='PENDING'}}",
+          "exec": {
+            "steps": {
+              "name": "apistatus",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "SUCCESS"
+              },
+              "meta": [],
+              "output": true,
+              "outputType": "text"
+            }
+          }
+        }
+      },
+      {
         "name": "OTP",
         "module": "core",
         "action": "setvalue",
