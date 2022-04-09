@@ -1,5 +1,6 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appConnect="local" components="{dmxFormatter:{},dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" -->
 <meta name="ac:route" content="/dashboard">
+<dmx-serverconnect id="scKYCFetch" url="api/Users/UserKycFetch"></dmx-serverconnect>
 <main>
     <div class="container-fluid">
         <h1 class="mt-4">Dashboard
@@ -586,7 +587,7 @@
                                             <small id="input1_help" class="form-text text-muted">Upload recent pasport size photograph</small>
                                         </div>
                                         <div class="col-3 px-0 text-center">
-                                            <img id="ImagePic" width="80" dmx-bind:src="input1.file.dataUrl ? input1.file.dataUrl : ddimage.data.image" dmx-show="input1.value ? input1.value : ddimage.data.op_id" height="80">
+                                            <img id="ImagePic" width="80" dmx-bind:src="input1.file.dataUrl ? input1.file.dataUrl : scKYCFetch.data.GetKycDoc.profile_pic" dmx-show="input1.value ? input1.value : scKYCFetch.data.GetKycDoc.profile_pic" height="80">
                                         </div>
                                     </div>
                                 </div>
@@ -598,7 +599,7 @@
                                             <small id="input2_help" class="form-text text-muted">Upload registered PAN card</small>
                                         </div>
                                         <div class="col-3 px-0 text-center">
-                                            <img id="imgPAN" width="100" dmx-bind:src="input2.file.dataUrl ? input2.file.dataUrl : ddimage.data.image" dmx-show="input2.value ? input2.value : ddimage.data.op_id" height="80">
+                                            <img id="imgPAN" width="100" dmx-bind:src="input2.file.dataUrl ? input2.file.dataUrl : scKYCFetch.data.GetKycDoc.pan_card" dmx-show="input2.value ? input2.value : scKYCFetch.data.GetKycDoc.pan_card" height="80">
                                         </div>
                                     </div>
                                 </div>
@@ -610,7 +611,7 @@
                                             <small id="input3_help" class="form-text text-muted">Upload Front side of AADHAR card</small>
                                         </div>
                                         <div class="col-3 px-0 text-center">
-                                            <img id="ImageAADHAR" width="100" dmx-bind:src="input3.file.dataUrl ? input3.file.dataUrl : ddimage.data.image" dmx-show="input3.value ? input3.value : ddimage.data.op_id" height="80">
+                                            <img id="ImageAADHAR" width="100" dmx-bind:src="input3.file.dataUrl ? input3.file.dataUrl : scKYCFetch.data.GetKycDoc.aadhar_front" dmx-show="input3.value ? input3.value : scKYCFetch.data.GetKycDoc.aadhar_front" height="80">
                                         </div>
                                     </div>
                                 </div>
@@ -622,7 +623,7 @@
                                             <small id="input4_help" class="form-text text-muted">Upload Back side of AADHAR card</small>
                                         </div>
                                         <div class="col-3 px-0 text-center">
-                                            <img id="ImageLogo" width="100" dmx-bind:src="input4.file.dataUrl ? input4.file.dataUrl : ddimage.data.image" dmx-show="input4.value ? input4.value : ddimage.data.op_id" height="80">
+                                            <img id="ImageLogo" width="100" dmx-bind:src="input4.file.dataUrl ? input4.file.dataUrl : scKYCFetch.data.GetKycDoc.aadhar_back" dmx-show="input4.value ? input4.value : scKYCFetch.data.GetKycDoc.aadhar_back" height="80">
                                         </div>
                                     </div>
                                 </div>

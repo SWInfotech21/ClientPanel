@@ -9,9 +9,7 @@
         "type": "file",
         "fieldName": "profile",
         "options": {
-          "rules": {
-            "core:required": {}
-          }
+          "rules": {}
         },
         "name": "profile",
         "sub": [
