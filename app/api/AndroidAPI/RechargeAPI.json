@@ -2830,7 +2830,7 @@
                                                                                       },
                                                                                       "method": "POST"
                                                                                     },
-                                                                                    "output": true
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "stat",
@@ -3101,7 +3101,7 @@
                                                                                         ]
                                                                                       }
                                                                                     },
-                                                                                    "output": true,
+                                                                                    "output": false,
                                                                                     "meta": [
                                                                                       {
                                                                                         "name": "api_id",
@@ -3159,7 +3159,7 @@
                                                                                       "key": "gstop"
                                                                                     },
                                                                                     "meta": [],
-                                                                                    "output": true,
+                                                                                    "output": false,
                                                                                     "outputType": "text"
                                                                                   },
                                                                                   {
@@ -3310,7 +3310,7 @@
                                                                                                             "key": "gstop"
                                                                                                           },
                                                                                                           "meta": [],
-                                                                                                          "output": true,
+                                                                                                          "output": false,
                                                                                                           "outputType": "text"
                                                                                                         }
                                                                                                       }
@@ -3346,7 +3346,7 @@
                                                                                                       },
                                                                                                       "method": "POST"
                                                                                                     },
-                                                                                                    "output": true
+                                                                                                    "output": false
                                                                                                   },
                                                                                                   {
                                                                                                     "name": "stat",
@@ -3452,7 +3452,7 @@
                                                                                                             "key": "gstop"
                                                                                                           },
                                                                                                           "meta": [],
-                                                                                                          "output": true,
+                                                                                                          "output": false,
                                                                                                           "outputType": "text"
                                                                                                         }
                                                                                                       }
@@ -3593,7 +3593,7 @@
                                                                                                             "key": "gstop"
                                                                                                           },
                                                                                                           "meta": [],
-                                                                                                          "output": true,
+                                                                                                          "output": false,
                                                                                                           "outputType": "text"
                                                                                                         }
                                                                                                       }
@@ -3734,7 +3734,7 @@
                                                                                                             "key": "gstop"
                                                                                                           },
                                                                                                           "meta": [],
-                                                                                                          "output": true,
+                                                                                                          "output": false,
                                                                                                           "outputType": "text"
                                                                                                         }
                                                                                                       }
@@ -3749,7 +3749,7 @@
                                                                                         ]
                                                                                       }
                                                                                     },
-                                                                                    "output": true,
+                                                                                    "output": false,
                                                                                     "meta": [
                                                                                       {
                                                                                         "name": "$index",
@@ -3791,15 +3791,6 @@
                                                                                         "name": "ec",
                                                                                         "type": "text",
                                                                                         "sub": []
-                                                                                      },
-                                                                                      {
-                                                                                        "name": "stop",
-                                                                                        "type": "text",
-                                                                                        "sub": []
-                                                                                      },
-                                                                                      {
-                                                                                        "name": "apiMoneyArt",
-                                                                                        "type": "text"
                                                                                       }
                                                                                     ],
                                                                                     "outputType": "array"
