@@ -134,6 +134,45 @@
         "meta": []
       },
       {
+        "name": "type",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_POST.profile}}"
+        },
+        "meta": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "number"
+          },
+          {
+            "name": "error",
+            "type": "text"
+          }
+        ],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "type_copy",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_POST.profile.name}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
         "name": "GetUser",
         "module": "dbconnector",
         "action": "single",
@@ -272,7 +311,7 @@
                   "if": "{{$_POST.pan_card&&$_POST.pan_card!=null&&$_POST.pan_card!=' '}}",
                   "then": {
                     "steps": {
-                      "name": "PANAdd",
+                      "name": "PANEdit",
                       "module": "upload",
                       "action": "upload",
                       "options": {
@@ -326,7 +365,7 @@
                   "if": "{{$_POST.front_aadhar&&$_POST.front_aadhar!=null&&$_POST.front_aadhar!=' '}}",
                   "then": {
                     "steps": {
-                      "name": "AADHARAdd",
+                      "name": "AADHAREdit",
                       "module": "upload",
                       "action": "upload",
                       "options": {
@@ -380,7 +419,7 @@
                   "if": "{{$_POST.back_aadhar&&$_POST.back_aadhar!=null&&$_POST.back_aadhar!=' '}}",
                   "then": {
                     "steps": {
-                      "name": "AADHARBackAdd",
+                      "name": "AADHARBackEdit",
                       "module": "upload",
                       "action": "upload",
                       "options": {
@@ -439,25 +478,25 @@
                         "table": "t_user_kyc",
                         "column": "profile_pic",
                         "type": "text",
-                        "value": "{{ProfileEdit.name}}"
+                        "value": "{{'/assets/images/profile/'+ProfileEdit.name}}"
                       },
                       {
                         "table": "t_user_kyc",
                         "column": "pan_card",
                         "type": "text",
-                        "value": "{{PANAdd.name}}"
+                        "value": "{{'/assets/images/profile/'+PANEdit.name}}"
                       },
                       {
                         "table": "t_user_kyc",
                         "column": "aadhar_front",
                         "type": "text",
-                        "value": "{{AADHARAdd.name}}"
+                        "value": "{{'/assets/images/profile/'+AADHAREdit.name}}"
                       },
                       {
                         "table": "t_user_kyc",
                         "column": "aadhar_back",
                         "type": "text",
-                        "value": "{{AADHARBackAdd.name}}"
+                        "value": "{{'/assets/images/profile/'+AADHARBackEdit.name}}"
                       },
                       {
                         "table": "t_user_kyc",
@@ -492,27 +531,27 @@
                       "valid": true
                     },
                     "returning": "id",
-                    "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{ProfileEdit.name}} */, pan_card = :P2 /* {{PANAdd.name}} */, aadhar_front = :P3 /* {{AADHARAdd.name}} */, aadhar_back = :P4 /* {{AADHARBackAdd.name}} */, updated_by = :P5 /* {{identity}} */, updated_on = :P6 /* {{NOW}} */\nWHERE user_id = :P7 /* {{identity}} */",
+                    "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{'/assets/images/profile/'+ProfileEdit.name}} */, pan_card = :P2 /* {{'/assets/images/profile/'+PANEdit.name}} */, aadhar_front = :P3 /* {{'/assets/images/profile/'+AADHAREdit.name}} */, aadhar_back = :P4 /* {{'/assets/images/profile/'+AADHARBackEdit.name}} */, updated_by = :P5 /* {{identity}} */, updated_on = :P6 /* {{NOW}} */\nWHERE user_id = :P7 /* {{identity}} */",
                     "params": [
                       {
                         "name": ":P1",
                         "type": "expression",
-                        "value": "{{ProfileEdit.name}}"
+                        "value": "{{'/assets/images/profile/'+ProfileEdit.name}}"
                       },
                       {
                         "name": ":P2",
                         "type": "expression",
-                        "value": "{{PANAdd.name}}"
+                        "value": "{{'/assets/images/profile/'+PANEdit.name}}"
                       },
                       {
                         "name": ":P3",
                         "type": "expression",
-                        "value": "{{AADHARAdd.name}}"
+                        "value": "{{'/assets/images/profile/'+AADHAREdit.name}}"
                       },
                       {
                         "name": ":P4",
                         "type": "expression",
-                        "value": "{{AADHARBackAdd.name}}"
+                        "value": "{{'/assets/images/profile/'+AADHARBackEdit.name}}"
                       },
                       {
                         "name": ":P5",

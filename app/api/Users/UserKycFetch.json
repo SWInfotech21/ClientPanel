@@ -1,0 +1,146 @@
+[
+  {
+    "name": "",
+    "module": "auth",
+    "action": "restrict",
+    "options": {
+      "provider": "security",
+      "permissions": [
+        "write"
+      ],
+      "loginUrl": "/login",
+      "forbiddenUrl": "/403-forbidden"
+    }
+  },
+  {
+    "name": "identity",
+    "module": "auth",
+    "action": "identify",
+    "options": {
+      "provider": "security"
+    },
+    "meta": []
+  },
+  {
+    "name": "GetKycDoc",
+    "module": "dbconnector",
+    "action": "single",
+    "options": {
+      "connection": "postgres_gcpServer",
+      "sql": {
+        "type": "SELECT",
+        "columns": [
+          {
+            "table": "t_user_kyc",
+            "column": "profile_pic"
+          },
+          {
+            "table": "t_user_kyc",
+            "column": "pan_card"
+          },
+          {
+            "table": "t_user_kyc",
+            "column": "aadhar_front"
+          },
+          {
+            "table": "t_user_kyc",
+            "column": "aadhar_back"
+          },
+          {
+            "table": "t_user_kyc",
+            "column": "created_by"
+          },
+          {
+            "table": "t_user_kyc",
+            "column": "created_on"
+          },
+          {
+            "table": "t_user_kyc",
+            "column": "updated_by"
+          },
+          {
+            "table": "t_user_kyc",
+            "column": "updated_on"
+          }
+        ],
+        "table": {
+          "name": "t_user_kyc"
+        },
+        "primary": "id",
+        "joins": [],
+        "wheres": {
+          "condition": "AND",
+          "rules": [
+            {
+              "id": "t_user_kyc.user_id",
+              "field": "t_user_kyc.user_id",
+              "type": "double",
+              "operator": "equal",
+              "value": "{{identity}}",
+              "data": {
+                "table": "t_user_kyc",
+                "column": "user_id",
+                "type": "number",
+                "columnObj": {
+                  "type": "integer",
+                  "primary": false,
+                  "unique": false,
+                  "nullable": false,
+                  "name": "user_id"
+                }
+              },
+              "operation": "="
+            }
+          ],
+          "conditional": null,
+          "valid": true
+        },
+        "query": "SELECT profile_pic, pan_card, aadhar_front, aadhar_back, created_by, created_on, updated_by, updated_on\nFROM t_user_kyc\nWHERE user_id = :P1 /* {{identity}} */",
+        "params": [
+          {
+            "operator": "equal",
+            "type": "expression",
+            "name": ":P1",
+            "value": "{{identity}}"
+          }
+        ]
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "type": "text",
+        "name": "profile_pic"
+      },
+      {
+        "type": "text",
+        "name": "pan_card"
+      },
+      {
+        "type": "text",
+        "name": "aadhar_front"
+      },
+      {
+        "type": "text",
+        "name": "aadhar_back"
+      },
+      {
+        "type": "number",
+        "name": "created_by"
+      },
+      {
+        "type": "datetime",
+        "name": "created_on"
+      },
+      {
+        "type": "number",
+        "name": "updated_by"
+      },
+      {
+        "type": "datetime",
+        "name": "updated_on"
+      }
+    ],
+    "outputType": "object"
+  }
+]
