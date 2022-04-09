@@ -312,12 +312,12 @@
             </div>
             <div class="modal-body">
                 <div class="col-12 text-center">
-                    <img src="assets/images/mark-success.gif" width="200" height="200" class="img-fluid" dmx-show="content.formMobileRecharge.data.apistatus == 'SUCCESS' || content.formMobileRecharge.data.apistatus == 'PENDING'">
-                    <img src="assets/images/mark-failure.gif" width="200" height="200" class="img-fluid" dmx-show="content.formMobileRecharge.data.apistatus == 'FAILED'">
+                    <img src="assets/images/mark-success.gif" width="200" height="200" class="img-fluid" dmx-show="content.formMobileRecharge.data.apistatus == 'SUCCESS' || content.formMobileRecharge.data.apistatus == 'PENDING' || content.formMobileRecharge.data.repeat[0].apistatus == 'SUCCESS'  || content.formMobileRecharge.data.repeat[0].apistatus == 'PENDING'">
+                    <img src="assets/images/mark-failure.gif" width="200" height="200" class="img-fluid" dmx-show="content.formMobileRecharge.data.apistatus == 'FAILED' || content.formMobileRecharge.data.repeat[0].apistatus == 'FAILED'">
                 </div>
-                <h5 dmx-show="content.formMobileRecharge.lastError.response.error == 'true'">Status:{{content.formMobileRecharge.lastError.response.errorMessage}} {{content.formMobileRecharge.lastError.response.ip}}</h5>
-                <h5 dmx-show="content.formMobileRecharge.lastError.status == 0">Status:{{content.formMobileRecharge.data.apistatus}}</h5>
-                <h6>Remarks: {{content.formMobileRecharge.data.remarks}}</h6>
+                <h5 dmx-show="content.formMobileRecharge.lastError.response.error == 'true'">Status:{{content.formMobileRecharge.lastError.response.errorMessage}} {{content.formMobileRecharge.lastError.message}} {{content.formMobileRecharge.lastError.response.ip}}</h5>
+                <h5 dmx-show="content.formMobileRecharge.lastError.status == 0">Status:{{content.formMobileRecharge.data.apistatus}} {{ontent.formMobileRecharge.data.repeat[0].apistatus}}</h5>
+                <h6>Remarks: {{content.formMobileRecharge.data.remarks}} {{content.formMobileRecharge.data.repeat[0].remarks}}</h6>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" data-dismiss="modal">Close</button>

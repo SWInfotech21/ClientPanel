@@ -3009,87 +3009,23 @@
                                         "then": {
                                           "steps": [
                                             {
-                                              "name": "GetRepeat",
-                                              "module": "dbconnector",
-                                              "action": "single",
+                                              "name": "GetRandomAPI",
+                                              "module": "dbupdater",
+                                              "action": "custom",
                                               "options": {
                                                 "connection": "postgres_gcpServer",
                                                 "sql": {
-                                                  "type": "SELECT",
-                                                  "columns": [
-                                                    {
-                                                      "table": "t_random_root",
-                                                      "column": "id",
-                                                      "alias": "CountId",
-                                                      "aggregate": "COUNT"
-                                                    }
-                                                  ],
-                                                  "table": {
-                                                    "name": "t_random_root"
-                                                  },
-                                                  "primary": "id",
-                                                  "joins": [],
-                                                  "groupBy": [],
-                                                  "wheres": {
-                                                    "condition": "AND",
-                                                    "rules": [
-                                                      {
-                                                        "id": "t_random_root.service_id",
-                                                        "field": "t_random_root.service_id",
-                                                        "type": "double",
-                                                        "operator": "equal",
-                                                        "value": "{{GetOpAPICodeFwrd.service_id}}",
-                                                        "data": {
-                                                          "table": "t_random_root",
-                                                          "column": "service_id",
-                                                          "type": "number",
-                                                          "columnObj": {
-                                                            "type": "integer",
-                                                            "primary": false,
-                                                            "unique": false,
-                                                            "nullable": false,
-                                                            "name": "service_id"
-                                                          }
-                                                        },
-                                                        "operation": "="
-                                                      },
-                                                      {
-                                                        "id": "t_random_root.op_id",
-                                                        "field": "t_random_root.op_id",
-                                                        "type": "double",
-                                                        "operator": "equal",
-                                                        "value": "{{$_POST.op_code}}",
-                                                        "data": {
-                                                          "table": "t_random_root",
-                                                          "column": "op_id",
-                                                          "type": "number",
-                                                          "columnObj": {
-                                                            "type": "integer",
-                                                            "primary": false,
-                                                            "unique": false,
-                                                            "nullable": true,
-                                                            "name": "op_id"
-                                                          }
-                                                        },
-                                                        "operation": "="
-                                                      }
-                                                    ],
-                                                    "conditional": null,
-                                                    "valid": true
-                                                  },
-                                                  "query": "SELECT COUNT(id) AS CountId\nFROM t_random_root\nWHERE service_id = :P1 /* {{GetOpAPICodeFwrd.service_id}} */ AND op_id = :P2 /* {{$_POST.op_code}} */",
+                                                  "query": "SELECT t_random_root.api_id, ma.api_code, ma.username, ma.api_password, toar.api_code1, toar.api_code2, toar.api_code3, \ntoar.api_code4, toar.api_code5, toar.api_code6, toar.api_code7 \nFROM t_random_root \nLEFT JOIN m_api AS ma ON (ma.id = t_random_root.api_id) \nLEFT JOIN t_op_api_rel AS toar ON (toar.op_id = t_random_root.op_id) \nWHERE t_random_root.service_id = @service AND t_random_root.op_id = @operator AND ma.status = 1 order by random();",
                                                   "params": [
                                                     {
-                                                      "operator": "equal",
-                                                      "type": "expression",
-                                                      "name": ":P1",
-                                                      "value": "{{GetOpAPICodeFwrd.service_id}}"
+                                                      "name": "@service",
+                                                      "value": "{{GetOpAPICodeFwrd.service_id}}",
+                                                      "test": "1"
                                                     },
                                                     {
-                                                      "operator": "equal",
-                                                      "type": "expression",
-                                                      "name": ":P2",
-                                                      "value": "{{$_POST.op_code}}"
+                                                      "name": "@operator",
+                                                      "value": "{{$_POST.op_code}}",
+                                                      "test": "25"
                                                     }
                                                   ]
                                                 }
@@ -3097,246 +3033,48 @@
                                               "output": true,
                                               "meta": [
                                                 {
-                                                  "type": "number",
-                                                  "name": "CountId"
-                                                }
-                                              ],
-                                              "outputType": "object",
-                                              "disabled": true
-                                            },
-                                            {
-                                              "name": "GetRandomAPI",
-                                              "module": "dbconnector",
-                                              "action": "select",
-                                              "options": {
-                                                "sql": {
-                                                  "type": "SELECT",
-                                                  "columns": [
-                                                    {
-                                                      "table": "t_random_root",
-                                                      "column": "api_id"
-                                                    },
-                                                    {
-                                                      "table": "ma",
-                                                      "column": "api_code"
-                                                    },
-                                                    {
-                                                      "table": "ma",
-                                                      "column": "username"
-                                                    },
-                                                    {
-                                                      "table": "ma",
-                                                      "column": "api_password"
-                                                    },
-                                                    {
-                                                      "table": "toar",
-                                                      "column": "api_code1"
-                                                    },
-                                                    {
-                                                      "table": "toar",
-                                                      "column": "api_code2"
-                                                    },
-                                                    {
-                                                      "table": "toar",
-                                                      "column": "api_code3"
-                                                    },
-                                                    {
-                                                      "table": "toar",
-                                                      "column": "api_code4"
-                                                    },
-                                                    {
-                                                      "table": "toar",
-                                                      "column": "api_code5"
-                                                    },
-                                                    {
-                                                      "table": "toar",
-                                                      "column": "api_code6"
-                                                    },
-                                                    {
-                                                      "table": "toar",
-                                                      "column": "api_code7"
-                                                    }
-                                                  ],
-                                                  "table": {
-                                                    "name": "t_random_root"
-                                                  },
-                                                  "primary": "id",
-                                                  "joins": [
-                                                    {
-                                                      "table": "m_api",
-                                                      "column": "*",
-                                                      "alias": "ma",
-                                                      "type": "LEFT",
-                                                      "clauses": {
-                                                        "condition": "AND",
-                                                        "rules": [
-                                                          {
-                                                            "table": "ma",
-                                                            "column": "id",
-                                                            "operator": "equal",
-                                                            "value": {
-                                                              "table": "t_random_root",
-                                                              "column": "api_id"
-                                                            },
-                                                            "operation": "="
-                                                          }
-                                                        ]
-                                                      },
-                                                      "primary": "id"
-                                                    },
-                                                    {
-                                                      "table": "t_op_api_rel",
-                                                      "column": "*",
-                                                      "alias": "toar",
-                                                      "type": "LEFT",
-                                                      "clauses": {
-                                                        "condition": "AND",
-                                                        "rules": [
-                                                          {
-                                                            "table": "toar",
-                                                            "column": "op_id",
-                                                            "operator": "equal",
-                                                            "value": {
-                                                              "table": "t_random_root",
-                                                              "column": "op_id"
-                                                            },
-                                                            "operation": "="
-                                                          }
-                                                        ]
-                                                      },
-                                                      "primary": "id"
-                                                    }
-                                                  ],
-                                                  "wheres": {
-                                                    "condition": "AND",
-                                                    "rules": [
-                                                      {
-                                                        "id": "t_random_root.service_id",
-                                                        "field": "t_random_root.service_id",
-                                                        "type": "double",
-                                                        "operator": "equal",
-                                                        "value": "{{GetOpAPICodeFwrd.service_id}}",
-                                                        "data": {
-                                                          "table": "t_random_root",
-                                                          "column": "service_id",
-                                                          "type": "number",
-                                                          "columnObj": {
-                                                            "type": "integer",
-                                                            "primary": false,
-                                                            "unique": false,
-                                                            "nullable": false,
-                                                            "name": "service_id"
-                                                          }
-                                                        },
-                                                        "operation": "="
-                                                      },
-                                                      {
-                                                        "id": "t_random_root.op_id",
-                                                        "field": "t_random_root.op_id",
-                                                        "type": "double",
-                                                        "operator": "equal",
-                                                        "value": "{{$_POST.op_code}}",
-                                                        "data": {
-                                                          "table": "t_random_root",
-                                                          "column": "op_id",
-                                                          "type": "number",
-                                                          "columnObj": {
-                                                            "type": "integer",
-                                                            "primary": false,
-                                                            "unique": false,
-                                                            "nullable": true,
-                                                            "name": "op_id"
-                                                          }
-                                                        },
-                                                        "operation": "="
-                                                      },
-                                                      {
-                                                        "id": "ma.status",
-                                                        "field": "ma.status",
-                                                        "type": "double",
-                                                        "operator": "equal",
-                                                        "value": 1,
-                                                        "data": {
-                                                          "table": "ma",
-                                                          "column": "status",
-                                                          "type": "number",
-                                                          "columnObj": {
-                                                            "type": "integer",
-                                                            "primary": false,
-                                                            "nullable": false,
-                                                            "unique": false,
-                                                            "name": "status"
-                                                          }
-                                                        },
-                                                        "operation": "="
-                                                      }
-                                                    ],
-                                                    "conditional": null,
-                                                    "valid": true
-                                                  },
-                                                  "query": "SELECT t_random_root.api_id, ma.api_code, ma.username, ma.api_password, toar.api_code1, toar.api_code2, toar.api_code3, toar.api_code4, toar.api_code5, toar.api_code6, toar.api_code7\nFROM t_random_root\nLEFT JOIN m_api AS ma ON (ma.id = t_random_root.api_id) LEFT JOIN t_op_api_rel AS toar ON (toar.op_id = t_random_root.op_id)\nWHERE t_random_root.service_id = :P1 /* {{GetOpAPICodeFwrd.service_id}} */ AND t_random_root.op_id = :P2 /* {{$_POST.op_code}} */ AND ma.status = 1",
-                                                  "params": [
-                                                    {
-                                                      "operator": "equal",
-                                                      "type": "expression",
-                                                      "name": ":P1",
-                                                      "value": "{{GetOpAPICodeFwrd.service_id}}"
-                                                    },
-                                                    {
-                                                      "operator": "equal",
-                                                      "type": "expression",
-                                                      "name": ":P2",
-                                                      "value": "{{$_POST.op_code}}"
-                                                    }
-                                                  ]
-                                                },
-                                                "connection": "postgres_gcpServer"
-                                              },
-                                              "output": true,
-                                              "meta": [
-                                                {
-                                                  "type": "number",
-                                                  "name": "api_id"
+                                                  "name": "api_id",
+                                                  "type": "number"
                                                 },
                                                 {
-                                                  "type": "text",
-                                                  "name": "api_code"
+                                                  "name": "api_code",
+                                                  "type": "text"
                                                 },
                                                 {
-                                                  "type": "text",
-                                                  "name": "username"
+                                                  "name": "username",
+                                                  "type": "text"
                                                 },
                                                 {
-                                                  "type": "text",
-                                                  "name": "api_password"
+                                                  "name": "api_password",
+                                                  "type": "text"
                                                 },
                                                 {
-                                                  "type": "text",
-                                                  "name": "api_code1"
+                                                  "name": "api_code1",
+                                                  "type": "text"
                                                 },
                                                 {
-                                                  "type": "text",
-                                                  "name": "api_code2"
+                                                  "name": "api_code2",
+                                                  "type": "text"
                                                 },
                                                 {
-                                                  "type": "text",
-                                                  "name": "api_code3"
+                                                  "name": "api_code3",
+                                                  "type": "text"
                                                 },
                                                 {
-                                                  "type": "text",
-                                                  "name": "api_code4"
+                                                  "name": "api_code4",
+                                                  "type": "text"
                                                 },
                                                 {
-                                                  "type": "text",
-                                                  "name": "api_code5"
+                                                  "name": "api_code5",
+                                                  "type": "text"
                                                 },
                                                 {
-                                                  "type": "text",
-                                                  "name": "api_code6"
+                                                  "name": "api_code6",
+                                                  "type": "text"
                                                 },
                                                 {
-                                                  "type": "text",
-                                                  "name": "api_code7"
+                                                  "name": "api_code7",
+                                                  "type": "text"
                                                 }
                                               ],
                                               "outputType": "array"
@@ -3947,6 +3685,40 @@
                                                 {
                                                   "name": "$value",
                                                   "type": "object"
+                                                },
+                                                {
+                                                  "name": "apistatus",
+                                                  "type": "text",
+                                                  "sub": []
+                                                },
+                                                {
+                                                  "name": "apifiredid",
+                                                  "type": "text",
+                                                  "sub": []
+                                                },
+                                                {
+                                                  "name": "remarks",
+                                                  "type": "text",
+                                                  "sub": []
+                                                },
+                                                {
+                                                  "name": "api_ref",
+                                                  "type": "text",
+                                                  "sub": []
+                                                },
+                                                {
+                                                  "name": "ec",
+                                                  "type": "text",
+                                                  "sub": []
+                                                },
+                                                {
+                                                  "name": "stop",
+                                                  "type": "text",
+                                                  "sub": []
+                                                },
+                                                {
+                                                  "name": "apiMoneyArt",
+                                                  "type": "text"
                                                 }
                                               ],
                                               "outputType": "array"
