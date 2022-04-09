@@ -474,8 +474,7 @@
                                       "action": "login",
                                       "options": {
                                         "provider": "securityAndroid",
-                                        "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
-                                        "username": "{{$_GET.username}}",
+                                        "password": "{{$_POST.password.sha256(getSalt.saltvalue)}}",
                                         "remember": ""
                                       },
                                       "output": false,
