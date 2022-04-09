@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appConnect="local" components="{dmxFormatter:{},dmxBootstrap5Navigation:{}}" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appConnect="local" components="{dmxFormatter:{},dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" -->
 <meta name="ac:route" content="/dashboard">
 <main>
     <div class="container-fluid">
@@ -568,5 +568,36 @@
                 </div>
             </div>
         </div-->
+        <div class="modal fade" id="modalKYC" is="dmx-bs5-modal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Available Recharge Offers <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scMobileOffer.state.executing"></span></h5>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body row mx-0" dmx-hide="scMobileOffer.state.executing">
+                        <div class="col-6">
+                            Mobile: <b>{{content.scMobileOffer.data.ROfferApi.tel}}</b>
+                        </div>
+                        <div class="col-6">
+                            Operator: <b>{{content.scMobileOffer.data.ROfferApi.operator}}</b>
+                        </div>
+
+                        <div class="row mx-0 my-3" id="repeat1" is="dmx-repeat" dmx-bind:repeat="content.scMobileOffer.data.ROfferApi.records" key="rs">
+                            <div class="card col-6 col-md-4 col-lg-3">
+                                <div class="card-body px-1 py-2">
+                                    <h5 class="card-title text-info">Rs. {{rs}}</h5>
+                                    <p class="card-text text-muted text-justify sw-line-height">{{desc}}</p>
+                                    <a href="#" class="btn btn-primary btn-sm" dmx-on:click="varROfferAmt.setValue(rs);modalROffer.hide()">Recharge</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </main>

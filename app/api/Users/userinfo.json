@@ -106,6 +106,10 @@
           {
             "table": "m_users",
             "column": "id"
+          },
+          {
+            "table": "m_users",
+            "column": "kyc_status"
           }
         ],
         "table": {
@@ -156,7 +160,7 @@
           "conditional": null,
           "valid": true
         },
-        "query": "SELECT m_users.user_id, m_users.user_fname, m_users.user_mobile, m_users.user_email, m_users.user_tpin, m_users.cap_amt, m_users.balance_amt, m_users.balance_outstanding, m_users.aeps_limit, m_users.aeps_balance, mut.type_name, m_users.user_type, m_users.aadhar_no, m_users.pan_no, m_users.address, m_users.pin, m_users.state, m_users.district, m_users.id\nFROM m_users AS m_users\nINNER JOIN m_user_type AS mut ON (mut.id = m_users.user_type)\nWHERE m_users.id = :P1 /* {{identity}} */",
+        "query": "SELECT m_users.user_id, m_users.user_fname, m_users.user_mobile, m_users.user_email, m_users.user_tpin, m_users.cap_amt, m_users.balance_amt, m_users.balance_outstanding, m_users.aeps_limit, m_users.aeps_balance, mut.type_name, m_users.user_type, m_users.aadhar_no, m_users.pan_no, m_users.address, m_users.pin, m_users.state, m_users.district, m_users.id, m_users.kyc_status\nFROM m_users AS m_users\nINNER JOIN m_user_type AS mut ON (mut.id = m_users.user_type)\nWHERE m_users.id = :P1 /* {{identity}} */",
         "params": [
           {
             "operator": "equal",
@@ -246,6 +250,10 @@
       {
         "type": "number",
         "name": "id"
+      },
+      {
+        "type": "text",
+        "name": "kyc_status"
       }
     ],
     "outputType": "object"
