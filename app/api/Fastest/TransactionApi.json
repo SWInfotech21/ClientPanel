@@ -2686,7 +2686,7 @@
                                                                         ]
                                                                       }
                                                                     },
-                                                                    "output": false,
+                                                                    "output": true,
                                                                     "meta": [
                                                                       {
                                                                         "name": "$index",

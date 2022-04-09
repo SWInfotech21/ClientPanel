@@ -576,47 +576,61 @@
                         <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row mx-0">
-                            <div class="col-12">
-                                <div class="mb-3 row">
-                                    <label for="input1" class="col-sm-4 col-form-label">Image Upload</label>
-                                    <div class="col-sm-8">
-                                        <input type="file" class="form-control" id="input1" name="profile" aria-describedby="input1_help">
-                                        <small id="input1_help" class="form-text text-muted">Upload recent pasport size photograph</small>
+                        <form is="dmx-serverconnect-form" id="formAddEditKyc" method="post" action="api/Users/UserKYCUpload" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('KYC Updated'); formAddEditKyc.reset(); scOperator.load()" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(lastError.response)" dmx-on:unauthorized="scNotif.warning(lastError.response)" dmx-on:invalid="scNotif.warning(lastError.message)">
+                            <div class="row mx-0">
+                                <div class="col-12">
+                                    <div class="mb-3 row">
+                                        <label for="input1" class="col-sm-3 col-form-label">Image Upload</label>
+                                        <div class="col-sm-6">
+                                            <input type="file" class="form-control" id="input1" name="profile" aria-describedby="input1_help">
+                                            <small id="input1_help" class="form-text text-muted">Upload recent pasport size photograph</small>
+                                        </div>
+                                        <div class="col-3 px-0 text-center">
+                                            <img id="ImagePic" width="80" dmx-bind:src="input1.file.dataUrl ? input1.file.dataUrl : ddimage.data.image" dmx-show="input1.value ? input1.value : ddimage.data.op_id" height="80">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-3 row">
-                                    <label for="input2" class="col-sm-4 col-form-label">PAN Card</label>
-                                    <div class="col-sm-8">
-                                        <input type="file" class="form-control" id="input2" name="pan_card" aria-describedby="input2_help">
-                                        <small id="input2_help" class="form-text text-muted">Upload registered PAN card</small>
+                                <div class="col-12">
+                                    <div class="mb-3 row">
+                                        <label for="input2" class="col-sm-3 col-form-label">PAN Card</label>
+                                        <div class="col-sm-6">
+                                            <input type="file" class="form-control" id="input2" name="pan_card" aria-describedby="input2_help">
+                                            <small id="input2_help" class="form-text text-muted">Upload registered PAN card</small>
+                                        </div>
+                                        <div class="col-3 px-0 text-center">
+                                            <img id="imgPAN" width="100" dmx-bind:src="input2.file.dataUrl ? input2.file.dataUrl : ddimage.data.image" dmx-show="input2.value ? input2.value : ddimage.data.op_id" height="80">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-3 row">
-                                    <label for="input3" class="col-sm-4 col-form-label">AADHAR Card(Front)</label>
-                                    <div class="col-sm-8">
-                                        <input type="file" class="form-control" id="input3" name="front_aadhar" aria-describedby="input3_help">
-                                        <small id="input3_help" class="form-text text-muted">Upload Front side of AADHAR card</small>
+                                <div class="col-12">
+                                    <div class="mb-3 row">
+                                        <label for="input3" class="col-sm-3 col-form-label">AADHAR Card(Front)</label>
+                                        <div class="col-sm-6">
+                                            <input type="file" class="form-control" id="input3" name="front_aadhar" aria-describedby="input3_help">
+                                            <small id="input3_help" class="form-text text-muted">Upload Front side of AADHAR card</small>
+                                        </div>
+                                        <div class="col-3 px-0 text-center">
+                                            <img id="ImageAADHAR" width="100" dmx-bind:src="input3.file.dataUrl ? input3.file.dataUrl : ddimage.data.image" dmx-show="input3.value ? input3.value : ddimage.data.op_id" height="80">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-3 row">
-                                    <label for="input4" class="col-sm-4 col-form-label">AADHAR Card(Back)</label>
-                                    <div class="col-sm-8">
-                                        <input type="file" class="form-control" id="input4" name="front_aadhar" aria-describedby="input4_help">
-                                        <small id="input4_help" class="form-text text-muted">Upload Back side of AADHAR card</small>
+                                <div class="col-12">
+                                    <div class="mb-3 row">
+                                        <label for="input4" class="col-sm-3 col-form-label">AADHAR Card(Back)</label>
+                                        <div class="col-sm-6">
+                                            <input type="file" class="form-control" id="input4" name="back_aadhar" aria-describedby="input4_help">
+                                            <small id="input4_help" class="form-text text-muted">Upload Back side of AADHAR card</small>
+                                        </div>
+                                        <div class="col-3 px-0 text-center">
+                                            <img id="ImageLogo" width="100" dmx-bind:src="input4.file.dataUrl ? input4.file.dataUrl : ddimage.data.image" dmx-show="input4.value ? input4.value : ddimage.data.op_id" height="80">
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
                             </div>
-                            <div class="col-12">
-                                <button type="submit">Submit</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
