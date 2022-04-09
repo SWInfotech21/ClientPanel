@@ -8,6 +8,11 @@
       {
         "type": "file",
         "fieldName": "profile",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
         "name": "profile",
         "sub": [
           {
