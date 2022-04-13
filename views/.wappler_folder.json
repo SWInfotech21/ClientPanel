@@ -150,5 +150,9 @@
   "complain-other.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "AEPS.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

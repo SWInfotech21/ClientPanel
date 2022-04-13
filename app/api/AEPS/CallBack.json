@@ -1,0 +1,98 @@
+[
+  {
+    "name": "identity",
+    "module": "auth",
+    "action": "identify",
+    "options": {
+      "provider": "security"
+    },
+    "output": true,
+    "meta": [],
+    "disabled": true
+  },
+  {
+    "name": "A",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "1234~ABS12~9288~000~0~0"
+    },
+    "meta": [],
+    "output": true,
+    "outputType": "text"
+  },
+  {
+    "name": "B",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "{{A.split('~')[0]}}"
+    },
+    "meta": [],
+    "outputType": "text",
+    "output": true
+  },
+  {
+    "name": "C",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "{{A.split('~')[1]}}"
+    },
+    "meta": [],
+    "outputType": "text",
+    "output": true
+  },
+  {
+    "name": "D",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "{{A.split('~')[2]}}"
+    },
+    "meta": [],
+    "outputType": "text",
+    "output": true
+  },
+  {
+    "name": "E",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "{{A.split('~')[3]}}"
+    },
+    "meta": [],
+    "outputType": "text",
+    "output": true
+  },
+  {
+    "name": "Z",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "{{B+'~'+C+'~'+D+'~'+E}}"
+    },
+    "meta": [],
+    "outputType": "text",
+    "output": true
+  },
+  {
+    "name": "apiGenerateSession",
+    "module": "api",
+    "action": "send",
+    "options": {
+      "url": "http://uataeps.ezypay.co.in/Aeps/GenerateID",
+      "dataType": "json",
+      "data": {
+        "Authcode": "76a8bd048b1647e9b4",
+        "Mpin": "9394",
+        "RetailerID": "RT301",
+        "MerchantID": "9434710602",
+        "Logo": "url",
+        "CompanyName": "ezypay"
+      }
+    },
+    "output": true,
+    "disabled": true
+  }
+]

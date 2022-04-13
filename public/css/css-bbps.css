@@ -889,7 +889,29 @@ background-color: #F2F9FB;}
 .sw-object-position-right {-o-object-position: right;object-position: right;}
 
 .sw-cursor-not-allowed{cursor: not-allowed;}
-
+.card-fastag{
+    margin-top: 3rem !important;
+    padding-top: 3rem !important;
+}
+.fastag{
+    max-height: 20px !important;
+}
+ 
+@media (min-width: 300px) {
+    .card-fastag{
+        padding-top: 1.5rem !important;
+    }
+}
+@media (min-width: 500px) {
+    .card-fastag{
+        padding-top: 2rem !important;
+    }
+}
+@media (min-width: 900px) {
+    .card-fastag{
+        padding-top: 3rem !important;
+    }
+}
  
 @media (min-width: 280px) {
     .sw-img-location {

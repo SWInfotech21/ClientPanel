@@ -1,0 +1,30 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="AEPS" appConnect="local" -->
+<meta name="ac:route" content="/AEPS">
+
+<!-- <dmx-serverconnect id="scGenerateId" url="api/AEPS/EPayGenerateID"></dmx-serverconnect>
+<form id="formSessionLogin" action="https://180.179.23.1:444/Aeps/Login" method="post">
+    <input type="text" name="sessionid" dmx-bind:value="scGenerateId.data.sessionid">
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form> -->
+<dmx-serverconnect id="scGenerateId" url="api/AEPS/GenerateID"></dmx-serverconnect>
+<input type="text" id="formExecute" dmx-bind:value="scGenerateId.data.GetForwardAPI.api_code">
+
+<form id="formSessionLoginMA" action="https://adharpay.in/Login/Authenticate" method="post">
+    <input type="text" name="authentication" dmx-bind:value="scGenerateId.data.sessionid">
+</form>
+<form id="formSessionLoginEP" action="https://180.179.23.1:444/Aeps/Login" method="post">
+    <input type="text" name="sessionid" dmx-bind:value="scGenerateId.data.sessionid">
+</form>
+<script type="text/javascript">
+    $(document).ready(function(){
+        setTimeout(function(){
+            var getformExecute=document.getElementById("formExecute").value;
+            getformExecute=='AEEP'?
+                document.forms["formSessionLoginEP"].submit()
+            : getformExecute=='AEMA'?
+                document.forms["formSessionLoginMA"].submit()
+            : document.forms[""].submit()
+            
+        }, 1500);
+    })
+</script>

@@ -1,0 +1,223 @@
+[
+  {
+    "name": "",
+    "module": "auth",
+    "action": "restrict",
+    "options": {
+      "provider": "security",
+      "permissions": [
+        "write"
+      ],
+      "loginUrl": "/login",
+      "forbiddenUrl": "/403-forbidden"
+    }
+  },
+  {
+    "name": "GetForwardAPI",
+    "module": "dbconnector",
+    "action": "single",
+    "options": {
+      "connection": "postgres_gcpServer",
+      "sql": {
+        "type": "SELECT",
+        "columns": [
+          {
+            "table": "m_api_forward",
+            "column": "api_id"
+          },
+          {
+            "table": "m_api",
+            "column": "api_code"
+          },
+          {
+            "table": "m_api",
+            "column": "username"
+          },
+          {
+            "table": "m_api",
+            "column": "api_password"
+          },
+          {
+            "table": "m_api",
+            "column": "api_url"
+          }
+        ],
+        "table": {
+          "name": "m_api_forward"
+        },
+        "joins": [
+          {
+            "table": "m_api",
+            "column": "*",
+            "alias": "m_api",
+            "type": "LEFT",
+            "clauses": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "table": "m_api",
+                  "column": "id",
+                  "operator": "equal",
+                  "value": {
+                    "table": "m_api_forward",
+                    "column": "api_id"
+                  },
+                  "operation": "="
+                }
+              ]
+            },
+            "primary": "id"
+          }
+        ],
+        "query": "SELECT m_api_forward.api_id, m_api.api_code, m_api.username, m_api.api_password, m_api.api_url\nFROM m_api_forward\nLEFT JOIN m_api AS m_api ON (m_api.id = m_api_forward.api_id)\nWHERE m_api.api_type = :P1 /* {{'AEPS'}} */",
+        "params": [
+          {
+            "operator": "equal",
+            "type": "expression",
+            "name": ":P1",
+            "value": "{{'AEPS'}}"
+          }
+        ],
+        "wheres": {
+          "condition": "AND",
+          "rules": [
+            {
+              "id": "m_api.api_type",
+              "field": "m_api.api_type",
+              "type": "string",
+              "operator": "equal",
+              "value": "{{'AEPS'}}",
+              "data": {
+                "table": "m_api",
+                "column": "api_type",
+                "type": "text",
+                "columnObj": {
+                  "type": "string",
+                  "maxLength": -5,
+                  "primary": false,
+                  "unique": false,
+                  "nullable": true,
+                  "name": "api_type"
+                }
+              },
+              "operation": "="
+            }
+          ],
+          "conditional": null,
+          "valid": true
+        }
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "type": "number",
+        "name": "api_id"
+      },
+      {
+        "type": "text",
+        "name": "api_code"
+      },
+      {
+        "type": "text",
+        "name": "username"
+      },
+      {
+        "type": "text",
+        "name": "api_password"
+      },
+      {
+        "type": "text",
+        "name": "api_url"
+      }
+    ],
+    "outputType": "object"
+  },
+  {
+    "name": "",
+    "module": "core",
+    "action": "condition",
+    "options": {
+      "if": "{{GetForwardAPI.api_code=='AEEP'}}",
+      "then": {
+        "steps": [
+          {
+            "name": "apiEPay",
+            "module": "api",
+            "action": "send",
+            "options": {
+              "url": "https://180.179.23.1:444/Aeps/GenerateID",
+              "method": "POST",
+              "dataType": "json",
+              "data": {
+                "Authcode": "65c43ccd6a7b41c884",
+                "Mpin": "7170",
+                "RetailerID": "RT300",
+                "MerchantID": "6396090835",
+                "Logo": "url",
+                "CompanyName": "swpay"
+              }
+            },
+            "output": false
+          },
+          {
+            "name": "sessionid",
+            "module": "core",
+            "action": "setvalue",
+            "options": {
+              "value": "{{apiEPay.data.SessionId}}"
+            },
+            "meta": [],
+            "outputType": "text",
+            "output": true
+          }
+        ]
+      }
+    },
+    "outputType": "boolean"
+  },
+  {
+    "name": "",
+    "module": "core",
+    "action": "condition",
+    "options": {
+      "if": "{{GetForwardAPI.api_code=='AEMA'}}",
+      "then": {
+        "steps": [
+          {
+            "name": "apiMA",
+            "module": "api",
+            "action": "send",
+            "options": {
+              "url": "https://adharpay.in/authenticate",
+              "method": "POST",
+              "dataType": "json",
+              "data": {
+                "Token": "a20818a9-a062-40ec-ac57-29ee18b6e124",
+                "RetailerID": "RT301",
+                "LogoUrl": "https://buckspay.com",
+                "Copyright": "copyright",
+                "MerchantId": "7409747265",
+                "FirmName": "CashOnCash",
+                "ServiceId": "151"
+              }
+            },
+            "output": false
+          },
+          {
+            "name": "sessionid",
+            "module": "core",
+            "action": "setvalue",
+            "options": {
+              "value": "{{apiMA.data.Data.Token}}"
+            },
+            "meta": [],
+            "outputType": "text",
+            "output": true
+          }
+        ]
+      }
+    },
+    "outputType": "boolean"
+  }
+]

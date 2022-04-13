@@ -172,6 +172,11 @@
       "layout": "main"
     },
     {
+      "path": "/AEPS",
+      "page": "AEPS",
+      "layout": "main"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }

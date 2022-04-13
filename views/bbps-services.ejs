@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="bbpsservices" appConnect="local" components="{dmxDatastore:{},dmxFormatter:{},dmxValidator:{}}" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="bbpsservices" appConnect="local" components="{dmxDatastore:{},dmxFormatter:{},dmxValidator:{},dmxBootstrap5Modal:{}}" -->
 <meta name="ac:route" content="/bbps-services">
 <link href="css/css-bbps.css" rel="stylesheet" />
 <dmx-serverconnect id="scServiceBBPS" url="api/Services/BbpsServices"></dmx-serverconnect>
@@ -38,8 +38,10 @@
         <!-- <p class="align-items-center d-flex font-weight-bolder mb-2">Select Service (4)<span dmx-show="scLocSpecService.state.executing" class="spinner-border spinner-border-sm ml-2" role="status"></span></p> -->
         <div class="row m-0" is="dmx-repeat" id="repeatServices" dmx-bind:repeat="content.scServiceBBPS.data.All">
             <div class="col-md-2 col-sm-3 col-4 pb-3">
-                <div class="sw-card-pay text-center" dmx-on:click="dsAppInfo.clear();varTab.setValue('Operator');dsAppInfo.insert({servicesName: service_name, servicesId: services_id, servicesIndex: $index})">
-                    <img class="sw-img-location" dmx-bind:src="'https://portal.swpay.in'+content.scServiceBBPS.data.All[$index].service_type">
+                <div class="sw-card-pay text-center" dmx-on:click="dsAppInfo.clear();varTab.setValue('Operator');dsAppInfo.insert({servicesName: service_name, servicesId: services_id, servicesIndex: $index})" dmx-class:card-fastag="service_name=='FasTag'">
+                    <div class="card-header border-0 bg-transparent px-0">
+                        <img class="sw-img-location" dmx-bind:src="'https://portal.swpay.in'+content.scServiceBBPS.data.All[$index].service_type" dmx-class:fastag="service_name=='FasTag'">
+                    </div>
                     <div class="card-body px-0">
                         <p class="card-title text-primary mb-2 fs-5 sw-font-monospace">{{service_name}}</p>
                     </div>
