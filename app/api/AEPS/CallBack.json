@@ -1,98 +1,282 @@
-[
-  {
-    "name": "identity",
-    "module": "auth",
-    "action": "identify",
-    "options": {
-      "provider": "security"
-    },
-    "output": true,
-    "meta": [],
-    "disabled": true
-  },
-  {
-    "name": "A",
-    "module": "core",
-    "action": "setvalue",
-    "options": {
-      "value": "1234~ABS12~9288~000~0~0"
-    },
-    "meta": [],
-    "output": true,
-    "outputType": "text"
-  },
-  {
-    "name": "B",
-    "module": "core",
-    "action": "setvalue",
-    "options": {
-      "value": "{{A.split('~')[0]}}"
-    },
-    "meta": [],
-    "outputType": "text",
-    "output": true
-  },
-  {
-    "name": "C",
-    "module": "core",
-    "action": "setvalue",
-    "options": {
-      "value": "{{A.split('~')[1]}}"
-    },
-    "meta": [],
-    "outputType": "text",
-    "output": true
-  },
-  {
-    "name": "D",
-    "module": "core",
-    "action": "setvalue",
-    "options": {
-      "value": "{{A.split('~')[2]}}"
-    },
-    "meta": [],
-    "outputType": "text",
-    "output": true
-  },
-  {
-    "name": "E",
-    "module": "core",
-    "action": "setvalue",
-    "options": {
-      "value": "{{A.split('~')[3]}}"
-    },
-    "meta": [],
-    "outputType": "text",
-    "output": true
-  },
-  {
-    "name": "Z",
-    "module": "core",
-    "action": "setvalue",
-    "options": {
-      "value": "{{B+'~'+C+'~'+D+'~'+E}}"
-    },
-    "meta": [],
-    "outputType": "text",
-    "output": true
-  },
-  {
-    "name": "apiGenerateSession",
-    "module": "api",
-    "action": "send",
-    "options": {
-      "url": "http://uataeps.ezypay.co.in/Aeps/GenerateID",
-      "dataType": "json",
-      "data": {
-        "Authcode": "76a8bd048b1647e9b4",
-        "Mpin": "9394",
-        "RetailerID": "RT301",
-        "MerchantID": "9434710602",
-        "Logo": "url",
-        "CompanyName": "ezypay"
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "Status"
+      },
+      {
+        "type": "text",
+        "name": "Description"
+      },
+      {
+        "type": "text",
+        "name": "Reatilerid"
+      },
+      {
+        "type": "text",
+        "name": "MerchantID"
+      },
+      {
+        "type": "text",
+        "name": "RRN"
+      },
+      {
+        "type": "text",
+        "name": "TxnID"
+      },
+      {
+        "type": "text",
+        "name": "Service"
+      },
+      {
+        "type": "text",
+        "name": "Amount"
+      },
+      {
+        "type": "text",
+        "name": "BankName"
+      },
+      {
+        "type": "text",
+        "name": "TxnDate"
       }
-    },
-    "output": true,
-    "disabled": true
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "SubmitTime",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{NOW}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "UserWalletBalCheck",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_users",
+                "column": "id"
+              },
+              {
+                "table": "m_users",
+                "column": "user_fname"
+              },
+              {
+                "table": "m_users",
+                "column": "user_mobile"
+              },
+              {
+                "table": "m_users",
+                "column": "user_type"
+              },
+              {
+                "table": "m_users",
+                "column": "md_id"
+              },
+              {
+                "table": "m_users",
+                "column": "ds_id"
+              },
+              {
+                "table": "m_users",
+                "column": "scheme_id"
+              },
+              {
+                "table": "m_users",
+                "column": "aeps_balance"
+              }
+            ],
+            "table": {
+              "name": "m_users"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_users.user_id",
+                  "field": "m_users.user_id",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.Reatilerid}}",
+                  "data": {
+                    "table": "m_users",
+                    "column": "user_id",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "primary": false,
+                      "nullable": false,
+                      "name": "user_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT id, user_fname, user_mobile, user_type, md_id, ds_id, scheme_id, aeps_balance\nFROM m_users\nWHERE user_id = :P1 /* {{$_POST.Reatilerid}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.Reatilerid}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "text",
+            "name": "user_fname"
+          },
+          {
+            "type": "text",
+            "name": "user_mobile"
+          },
+          {
+            "type": "number",
+            "name": "user_type"
+          },
+          {
+            "type": "text",
+            "name": "md_id"
+          },
+          {
+            "type": "text",
+            "name": "ds_id"
+          },
+          {
+            "type": "number",
+            "name": "scheme_id"
+          },
+          {
+            "type": "text",
+            "name": "aeps_balance"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "A",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "1234~ABS12~9288~000~0~0"
+        },
+        "meta": [],
+        "output": true,
+        "outputType": "text",
+        "disabled": true
+      },
+      {
+        "name": "B",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{A.split('~')[0]}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "C",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{A.split('~')[1]}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "D",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{A.split('~')[2]}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "E",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{A.split('~')[3]}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "Z",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{B+'~'+C+'~'+D+'~'+E}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "apiGenerateSession",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "http://uataeps.ezypay.co.in/Aeps/GenerateID",
+          "dataType": "json",
+          "data": {
+            "Authcode": "76a8bd048b1647e9b4",
+            "Mpin": "9394",
+            "RetailerID": "RT301",
+            "MerchantID": "9434710602",
+            "Logo": "url",
+            "CompanyName": "ezypay"
+          }
+        },
+        "output": true,
+        "disabled": true
+      }
+    ]
   }
-]
+}

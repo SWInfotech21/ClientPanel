@@ -7,13 +7,13 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form> -->
 <dmx-serverconnect id="scGenerateId" url="api/AEPS/GenerateID"></dmx-serverconnect>
-<input type="text" id="formExecute" dmx-bind:value="scGenerateId.data.GetForwardAPI.api_code">
+<input type="hidden" id="formExecute" dmx-bind:value="scGenerateId.data.GetForwardAPI.api_code">
 
 <form id="formSessionLoginMA" action="https://adharpay.in/Login/Authenticate" method="post">
-    <input type="text" name="authentication" dmx-bind:value="scGenerateId.data.sessionid">
+    <input type="hidden" name="authentication" dmx-bind:value="scGenerateId.data.sessionid">
 </form>
 <form id="formSessionLoginEP" action="https://180.179.23.1:444/Aeps/Login" method="post">
-    <input type="text" name="sessionid" dmx-bind:value="scGenerateId.data.sessionid">
+    <input type="hidden" name="sessionid" dmx-bind:value="scGenerateId.data.sessionid">
 </form>
 <script type="text/javascript">
     $(document).ready(function(){
