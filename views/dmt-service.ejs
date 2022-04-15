@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dmtservice" appConnect="local" components="{dmxValidator:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxFormatter:{},dmxSockets:{}}" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dmtservice" appConnect="local" components="{dmxValidator:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxFormatter:{},dmxSockets:{},dmxBootstrap5Navigation:{}}" -->
 <meta name="ac:route" content="/dmt-service">
 <dmx-value id="varBenefId" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varBenBankName" dmx-bind:value="0"></dmx-value>
@@ -9,6 +9,7 @@
 <dmx-value id="varShowLive" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varVerifyModal" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varRemitterAdd" dmx-bind:value="0"></dmx-value>
+<dmx-value id="varBenTrAmt" dmx-bind:value="content.modalTransBen.formBenTrans.BenTrAmount.value"></dmx-value>
 <dmx-serverconnect id="scBankList" url="api/DMT/GetBankList"></dmx-serverconnect>
 <dmx-serverconnect id="scLiveDMT" url="api/DMT/LiveTransDMT" sockets="true"></dmx-serverconnect>
 <dmx-data-view id="dvBankList" filter="(BankName.contains(Search.value.titlecase()))" dmx-bind:data="content.scBankList.data.apiBanks"></dmx-data-view>
@@ -289,7 +290,7 @@
                         <div class="row mx-0" dmx-show="varTransStatus.value == 1">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="font-weight-bold">Amount: Rs. <span class="text-muted">{{content.modalTransBen.formBenTrans.data.bank_tr_amount}}</span></label>
+                                    <label class="font-weight-bold">Amount: Rs. <span class="text-muted">{{varBenTrAmt.value}}</span></label>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -347,7 +348,7 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold">Amount (in Rs.)</label>
-                                        <input type="text" id="BenTrAmount" class="form-control" name="BenTrAmount" required="" min="" data-rule-min="1" data-msg-min="Please enter a value greater than or equal to {1}.">
+                                        <input type="text" id="BenTrAmount" class="form-control" name="BenTrAmount" value="0" required="" min="" data-rule-min="1" data-msg-min="Please enter a value greater than or equal to {1}.">
                                     </div>
                                 </div>
                                 <div class="col-12">

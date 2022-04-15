@@ -711,7 +711,8 @@
                                     "valid": true
                                   },
                                   "query": "SELECT id AS admin_id, user_id AS admin_user_id, user_fname AS admin_name, user_mobile AS admin_mobile, balance_amt AS admin_balance_amt\nFROM m_users\nWHERE user_type = 0",
-                                  "params": []
+                                  "params": [],
+                                  "primary": "id"
                                 }
                               },
                               "output": false,
@@ -829,7 +830,8 @@
                                     ],
                                     "conditional": null,
                                     "valid": true
-                                  }
+                                  },
+                                  "primary": "id"
                                 }
                               },
                               "output": true,

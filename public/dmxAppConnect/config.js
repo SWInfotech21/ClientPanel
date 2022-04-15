@@ -1758,6 +1758,10 @@ dmx.config({
         }
       ],
       "outputType": "array"
+    },
+    "varBenTrAmt": {
+      "meta": null,
+      "outputType": "text"
     }
   },
   "complainstatus": {
