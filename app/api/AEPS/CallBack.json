@@ -1648,6 +1648,16 @@
         "outputType": "text"
       },
       {
+        "name": "AdminChargeNetAmt",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{RTChargeAmt.toNumber()+DTChargeAmt.toNumber()+MDTChargeAmt.toNumber()}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
         "name": "AEPSRechTrans",
         "module": "dbupdater",
         "action": "insert",
@@ -2357,7 +2367,8 @@
             "name": "affected",
             "type": "number"
           }
-        ]
+        ],
+        "output": true
       },
       {
         "name": "",
@@ -2543,6 +2554,630 @@
                     "type": "number"
                   }
                 ]
+              },
+              {
+                "name": "AdminChargeAEPSCal",
+                "module": "dbupdater",
+                "action": "insert",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "insert",
+                    "values": [
+                      {
+                        "table": "t_charge_aeps_cal",
+                        "column": "user_id",
+                        "type": "number",
+                        "value": "{{GetAdmin.admin_id}}"
+                      },
+                      {
+                        "table": "t_charge_aeps_cal",
+                        "column": "pay_ref_id",
+                        "type": "number",
+                        "value": "{{AEPSRechTrans.identity}}"
+                      },
+                      {
+                        "table": "t_charge_aeps_cal",
+                        "column": "crdr_type",
+                        "type": "text",
+                        "value": "{{'Credit'}}"
+                      },
+                      {
+                        "table": "t_charge_aeps_cal",
+                        "column": "old_bal",
+                        "type": "text",
+                        "value": "{{GetAdmin.admin_aeps_balance}}"
+                      },
+                      {
+                        "table": "t_charge_aeps_cal",
+                        "column": "amount",
+                        "type": "text",
+                        "value": "{{$_POST.Amount}}"
+                      },
+                      {
+                        "table": "t_charge_aeps_cal",
+                        "column": "net_amt",
+                        "type": "text",
+                        "value": "{{AdminChargeNetAmt}}"
+                      },
+                      {
+                        "table": "t_charge_aeps_cal",
+                        "column": "new_bal",
+                        "type": "text",
+                        "value": "{{AdminClosingBalance}}"
+                      },
+                      {
+                        "table": "t_charge_aeps_cal",
+                        "column": "tr_type",
+                        "type": "text",
+                        "value": "{{'AEPS Charge'}}"
+                      },
+                      {
+                        "table": "t_charge_aeps_cal",
+                        "column": "tr_date",
+                        "type": "datetime",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "table": "t_charge_aeps_cal",
+                        "column": "ip_address",
+                        "type": "text",
+                        "value": "{{$_SERVER.REMOTE_ADDR}}"
+                      },
+                      {
+                        "table": "t_charge_aeps_cal",
+                        "column": "remarks",
+                        "type": "text",
+                        "value": "{{'Merchant Id: '+$_POST.MerchantID+' | Txn. Ref. Id: '+$_POST.TxnID+' | Amt. '+$_POST.Amount+' | Id: '+AEPSRechTrans.identity+' | Net Charge Amt.: '+AdminChargeNetAmt}}"
+                      },
+                      {
+                        "table": "t_charge_aeps_cal",
+                        "column": "created_by",
+                        "type": "number",
+                        "value": "{{UserWalletBalCheck.id}}"
+                      }
+                    ],
+                    "table": "t_charge_aeps_cal",
+                    "returning": "id",
+                    "query": "INSERT INTO t_charge_aeps_cal\n(user_id, pay_ref_id, crdr_type, old_bal, amount, net_amt, new_bal, tr_type, tr_date, ip_address, remarks, created_by) VALUES (:P1 /* {{GetAdmin.admin_id}} */, :P2 /* {{AEPSRechTrans.identity}} */, :P3 /* {{'Credit'}} */, :P4 /* {{GetAdmin.admin_aeps_balance}} */, :P5 /* {{$_POST.Amount}} */, :P6 /* {{AdminChargeNetAmt}} */, :P7 /* {{AdminClosingBalance}} */, :P8 /* {{'AEPS Charge'}} */, :P9 /* {{NOW}} */, :P10 /* {{$_SERVER.REMOTE_ADDR}} */, :P11 /* {{'Merchant Id: '+$_POST.MerchantID+' | Txn. Ref. Id: '+$_POST.TxnID+' | Amt. '+$_POST.Amount+' | Id: '+AEPSRechTrans.identity+' | Net Charge Amt.: '+AdminChargeNetAmt}} */, :P12 /* {{UserWalletBalCheck.id}} */)",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{GetAdmin.admin_id}}"
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{AEPSRechTrans.identity}}"
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{'Credit'}}"
+                      },
+                      {
+                        "name": ":P4",
+                        "type": "expression",
+                        "value": "{{GetAdmin.admin_aeps_balance}}"
+                      },
+                      {
+                        "name": ":P5",
+                        "type": "expression",
+                        "value": "{{$_POST.Amount}}"
+                      },
+                      {
+                        "name": ":P6",
+                        "type": "expression",
+                        "value": "{{AdminChargeNetAmt}}"
+                      },
+                      {
+                        "name": ":P7",
+                        "type": "expression",
+                        "value": "{{AdminClosingBalance}}"
+                      },
+                      {
+                        "name": ":P8",
+                        "type": "expression",
+                        "value": "{{'AEPS Charge'}}"
+                      },
+                      {
+                        "name": ":P9",
+                        "type": "expression",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "name": ":P10",
+                        "type": "expression",
+                        "value": "{{$_SERVER.REMOTE_ADDR}}"
+                      },
+                      {
+                        "name": ":P11",
+                        "type": "expression",
+                        "value": "{{'Merchant Id: '+$_POST.MerchantID+' | Txn. Ref. Id: '+$_POST.TxnID+' | Amt. '+$_POST.Amount+' | Id: '+AEPSRechTrans.identity+' | Net Charge Amt.: '+AdminChargeNetAmt}}"
+                      },
+                      {
+                        "name": ":P12",
+                        "type": "expression",
+                        "value": "{{UserWalletBalCheck.id}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "identity",
+                    "type": "text"
+                  },
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{GetRTCreator.dt_user_type==2}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "AddDTCommAEPSCal",
+                        "module": "dbupdater",
+                        "action": "insert",
+                        "options": {
+                          "connection": "postgres_gcpServer",
+                          "sql": {
+                            "type": "insert",
+                            "values": [
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "user_id",
+                                "type": "number",
+                                "value": "{{UserWalletBalCheck.ds_id}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "pay_ref_id",
+                                "type": "number",
+                                "value": "{{AEPSRechTrans.identity}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "crdr_type",
+                                "type": "text",
+                                "value": "{{'Credit'}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "old_bal",
+                                "type": "text",
+                                "value": "{{GetRTCreator.dt_aeps_balance}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "amount",
+                                "type": "text",
+                                "value": "{{$_POST.Amount}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "net_amt",
+                                "type": "text",
+                                "value": "{{DTNetAmt}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "new_bal",
+                                "type": "text",
+                                "value": "{{DTClosingBalance}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "tr_type",
+                                "type": "text",
+                                "value": "{{'AEPS Comm'}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "tr_date",
+                                "type": "datetime",
+                                "value": "{{NOW}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "ip_address",
+                                "type": "text",
+                                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "remarks",
+                                "type": "text",
+                                "value": "{{'Merchant Id: '+$_POST.MerchantID+' | Txn. Ref. Id: '+$_POST.TxnID+' | Amt. '+$_POST.Amount+' | Id: '+AEPSRechTrans.identity+' | Comm. Amt.:  '+DTCommAmt+' | Charge Amt. '+DTChargeAmt+' | Net Amt.: '+DTNetAmt}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "created_by",
+                                "type": "number",
+                                "value": "{{UserWalletBalCheck.id}}"
+                              }
+                            ],
+                            "table": "t_charge_aeps_cal",
+                            "returning": "id",
+                            "query": "INSERT INTO t_charge_aeps_cal\n(user_id, pay_ref_id, crdr_type, old_bal, amount, net_amt, new_bal, tr_type, tr_date, ip_address, remarks, created_by) VALUES (:P1 /* {{UserWalletBalCheck.ds_id}} */, :P2 /* {{AEPSRechTrans.identity}} */, :P3 /* {{'Credit'}} */, :P4 /* {{GetRTCreator.dt_aeps_balance}} */, :P5 /* {{$_POST.Amount}} */, :P6 /* {{DTNetAmt}} */, :P7 /* {{DTClosingBalance}} */, :P8 /* {{'AEPS Comm'}} */, :P9 /* {{NOW}} */, :P10 /* {{$_SERVER.REMOTE_ADDR}} */, :P11 /* {{'Merchant Id: '+$_POST.MerchantID+' | Txn. Ref. Id: '+$_POST.TxnID+' | Amt. '+$_POST.Amount+' | Id: '+AEPSRechTrans.identity+' | Comm. Amt.:  '+DTCommAmt+' | Charge Amt. '+DTChargeAmt+' | Net Amt.: '+DTNetAmt}} */, :P12 /* {{UserWalletBalCheck.id}} */)",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{UserWalletBalCheck.ds_id}}"
+                              },
+                              {
+                                "name": ":P2",
+                                "type": "expression",
+                                "value": "{{AEPSRechTrans.identity}}"
+                              },
+                              {
+                                "name": ":P3",
+                                "type": "expression",
+                                "value": "{{'Credit'}}"
+                              },
+                              {
+                                "name": ":P4",
+                                "type": "expression",
+                                "value": "{{GetRTCreator.dt_aeps_balance}}"
+                              },
+                              {
+                                "name": ":P5",
+                                "type": "expression",
+                                "value": "{{$_POST.Amount}}"
+                              },
+                              {
+                                "name": ":P6",
+                                "type": "expression",
+                                "value": "{{DTNetAmt}}"
+                              },
+                              {
+                                "name": ":P7",
+                                "type": "expression",
+                                "value": "{{DTClosingBalance}}"
+                              },
+                              {
+                                "name": ":P8",
+                                "type": "expression",
+                                "value": "{{'AEPS Comm'}}"
+                              },
+                              {
+                                "name": ":P9",
+                                "type": "expression",
+                                "value": "{{NOW}}"
+                              },
+                              {
+                                "name": ":P10",
+                                "type": "expression",
+                                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                              },
+                              {
+                                "name": ":P11",
+                                "type": "expression",
+                                "value": "{{'Merchant Id: '+$_POST.MerchantID+' | Txn. Ref. Id: '+$_POST.TxnID+' | Amt. '+$_POST.Amount+' | Id: '+AEPSRechTrans.identity+' | Comm. Amt.:  '+DTCommAmt+' | Charge Amt. '+DTChargeAmt+' | Net Amt.: '+DTNetAmt}}"
+                              },
+                              {
+                                "name": ":P12",
+                                "type": "expression",
+                                "value": "{{UserWalletBalCheck.id}}"
+                              }
+                            ]
+                          }
+                        },
+                        "meta": [
+                          {
+                            "name": "identity",
+                            "type": "text"
+                          },
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "UpDTUserBal",
+                        "module": "dbupdater",
+                        "action": "update",
+                        "options": {
+                          "connection": "postgres_gcpServer",
+                          "sql": {
+                            "type": "update",
+                            "values": [
+                              {
+                                "table": "m_users",
+                                "column": "aeps_balance",
+                                "type": "text",
+                                "value": "{{DTClosingBalance}}"
+                              }
+                            ],
+                            "table": "m_users",
+                            "wheres": {
+                              "condition": "AND",
+                              "rules": [
+                                {
+                                  "id": "id",
+                                  "field": "id",
+                                  "type": "double",
+                                  "operator": "equal",
+                                  "value": "{{UserWalletBalCheck.ds_id}}",
+                                  "data": {
+                                    "column": "id"
+                                  },
+                                  "operation": "="
+                                }
+                              ],
+                              "conditional": null,
+                              "valid": true
+                            },
+                            "returning": "id",
+                            "query": "UPDATE m_users\nSET aeps_balance = :P1 /* {{DTClosingBalance}} */\nWHERE id = :P2 /* {{UserWalletBalCheck.ds_id}} */",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{DTClosingBalance}}"
+                              },
+                              {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P2",
+                                "value": "{{UserWalletBalCheck.ds_id}}"
+                              }
+                            ]
+                          }
+                        },
+                        "meta": [
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "outputType": "boolean"
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{GetDTCreator.mdt_user_type==1}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "AddMDTCommAEPSCal",
+                        "module": "dbupdater",
+                        "action": "insert",
+                        "options": {
+                          "connection": "postgres_gcpServer",
+                          "sql": {
+                            "type": "insert",
+                            "values": [
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "user_id",
+                                "type": "number",
+                                "value": "{{UserWalletBalCheck.md_id}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "pay_ref_id",
+                                "type": "number",
+                                "value": "{{AEPSRechTrans.identity}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "crdr_type",
+                                "type": "text",
+                                "value": "{{'Credit'}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "old_bal",
+                                "type": "text",
+                                "value": "{{GetDTCreator.mdt_aeps_bal}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "amount",
+                                "type": "text",
+                                "value": "{{$_POST.Amount}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "net_amt",
+                                "type": "text",
+                                "value": "{{MDTNetAmt}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "new_bal",
+                                "type": "text",
+                                "value": "{{MDTClosingBalance}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "tr_type",
+                                "type": "text",
+                                "value": "{{'AEPS Comm'}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "tr_date",
+                                "type": "datetime",
+                                "value": "{{NOW}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "ip_address",
+                                "type": "text",
+                                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "remarks",
+                                "type": "text",
+                                "value": "{{'Merchant Id: '+$_POST.MerchantID+' | Txn. Ref. Id: '+$_POST.TxnID+' | Amt. '+$_POST.Amount+' | Id: '+AEPSRechTrans.identity+' | Comm. Amt.:  '+MDTCommAmt+' | Charge Amt. '+MDTChargeAmt+' | Net Amt.: '+MDTNetAmt}}"
+                              },
+                              {
+                                "table": "t_charge_aeps_cal",
+                                "column": "created_by",
+                                "type": "number",
+                                "value": "{{UserWalletBalCheck.id}}"
+                              }
+                            ],
+                            "table": "t_charge_aeps_cal",
+                            "returning": "id",
+                            "query": "INSERT INTO t_charge_aeps_cal\n(user_id, pay_ref_id, crdr_type, old_bal, amount, net_amt, new_bal, tr_type, tr_date, ip_address, remarks, created_by) VALUES (:P1 /* {{UserWalletBalCheck.md_id}} */, :P2 /* {{AEPSRechTrans.identity}} */, :P3 /* {{'Credit'}} */, :P4 /* {{GetDTCreator.mdt_aeps_bal}} */, :P5 /* {{$_POST.Amount}} */, :P6 /* {{MDTNetAmt}} */, :P7 /* {{MDTClosingBalance}} */, :P8 /* {{'AEPS Comm'}} */, :P9 /* {{NOW}} */, :P10 /* {{$_SERVER.REMOTE_ADDR}} */, :P11 /* {{'Merchant Id: '+$_POST.MerchantID+' | Txn. Ref. Id: '+$_POST.TxnID+' | Amt. '+$_POST.Amount+' | Id: '+AEPSRechTrans.identity+' | Comm. Amt.:  '+MDTCommAmt+' | Charge Amt. '+MDTChargeAmt+' | Net Amt.: '+MDTNetAmt}} */, :P12 /* {{UserWalletBalCheck.id}} */)",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{UserWalletBalCheck.md_id}}"
+                              },
+                              {
+                                "name": ":P2",
+                                "type": "expression",
+                                "value": "{{AEPSRechTrans.identity}}"
+                              },
+                              {
+                                "name": ":P3",
+                                "type": "expression",
+                                "value": "{{'Credit'}}"
+                              },
+                              {
+                                "name": ":P4",
+                                "type": "expression",
+                                "value": "{{GetDTCreator.mdt_aeps_bal}}"
+                              },
+                              {
+                                "name": ":P5",
+                                "type": "expression",
+                                "value": "{{$_POST.Amount}}"
+                              },
+                              {
+                                "name": ":P6",
+                                "type": "expression",
+                                "value": "{{MDTNetAmt}}"
+                              },
+                              {
+                                "name": ":P7",
+                                "type": "expression",
+                                "value": "{{MDTClosingBalance}}"
+                              },
+                              {
+                                "name": ":P8",
+                                "type": "expression",
+                                "value": "{{'AEPS Comm'}}"
+                              },
+                              {
+                                "name": ":P9",
+                                "type": "expression",
+                                "value": "{{NOW}}"
+                              },
+                              {
+                                "name": ":P10",
+                                "type": "expression",
+                                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                              },
+                              {
+                                "name": ":P11",
+                                "type": "expression",
+                                "value": "{{'Merchant Id: '+$_POST.MerchantID+' | Txn. Ref. Id: '+$_POST.TxnID+' | Amt. '+$_POST.Amount+' | Id: '+AEPSRechTrans.identity+' | Comm. Amt.:  '+MDTCommAmt+' | Charge Amt. '+MDTChargeAmt+' | Net Amt.: '+MDTNetAmt}}"
+                              },
+                              {
+                                "name": ":P12",
+                                "type": "expression",
+                                "value": "{{UserWalletBalCheck.id}}"
+                              }
+                            ]
+                          }
+                        },
+                        "meta": [
+                          {
+                            "name": "identity",
+                            "type": "text"
+                          },
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "UpMDTUserBal",
+                        "module": "dbupdater",
+                        "action": "update",
+                        "options": {
+                          "connection": "postgres_gcpServer",
+                          "sql": {
+                            "type": "update",
+                            "values": [
+                              {
+                                "table": "m_users",
+                                "column": "aeps_balance",
+                                "type": "text",
+                                "value": "{{MDTClosingBalance}}"
+                              }
+                            ],
+                            "table": "m_users",
+                            "wheres": {
+                              "condition": "AND",
+                              "rules": [
+                                {
+                                  "id": "id",
+                                  "field": "id",
+                                  "type": "double",
+                                  "operator": "equal",
+                                  "value": "{{UserWalletBalCheck.md_id}}",
+                                  "data": {
+                                    "column": "id"
+                                  },
+                                  "operation": "="
+                                }
+                              ],
+                              "conditional": null,
+                              "valid": true
+                            },
+                            "returning": "id",
+                            "query": "UPDATE m_users\nSET aeps_balance = :P1 /* {{MDTClosingBalance}} */\nWHERE id = :P2 /* {{UserWalletBalCheck.md_id}} */",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{MDTClosingBalance}}"
+                              },
+                              {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P2",
+                                "value": "{{UserWalletBalCheck.md_id}}"
+                              }
+                            ]
+                          }
+                        },
+                        "meta": [
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "outputType": "boolean"
               }
             ]
           },
@@ -2616,7 +3251,8 @@
                     "name": "affected",
                     "type": "number"
                   }
-                ]
+                ],
+                "output": true
               },
               {
                 "name": "UpAEPSBalance",
@@ -2676,6 +3312,178 @@
                     "type": "number"
                   }
                 ]
+              },
+              {
+                "name": "AddRefundAEPSBal",
+                "module": "dbupdater",
+                "action": "insert",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "insert",
+                    "values": [
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "user_id",
+                        "type": "number",
+                        "value": "{{UserWalletBalCheck.id}}"
+                      },
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "pay_ref_id",
+                        "type": "number",
+                        "value": "{{AEPSRechTrans.identity}}"
+                      },
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "crdr_type",
+                        "type": "text",
+                        "value": "{{'Debit'}}"
+                      },
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "old_bal",
+                        "type": "text",
+                        "value": "{{RTClosingBalance}}"
+                      },
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "amount",
+                        "type": "text",
+                        "value": "{{$_POST.Amount}}"
+                      },
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "net_amt",
+                        "type": "text",
+                        "value": "{{RTNetAmt}}"
+                      },
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "new_bal",
+                        "type": "text",
+                        "value": "{{UserWalletBalCheck.aeps_balance}}"
+                      },
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "status",
+                        "type": "text",
+                        "value": "{{'REFUND'}}"
+                      },
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "tr_type",
+                        "type": "text",
+                        "value": "{{$_POST.Service}}"
+                      },
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "tr_date",
+                        "type": "datetime",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "ip_address",
+                        "type": "text",
+                        "value": "{{$_SERVER.REMOTE_ADDR}}"
+                      },
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "remarks",
+                        "type": "text",
+                        "value": "{{$_POST.Service+' | '+$_POST.Amount+' | '+$_POST.TxnDate+' | '+$_POST.RRN+' | '+$_POST.Reatilerid}}"
+                      },
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "created_by",
+                        "type": "number",
+                        "value": "{{UserWalletBalCheck.id}}"
+                      }
+                    ],
+                    "table": "tt_aeps_balance",
+                    "returning": "id",
+                    "query": "INSERT INTO tt_aeps_balance\n(user_id, pay_ref_id, crdr_type, old_bal, amount, net_amt, new_bal, status, tr_type, tr_date, ip_address, remarks, created_by) VALUES (:P1 /* {{UserWalletBalCheck.id}} */, :P2 /* {{AEPSRechTrans.identity}} */, :P3 /* {{'Debit'}} */, :P4 /* {{RTClosingBalance}} */, :P5 /* {{$_POST.Amount}} */, :P6 /* {{RTNetAmt}} */, :P7 /* {{UserWalletBalCheck.aeps_balance}} */, :P8 /* {{'REFUND'}} */, :P9 /* {{$_POST.Service}} */, :P10 /* {{NOW}} */, :P11 /* {{$_SERVER.REMOTE_ADDR}} */, :P12 /* {{$_POST.Service+' | '+$_POST.Amount+' | '+$_POST.TxnDate+' | '+$_POST.RRN+' | '+$_POST.Reatilerid}} */, :P13 /* {{UserWalletBalCheck.id}} */)",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{UserWalletBalCheck.id}}"
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{AEPSRechTrans.identity}}"
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{'Debit'}}"
+                      },
+                      {
+                        "name": ":P4",
+                        "type": "expression",
+                        "value": "{{RTClosingBalance}}"
+                      },
+                      {
+                        "name": ":P5",
+                        "type": "expression",
+                        "value": "{{$_POST.Amount}}"
+                      },
+                      {
+                        "name": ":P6",
+                        "type": "expression",
+                        "value": "{{RTNetAmt}}"
+                      },
+                      {
+                        "name": ":P7",
+                        "type": "expression",
+                        "value": "{{UserWalletBalCheck.aeps_balance}}"
+                      },
+                      {
+                        "name": ":P8",
+                        "type": "expression",
+                        "value": "{{'REFUND'}}"
+                      },
+                      {
+                        "name": ":P9",
+                        "type": "expression",
+                        "value": "{{$_POST.Service}}"
+                      },
+                      {
+                        "name": ":P10",
+                        "type": "expression",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "name": ":P11",
+                        "type": "expression",
+                        "value": "{{$_SERVER.REMOTE_ADDR}}"
+                      },
+                      {
+                        "name": ":P12",
+                        "type": "expression",
+                        "value": "{{$_POST.Service+' | '+$_POST.Amount+' | '+$_POST.TxnDate+' | '+$_POST.RRN+' | '+$_POST.Reatilerid}}"
+                      },
+                      {
+                        "name": ":P13",
+                        "type": "expression",
+                        "value": "{{UserWalletBalCheck.id}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "identity",
+                    "type": "text"
+                  },
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ],
+                "output": true
               }
             ]
           }
