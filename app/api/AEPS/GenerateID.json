@@ -10,7 +10,93 @@
       ],
       "loginUrl": "/login",
       "forbiddenUrl": "/403-forbidden"
-    }
+    },
+    "output": false,
+    "disabled": true
+  },
+  {
+    "name": "identity",
+    "module": "auth",
+    "action": "identify",
+    "options": {
+      "provider": "security"
+    },
+    "output": false,
+    "meta": []
+  },
+  {
+    "name": "GetUserDetails",
+    "module": "dbconnector",
+    "action": "single",
+    "options": {
+      "connection": "postgres_gcpServer",
+      "sql": {
+        "type": "SELECT",
+        "columns": [
+          {
+            "table": "m_users",
+            "column": "aeps_merchant_id"
+          },
+          {
+            "table": "m_users",
+            "column": "user_id",
+            "alias": "RT_ID"
+          }
+        ],
+        "table": {
+          "name": "m_users"
+        },
+        "primary": "id",
+        "joins": [],
+        "wheres": {
+          "condition": "AND",
+          "rules": [
+            {
+              "id": "m_users.id",
+              "field": "m_users.id",
+              "type": "double",
+              "operator": "equal",
+              "value": "{{identity}}",
+              "data": {
+                "table": "m_users",
+                "column": "id",
+                "type": "number",
+                "columnObj": {
+                  "type": "increments",
+                  "default": "",
+                  "primary": true,
+                  "nullable": false,
+                  "name": "id"
+                }
+              },
+              "operation": "="
+            }
+          ],
+          "conditional": null,
+          "valid": true
+        },
+        "query": "SELECT aeps_merchant_id, user_id AS RT_ID\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
+        "params": [
+          {
+            "operator": "equal",
+            "type": "expression",
+            "name": ":P1",
+            "value": "{{identity}}"
+          }
+        ]
+      }
+    },
+    "meta": [
+      {
+        "type": "text",
+        "name": "aeps_merchant_id"
+      },
+      {
+        "type": "text",
+        "name": "RT_ID"
+      }
+    ],
+    "outputType": "object"
   },
   {
     "name": "GetForwardAPI",
@@ -22,24 +108,8 @@
         "type": "SELECT",
         "columns": [
           {
-            "table": "m_api_forward",
-            "column": "api_id"
-          },
-          {
             "table": "m_api",
             "column": "api_code"
-          },
-          {
-            "table": "m_api",
-            "column": "username"
-          },
-          {
-            "table": "m_api",
-            "column": "api_password"
-          },
-          {
-            "table": "m_api",
-            "column": "api_url"
           }
         ],
         "table": {
@@ -69,7 +139,7 @@
             "primary": "id"
           }
         ],
-        "query": "SELECT m_api_forward.api_id, m_api.api_code, m_api.username, m_api.api_password, m_api.api_url\nFROM m_api_forward\nLEFT JOIN m_api AS m_api ON (m_api.id = m_api_forward.api_id)\nWHERE m_api.api_type = :P1 /* {{'AEPS'}} */",
+        "query": "SELECT m_api.api_code\nFROM m_api_forward\nLEFT JOIN m_api AS m_api ON (m_api.id = m_api_forward.api_id)\nWHERE m_api.api_type = :P1 /* {{'AEPS'}} */",
         "params": [
           {
             "operator": "equal",
@@ -111,24 +181,8 @@
     "output": true,
     "meta": [
       {
-        "type": "number",
-        "name": "api_id"
-      },
-      {
         "type": "text",
         "name": "api_code"
-      },
-      {
-        "type": "text",
-        "name": "username"
-      },
-      {
-        "type": "text",
-        "name": "api_password"
-      },
-      {
-        "type": "text",
-        "name": "api_url"
       }
     ],
     "outputType": "object"
@@ -152,13 +206,24 @@
               "data": {
                 "Authcode": "65c43ccd6a7b41c884",
                 "Mpin": "7170",
-                "RetailerID": "RT300",
-                "MerchantID": "6396090835",
-                "Logo": "url",
-                "CompanyName": "swpay"
+                "RetailerID": "{{GetUserDetails.RT_ID}}",
+                "MerchantID": "{{GetUserDetails.aeps_merchant_id}}",
+                "Logo": "https://swpay.in/assets/img/swpay.png",
+                "CompanyName": "SWPAY"
               }
             },
             "output": false
+          },
+          {
+            "name": "Desc",
+            "module": "core",
+            "action": "setvalue",
+            "options": {
+              "value": "{{apiEPay.data.Description}}"
+            },
+            "meta": [],
+            "output": true,
+            "outputType": "text"
           },
           {
             "name": "sessionid",
@@ -170,6 +235,46 @@
             "meta": [],
             "outputType": "text",
             "output": true
+          },
+          {
+            "name": "apiCheck",
+            "module": "api",
+            "action": "send",
+            "options": {
+              "url": "https://180.179.23.1:444/Aeps/Getstatus",
+              "method": "POST",
+              "dataType": "json",
+              "data": {
+                "Authcode": "65c43ccd6a7b41c884",
+                "Mpin": "7170",
+                "MerchantID": "{{GetUserDetails.aeps_merchant_id}}"
+              }
+            },
+            "output": false,
+            "disabled": true
+          },
+          {
+            "name": "",
+            "module": "core",
+            "action": "condition",
+            "options": {
+              "if": "{{apiCheck.data.Description=='Activated'}}",
+              "then": {
+                "steps": {
+                  "name": "sessionid",
+                  "module": "core",
+                  "action": "setvalue",
+                  "options": {
+                    "value": 0
+                  },
+                  "meta": [],
+                  "outputType": "text",
+                  "output": true
+                }
+              }
+            },
+            "outputType": "boolean",
+            "disabled": true
           }
         ]
       }

@@ -1,30 +1,108 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="AEPS" appConnect="local" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="AEPS" appConnect="local" components="{dmxBootstrap5Modal:{}}" -->
 <meta name="ac:route" content="/AEPS">
-
-<!-- <dmx-serverconnect id="scGenerateId" url="api/AEPS/EPayGenerateID"></dmx-serverconnect>
-<form id="formSessionLogin" action="https://180.179.23.1:444/Aeps/Login" method="post">
-    <input type="text" name="sessionid" dmx-bind:value="scGenerateId.data.sessionid">
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form> -->
 <dmx-serverconnect id="scGenerateId" url="api/AEPS/GenerateID"></dmx-serverconnect>
 <input type="hidden" id="formExecute" dmx-bind:value="scGenerateId.data.GetForwardAPI.api_code">
+<input type="hidden" id="SessionCheck" dmx-bind:value="scGenerateId.data.sessionid">
 
-<form id="formSessionLoginMA" action="https://adharpay.in/Login/Authenticate" method="post">
-    <input type="hidden" name="authentication" dmx-bind:value="scGenerateId.data.sessionid">
-</form>
 <form id="formSessionLoginEP" action="https://180.179.23.1:444/Aeps/Login" method="post">
     <input type="hidden" name="sessionid" dmx-bind:value="scGenerateId.data.sessionid">
 </form>
+<form id="formSessionLoginMA" action="https://adharpay.in/Login/Authenticate" method="post">
+    <input type="hidden" name="authentication" dmx-bind:value="scGenerateId.data.sessionid">
+</form>
+<div class="modal fade" id="modalMerchantAdd" is="dmx-bs5-modal" tabindex="-1" dmx-bind:show="!scGenerateId.data.sessionid">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">AEPS Merchant Regristration<span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scMobileOffer.state.executing"></span></h4>
+                <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form is="dmx-serverconnect-form" id="formAddEditMerchant" method="post" action="api/" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('KYC Updated'); formAddEditKyc.reset(); scOperator.load()" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(lastError.response)" dmx-on:unauthorized="scNotif.warning(lastError.response)" dmx-on:invalid="scNotif.warning(lastError.message)">
+                    <div class="row mx-0">
+                        <h6 class="tect-center text-primary fw-bold">{{scGenerateId.data.Desc}}</h6>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputName" class="col-form-label">Name</label>
+                            <input type="text" class="form-control" id="inputName" name="Name" aria-describedby="inputName_help" dmx-bind:value="scLoginUser.data.LoginUserInfo.user_fname">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputShop" class="col-form-label">Firm/Shop Name</label>
+                            <input type="text" class="form-control" id="inputShop" name="ShopName" aria-describedby="inputShopName_help" dmx-bind:value="scLoginUser.data.LoginUserInfo.blank3">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputMerchantID" class="col-form-label">Merchant Id</label>
+                            <input type="number" class="form-control" id="inputMerchantID" name="MerchantID" aria-describedby="inputMerchantID_help" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_merchant_id">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputPan" class="col-form-label">PAN No.</label>
+                            <input type="text" class="form-control" id="inputPan" name="Pan" aria-describedby="inputPan_help" dmx-bind:value="scLoginUser.data.LoginUserInfo.pan_no">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputAdharNo" class="col-form-label">Aadhar No.</label>
+                            <input type="number" class="form-control" id="inputAdharNo" name="AdharNo" aria-describedby="inputAdharNo_help" dmx-bind:value="scLoginUser.data.LoginUserInfo.aadhar_no">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputpincode" class="col-form-label">Area PIN</label>
+                            <input type="number" class="form-control" id="inputpincode" name="pincode" aria-describedby="inputpincode_help" dmx-bind:value="scLoginUser.data.LoginUserInfo.pin">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputPan" class="col-form-label">Dist./City</label>
+                            <input type="text" class="form-control" id="inputCity" name="City" aria-describedby="inputCity_help" dmx-bind:value="scLoginUser.data.LoginUserInfo.district">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputState" class="col-form-label">State</label>
+                            <input type="text" class="form-control" id="inputState" name="State" aria-describedby="inputState_help" dmx-bind:value="scLoginUser.data.LoginUserInfo.state">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputPan" class="col-form-label">Address</label>
+                            <input type="text" class="form-control" id="inputAddress" name="Address" aria-describedby="inputAddress_help" dmx-bind:value="scLoginUser.data.LoginUserInfo.address">
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3 row">
+                                <label for="input2" class="col-sm-3 col-form-label">PAN Card</label>
+                                <div class="col-3 px-0 text-center">
+                                    <img id="imgPAN" width="100" dmx-bind:src="'https://login.swpay.in/'+scLoginUser.data.LoginUserInfo.pan_card" height="80">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3 row">
+                                <label for="input3" class="col-sm-3 col-form-label">AADHAR Card(Front)</label>
+                                <div class="col-3 px-0 text-center">
+                                    <img id="ImageAADHAR" width="100" dmx-bind:src="'https://login.swpay.in/'+scLoginUser.data.LoginUserInfo.aadhar_front" height="80">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3 row">
+                                <label for="input4" class="col-sm-3 col-form-label">AADHAR Card(Back)</label>
+                                <div class="col-3 px-0 text-center">
+                                    <img id="ImageBack" width="100" dmx-bind:src="'https://login.swpay.in/'+scLoginUser.data.LoginUserInfo.aadhar_back" height="80">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function(){
         setTimeout(function(){
             var getformExecute=document.getElementById("formExecute").value;
-            getformExecute=='AEEP'?
+            var SessionCheck=document.getElementById("SessionCheck").value;
+            getformExecute=='AEEP'&&SessionCheck!=''?
                 document.forms["formSessionLoginEP"].submit()
-            : getformExecute=='AEMA'?
+            : getformExecute=='AEMA'&&SessionCheck!=''?
                 document.forms["formSessionLoginMA"].submit()
             : document.forms[""].submit()
-            
         }, 1500);
     })
 </script>

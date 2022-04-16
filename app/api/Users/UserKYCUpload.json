@@ -482,19 +482,19 @@
                         "table": "t_user_kyc",
                         "column": "pan_card",
                         "type": "text",
-                        "value": "{{'/assets/images/profile/'+PANEdit.name}}"
+                        "value": "{{'/assets/images/pan/'+PANEdit.name}}"
                       },
                       {
                         "table": "t_user_kyc",
                         "column": "aadhar_front",
                         "type": "text",
-                        "value": "{{'/assets/images/profile/'+AADHAREdit.name}}"
+                        "value": "{{'/assets/images/aadhar/'+AADHAREdit.name}}"
                       },
                       {
                         "table": "t_user_kyc",
                         "column": "aadhar_back",
                         "type": "text",
-                        "value": "{{'/assets/images/profile/'+AADHARBackEdit.name}}"
+                        "value": "{{'/assets/images/aadhar/'+AADHARBackEdit.name}}"
                       },
                       {
                         "table": "t_user_kyc",
@@ -529,7 +529,7 @@
                       "valid": true
                     },
                     "returning": "id",
-                    "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{'/assets/images/profile/'+ProfileEdit.name}} */, pan_card = :P2 /* {{'/assets/images/profile/'+PANEdit.name}} */, aadhar_front = :P3 /* {{'/assets/images/profile/'+AADHAREdit.name}} */, aadhar_back = :P4 /* {{'/assets/images/profile/'+AADHARBackEdit.name}} */, updated_by = :P5 /* {{identity}} */, updated_on = :P6 /* {{NOW}} */\nWHERE user_id = :P7 /* {{identity}} */",
+                    "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{'/assets/images/profile/'+ProfileEdit.name}} */, pan_card = :P2 /* {{'/assets/images/pan/'+PANEdit.name}} */, aadhar_front = :P3 /* {{'/assets/images/aadhar/'+AADHAREdit.name}} */, aadhar_back = :P4 /* {{'/assets/images/aadhar/'+AADHARBackEdit.name}} */, updated_by = :P5 /* {{identity}} */, updated_on = :P6 /* {{NOW}} */\nWHERE user_id = :P7 /* {{identity}} */",
                     "params": [
                       {
                         "name": ":P1",
@@ -539,17 +539,17 @@
                       {
                         "name": ":P2",
                         "type": "expression",
-                        "value": "{{'/assets/images/profile/'+PANEdit.name}}"
+                        "value": "{{'/assets/images/pan/'+PANEdit.name}}"
                       },
                       {
                         "name": ":P3",
                         "type": "expression",
-                        "value": "{{'/assets/images/profile/'+AADHAREdit.name}}"
+                        "value": "{{'/assets/images/aadhar/'+AADHAREdit.name}}"
                       },
                       {
                         "name": ":P4",
                         "type": "expression",
-                        "value": "{{'/assets/images/profile/'+AADHARBackEdit.name}}"
+                        "value": "{{'/assets/images/aadhar/'+AADHARBackEdit.name}}"
                       },
                       {
                         "name": ":P5",

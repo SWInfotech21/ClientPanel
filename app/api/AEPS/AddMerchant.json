@@ -1,0 +1,210 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/AEPS.ejs",
+      "linkedForm": "formAddEditMerchant"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "Name",
+        "name": "Name"
+      },
+      {
+        "type": "text",
+        "fieldName": "ShopName",
+        "name": "ShopName"
+      },
+      {
+        "type": "number",
+        "fieldName": "MerchantID",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "MerchantID"
+      },
+      {
+        "type": "text",
+        "fieldName": "Pan",
+        "name": "Pan"
+      },
+      {
+        "type": "number",
+        "fieldName": "AdharNo",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "AdharNo"
+      },
+      {
+        "type": "number",
+        "fieldName": "pincode",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "pincode"
+      },
+      {
+        "type": "text",
+        "fieldName": "City",
+        "name": "City"
+      },
+      {
+        "type": "text",
+        "fieldName": "State",
+        "name": "State"
+      },
+      {
+        "type": "text",
+        "fieldName": "Address",
+        "name": "Address"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "GetImage",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_user_kyc",
+                "column": "pan_card"
+              },
+              {
+                "table": "t_user_kyc",
+                "column": "aadhar_front"
+              },
+              {
+                "table": "t_user_kyc",
+                "column": "aadhar_back"
+              }
+            ],
+            "table": {
+              "name": "t_user_kyc"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "t_user_kyc.user_id",
+                  "field": "t_user_kyc.user_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "t_user_kyc",
+                    "column": "user_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "user_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT pan_card, aadhar_front, aadhar_back\nFROM t_user_kyc\nWHERE user_id = :P1 /* {{identity}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "pan_card"
+          },
+          {
+            "type": "text",
+            "name": "aadhar_front"
+          },
+          {
+            "type": "text",
+            "name": "aadhar_back"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "apiMerchantAdd",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://180.179.23.1:444/Aeps/Activation",
+          "method": "POST",
+          "dataType": "json",
+          "data": {
+            "Authcode": "65c43ccd6a7b41c884",
+            "Mpin": "7170",
+            "Name": "{{$_POST.Name}}",
+            "ShopName": "{{$_POST.ShopName}}",
+            "Pan": "{{$_POST.Pan}}",
+            "AdharNo": "{{$_POST.AdharNo}}",
+            "RetailerID": "{{GetUserDetails.RT_ID}}",
+            "MerchantID": "{{$_POST.MerchantID}}",
+            "pincode": "{{$_POST.pincode}}",
+            "City": "{{$_POST.City}}",
+            "State": "{{$_POST.State}}",
+            "Address": "{{$_POST.Address}}",
+            "PanImage": "{{'https://login.swpay.in/'+GetImage.pan_card}}",
+            "AdharImageFront": "{{'https://login.swpay.in/'+GetImage.aadhar_front}}",
+            "AdharImageBack": "{{'https://login.swpay.in/'+GetImage.aadhar_back}}"
+          },
+          "params": {
+            "": "{{'https://login.swpay.in/'+GetImage.aadhar_back}}"
+          }
+        },
+        "output": true
+      }
+    ]
+  }
+}
