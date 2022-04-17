@@ -1,0 +1,116 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="AEPSFundTransfer" appConnect="local" components="{dmxBootstrap5Navigation:{}}" -->
+<meta name="ac:route" content="/AEPS-Fund-Transfer">
+<!-- New Wappler Page -->
+<div class="container-fluid">
+    <h1 class="mt-4">AEPS Fund Transfer
+        <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scLoginUser.state.executing"></span>
+    </h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">ARPS / Retailer Id: {{scLoginUser.data.LoginUserInfo.user_id}} / Merchant Id: {{scLoginUser.data.LoginUserInfo.aeps_merchant_id}}</li>
+    </ol>
+    <div class="row mx-0">
+        <div class="col-12 col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Add Beneficary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mx-0">
+                        <div class="col-12 col-sm-6">
+                            <label for="inputName" class="col-form-label">AC Holder Name</label>
+                            <input type="text" class="form-control" id="inputName" name="UserName" aria-describedby="inputName_help" required="">
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label for="inputBankName" class="col-form-label">Bank Name</label>
+                            <input type="text" class="form-control" id="inputBankName" name="BankName" aria-describedby="inputBankName_help" required="">
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label for="inputBankAC" class="col-form-label">Bank Account No.</label>
+                            <input type="number" class="form-control" id="inputBankAC" name="BankAC" aria-describedby="inputBankAC_help" required="">
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label for="inputBankIFSC" class="col-form-label">Bank IFSC</label>
+                            <input type="text" class="form-control" id="inputBankIFSC" name="BankIFSC" aria-describedby="inputBankIFSC_help" required="">
+                        </div>
+                    </div>
+                    <div class="row mx-0 mt-2">
+                        <div class="col-12 col-sm-6">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-12 col-sm-6">
+            <ul class="nav nav-pills mb-3 px-2" id="pills-tab" role="tablist">
+                <li class="nav-item border sw-border-radius col-6 px-0" role="presentation">
+                    <button class="nav-link active w-100 h6 mb-0" id="pills-home-tab" data-bs-toggle="pill" data-toggle="pill" href="#pills-home" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">To Wallet Transfer</button>
+                </li>
+                <li class="nav-item border sw-border-radius col-6 px-0" role="presentation">
+                    <button class="nav-link w-100 h6 mb-0" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">To Bank Transfer</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active px-2" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <h4>Main Wallet Transfer</h4>
+                    <div class="row">
+                        <form id="formMainWallet" method="post" action="api/" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMainWallet.lastError.response); formMainWallet.reset(); scLoginUser.load();" dmx-on:error="scNotif.warning(formMainWallet.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMainWallet.lastError.response)" dmx-on:forbidden="scNotif.warning(formMainWallet.lastError.response)" dmx-on:invalid="scNotif.warning(formMainWallet.lastError.response)">
+                            <div class="form-group mb-0">
+                                <label for="inputCurrent" class="col-form-label">Current Aeps Balance</label>
+                                <input type="text" class="form-control" id="inputCurrentBal" name="CurrentBal" aria-describedby="inputName_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance">
+                            </div>
+                            <div class="form-group mb-0">
+                                <label for="inputCurrentLimit" class="col-form-label">Current Aeps Limit</label>
+                                <input type="text" class="form-control" id="inputCurrentLimit" name="CurrentLimit" aria-describedby="inputCurrentLimit_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_limit">
+                            </div>
+                            <div class="form-group mb-0">
+                                <label for="inputWithdrawLimit" class="col-form-label">Withdrawal Limit</label>
+                                <input type="text" class="form-control" id="inputWithdrawLimit" name="WithdrawLimit" aria-describedby="inputWithdrawLimit_help" required="">
+                            </div>
+                            <div class="col text-center mt-3"><button type="submit" class="btn btn-primary pull-left px-5" dmx-bind:disabled="state.executing" id="btnmrecharge">Submit<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="tab-pane fade px-2" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <h4>Direct Bank Transfer</h4>
+                    <div class="row">
+                        <form id="formBankTransfer" method="post" action="api/" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formBankTransfer.lastError.response); formBankTransfer.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:unauthorized="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:forbidden="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:invalid="scNotif.warning(formBankTransfer.lastError.response)">
+                            <div class="form-group mb-0">
+                                <label for="inputCurrentBank" class="col-form-label">Current Aeps Balance</label>
+                                <input type="text" class="form-control" id="inputCurrentBalBank" name="CurrentBalBank" aria-describedby="inputNamebank_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance">
+                            </div>
+                            <div class="form-group mb-0">
+                                <label for="inputCurrentLimitBank" class="col-form-label">Current Aeps Limit</label>
+                                <input type="text" class="form-control" id="inputCurrentLimitBank" name="CurrentLimitBank" aria-describedby="inputCurrentLimitbank_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_limit">
+                            </div>
+                            <div class="form-group mb-0">
+                                <label for="inputSelectBank" class="col-form-label">Select Bank</label>
+                                <select type="text" class="form-control form-select" id="inputSelectBank" name="SelectBank" aria-describedby="inputSelectBank_help" required="">
+                                    <option value="">Select Bank</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label for="inputSelectMode" class="col-form-label">Select Mode</label>
+                                <select type="text" class="form-control form-select" id="inputSelectMode" name="SelectMode" aria-describedby="inputSelectMode_help" required="">
+                                    <option value="">Select Mode</option>
+                                    <option value="IMPS">IMPS</option>
+                                    <option value="NEFT">NEFT</option>
+                                    <option value="RTGS">RTGS</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label for="inputWithdrawLimitBank" class="col-form-label">Withdrawal Limit</label>
+                                <input type="text" class="form-control" id="inputWithdrawLimitBank" name="WithdrawLimitBank" aria-describedby="inputWithdrawLimitBank_help" required="">
+                            </div>
+                            <div class="col text-center mt-3"><button type="submit" class="btn btn-primary pull-left px-5" dmx-bind:disabled="state.executing" id="btnBankTrans">Submit<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

@@ -177,6 +177,11 @@
       "layout": "main"
     },
     {
+      "path": "/AEPS-Fund-Transfer",
+      "page": "AEPS-Fund-Transfer",
+      "layout": "main"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }
