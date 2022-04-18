@@ -6,30 +6,6 @@
     },
     "$_POST": [
       {
-        "type": "text",
-        "fieldName": "CurrentBal",
-        "options": {
-          "rules": {
-            "core:required": {
-              "param": ""
-            }
-          }
-        },
-        "name": "CurrentBal"
-      },
-      {
-        "type": "text",
-        "fieldName": "CurrentLimit",
-        "options": {
-          "rules": {
-            "core:required": {
-              "param": ""
-            }
-          }
-        },
-        "name": "CurrentLimit"
-      },
-      {
         "type": "number",
         "fieldName": "WithdrawLimit",
         "options": {

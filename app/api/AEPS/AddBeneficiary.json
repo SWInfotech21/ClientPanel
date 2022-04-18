@@ -91,50 +91,45 @@
             "type": "SELECT",
             "columns": [
               {
-                "table": "m_users",
+                "table": "t_aeps_benef_epay",
                 "column": "id",
                 "alias": "CountId",
                 "aggregate": "COUNT"
               },
               {
-                "table": "m_users",
+                "table": "mu",
                 "column": "aeps_merchant_id"
               }
             ],
             "table": {
-              "name": "m_users"
+              "name": "t_aeps_benef_epay"
             },
-            "joins": [],
-            "primary": "id",
-            "wheres": {
-              "condition": "AND",
-              "rules": [
-                {
-                  "id": "m_users.id",
-                  "field": "m_users.id",
-                  "type": "double",
-                  "operator": "equal",
-                  "value": "{{identity}}",
-                  "data": {
-                    "table": "m_users",
-                    "column": "id",
-                    "type": "number",
-                    "columnObj": {
-                      "type": "increments",
-                      "default": "",
-                      "primary": true,
-                      "nullable": false,
-                      "unique": true,
-                      "name": "id"
+            "joins": [
+              {
+                "table": "m_users",
+                "column": "*",
+                "alias": "mu",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "mu",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "t_aeps_benef_epay",
+                        "column": "user_id"
+                      },
+                      "operation": "="
                     }
-                  },
-                  "operation": "="
-                }
-              ],
-              "conditional": null,
-              "valid": true
-            },
-            "query": "SELECT COUNT(id) AS CountId, aeps_merchant_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */\nGROUP BY aeps_merchant_id",
+                  ]
+                },
+                "primary": "id"
+              }
+            ],
+            "primary": "id",
+            "query": "SELECT COUNT(t_aeps_benef_epay.id) AS CountId, mu.aeps_merchant_id\nFROM t_aeps_benef_epay\nLEFT JOIN m_users AS mu ON (mu.id = t_aeps_benef_epay.user_id)\nWHERE t_aeps_benef_epay.user_id = :P1 /* {{identity}} */\nGROUP BY mu.aeps_merchant_id",
             "params": [
               {
                 "operator": "equal",
@@ -145,10 +140,37 @@
             ],
             "groupBy": [
               {
-                "table": "m_users",
+                "table": "mu",
                 "column": "aeps_merchant_id"
               }
-            ]
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "t_aeps_benef_epay.user_id",
+                  "field": "t_aeps_benef_epay.user_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "t_aeps_benef_epay",
+                    "column": "user_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "user_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
           }
         },
         "output": true,
@@ -169,7 +191,7 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{GetMobile.CountId<=10||GetMobile.aeps_merchant_id}}",
+          "if": "{{GetMobile.CountId<=10}}",
           "then": {
             "steps": [
               {
@@ -191,7 +213,7 @@
                     "BankName": "{{$_POST.BankName}}"
                   }
                 },
-                "output": false
+                "output": true
               },
               {
                 "name": "",
@@ -257,11 +279,17 @@
                                 "column": "created_on",
                                 "type": "datetime",
                                 "value": "{{NOW}}"
+                              },
+                              {
+                                "table": "t_aeps_benef_epay",
+                                "column": "blank1",
+                                "type": "text",
+                                "value": "{{apiBeneficiary.data.BeneficiaryID}}"
                               }
                             ],
                             "table": "t_aeps_benef_epay",
                             "returning": "id",
-                            "query": "INSERT INTO t_aeps_benef_epay\n(user_id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_by, created_on) VALUES (:P1 /* {{identity}} */, :P2 /* {{$_POST.UserName}} */, :P3 /* {{$_POST.BankName}} */, :P4 /* {{$_POST.BankIFSC}} */, :P5 /* {{$_POST.BankAC}} */, :P6 /* {{GetMobile.aeps_merchant_id}} */, :P7 /* {{identity}} */, :P8 /* {{NOW}} */)",
+                            "query": "INSERT INTO t_aeps_benef_epay\n(user_id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_by, created_on, blank1) VALUES (:P1 /* {{identity}} */, :P2 /* {{$_POST.UserName}} */, :P3 /* {{$_POST.BankName}} */, :P4 /* {{$_POST.BankIFSC}} */, :P5 /* {{$_POST.BankAC}} */, :P6 /* {{GetMobile.aeps_merchant_id}} */, :P7 /* {{identity}} */, :P8 /* {{NOW}} */, :P9 /* {{apiBeneficiary.data.BeneficiaryID}} */)",
                             "params": [
                               {
                                 "name": ":P1",
@@ -302,6 +330,11 @@
                                 "name": ":P8",
                                 "type": "expression",
                                 "value": "{{NOW}}"
+                              },
+                              {
+                                "name": ":P9",
+                                "type": "expression",
+                                "value": "{{apiBeneficiary.data.BeneficiaryID}}"
                               }
                             ]
                           }

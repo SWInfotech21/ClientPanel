@@ -71,6 +71,11 @@
               {
                 "table": "t_aeps_benef_epay",
                 "column": "created_on"
+              },
+              {
+                "table": "t_aeps_benef_epay",
+                "column": "blank1",
+                "alias": "benef_id"
               }
             ],
             "table": {
@@ -113,7 +118,7 @@
                 "recid": 1
               }
             ],
-            "query": "SELECT id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_on\nFROM t_aeps_benef_epay\nWHERE user_id = :P1 /* {{identity}} */\nORDER BY id DESC",
+            "query": "SELECT id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_on, blank1 AS benef_id\nFROM t_aeps_benef_epay\nWHERE user_id = :P1 /* {{identity}} */\nORDER BY id DESC",
             "params": [
               {
                 "operator": "equal",
@@ -154,6 +159,10 @@
           {
             "type": "datetime",
             "name": "created_on"
+          },
+          {
+            "type": "text",
+            "name": "benef_id"
           }
         ],
         "outputType": "array"
@@ -293,6 +302,23 @@
         ],
         "output": true,
         "outputType": "text"
+      },
+      {
+        "name": "api",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://180.179.23.1:444/Aeps/AepsSettlement",
+          "method": "POST",
+          "dataType": "json",
+          "data": {
+            "Code": "A00055",
+            "Authcode": "65c43ccd6a7b41c884",
+            "Mpin": "7170",
+            "Contact": "{{ViewBenef[0].contacts}}"
+          }
+        },
+        "output": true
       }
     ]
   }

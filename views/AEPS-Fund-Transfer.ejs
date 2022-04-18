@@ -43,7 +43,7 @@
                     </form>
                 </div>
             </div>
-            <div class="card">
+            <div class="card mt-3">
                 <div class="card-header">
                     <h5 class="card-title">View Beneficary</h5>
                 </div>
@@ -52,6 +52,8 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Beneficiary Id</th>
+                                <th scope="col">Contact</th>
                                 <th scope="col">A/C Holder Name</th>
                                 <th scope="col">Bank Name</th>
                                 <th scope="col">A/C No.</th>
@@ -62,6 +64,8 @@
                         <tbody is="dmx-repeat" id="tableRepeat1" dmx-bind:repeat="content.scBeneficiary.data.ViewBenef">
                             <tr>
                                 <th scope="row">{{$index+1}}</th>
+                                <td dmx-text="benef_id"></td>
+                                <td dmx-text="contacts"></td>
                                 <td dmx-text="benef_name"></td>
                                 <td dmx-text="bank_name"></td>
                                 <td dmx-text="account_no"></td>
@@ -91,11 +95,11 @@
                         <form id="formMainWallet" method="post" action="api/AEPS/WalletTransfer" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMainWallet.lastError.response); formMainWallet.reset(); scLoginUser.load();" dmx-on:error="scNotif.warning(formMainWallet.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMainWallet.lastError.response)" dmx-on:forbidden="scNotif.warning(formMainWallet.lastError.response)" dmx-on:invalid="scNotif.warning(formMainWallet.lastError.response)">
                             <div class="form-group mb-0">
                                 <label for="inputCurrent" class="col-form-label">Current Aeps Balance</label>
-                                <input type="text" class="form-control" id="inputCurrentBal" name="CurrentBal" aria-describedby="inputName_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance">
+                                <input type="text" class="form-control" id="inputCurrentBal" aria-describedby="inputName_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance">
                             </div>
                             <div class="form-group mb-0">
                                 <label for="inputCurrentLimit" class="col-form-label">Current Aeps Limit</label>
-                                <input type="text" class="form-control" id="inputCurrentLimit" name="CurrentLimit" aria-describedby="inputCurrentLimit_help" required="" readonly="true" disabled="true" dmx-bind:value="content.scBeneficiary.data.AEPSLimit">
+                                <input type="text" class="form-control" id="inputCurrentLimit" aria-describedby="inputCurrentLimit_help" required="" readonly="true" disabled="true" dmx-bind:value="content.scBeneficiary.data.AEPSLimit">
                             </div>
                             <div class="form-group mb-0">
                                 <label for="inputWithdrawLimit" class="col-form-label">Withdrawal Amount</label>
@@ -112,16 +116,16 @@
                         <form id="formBankTransfer" method="post" action="api/" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formBankTransfer.lastError.response); formBankTransfer.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:unauthorized="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:forbidden="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:invalid="scNotif.warning(formBankTransfer.lastError.response)">
                             <div class="form-group mb-0">
                                 <label for="inputCurrentBank" class="col-form-label">Current Aeps Balance</label>
-                                <input type="text" class="form-control" id="inputCurrentBalBank" name="CurrentBalBank" aria-describedby="inputNamebank_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance">
+                                <input type="text" class="form-control" id="inputCurrentBalBank" aria-describedby="inputNamebank_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance">
                             </div>
                             <div class="form-group mb-0">
                                 <label for="inputCurrentLimitBank" class="col-form-label">Current Aeps Limit</label>
-                                <input type="text" class="form-control" id="inputCurrentLimitBank" name="CurrentLimitBank" aria-describedby="inputCurrentLimitbank_help" required="" readonly="true" disabled="true" dmx-bind:value="content.scBeneficiary.data.AEPSLimit">
+                                <input type="text" class="form-control" id="inputCurrentLimitBank" aria-describedby="inputCurrentLimitbank_help" required="" readonly="true" disabled="true" dmx-bind:value="content.scBeneficiary.data.AEPSLimit">
                             </div>
                             <div class="form-group mb-0">
-                                <label for="inputSelectBank" class="col-form-label">Select Bank</label>
-                                <select type="text" class="form-control form-select" id="inputSelectBank" name="SelectBank" aria-describedby="inputSelectBank_help" required="" dmx-bind:options="content.scBeneficiary.data.ViewBenef" optiontext="bank_name" optionvalue="id">
-                                    <option value="">Select Bank</option>
+                                <label for="inputSelectBank" class="col-form-label">Select Beneficiary</label>
+                                <select type="text" class="form-control form-select" id="inputSelectBank" name="BenefIdBank" aria-describedby="inputSelectBank_help" required="" dmx-bind:options="content.scBeneficiary.data.ViewBenef" optiontext="benef_name" optionvalue="benef_id">
+                                    <option value="">Select</option>
                                 </select>
                             </div>
                             <div class="form-group mb-0">
@@ -134,8 +138,8 @@
                                 </select>
                             </div>
                             <div class="form-group mb-0">
-                                <label for="inputWithdrawLimitBank" class="col-form-label">Withdrawal Limit</label>
-                                <input type="number" class="form-control" id="inputWithdrawLimitBank" name="WithdrawLimitBank" aria-describedby="inputWithdrawLimitBank_help" required="" dmx-bind:max="content.formBankTransfer.inputCurrentLimitBank.value">
+                                <label for="inputWithdrawLimitBank" class="col-form-label">Withdrawal Amount</label>
+                                <input type="number" class="form-control" id="inputWithdrawAmtBank" name="WithdrawAmtBank" aria-describedby="inputWithdrawLimitBank_help" required="" dmx-bind:max="content.formBankTransfer.inputCurrentLimitBank.value">
                             </div>
                             <div class="col text-center mt-3"><button type="submit" class="btn btn-primary pull-left px-5" dmx-bind:disabled="state.executing" id="btnBankTrans">Submit<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
                         </form>
