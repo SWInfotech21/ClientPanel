@@ -562,7 +562,7 @@
           }
         ],
         "outputType": "array",
-        "output": true
+        "output": false
       },
       {
         "name": "TransactionId",
@@ -649,7 +649,7 @@
             "params": []
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "number",
@@ -761,7 +761,7 @@
             }
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "number",
@@ -799,7 +799,7 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": false
       },
       {
         "name": "RTChargeAmt",
@@ -810,7 +810,7 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": false
       },
       {
         "name": "RTNetAmt",
@@ -821,7 +821,7 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": false
       },
       {
         "name": "RTClosingBalance",
@@ -832,7 +832,7 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": false
       },
       {
         "name": "AdminClosingBalance",
@@ -843,7 +843,7 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": false
       },
       {
         "name": "",
@@ -950,7 +950,7 @@
                     ]
                   }
                 },
-                "output": true,
+                "output": false,
                 "meta": [
                   {
                     "type": "text",
@@ -1000,7 +1000,7 @@
                 },
                 "meta": [],
                 "outputType": "text",
-                "output": true
+                "output": false
               },
               {
                 "name": "DTCommAmt",
@@ -1051,7 +1051,7 @@
                 },
                 "meta": [],
                 "outputType": "text",
-                "output": true
+                "output": false
               },
               {
                 "name": "DTNetAmt",
@@ -1062,7 +1062,7 @@
                 },
                 "meta": [],
                 "outputType": "text",
-                "output": true
+                "output": false
               },
               {
                 "name": "DTClosingBalance",
@@ -1073,7 +1073,7 @@
                 },
                 "meta": [],
                 "outputType": "text",
-                "output": true
+                "output": false
               },
               {
                 "name": "AdminClosingBalance",
@@ -1084,7 +1084,7 @@
                 },
                 "meta": [],
                 "outputType": "text",
-                "output": true
+                "output": false
               },
               {
                 "name": "GetDTCreator",
@@ -1169,7 +1169,7 @@
                     ]
                   }
                 },
-                "output": true,
+                "output": false,
                 "meta": [
                   {
                     "type": "number",
@@ -1303,7 +1303,7 @@
                             ]
                           }
                         },
-                        "output": true,
+                        "output": false,
                         "meta": [
                           {
                             "type": "text",
@@ -1403,7 +1403,7 @@
                         },
                         "meta": [],
                         "outputType": "text",
-                        "output": true
+                        "output": false
                       },
                       {
                         "name": "MDTNetAmt",
@@ -1414,7 +1414,7 @@
                         },
                         "meta": [],
                         "outputType": "text",
-                        "output": true
+                        "output": false
                       },
                       {
                         "name": "MDTClosingBalance",
@@ -1425,7 +1425,7 @@
                         },
                         "meta": [],
                         "outputType": "text",
-                        "output": true
+                        "output": false
                       },
                       {
                         "name": "AdminClosingBalance",
@@ -1436,7 +1436,7 @@
                         },
                         "meta": [],
                         "outputType": "text",
-                        "output": true
+                        "output": false
                       }
                     ]
                   },
@@ -2196,7 +2196,7 @@
             "type": "number"
           }
         ],
-        "output": true
+        "output": false
       },
       {
         "name": "AddAEPSBal",
@@ -2368,7 +2368,7 @@
             "type": "number"
           }
         ],
-        "output": true
+        "output": false
       },
       {
         "name": "",
@@ -2495,6 +2495,75 @@
                     "type": "number"
                   }
                 ]
+              },
+              {
+                "name": "CalculateAEPSLimit",
+                "module": "dbconnector",
+                "action": "single",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "SELECT",
+                    "columns": [
+                      {
+                        "table": "tt_aeps_balance",
+                        "column": "amount",
+                        "alias": "amount_debit",
+                        "aggregate": "SUM"
+                      }
+                    ],
+                    "table": {
+                      "name": "tt_aeps_balance"
+                    },
+                    "primary": "id",
+                    "joins": [],
+                    "groupBy": [],
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "tt_aeps_balance.user_id",
+                          "field": "tt_aeps_balance.user_id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{UserWalletBalCheck.id}}",
+                          "data": {
+                            "table": "tt_aeps_balance",
+                            "column": "user_id",
+                            "type": "number",
+                            "columnObj": {
+                              "type": "integer",
+                              "primary": false,
+                              "unique": false,
+                              "nullable": false,
+                              "name": "user_id"
+                            }
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "SELECT SUM(amount) AS amount_debit\nFROM tt_aeps_balance\nWHERE user_id = :P1 /* {{UserWalletBalCheck.id}} */",
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{UserWalletBalCheck.id}}"
+                      }
+                    ]
+                  }
+                },
+                "output": false,
+                "meta": [
+                  {
+                    "type": "text",
+                    "name": "amount_debit"
+                  }
+                ],
+                "outputType": "object"
               },
               {
                 "name": "UpRTUser",
@@ -3483,7 +3552,7 @@
                     "type": "number"
                   }
                 ],
-                "output": true
+                "output": false
               }
             ]
           }

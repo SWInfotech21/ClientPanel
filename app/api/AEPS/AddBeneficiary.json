@@ -1,0 +1,354 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/AEPS-Fund-Transfer.ejs",
+      "linkedForm": "formAddBen"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "UserName",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "UserName"
+      },
+      {
+        "type": "text",
+        "fieldName": "BankName",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "BankName"
+      },
+      {
+        "type": "number",
+        "fieldName": "BankAC",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            },
+            "core:number": {}
+          }
+        },
+        "name": "BankAC"
+      },
+      {
+        "type": "text",
+        "fieldName": "BankIFSC",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "BankIFSC"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "GetMobile",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_users",
+                "column": "id",
+                "alias": "CountId",
+                "aggregate": "COUNT"
+              },
+              {
+                "table": "m_users",
+                "column": "aeps_merchant_id"
+              }
+            ],
+            "table": {
+              "name": "m_users"
+            },
+            "joins": [],
+            "primary": "id",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_users.id",
+                  "field": "m_users.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "m_users",
+                    "column": "id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "default": "",
+                      "primary": true,
+                      "nullable": false,
+                      "unique": true,
+                      "name": "id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT COUNT(id) AS CountId, aeps_merchant_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */\nGROUP BY aeps_merchant_id",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ],
+            "groupBy": [
+              {
+                "table": "m_users",
+                "column": "aeps_merchant_id"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "CountId"
+          },
+          {
+            "type": "text",
+            "name": "aeps_merchant_id"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{GetMobile.CountId<=10||GetMobile.aeps_merchant_id}}",
+          "then": {
+            "steps": [
+              {
+                "name": "apiBeneficiary",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "url": "https://180.179.23.1:444/Aeps/AepsSettlement",
+                  "method": "POST",
+                  "dataType": "json",
+                  "data": {
+                    "Code": "A00054 ",
+                    "Authcode": "65c43ccd6a7b41c884",
+                    "Mpin": "7170",
+                    "BeneficiaryName": "{{$_POST.UserName}}",
+                    "AccountNumber": "{{$_POST.BankAC}}",
+                    "IFSC": "{{$_POST.BankIFSC}}",
+                    "Contact": "{{GetMobile.aeps_merchant_id}}",
+                    "BankName": "{{$_POST.BankName}}"
+                  }
+                },
+                "output": false
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{apiBeneficiary.data.Status==1}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "AddBeneficiary",
+                        "module": "dbupdater",
+                        "action": "insert",
+                        "options": {
+                          "connection": "postgres_gcpServer",
+                          "sql": {
+                            "type": "insert",
+                            "values": [
+                              {
+                                "table": "t_aeps_benef_epay",
+                                "column": "user_id",
+                                "type": "number",
+                                "value": "{{identity}}"
+                              },
+                              {
+                                "table": "t_aeps_benef_epay",
+                                "column": "benef_name",
+                                "type": "text",
+                                "value": "{{$_POST.UserName}}"
+                              },
+                              {
+                                "table": "t_aeps_benef_epay",
+                                "column": "bank_name",
+                                "type": "text",
+                                "value": "{{$_POST.BankName}}"
+                              },
+                              {
+                                "table": "t_aeps_benef_epay",
+                                "column": "bank_ifsc",
+                                "type": "text",
+                                "value": "{{$_POST.BankIFSC}}"
+                              },
+                              {
+                                "table": "t_aeps_benef_epay",
+                                "column": "account_no",
+                                "type": "text",
+                                "value": "{{$_POST.BankAC}}"
+                              },
+                              {
+                                "table": "t_aeps_benef_epay",
+                                "column": "contacts",
+                                "type": "text",
+                                "value": "{{GetMobile.aeps_merchant_id}}"
+                              },
+                              {
+                                "table": "t_aeps_benef_epay",
+                                "column": "created_by",
+                                "type": "number",
+                                "value": "{{identity}}"
+                              },
+                              {
+                                "table": "t_aeps_benef_epay",
+                                "column": "created_on",
+                                "type": "datetime",
+                                "value": "{{NOW}}"
+                              }
+                            ],
+                            "table": "t_aeps_benef_epay",
+                            "returning": "id",
+                            "query": "INSERT INTO t_aeps_benef_epay\n(user_id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_by, created_on) VALUES (:P1 /* {{identity}} */, :P2 /* {{$_POST.UserName}} */, :P3 /* {{$_POST.BankName}} */, :P4 /* {{$_POST.BankIFSC}} */, :P5 /* {{$_POST.BankAC}} */, :P6 /* {{GetMobile.aeps_merchant_id}} */, :P7 /* {{identity}} */, :P8 /* {{NOW}} */)",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{identity}}"
+                              },
+                              {
+                                "name": ":P2",
+                                "type": "expression",
+                                "value": "{{$_POST.UserName}}"
+                              },
+                              {
+                                "name": ":P3",
+                                "type": "expression",
+                                "value": "{{$_POST.BankName}}"
+                              },
+                              {
+                                "name": ":P4",
+                                "type": "expression",
+                                "value": "{{$_POST.BankIFSC}}"
+                              },
+                              {
+                                "name": ":P5",
+                                "type": "expression",
+                                "value": "{{$_POST.BankAC}}"
+                              },
+                              {
+                                "name": ":P6",
+                                "type": "expression",
+                                "value": "{{GetMobile.aeps_merchant_id}}"
+                              },
+                              {
+                                "name": ":P7",
+                                "type": "expression",
+                                "value": "{{identity}}"
+                              },
+                              {
+                                "name": ":P8",
+                                "type": "expression",
+                                "value": "{{NOW}}"
+                              }
+                            ]
+                          }
+                        },
+                        "meta": [
+                          {
+                            "name": "identity",
+                            "type": "text"
+                          },
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Desc",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{apiBeneficiary.data.Description}}"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": true
+                      },
+                      {
+                        "name": "Contact",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{apiBeneficiary.data.Contact}}"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": true
+                      }
+                    ]
+                  }
+                },
+                "outputType": "boolean"
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
+}

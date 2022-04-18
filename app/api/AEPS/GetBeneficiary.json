@@ -1,0 +1,299 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "ViewBenef",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_aeps_benef_epay",
+                "column": "id"
+              },
+              {
+                "table": "t_aeps_benef_epay",
+                "column": "benef_name"
+              },
+              {
+                "table": "t_aeps_benef_epay",
+                "column": "bank_name"
+              },
+              {
+                "table": "t_aeps_benef_epay",
+                "column": "bank_ifsc"
+              },
+              {
+                "table": "t_aeps_benef_epay",
+                "column": "account_no"
+              },
+              {
+                "table": "t_aeps_benef_epay",
+                "column": "contacts"
+              },
+              {
+                "table": "t_aeps_benef_epay",
+                "column": "created_on"
+              }
+            ],
+            "table": {
+              "name": "t_aeps_benef_epay"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "t_aeps_benef_epay.user_id",
+                  "field": "t_aeps_benef_epay.user_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "t_aeps_benef_epay",
+                    "column": "user_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "user_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "orders": [
+              {
+                "table": "t_aeps_benef_epay",
+                "column": "id",
+                "direction": "DESC",
+                "recid": 1
+              }
+            ],
+            "query": "SELECT id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_on\nFROM t_aeps_benef_epay\nWHERE user_id = :P1 /* {{identity}} */\nORDER BY id DESC",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ]
+          },
+          "connection": "postgres_gcpServer"
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "text",
+            "name": "benef_name"
+          },
+          {
+            "type": "text",
+            "name": "bank_name"
+          },
+          {
+            "type": "text",
+            "name": "bank_ifsc"
+          },
+          {
+            "type": "text",
+            "name": "account_no"
+          },
+          {
+            "type": "text",
+            "name": "contacts"
+          },
+          {
+            "type": "datetime",
+            "name": "created_on"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "AEPSBalance",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_users",
+                "column": "aeps_balance"
+              }
+            ],
+            "table": {
+              "name": "m_users"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_users.id",
+                  "field": "m_users.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "m_users",
+                    "column": "id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "default": "",
+                      "primary": true,
+                      "nullable": false,
+                      "unique": true,
+                      "name": "id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT aeps_balance\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ]
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "text",
+            "name": "aeps_balance"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "GetAEPSLimit",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "query": "SELECT SUM(tab.amount::int) as aeps_minus_amount from tt_aeps_balance tab \nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date AND tab.status=@status",
+            "params": [
+              {
+                "name": "@user_id",
+                "value": "{{identity}}",
+                "test": "66"
+              },
+              {
+                "name": "@status",
+                "value": "{{'SUCCESS'}}",
+                "test": "SUCCESS"
+              }
+            ]
+          }
+        },
+        "output": false,
+        "meta": [],
+        "outputType": "array"
+      },
+      {
+        "name": "GetAEPSLimit2Number",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{GetAEPSLimit[0].aeps_minus_amount==null?0:GetAEPSLimit[0].aeps_minus_amount}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": false
+      },
+      {
+        "name": "AEPSBal",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{AEPSBalance.aeps_balance==null?0:AEPSBalance.aeps_balance}}"
+        },
+        "meta": [
+          {
+            "name": "aeps_balance",
+            "type": "text"
+          }
+        ],
+        "outputType": "text",
+        "output": false
+      },
+      {
+        "name": "AEPSLimit",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{AEPSBal.toNumber()-GetAEPSLimit2Number.toNumber()}}"
+        },
+        "meta": [
+          {
+            "name": "aeps_balance",
+            "type": "text"
+          }
+        ],
+        "output": true,
+        "outputType": "text"
+      }
+    ]
+  }
+}

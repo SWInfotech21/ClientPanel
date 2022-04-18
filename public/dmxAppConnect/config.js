@@ -1969,5 +1969,40 @@ dmx.config({
       ],
       "outputType": "array"
     }
+  },
+  "AEPSFundTransfer": {
+    "tableRepeat1": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "id"
+        },
+        {
+          "type": "text",
+          "name": "benef_name"
+        },
+        {
+          "type": "text",
+          "name": "bank_name"
+        },
+        {
+          "type": "text",
+          "name": "bank_ifsc"
+        },
+        {
+          "type": "text",
+          "name": "account_no"
+        },
+        {
+          "type": "text",
+          "name": "contacts"
+        },
+        {
+          "type": "datetime",
+          "name": "created_on"
+        }
+      ],
+      "outputType": "array"
+    }
   }
 });
