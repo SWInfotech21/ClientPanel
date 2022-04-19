@@ -82,7 +82,7 @@
         "meta": []
       },
       {
-        "name": "GetMobile",
+        "name": "CountNo",
         "module": "dbconnector",
         "action": "single",
         "options": {
@@ -95,41 +95,14 @@
                 "column": "id",
                 "alias": "CountId",
                 "aggregate": "COUNT"
-              },
-              {
-                "table": "mu",
-                "column": "aeps_merchant_id"
               }
             ],
             "table": {
               "name": "t_aeps_benef_epay"
             },
-            "joins": [
-              {
-                "table": "m_users",
-                "column": "*",
-                "alias": "mu",
-                "type": "LEFT",
-                "clauses": {
-                  "condition": "AND",
-                  "rules": [
-                    {
-                      "table": "mu",
-                      "column": "id",
-                      "operator": "equal",
-                      "value": {
-                        "table": "t_aeps_benef_epay",
-                        "column": "user_id"
-                      },
-                      "operation": "="
-                    }
-                  ]
-                },
-                "primary": "id"
-              }
-            ],
+            "joins": [],
             "primary": "id",
-            "query": "SELECT COUNT(t_aeps_benef_epay.id) AS CountId, mu.aeps_merchant_id\nFROM t_aeps_benef_epay\nLEFT JOIN m_users AS mu ON (mu.id = t_aeps_benef_epay.user_id)\nWHERE t_aeps_benef_epay.user_id = :P1 /* {{identity}} */\nGROUP BY mu.aeps_merchant_id",
+            "query": "SELECT COUNT(id) AS CountId\nFROM t_aeps_benef_epay\nWHERE user_id = :P1 /* {{identity}} */",
             "params": [
               {
                 "operator": "equal",
@@ -138,12 +111,7 @@
                 "value": "{{identity}}"
               }
             ],
-            "groupBy": [
-              {
-                "table": "mu",
-                "column": "aeps_merchant_id"
-              }
-            ],
+            "groupBy": [],
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -173,12 +141,75 @@
             }
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "number",
             "name": "CountId"
-          },
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "GetMobile",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_users",
+                "column": "aeps_merchant_id"
+              }
+            ],
+            "table": {
+              "name": "m_users"
+            },
+            "joins": [],
+            "primary": "id",
+            "query": "SELECT aeps_merchant_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_users.id",
+                  "field": "m_users.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "m_users",
+                    "column": "id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "default": "",
+                      "primary": true,
+                      "nullable": false,
+                      "unique": true,
+                      "name": "id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": false,
+        "meta": [
           {
             "type": "text",
             "name": "aeps_merchant_id"
@@ -191,7 +222,7 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{GetMobile.CountId<=10}}",
+          "if": "{{CountNo.CountId<=10}}",
           "then": {
             "steps": [
               {
@@ -203,7 +234,7 @@
                   "method": "POST",
                   "dataType": "json",
                   "data": {
-                    "Code": "A00054 ",
+                    "Code": "A00054",
                     "Authcode": "65c43ccd6a7b41c884",
                     "Mpin": "7170",
                     "BeneficiaryName": "{{$_POST.UserName}}",
@@ -373,11 +404,35 @@
                         "output": true
                       }
                     ]
+                  },
+                  "else": {
+                    "steps": {
+                      "name": "Resp",
+                      "module": "core",
+                      "action": "response",
+                      "options": {
+                        "status": 403,
+                        "data": "{{apiBeneficiary.data.Description}}"
+                      },
+                      "output": true
+                    }
                   }
                 },
                 "outputType": "boolean"
               }
             ]
+          },
+          "else": {
+            "steps": {
+              "name": "Resp",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 403,
+                "data": "Merchant not exist or Maximum limit of add beneficiary is 10 "
+              },
+              "output": true
+            }
           }
         },
         "outputType": "boolean"

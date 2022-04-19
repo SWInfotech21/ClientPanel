@@ -16,7 +16,7 @@
                     <h5 class="card-title">Add Beneficary</h5>
                 </div>
                 <div class="card-body">
-                    <form id="formAddBen" method="post" action="api/AEPS/AddBeneficiary" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formAddBen.lastError.response); formAddBen.reset(); scLoginUser.load(); scBeneficiary.load();" dmx-on:error="scNotif.warning(formAddBen.lastError.response)" dmx-on:unauthorized="scNotif.warning(formAddBen.lastError.response)" dmx-on:forbidden="scNotif.warning(formAddBen.lastError.response)" dmx-on:invalid="scNotif.warning(formAddBen.lastError.response)">
+                    <form id="formAddBen" method="post" action="api/AEPS/AddBeneficiary" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formAddBen.lastError.response); formAddBen.reset(); scBeneficiary.load();" dmx-on:error="scNotif.warning(formAddBen.lastError.response)" dmx-on:unauthorized="scNotif.warning(formAddBen.lastError.response)" dmx-on:forbidden="scNotif.warning(formAddBen.lastError.response)" dmx-on:invalid="scNotif.warning(formAddBen.lastError.response)">
                         <div class="row mx-0">
                             <div class="col-12 col-sm-6">
                                 <label for="inputName" class="col-form-label">AC Holder Name</label>
@@ -47,7 +47,7 @@
                 <div class="card-header">
                     <h5 class="card-title">View Beneficary</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
