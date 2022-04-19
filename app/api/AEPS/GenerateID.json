@@ -208,7 +208,7 @@
                 "Mpin": "7170",
                 "RetailerID": "{{GetUserDetails.RT_ID}}",
                 "MerchantID": "{{GetUserDetails.aeps_merchant_id}}",
-                "Logo": "https://swpay.in/assets/img/swpay.png",
+                "Logo": "https://swpay.in/assets/img/SwpayLogo.png",
                 "CompanyName": "SWPAY"
               }
             },

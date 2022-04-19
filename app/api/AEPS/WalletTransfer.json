@@ -79,6 +79,10 @@
               {
                 "table": "m_users",
                 "column": "aeps_merchant_id"
+              },
+              {
+                "table": "m_users",
+                "column": "user_mobile"
               }
             ],
             "table": {
@@ -135,7 +139,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT balance_amt, aeps_balance, scheme_id, user_id AS RT_id, aeps_merchant_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */ AND u_status = '1'",
+            "query": "SELECT balance_amt, aeps_balance, scheme_id, user_id AS RT_id, aeps_merchant_id, user_mobile\nFROM m_users\nWHERE id = :P1 /* {{identity}} */ AND u_status = '1'",
             "params": [
               {
                 "operator": "equal",
@@ -167,6 +171,10 @@
           {
             "type": "text",
             "name": "aeps_merchant_id"
+          },
+          {
+            "type": "text",
+            "name": "user_mobile"
           }
         ],
         "outputType": "object"
@@ -439,7 +447,7 @@
                         "table": "tt_aeps_trans",
                         "column": "merchant_id",
                         "type": "text",
-                        "value": "{{GetUserDetails.aeps_merchant_id}}"
+                        "value": "{{GetUserDetails.user_mobile}}"
                       },
                       {
                         "table": "tt_aeps_trans",
@@ -696,7 +704,7 @@
                     ],
                     "table": "tt_aeps_trans",
                     "returning": "id",
-                    "query": "INSERT INTO tt_aeps_trans\n(service_id, op_id, api_id, user_id, user_rt_id, merchant_id, amount, op_bal, comm_per, comm_val, comm_amt, charge_per, charge_val, charge_amt, net_amt, closing_bal, tr_mode, tr_type, status, tr_id, reason, api_logs, is_processed, operator_ref, api_ref, revert_trans, ip_address, api_response_time, process_mode, live, tr_date, trans_by, ec, dt_comm_per, dt_comm_val, dt_comm_amt, dt_charge_per, dt_charge_val, dt_charge_amount, mdt_comm_per, mdt_comm_val, mdt_comm_amt, mdt_charge_per, mdt_charge_val, mdt_charge_amt, bank_name, service_api, api_tnx_date) VALUES (:P1 /* {{GetOpComm.service_id}} */, :P2 /* {{GetOpComm.operator_id}} */, '0', :P3 /* {{identity}} */, :P4 /* {{GetUserDetails.RT_id}} */, :P5 /* {{GetUserDetails.aeps_merchant_id}} */, :P6 /* {{$_POST.WithdrawLimit}} */, :P7 /* {{GetUserDetails.aeps_balance}} */, :P8 /* {{GetOpComm.comm_per}} */, :P9 /* {{GetOpComm.comm_val}} */, :P10 /* {{RTCommAmt}} */, :P11 /* {{GetOpComm.service_charge_per}} */, :P12 /* {{GetOpComm.service_charge_val}} */, :P13 /* {{RTChargeAmt}} */, :P14 /* {{RTNetAmt}} */, :P15 /* {{AEPSRemaining}} */, :P16 /* {{'Web'}} */, :P17 /* {{'Cash'}} */, :P18 /* {{'SUCCESS'}} */, :P19 /* {{TransId}} */, :P20 /* {{'Self Transfer of Rs. '+$_POST.WithdrawLimit+' from AEPS Wallet to Main Wallet Balance | Comm. Amt. '+RTCommAmt+' | Charge Amt. '+RTChargeAmt+' | Net Amt. '+RTNetAmt+' | AEPS Wallet Remaining '+AEPSRemaining+' | Net Main Wallet Balance '+WalletNetAmt}} */, :P21 /* {{'NA'}} */, '0', '0', '0', '0', :P22 /* {{$_SERVER.REMOTE_ADDR}} */, '0', :P23 /* {{'A2C'}} */, :P24 /* {{'Push'}} */, :P25 /* {{NOW}} */, :P26 /* {{identity}} */, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0')",
+                    "query": "INSERT INTO tt_aeps_trans\n(service_id, op_id, api_id, user_id, user_rt_id, merchant_id, amount, op_bal, comm_per, comm_val, comm_amt, charge_per, charge_val, charge_amt, net_amt, closing_bal, tr_mode, tr_type, status, tr_id, reason, api_logs, is_processed, operator_ref, api_ref, revert_trans, ip_address, api_response_time, process_mode, live, tr_date, trans_by, ec, dt_comm_per, dt_comm_val, dt_comm_amt, dt_charge_per, dt_charge_val, dt_charge_amount, mdt_comm_per, mdt_comm_val, mdt_comm_amt, mdt_charge_per, mdt_charge_val, mdt_charge_amt, bank_name, service_api, api_tnx_date) VALUES (:P1 /* {{GetOpComm.service_id}} */, :P2 /* {{GetOpComm.operator_id}} */, '0', :P3 /* {{identity}} */, :P4 /* {{GetUserDetails.RT_id}} */, :P5 /* {{GetUserDetails.user_mobile}} */, :P6 /* {{$_POST.WithdrawLimit}} */, :P7 /* {{GetUserDetails.aeps_balance}} */, :P8 /* {{GetOpComm.comm_per}} */, :P9 /* {{GetOpComm.comm_val}} */, :P10 /* {{RTCommAmt}} */, :P11 /* {{GetOpComm.service_charge_per}} */, :P12 /* {{GetOpComm.service_charge_val}} */, :P13 /* {{RTChargeAmt}} */, :P14 /* {{RTNetAmt}} */, :P15 /* {{AEPSRemaining}} */, :P16 /* {{'Web'}} */, :P17 /* {{'Cash'}} */, :P18 /* {{'SUCCESS'}} */, :P19 /* {{TransId}} */, :P20 /* {{'Self Transfer of Rs. '+$_POST.WithdrawLimit+' from AEPS Wallet to Main Wallet Balance | Comm. Amt. '+RTCommAmt+' | Charge Amt. '+RTChargeAmt+' | Net Amt. '+RTNetAmt+' | AEPS Wallet Remaining '+AEPSRemaining+' | Net Main Wallet Balance '+WalletNetAmt}} */, :P21 /* {{'NA'}} */, '0', '0', '0', '0', :P22 /* {{$_SERVER.REMOTE_ADDR}} */, '0', :P23 /* {{'A2C'}} */, :P24 /* {{'Push'}} */, :P25 /* {{NOW}} */, :P26 /* {{identity}} */, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0')",
                     "params": [
                       {
                         "name": ":P1",
@@ -721,7 +729,7 @@
                       {
                         "name": ":P5",
                         "type": "expression",
-                        "value": "{{GetUserDetails.aeps_merchant_id}}"
+                        "value": "{{GetUserDetails.user_mobile}}"
                       },
                       {
                         "name": ":P6",
@@ -1050,7 +1058,7 @@
                         "table": "tt_recharge_trans",
                         "column": "user_number",
                         "type": "text",
-                        "value": "{{GetUserDetails.aeps_merchant_id}}"
+                        "value": "{{GetUserDetails.user_mobile}}"
                       },
                       {
                         "table": "tt_recharge_trans",
@@ -1289,7 +1297,7 @@
                     ],
                     "table": "tt_recharge_trans",
                     "returning": "id",
-                    "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, opening_balance, amount, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, tr_mode, tr_type, status, tr_id, reason, api_logs, is_processed, operator_ref, api_ref, revert_trans, ip_address, api_response_id, process_mode, live, tr_date, extra1, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt) VALUES (:P1 /* {{GetOpComm.operator_id}} */, :P2 /* {{GetOpComm.service_id}} */, :P3 /* {{0}} */, :P4 /* {{identity}} */, :P5 /* {{GetUserDetails.aeps_merchant_id}} */, :P6 /* {{GetUserDetails.RT_id}} */, :P7 /* {{GetUserDetails.balance_amt}} */, :P8 /* {{$_POST.WithdrawLimit}} */, :P9 /* {{GetOpComm.comm_per}} */, :P10 /* {{GetOpComm.comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetOpComm.service_charge_val}} */, :P13 /* {{GetOpComm.service_charge_per}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTNetAmt}} */, :P16 /* {{WalletNetAmt}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'SUCCESS'}} */, :P20 /* {{TransId}} */, :P21 /* {{'Self Transfer of Rs. '+$_POST.WithdrawLimit+' from AEPS Wallet to Main Wallet Balance | Comm. Amt. '+RTCommAmt+' | Charge Amt. '+RTChargeAmt+' | Net Amt. '+RTNetAmt+' | AEPS Wallet Remaining '+AEPSRemaining+' | Net Main Wallet Balance '+WalletNetAmt}} */, '0', '0', '0', '0', '0', :P22 /* {{$_SERVER.REMOTE_ADDR}} */, '0', :P23 /* {{'A2C'}} */, :P24 /* {{'Live'}} */, :P25 /* {{NOW}} */, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0')",
+                    "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, opening_balance, amount, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, tr_mode, tr_type, status, tr_id, reason, api_logs, is_processed, operator_ref, api_ref, revert_trans, ip_address, api_response_id, process_mode, live, tr_date, extra1, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt) VALUES (:P1 /* {{GetOpComm.operator_id}} */, :P2 /* {{GetOpComm.service_id}} */, :P3 /* {{0}} */, :P4 /* {{identity}} */, :P5 /* {{GetUserDetails.user_mobile}} */, :P6 /* {{GetUserDetails.RT_id}} */, :P7 /* {{GetUserDetails.balance_amt}} */, :P8 /* {{$_POST.WithdrawLimit}} */, :P9 /* {{GetOpComm.comm_per}} */, :P10 /* {{GetOpComm.comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetOpComm.service_charge_val}} */, :P13 /* {{GetOpComm.service_charge_per}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTNetAmt}} */, :P16 /* {{WalletNetAmt}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'SUCCESS'}} */, :P20 /* {{TransId}} */, :P21 /* {{'Self Transfer of Rs. '+$_POST.WithdrawLimit+' from AEPS Wallet to Main Wallet Balance | Comm. Amt. '+RTCommAmt+' | Charge Amt. '+RTChargeAmt+' | Net Amt. '+RTNetAmt+' | AEPS Wallet Remaining '+AEPSRemaining+' | Net Main Wallet Balance '+WalletNetAmt}} */, '0', '0', '0', '0', '0', :P22 /* {{$_SERVER.REMOTE_ADDR}} */, '0', :P23 /* {{'A2C'}} */, :P24 /* {{'Live'}} */, :P25 /* {{NOW}} */, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0')",
                     "params": [
                       {
                         "name": ":P1",
@@ -1314,7 +1322,7 @@
                       {
                         "name": ":P5",
                         "type": "expression",
-                        "value": "{{GetUserDetails.aeps_merchant_id}}"
+                        "value": "{{GetUserDetails.user_mobile}}"
                       },
                       {
                         "name": ":P6",

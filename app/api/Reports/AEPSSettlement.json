@@ -1,0 +1,461 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "fromdate"
+      },
+      {
+        "type": "text",
+        "name": "todate"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "GetAEPSRechTrans",
+        "module": "dbconnector",
+        "action": "paged",
+        "options": {
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tt_aeps_trans",
+                "column": "id"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "user_rt_id"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "merchant_id"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "op_bal"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "amount"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "comm_per"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "comm_val"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "comm_amt"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "charge_per"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "charge_val"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "charge_amt"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "net_amt"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "closing_bal"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "tr_mode"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "tr_type"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "status"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "tr_id"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "reason"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "api_logs"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "api_ref"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "api_response_time"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "process_mode"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "tr_date"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "raise_compain"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "bank_name"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "service_api"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "bank_acno"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "benef_name"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "benef_id"
+              },
+              {
+                "table": "m_op",
+                "column": "operator_name"
+              },
+              {
+                "table": "user",
+                "column": "user_fname"
+              }
+            ],
+            "table": {
+              "name": "tt_aeps_trans"
+            },
+            "primary": "id",
+            "joins": [
+              {
+                "table": "m_operator",
+                "column": "*",
+                "alias": "m_op",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "m_op",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "tt_aeps_trans",
+                        "column": "op_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              },
+              {
+                "table": "m_users",
+                "column": "*",
+                "alias": "user",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "user",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "tt_aeps_trans",
+                        "column": "user_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tt_aeps_trans.tr_date",
+                  "field": "tt_aeps_trans.tr_date",
+                  "type": "datetime",
+                  "operator": "between",
+                  "value": [
+                    "{{$_GET.fromdate}}",
+                    "{{$_GET.todate}}"
+                  ],
+                  "data": {
+                    "table": "tt_aeps_trans",
+                    "column": "tr_date",
+                    "type": "datetime",
+                    "columnObj": {
+                      "type": "timestamp",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "name": "tr_date"
+                    }
+                  },
+                  "operation": "BETWEEN"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT tt_aeps_trans.id, tt_aeps_trans.user_rt_id, tt_aeps_trans.merchant_id, tt_aeps_trans.op_bal, tt_aeps_trans.amount, tt_aeps_trans.comm_per, tt_aeps_trans.comm_val, tt_aeps_trans.comm_amt, tt_aeps_trans.charge_per, tt_aeps_trans.charge_val, tt_aeps_trans.charge_amt, tt_aeps_trans.net_amt, tt_aeps_trans.closing_bal, tt_aeps_trans.tr_mode, tt_aeps_trans.tr_type, tt_aeps_trans.status, tt_aeps_trans.tr_id, tt_aeps_trans.reason, tt_aeps_trans.api_logs, tt_aeps_trans.api_ref, tt_aeps_trans.api_response_time, tt_aeps_trans.process_mode, tt_aeps_trans.tr_date, tt_aeps_trans.raise_compain, tt_aeps_trans.bank_name, tt_aeps_trans.service_api, tt_aeps_trans.bank_acno, tt_aeps_trans.benef_name, tt_aeps_trans.benef_id, m_op.operator_name, user.user_fname\nFROM tt_aeps_trans\nLEFT JOIN m_operator AS m_op ON (m_op.id = tt_aeps_trans.op_id) LEFT JOIN m_users AS user ON (user.id = tt_aeps_trans.user_id)\nWHERE tt_aeps_trans.tr_date BETWEEN :P1 /* {{$_GET.fromdate}} */ AND :P2 /* {{$_GET.todate}} */",
+            "params": [
+              {
+                "operator": "between",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.fromdate}}"
+              },
+              {
+                "operator": "between",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.todate}}"
+              }
+            ]
+          },
+          "connection": "postgres_gcpServer"
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "offset",
+            "type": "number"
+          },
+          {
+            "name": "limit",
+            "type": "number"
+          },
+          {
+            "name": "total",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "type": "object",
+            "sub": [
+              {
+                "name": "offset",
+                "type": "object",
+                "sub": [
+                  {
+                    "name": "first",
+                    "type": "number"
+                  },
+                  {
+                    "name": "prev",
+                    "type": "number"
+                  },
+                  {
+                    "name": "next",
+                    "type": "number"
+                  },
+                  {
+                    "name": "last",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "current",
+                "type": "number"
+              },
+              {
+                "name": "total",
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "name": "data",
+            "type": "array",
+            "sub": [
+              {
+                "type": "number",
+                "name": "id"
+              },
+              {
+                "type": "text",
+                "name": "user_rt_id"
+              },
+              {
+                "type": "text",
+                "name": "merchant_id"
+              },
+              {
+                "type": "text",
+                "name": "op_bal"
+              },
+              {
+                "type": "text",
+                "name": "amount"
+              },
+              {
+                "type": "text",
+                "name": "comm_per"
+              },
+              {
+                "type": "text",
+                "name": "comm_val"
+              },
+              {
+                "type": "text",
+                "name": "comm_amt"
+              },
+              {
+                "type": "text",
+                "name": "charge_per"
+              },
+              {
+                "type": "text",
+                "name": "charge_val"
+              },
+              {
+                "type": "text",
+                "name": "charge_amt"
+              },
+              {
+                "type": "text",
+                "name": "net_amt"
+              },
+              {
+                "type": "text",
+                "name": "closing_bal"
+              },
+              {
+                "type": "text",
+                "name": "tr_mode"
+              },
+              {
+                "type": "text",
+                "name": "tr_type"
+              },
+              {
+                "type": "text",
+                "name": "status"
+              },
+              {
+                "type": "text",
+                "name": "tr_id"
+              },
+              {
+                "type": "text",
+                "name": "reason"
+              },
+              {
+                "type": "text",
+                "name": "api_logs"
+              },
+              {
+                "type": "text",
+                "name": "api_ref"
+              },
+              {
+                "type": "text",
+                "name": "api_response_time"
+              },
+              {
+                "type": "text",
+                "name": "process_mode"
+              },
+              {
+                "type": "datetime",
+                "name": "tr_date"
+              },
+              {
+                "type": "text",
+                "name": "raise_compain"
+              },
+              {
+                "type": "text",
+                "name": "bank_name"
+              },
+              {
+                "type": "text",
+                "name": "service_api"
+              },
+              {
+                "type": "text",
+                "name": "bank_acno"
+              },
+              {
+                "type": "text",
+                "name": "benef_name"
+              },
+              {
+                "type": "text",
+                "name": "benef_id"
+              },
+              {
+                "type": "text",
+                "name": "operator_name"
+              },
+              {
+                "type": "text",
+                "name": "user_fname"
+              }
+            ]
+          }
+        ],
+        "outputType": "object"
+      }
+    ]
+  }
+}

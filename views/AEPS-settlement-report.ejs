@@ -1,0 +1,87 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="AEPSsettlementreport" appConnect="local" components="{dmxDataTraversal:{},dmxDatePicker:{},dmxStateManagement:{},dmxBootstrap5Modal:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
+<meta name="ac:route" content="/AEPS-settlement-report">
+<!-- New Wappler Page -->
+<dmx-query-manager id="qm"></dmx-query-manager>
+<dmx-serverconnect id="scAEPSReport" url="api/Reports/AEPSSettlement" dmx-param:offset="content.qm.data.offset" dmx-param:sort="content.qm.data.sort" dmx-param:dir="content.qm.data.dir" dmx-param:fromdate="content.formPendingDate.daterange.start" dmx-param:todate="content.formPendingDate.daterange.end"></dmx-serverconnect>
+
+<dmx-data-view id="dvAEPSReport" dmx-bind:data="content.scAEPSReport.data.GetAEPSRechTrans.data" filter="(merchant_id.contains(formSearchUser.Search.value) || status.contains(formSearchUser.Search.value.uppercase()) || api_ref.contains(formSearchUser.Search.value) || id.contains(formSearchUser.Search.value) || api_log.contains(formSearchUser.Search.value))"></dmx-data-view>
+<dmx-data-detail id="ddAEPSReport" dmx-bind:data="dvAEPSReport.data" key="id"></dmx-data-detail>
+<div class="row align-items-center justify-content-between px-4 mb-3 sd-secondary-header mx-0">
+    <div class="col-12 col-md-auto me-auto ps-4">
+        <h1 class="ms-md-1 mt-md-3 text-dark fs-2 sd-fw-800 d-flex align-items-center">
+            AEPS Settlement
+            <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scAEPSReport.state.executing"></span>
+        </h1>
+    </div>
+    <div class="col-auto order-2 order-md-1 d-flex align-items-center justify-content-start justify-content-md-center px-0 px-lg-2">
+        <form id="formPendingDate">
+            <label class="sw-datepicker">
+                <span class="btn bg-light"><img src="assets/images/icons/calendar.svg" class="img-fluid" width="20px"></span>
+                <input is="dmx-date-range-picker" format="DD MMM YY" class="" placeholder="Nov 2021 - Dec 2021" id="daterange" dmx-bind:startdate="dateNow.datetime.addDays(0)" dmx-bind:enddate="dateNow.datetime.formatDate('yyyy-MM-dd 23:59:59')" autoapply="true">
+            </label>
+        </form>
+    </div>
+    <div class="col-auto order-1 order-md-3 d-flex align-items-center justify-content-center">
+        <form id="formSearchUser" class="sd-search-form">
+            <div class="d-flex justify-content-end mb-3 mb-lg-0 mb-md-0">
+                <input type="text" class="form-control sd-search-input rounded-pill" id="Search" name="Search" placeholder="Search">
+                <span class="bg-transparent btn position-absolute px-1 py-1"><i class="fas fa-search mb-1 mb-xl-0"></i></span>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="container px-4" id="Recharges">
+    <div class="card">
+        <div class="card-header sw-bg-col-primary">
+            <b>Report From {{content.formPendingDate.daterange.start.formatDate('dd MMM yyyy')}} ---- {{content.formPendingDate.daterange.end.formatDate('dd MMM yyyy')}}</b>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Trans. Id</th>
+                            <th scope="col">API Ref.</th>
+                            <th scope="col">Merchant/ Number</th>
+                            <th scope="col">Operator & Service</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Old Bal.</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Net Amt.</th>
+                            <th scope="col">New Bal.</th>
+                            <th scope="col">Tr. Name</th>
+                            <th scope="col">Tr. Type</th>
+                            <th scope="col">Tr. Date</th>
+                            <th scope="col">API</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" dmx-bind:repeat="content.dvAEPSReport.data" id="tableRepeat1" key="id">
+                        <tr>
+                            <th scope="row">{{$index+1}}</th>
+                            <td dmx-text="id"></td>
+                            <td dmx-text="api_ref"></td>
+                            <td dmx-text="merchant_id"></td>
+                            <td dmx-text="operator_name"></td>
+                            <td dmx-text="status"></td>
+                            <td dmx-text="op_bal"></td>
+                            <td dmx-text="amount"></td>
+                            <td dmx-text="net_amt"></td>
+                            <td dmx-text="closing_bal"></td>
+                            <td dmx-text="reason"></td>
+                            <td dmx-text="tr_type"></td>
+                            <td dmx-text="tr_date"></td>
+                            <td dmx-text="api_log"></td>
+                        </tr>
+                    </tbody>
+                    <tbody dmx-show="dvAEPSReport.data.length==0">
+                        <tr>
+                            <td colspan="14" class="h5 text-center text-danger">No Record Found!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

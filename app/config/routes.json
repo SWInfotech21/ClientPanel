@@ -174,11 +174,18 @@
     {
       "path": "/AEPS",
       "page": "AEPS",
-      "layout": "main"
+      "layout": "main",
+      "exec": "/api/PageAccess/PageForRT"
     },
     {
       "path": "/AEPS-Fund-Transfer",
       "page": "AEPS-Fund-Transfer",
+      "layout": "main",
+      "exec": "/api/PageAccess/UserAccess"
+    },
+    {
+      "path": "/AEPS-settlement-report",
+      "page": "AEPS-settlement-report",
       "layout": "main"
     },
     {

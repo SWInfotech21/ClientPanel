@@ -158,5 +158,9 @@
   "AEPS-Fund-Transfer.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "AEPS-settlement-report.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }
