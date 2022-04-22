@@ -41,34 +41,6 @@
           }
         },
         "name": "SelectMode"
-      },
-      {
-        "type": "text",
-        "name": "TxnID"
-      },
-      {
-        "type": "text",
-        "name": "Service"
-      },
-      {
-        "type": "text",
-        "name": "Description"
-      },
-      {
-        "type": "text",
-        "name": "RRN"
-      },
-      {
-        "type": "text",
-        "name": "Status"
-      },
-      {
-        "type": "text",
-        "name": "BankName"
-      },
-      {
-        "type": "text",
-        "name": "TxnDate"
       }
     ],
     "$_SERVER": [
