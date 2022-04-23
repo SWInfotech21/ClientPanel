@@ -415,30 +415,56 @@
                                                       "operation": "="
                                                     },
                                                     {
-                                                      "id": "android_contact.user_type",
-                                                      "field": "android_contact.user_type",
-                                                      "type": "double",
-                                                      "operator": "equal",
-                                                      "value": "{{getSalt.user_type}}",
-                                                      "data": {
-                                                        "table": "android_contact",
-                                                        "column": "user_type",
-                                                        "type": "number",
-                                                        "columnObj": {
-                                                          "type": "integer",
-                                                          "primary": false,
-                                                          "unique": false,
-                                                          "nullable": false,
-                                                          "name": "user_type"
+                                                      "condition": "OR",
+                                                      "rules": [
+                                                        {
+                                                          "id": "android_contact.user_type",
+                                                          "field": "android_contact.user_type",
+                                                          "type": "double",
+                                                          "operator": "equal",
+                                                          "value": 0,
+                                                          "data": {
+                                                            "table": "android_contact",
+                                                            "column": "user_type",
+                                                            "type": "number",
+                                                            "columnObj": {
+                                                              "type": "integer",
+                                                              "primary": false,
+                                                              "unique": false,
+                                                              "nullable": false,
+                                                              "name": "user_type"
+                                                            }
+                                                          },
+                                                          "operation": "="
+                                                        },
+                                                        {
+                                                          "id": "android_contact.user_type",
+                                                          "field": "android_contact.user_type",
+                                                          "type": "double",
+                                                          "operator": "equal",
+                                                          "value": "{{getSalt.user_type}}",
+                                                          "data": {
+                                                            "table": "android_contact",
+                                                            "column": "user_type",
+                                                            "type": "number",
+                                                            "columnObj": {
+                                                              "type": "integer",
+                                                              "primary": false,
+                                                              "unique": false,
+                                                              "nullable": false,
+                                                              "name": "user_type"
+                                                            }
+                                                          },
+                                                          "operation": "="
                                                         }
-                                                      },
-                                                      "operation": "="
+                                                      ],
+                                                      "conditional": null
                                                     }
                                                   ],
                                                   "conditional": null,
                                                   "valid": true
                                                 },
-                                                "query": "SELECT support_email1, support_mobile, sales_email2, sales_mobile1\nFROM android_contact\nWHERE status = '1' AND user_type = :P1 /* {{getSalt.user_type}} */\nORDER BY id DESC",
+                                                "query": "SELECT support_email1, support_mobile, sales_email2, sales_mobile1\nFROM android_contact\nWHERE status = '1' AND (user_type = 0 OR user_type = :P1 /* {{getSalt.user_type}} */)\nORDER BY id DESC",
                                                 "params": [
                                                   {
                                                     "operator": "equal",
@@ -451,7 +477,8 @@
                                                   {
                                                     "table": "android_contact",
                                                     "column": "id",
-                                                    "direction": "DESC"
+                                                    "direction": "DESC",
+                                                    "recid": 1
                                                   }
                                                 ]
                                               },

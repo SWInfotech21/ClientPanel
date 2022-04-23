@@ -412,26 +412,6 @@
                                                         "operation": "="
                                                       },
                                                       {
-                                                        "id": "android_sliding_image.user_type",
-                                                        "field": "android_sliding_image.user_type",
-                                                        "type": "double",
-                                                        "operator": "equal",
-                                                        "value": "{{getSalt.user_type}}",
-                                                        "data": {
-                                                          "table": "android_sliding_image",
-                                                          "column": "user_type",
-                                                          "type": "number",
-                                                          "columnObj": {
-                                                            "type": "integer",
-                                                            "primary": false,
-                                                            "unique": false,
-                                                            "nullable": true,
-                                                            "name": "user_type"
-                                                          }
-                                                        },
-                                                        "operation": "="
-                                                      },
-                                                      {
                                                         "id": "android_sliding_image.image_type",
                                                         "field": "android_sliding_image.image_type",
                                                         "type": "string",
@@ -451,24 +431,70 @@
                                                           }
                                                         },
                                                         "operation": "="
+                                                      },
+                                                      {
+                                                        "condition": "OR",
+                                                        "rules": [
+                                                          {
+                                                            "id": "android_sliding_image.user_type",
+                                                            "field": "android_sliding_image.user_type",
+                                                            "type": "double",
+                                                            "operator": "equal",
+                                                            "value": "{{getSalt.user_type}}",
+                                                            "data": {
+                                                              "table": "android_sliding_image",
+                                                              "column": "user_type",
+                                                              "type": "number",
+                                                              "columnObj": {
+                                                                "type": "integer",
+                                                                "primary": false,
+                                                                "unique": false,
+                                                                "nullable": true,
+                                                                "name": "user_type"
+                                                              }
+                                                            },
+                                                            "operation": "="
+                                                          },
+                                                          {
+                                                            "id": "android_sliding_image.user_type",
+                                                            "field": "android_sliding_image.user_type",
+                                                            "type": "double",
+                                                            "operator": "equal",
+                                                            "value": 0,
+                                                            "data": {
+                                                              "table": "android_sliding_image",
+                                                              "column": "user_type",
+                                                              "type": "number",
+                                                              "columnObj": {
+                                                                "type": "integer",
+                                                                "primary": false,
+                                                                "unique": false,
+                                                                "nullable": true,
+                                                                "name": "user_type"
+                                                              }
+                                                            },
+                                                            "operation": "="
+                                                          }
+                                                        ],
+                                                        "conditional": null
                                                       }
                                                     ],
                                                     "conditional": null,
                                                     "valid": true
                                                   },
-                                                  "query": "SELECT sliding_image\nFROM android_sliding_image\nWHERE status = 1 AND user_type = :P1 /* {{getSalt.user_type}} */ AND image_type = :P2 /* {{'Sliding Image'}} */",
+                                                  "query": "SELECT sliding_image\nFROM android_sliding_image\nWHERE status = 1 AND image_type = :P1 /* {{'Sliding Image'}} */ AND (user_type = :P2 /* {{getSalt.user_type}} */ OR user_type = 0)",
                                                   "params": [
                                                     {
                                                       "operator": "equal",
                                                       "type": "expression",
                                                       "name": ":P1",
-                                                      "value": "{{getSalt.user_type}}"
+                                                      "value": "{{'Sliding Image'}}"
                                                     },
                                                     {
                                                       "operator": "equal",
                                                       "type": "expression",
                                                       "name": ":P2",
-                                                      "value": "{{'Sliding Image'}}"
+                                                      "value": "{{getSalt.user_type}}"
                                                     }
                                                   ]
                                                 },
@@ -579,26 +605,6 @@
                                                         "operation": "="
                                                       },
                                                       {
-                                                        "id": "android_sliding_image.user_type",
-                                                        "field": "android_sliding_image.user_type",
-                                                        "type": "double",
-                                                        "operator": "equal",
-                                                        "value": "{{getSalt.user_type}}",
-                                                        "data": {
-                                                          "table": "android_sliding_image",
-                                                          "column": "user_type",
-                                                          "type": "number",
-                                                          "columnObj": {
-                                                            "type": "integer",
-                                                            "primary": false,
-                                                            "unique": false,
-                                                            "nullable": true,
-                                                            "name": "user_type"
-                                                          }
-                                                        },
-                                                        "operation": "="
-                                                      },
-                                                      {
                                                         "id": "android_sliding_image.image_type",
                                                         "field": "android_sliding_image.image_type",
                                                         "type": "string",
@@ -618,24 +624,70 @@
                                                           }
                                                         },
                                                         "operation": "="
+                                                      },
+                                                      {
+                                                        "condition": "OR",
+                                                        "rules": [
+                                                          {
+                                                            "id": "android_sliding_image.user_type",
+                                                            "field": "android_sliding_image.user_type",
+                                                            "type": "double",
+                                                            "operator": "equal",
+                                                            "value": "{{getSalt.user_type}}",
+                                                            "data": {
+                                                              "table": "android_sliding_image",
+                                                              "column": "user_type",
+                                                              "type": "number",
+                                                              "columnObj": {
+                                                                "type": "integer",
+                                                                "primary": false,
+                                                                "unique": false,
+                                                                "nullable": true,
+                                                                "name": "user_type"
+                                                              }
+                                                            },
+                                                            "operation": "="
+                                                          },
+                                                          {
+                                                            "id": "android_sliding_image.user_type",
+                                                            "field": "android_sliding_image.user_type",
+                                                            "type": "double",
+                                                            "operator": "equal",
+                                                            "value": 0,
+                                                            "data": {
+                                                              "table": "android_sliding_image",
+                                                              "column": "user_type",
+                                                              "type": "number",
+                                                              "columnObj": {
+                                                                "type": "integer",
+                                                                "primary": false,
+                                                                "unique": false,
+                                                                "nullable": true,
+                                                                "name": "user_type"
+                                                              }
+                                                            },
+                                                            "operation": "="
+                                                          }
+                                                        ],
+                                                        "conditional": null
                                                       }
                                                     ],
                                                     "conditional": null,
                                                     "valid": true
                                                   },
-                                                  "query": "SELECT sliding_image\nFROM android_sliding_image\nWHERE status = 1 AND user_type = :P1 /* {{getSalt.user_type}} */ AND image_type = :P2 /* {{'Notification'}} */",
+                                                  "query": "SELECT sliding_image\nFROM android_sliding_image\nWHERE status = 1 AND image_type = :P1 /* {{'Notification'}} */ AND (user_type = :P2 /* {{getSalt.user_type}} */ OR user_type = 0)",
                                                   "params": [
                                                     {
                                                       "operator": "equal",
                                                       "type": "expression",
                                                       "name": ":P1",
-                                                      "value": "{{getSalt.user_type}}"
+                                                      "value": "{{'Notification'}}"
                                                     },
                                                     {
                                                       "operator": "equal",
                                                       "type": "expression",
                                                       "name": ":P2",
-                                                      "value": "{{'Notification'}}"
+                                                      "value": "{{getSalt.user_type}}"
                                                     }
                                                   ]
                                                 },
