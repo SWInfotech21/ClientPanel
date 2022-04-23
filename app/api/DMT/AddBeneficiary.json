@@ -67,14 +67,6 @@
           }
         },
         "name": "BenIFSCAdd"
-      },
-      {
-        "type": "text",
-        "name": "created_by"
-      },
-      {
-        "type": "boolean",
-        "name": "ben_verify"
       }
     ]
   },
@@ -91,7 +83,8 @@
           ],
           "loginUrl": "/login",
           "forbiddenUrl": "/403-forbidden"
-        }
+        },
+        "output": false
       },
       {
         "name": "identity",
@@ -104,7 +97,7 @@
         "meta": []
       },
       {
-        "name": "GetAPIDetails",
+        "name": "GetAPIForward",
         "module": "dbconnector",
         "action": "single",
         "options": {
@@ -114,7 +107,7 @@
             "columns": [
               {
                 "table": "m_api",
-                "column": "id"
+                "column": "api_code"
               },
               {
                 "table": "m_api",
@@ -123,38 +116,80 @@
               {
                 "table": "m_api",
                 "column": "api_password"
+              },
+              {
+                "table": "m_api",
+                "column": "api_url"
               }
             ],
             "table": {
-              "name": "m_api"
+              "name": "m_api_forward"
             },
-            "joins": [],
+            "joins": [
+              {
+                "table": "m_service",
+                "column": "*",
+                "alias": "ms",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "ms",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "m_api_forward",
+                        "column": "service_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              },
+              {
+                "table": "m_api",
+                "column": "*",
+                "alias": "m_api",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "m_api",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "m_api_forward",
+                        "column": "api_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              }
+            ],
             "wheres": {
               "condition": "AND",
               "rules": [
                 {
-                  "id": "m_api.api_code",
-                  "field": "m_api.api_code",
+                  "id": "ms.service_name",
+                  "field": "ms.service_name",
                   "type": "string",
                   "operator": "equal",
-                  "value": "{{'MA'}}",
+                  "value": "{{'Money'}}",
                   "data": {
-                    "table": "m_api",
-                    "column": "api_code",
-                    "type": "text"
-                  },
-                  "operation": "="
-                },
-                {
-                  "id": "m_api.status",
-                  "field": "m_api.status",
-                  "type": "double",
-                  "operator": "equal",
-                  "value": 1,
-                  "data": {
-                    "table": "m_api",
-                    "column": "status",
-                    "type": "number"
+                    "table": "ms",
+                    "column": "service_name",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "primary": false,
+                      "nullable": false,
+                      "name": "service_name"
+                    }
                   },
                   "operation": "="
                 }
@@ -162,22 +197,22 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT id, username, api_password\nFROM m_api\nWHERE api_code = :P1 /* {{'MA'}} */ AND status = 1",
+            "query": "SELECT m_api.api_code, m_api.username, m_api.api_password, m_api.api_url\nFROM m_api_forward\nLEFT JOIN m_service AS ms ON (ms.id = m_api_forward.service_id) LEFT JOIN m_api AS m_api ON (m_api.id = m_api_forward.api_id)\nWHERE ms.service_name = :P1 /* {{'Money'}} */",
             "params": [
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P1",
-                "value": "{{'MA'}}"
+                "value": "{{'Money'}}"
               }
             ]
           }
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
-            "type": "number",
-            "name": "id"
+            "type": "text",
+            "name": "api_code"
           },
           {
             "type": "text",
@@ -186,27 +221,98 @@
           {
             "type": "text",
             "name": "api_password"
+          },
+          {
+            "type": "text",
+            "name": "api_url"
           }
         ],
         "outputType": "object"
       },
       {
-        "name": "apiAddBen",
-        "module": "api",
-        "action": "send",
+        "name": "",
+        "module": "core",
+        "action": "condition",
         "options": {
-          "url": "https://apihub.moneyart.in/AddRecipients",
-          "params": {
-            "token": "{{GetAPIDetails.api_password}}",
-            "senderId": "{{$_POST.BenSenderId}}",
-            "name": "{{$_POST.BenNameAdd}}",
-            "mobileno": "{{$_POST.BenMobileAdd}}",
-            "accountno": "{{$_POST.BenACAdd}}",
-            "ifsc": "{{$_POST.BenIFSCAdd}}"
-          },
-          "method": "POST"
+          "if": "{{GetAPIForward.api_code=='DMEP'}}",
+          "then": {
+            "steps": [
+              {
+                "name": "MessageCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "E06003"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "AuthCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{GetAPIForward.api_password}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "ReqId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{NOW.md5(123456).substr(1, 9)}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "api",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "url": "{{GetAPIForward.api_url}}",
+                  "method": "POST",
+                  "params": {
+                    "msg": ""
+                  }
+                },
+                "output": true
+              }
+            ]
+          }
         },
-        "output": true
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{GetAPIForward.api_code=='MA'}}",
+          "then": {
+            "steps": {
+              "name": "apiAddBen",
+              "module": "api",
+              "action": "send",
+              "options": {
+                "url": "https://apihub.moneyart.in/AddRecipients",
+                "params": {
+                  "token": "{{GetAPIDetails.api_password}}",
+                  "senderId": "{{$_POST.BenSenderId}}",
+                  "name": "{{$_POST.BenNameAdd}}",
+                  "mobileno": "{{$_POST.BenMobileAdd}}",
+                  "accountno": "{{$_POST.BenACAdd}}",
+                  "ifsc": "{{$_POST.BenIFSCAdd}}"
+                },
+                "method": "POST"
+              },
+              "output": true
+            }
+          }
+        },
+        "outputType": "boolean"
       },
       {
         "name": "",
@@ -355,7 +461,8 @@
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "disabled": true
       }
     ]
   }

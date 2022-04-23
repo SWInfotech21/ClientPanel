@@ -1,0 +1,798 @@
+{
+  "meta": {
+    "options": {
+      "linkedForm": "formLogin"
+    },
+    "$_GET": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "username"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "password"
+      },
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "trycatch",
+      "options": {
+        "try": {
+          "steps": [
+            {
+              "name": "getSalt",
+              "module": "dbconnector",
+              "action": "single",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "m_users",
+                      "column": "salt",
+                      "alias": "saltvalue"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_tpin"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "md_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "ds_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_type"
+                    }
+                  ],
+                  "table": {
+                    "name": "m_users"
+                  },
+                  "joins": [],
+                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id, user_type\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_GET.username}} */",
+                  "params": [
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P1",
+                      "value": "{{$_GET.username}}"
+                    }
+                  ],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "m_users.user_type",
+                        "field": "m_users.user_type",
+                        "type": "double",
+                        "operator": "between",
+                        "value": [
+                          1,
+                          3
+                        ],
+                        "data": {
+                          "table": "m_users",
+                          "column": "user_type",
+                          "type": "number"
+                        },
+                        "operation": "BETWEEN"
+                      },
+                      {
+                        "id": "m_users.u_status",
+                        "field": "m_users.u_status",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "1",
+                        "data": {
+                          "table": "m_users",
+                          "column": "u_status",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "m_users.blank2",
+                        "field": "m_users.blank2",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "{{$_GET.username}}",
+                        "data": {
+                          "table": "m_users",
+                          "column": "blank2",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  },
+                  "primary": "id"
+                }
+              },
+              "output": false,
+              "meta": [
+                {
+                  "type": "text",
+                  "name": "saltvalue"
+                },
+                {
+                  "type": "text",
+                  "name": "user_tpin"
+                },
+                {
+                  "type": "number",
+                  "name": "id"
+                },
+                {
+                  "type": "text",
+                  "name": "md_id"
+                },
+                {
+                  "type": "text",
+                  "name": "ds_id"
+                },
+                {
+                  "type": "number",
+                  "name": "user_type"
+                }
+              ],
+              "outputType": "object"
+            },
+            {
+              "name": "",
+              "module": "core",
+              "action": "condition",
+              "options": {
+                "if": "{{getSalt.saltvalue}}",
+                "then": {
+                  "steps": [
+                    {
+                      "name": "GetMdt",
+                      "module": "dbconnector",
+                      "action": "single",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "m_users",
+                              "column": "id",
+                              "alias": "countmdt",
+                              "aggregate": "COUNT"
+                            }
+                          ],
+                          "table": {
+                            "name": "m_users"
+                          },
+                          "joins": [],
+                          "groupBy": [],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "m_users.id",
+                                "field": "m_users.id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{getSalt.md_id.toNumber()}}",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "id",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "m_users.u_status",
+                                "field": "m_users.u_status",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "1",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "u_status",
+                                  "type": "text"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{getSalt.md_id.toNumber()}}"
+                            }
+                          ]
+                        }
+                      },
+                      "output": false,
+                      "meta": [
+                        {
+                          "type": "number",
+                          "name": "countmdt"
+                        }
+                      ],
+                      "outputType": "object"
+                    },
+                    {
+                      "name": "",
+                      "module": "core",
+                      "action": "condition",
+                      "options": {
+                        "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
+                        "then": {
+                          "steps": [
+                            {
+                              "name": "GetDt",
+                              "module": "dbconnector",
+                              "action": "single",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "SELECT",
+                                  "columns": [
+                                    {
+                                      "table": "m_users",
+                                      "column": "id",
+                                      "alias": "countdt",
+                                      "aggregate": "COUNT"
+                                    }
+                                  ],
+                                  "table": {
+                                    "name": "m_users"
+                                  },
+                                  "joins": [],
+                                  "groupBy": [],
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "m_users.id",
+                                        "field": "m_users.id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{getSalt.ds_id.toNumber()}}",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      },
+                                      {
+                                        "id": "m_users.u_status",
+                                        "field": "m_users.u_status",
+                                        "type": "string",
+                                        "operator": "equal",
+                                        "value": "1",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "u_status",
+                                          "type": "text"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
+                                  "params": [
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P1",
+                                      "value": "{{getSalt.ds_id.toNumber()}}"
+                                    }
+                                  ]
+                                }
+                              },
+                              "output": false,
+                              "meta": [
+                                {
+                                  "type": "number",
+                                  "name": "countdt"
+                                }
+                              ],
+                              "outputType": "object"
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
+                                "then": {
+                                  "steps": [
+                                    {
+                                      "name": "identity",
+                                      "module": "auth",
+                                      "action": "login",
+                                      "options": {
+                                        "provider": "securityAndroid",
+                                        "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
+                                        "username": "{{$_GET.username}}",
+                                        "remember": ""
+                                      },
+                                      "output": false,
+                                      "meta": []
+                                    },
+                                    {
+                                      "name": "",
+                                      "module": "core",
+                                      "action": "condition",
+                                      "options": {
+                                        "if": "{{identity}}",
+                                        "then": {
+                                          "steps": [
+                                            {
+                                              "name": "GetSlidingImages",
+                                              "module": "dbconnector",
+                                              "action": "paged",
+                                              "options": {
+                                                "sql": {
+                                                  "type": "SELECT",
+                                                  "columns": [
+                                                    {
+                                                      "table": "android_sliding_image",
+                                                      "column": "sliding_image"
+                                                    }
+                                                  ],
+                                                  "table": {
+                                                    "name": "android_sliding_image"
+                                                  },
+                                                  "joins": [],
+                                                  "primary": "id",
+                                                  "wheres": {
+                                                    "condition": "AND",
+                                                    "rules": [
+                                                      {
+                                                        "id": "android_sliding_image.status",
+                                                        "field": "android_sliding_image.status",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": 1,
+                                                        "data": {
+                                                          "table": "android_sliding_image",
+                                                          "column": "status",
+                                                          "type": "number",
+                                                          "columnObj": {
+                                                            "type": "integer",
+                                                            "primary": false,
+                                                            "unique": false,
+                                                            "nullable": true,
+                                                            "name": "status"
+                                                          }
+                                                        },
+                                                        "operation": "="
+                                                      },
+                                                      {
+                                                        "id": "android_sliding_image.user_type",
+                                                        "field": "android_sliding_image.user_type",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": "{{getSalt.user_type}}",
+                                                        "data": {
+                                                          "table": "android_sliding_image",
+                                                          "column": "user_type",
+                                                          "type": "number",
+                                                          "columnObj": {
+                                                            "type": "integer",
+                                                            "primary": false,
+                                                            "unique": false,
+                                                            "nullable": true,
+                                                            "name": "user_type"
+                                                          }
+                                                        },
+                                                        "operation": "="
+                                                      },
+                                                      {
+                                                        "id": "android_sliding_image.image_type",
+                                                        "field": "android_sliding_image.image_type",
+                                                        "type": "string",
+                                                        "operator": "equal",
+                                                        "value": "{{'Sliding Image'}}",
+                                                        "data": {
+                                                          "table": "android_sliding_image",
+                                                          "column": "image_type",
+                                                          "type": "text",
+                                                          "columnObj": {
+                                                            "type": "string",
+                                                            "maxLength": -5,
+                                                            "primary": false,
+                                                            "unique": false,
+                                                            "nullable": true,
+                                                            "name": "image_type"
+                                                          }
+                                                        },
+                                                        "operation": "="
+                                                      }
+                                                    ],
+                                                    "conditional": null,
+                                                    "valid": true
+                                                  },
+                                                  "query": "SELECT sliding_image\nFROM android_sliding_image\nWHERE status = 1 AND user_type = :P1 /* {{getSalt.user_type}} */ AND image_type = :P2 /* {{'Sliding Image'}} */",
+                                                  "params": [
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P1",
+                                                      "value": "{{getSalt.user_type}}"
+                                                    },
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P2",
+                                                      "value": "{{'Sliding Image'}}"
+                                                    }
+                                                  ]
+                                                },
+                                                "connection": "postgres_gcpServer"
+                                              },
+                                              "output": true,
+                                              "meta": [
+                                                {
+                                                  "name": "offset",
+                                                  "type": "number"
+                                                },
+                                                {
+                                                  "name": "limit",
+                                                  "type": "number"
+                                                },
+                                                {
+                                                  "name": "total",
+                                                  "type": "number"
+                                                },
+                                                {
+                                                  "name": "page",
+                                                  "type": "object",
+                                                  "sub": [
+                                                    {
+                                                      "name": "offset",
+                                                      "type": "object",
+                                                      "sub": [
+                                                        {
+                                                          "name": "first",
+                                                          "type": "number"
+                                                        },
+                                                        {
+                                                          "name": "prev",
+                                                          "type": "number"
+                                                        },
+                                                        {
+                                                          "name": "next",
+                                                          "type": "number"
+                                                        },
+                                                        {
+                                                          "name": "last",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "name": "current",
+                                                      "type": "number"
+                                                    },
+                                                    {
+                                                      "name": "total",
+                                                      "type": "number"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "name": "data",
+                                                  "type": "array",
+                                                  "sub": [
+                                                    {
+                                                      "type": "text",
+                                                      "name": "sliding_image"
+                                                    }
+                                                  ]
+                                                }
+                                              ],
+                                              "outputType": "object"
+                                            },
+                                            {
+                                              "name": "GetNotifImages",
+                                              "module": "dbconnector",
+                                              "action": "paged",
+                                              "options": {
+                                                "sql": {
+                                                  "type": "SELECT",
+                                                  "columns": [
+                                                    {
+                                                      "table": "android_sliding_image",
+                                                      "column": "sliding_image"
+                                                    }
+                                                  ],
+                                                  "table": {
+                                                    "name": "android_sliding_image"
+                                                  },
+                                                  "joins": [],
+                                                  "primary": "id",
+                                                  "wheres": {
+                                                    "condition": "AND",
+                                                    "rules": [
+                                                      {
+                                                        "id": "android_sliding_image.status",
+                                                        "field": "android_sliding_image.status",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": 1,
+                                                        "data": {
+                                                          "table": "android_sliding_image",
+                                                          "column": "status",
+                                                          "type": "number",
+                                                          "columnObj": {
+                                                            "type": "integer",
+                                                            "primary": false,
+                                                            "unique": false,
+                                                            "nullable": true,
+                                                            "name": "status"
+                                                          }
+                                                        },
+                                                        "operation": "="
+                                                      },
+                                                      {
+                                                        "id": "android_sliding_image.user_type",
+                                                        "field": "android_sliding_image.user_type",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": "{{getSalt.user_type}}",
+                                                        "data": {
+                                                          "table": "android_sliding_image",
+                                                          "column": "user_type",
+                                                          "type": "number",
+                                                          "columnObj": {
+                                                            "type": "integer",
+                                                            "primary": false,
+                                                            "unique": false,
+                                                            "nullable": true,
+                                                            "name": "user_type"
+                                                          }
+                                                        },
+                                                        "operation": "="
+                                                      },
+                                                      {
+                                                        "id": "android_sliding_image.image_type",
+                                                        "field": "android_sliding_image.image_type",
+                                                        "type": "string",
+                                                        "operator": "equal",
+                                                        "value": "{{'Notification'}}",
+                                                        "data": {
+                                                          "table": "android_sliding_image",
+                                                          "column": "image_type",
+                                                          "type": "text",
+                                                          "columnObj": {
+                                                            "type": "string",
+                                                            "maxLength": -5,
+                                                            "primary": false,
+                                                            "unique": false,
+                                                            "nullable": true,
+                                                            "name": "image_type"
+                                                          }
+                                                        },
+                                                        "operation": "="
+                                                      }
+                                                    ],
+                                                    "conditional": null,
+                                                    "valid": true
+                                                  },
+                                                  "query": "SELECT sliding_image\nFROM android_sliding_image\nWHERE status = 1 AND user_type = :P1 /* {{getSalt.user_type}} */ AND image_type = :P2 /* {{'Notification'}} */",
+                                                  "params": [
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P1",
+                                                      "value": "{{getSalt.user_type}}"
+                                                    },
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P2",
+                                                      "value": "{{'Notification'}}"
+                                                    }
+                                                  ]
+                                                },
+                                                "connection": "postgres_gcpServer"
+                                              },
+                                              "output": true,
+                                              "meta": [
+                                                {
+                                                  "name": "offset",
+                                                  "type": "number"
+                                                },
+                                                {
+                                                  "name": "limit",
+                                                  "type": "number"
+                                                },
+                                                {
+                                                  "name": "total",
+                                                  "type": "number"
+                                                },
+                                                {
+                                                  "name": "page",
+                                                  "type": "object",
+                                                  "sub": [
+                                                    {
+                                                      "name": "offset",
+                                                      "type": "object",
+                                                      "sub": [
+                                                        {
+                                                          "name": "first",
+                                                          "type": "number"
+                                                        },
+                                                        {
+                                                          "name": "prev",
+                                                          "type": "number"
+                                                        },
+                                                        {
+                                                          "name": "next",
+                                                          "type": "number"
+                                                        },
+                                                        {
+                                                          "name": "last",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "name": "current",
+                                                      "type": "number"
+                                                    },
+                                                    {
+                                                      "name": "total",
+                                                      "type": "number"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "name": "data",
+                                                  "type": "array",
+                                                  "sub": [
+                                                    {
+                                                      "type": "text",
+                                                      "name": "sliding_image"
+                                                    }
+                                                  ]
+                                                }
+                                              ],
+                                              "outputType": "object"
+                                            }
+                                          ]
+                                        },
+                                        "else": {
+                                          "steps": {
+                                            "name": "Resp",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                              "value": "Password Mismatched"
+                                            },
+                                            "meta": [],
+                                            "output": true,
+                                            "outputType": "text"
+                                          }
+                                        }
+                                      },
+                                      "outputType": "boolean"
+                                    }
+                                  ]
+                                },
+                                "else": {
+                                  "steps": {
+                                    "name": "Resp",
+                                    "module": "core",
+                                    "action": "setvalue",
+                                    "options": {
+                                      "value": "Your Distributor(DT) inactive, Please contact technical support team"
+                                    },
+                                    "meta": [],
+                                    "outputType": "text",
+                                    "output": true
+                                  }
+                                }
+                              },
+                              "outputType": "boolean"
+                            }
+                          ]
+                        },
+                        "else": {
+                          "steps": {
+                            "name": "Resp",
+                            "module": "core",
+                            "action": "setvalue",
+                            "options": {
+                              "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                            },
+                            "meta": [],
+                            "output": true,
+                            "outputType": "text"
+                          }
+                        }
+                      },
+                      "outputType": "boolean"
+                    }
+                  ]
+                },
+                "else": {
+                  "steps": {
+                    "name": "Resp",
+                    "module": "core",
+                    "action": "setvalue",
+                    "options": {
+                      "value": "User does not exists or user inactive, Please contact technical support team"
+                    },
+                    "meta": [],
+                    "outputType": "text",
+                    "output": true
+                  }
+                }
+              },
+              "outputType": "boolean",
+              "output": false
+            }
+          ]
+        },
+        "catch": {
+          "steps": {
+            "name": "Resp",
+            "module": "core",
+            "action": "setvalue",
+            "options": {
+              "value": "Do not even try to do this, we are watching & recording your wrong activity!"
+            },
+            "meta": [],
+            "output": true,
+            "outputType": "text"
+          }
+        }
+      }
+    }
+  }
+}

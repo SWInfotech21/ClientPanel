@@ -36,50 +36,252 @@
         }
       },
       {
-        "name": "apiGetBeneficiary",
-        "module": "api",
-        "action": "send",
+        "name": "GetAPIForward",
+        "module": "dbconnector",
+        "action": "single",
         "options": {
-          "url": "https://apihub.moneyart.in/ValidateRemitter",
-          "params": {
-            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
-            "mobileNo": "{{$_POST.CustMobile}}"
-          },
-          "method": "POST"
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_api",
+                "column": "api_code"
+              },
+              {
+                "table": "m_api",
+                "column": "username"
+              },
+              {
+                "table": "m_api",
+                "column": "api_password"
+              },
+              {
+                "table": "m_api",
+                "column": "api_url"
+              }
+            ],
+            "table": {
+              "name": "m_api_forward"
+            },
+            "joins": [
+              {
+                "table": "m_service",
+                "column": "*",
+                "alias": "ms",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "ms",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "m_api_forward",
+                        "column": "service_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              },
+              {
+                "table": "m_api",
+                "column": "*",
+                "alias": "m_api",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "m_api",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "m_api_forward",
+                        "column": "api_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "ms.service_name",
+                  "field": "ms.service_name",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{'Money'}}",
+                  "data": {
+                    "table": "ms",
+                    "column": "service_name",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "primary": false,
+                      "nullable": false,
+                      "name": "service_name"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT m_api.api_code, m_api.username, m_api.api_password, m_api.api_url\nFROM m_api_forward\nLEFT JOIN m_service AS ms ON (ms.id = m_api_forward.service_id) LEFT JOIN m_api AS m_api ON (m_api.id = m_api_forward.api_id)\nWHERE ms.service_name = :P1 /* {{'Money'}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{'Money'}}"
+              }
+            ]
+          }
         },
-        "output": true
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "api_code"
+          },
+          {
+            "type": "text",
+            "name": "username"
+          },
+          {
+            "type": "text",
+            "name": "api_password"
+          },
+          {
+            "type": "text",
+            "name": "api_url"
+          }
+        ],
+        "outputType": "object"
       },
       {
         "name": "",
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{apiGetBeneficiary.data.StatusCode==2}}",
+          "if": "{{GetAPIForward.api_code=='MA'}}",
           "then": {
             "steps": [
               {
-                "name": "api",
+                "name": "apiGetBeneficiary",
                 "module": "api",
                 "action": "send",
                 "options": {
-                  "url": "https://apihub.moneyart.in/RemitterSendOtp",
+                  "url": "https://apihub.moneyart.in/ValidateRemitter",
                   "params": {
                     "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
                     "mobileNo": "{{$_POST.CustMobile}}"
                   },
                   "method": "POST"
                 },
-                "output": false
+                "output": true
               },
               {
-                "name": "apiRemOTP",
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{apiGetBeneficiary.data.StatusCode==2}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "api",
+                        "module": "api",
+                        "action": "send",
+                        "options": {
+                          "url": "https://apihub.moneyart.in/RemitterSendOtp",
+                          "params": {
+                            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+                            "mobileNo": "{{$_POST.CustMobile}}"
+                          },
+                          "method": "POST"
+                        },
+                        "output": false
+                      },
+                      {
+                        "name": "apiRemOTP",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{api.data}}"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": true
+                      }
+                    ]
+                  }
+                },
+                "outputType": "boolean"
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{GetAPIForward.api_code=='DMEP'}}",
+          "then": {
+            "steps": [
+              {
+                "name": "MessageCode",
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{api.data}}"
+                  "value": "E06011"
                 },
                 "meta": [],
-                "outputType": "text",
+                "outputType": "text"
+              },
+              {
+                "name": "AuthCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{GetAPIForward.api_password}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "ReqId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{NOW.md5(123456).substr(1, 9)}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "api",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
+                  "params": {
+                    "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.CustMobile+'~0~0'}}"
+                  },
+                  "method": "POST"
+                },
                 "output": true
               }
             ]
