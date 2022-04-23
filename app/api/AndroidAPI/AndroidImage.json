@@ -412,27 +412,6 @@
                                                         "operation": "="
                                                       },
                                                       {
-                                                        "id": "android_sliding_image.image_type",
-                                                        "field": "android_sliding_image.image_type",
-                                                        "type": "string",
-                                                        "operator": "equal",
-                                                        "value": "{{'Sliding Image'}}",
-                                                        "data": {
-                                                          "table": "android_sliding_image",
-                                                          "column": "image_type",
-                                                          "type": "text",
-                                                          "columnObj": {
-                                                            "type": "string",
-                                                            "maxLength": -5,
-                                                            "primary": false,
-                                                            "unique": false,
-                                                            "nullable": true,
-                                                            "name": "image_type"
-                                                          }
-                                                        },
-                                                        "operation": "="
-                                                      },
-                                                      {
                                                         "condition": "OR",
                                                         "rules": [
                                                           {
@@ -477,24 +456,72 @@
                                                           }
                                                         ],
                                                         "conditional": null
+                                                      },
+                                                      {
+                                                        "condition": "OR",
+                                                        "rules": [
+                                                          {
+                                                            "id": "android_sliding_image.image_type",
+                                                            "field": "android_sliding_image.image_type",
+                                                            "type": "string",
+                                                            "operator": "equal",
+                                                            "value": "0",
+                                                            "data": {
+                                                              "table": "android_sliding_image",
+                                                              "column": "image_type",
+                                                              "type": "text",
+                                                              "columnObj": {
+                                                                "type": "string",
+                                                                "maxLength": -5,
+                                                                "primary": false,
+                                                                "unique": false,
+                                                                "nullable": true,
+                                                                "name": "image_type"
+                                                              }
+                                                            },
+                                                            "operation": "="
+                                                          },
+                                                          {
+                                                            "id": "android_sliding_image.image_type",
+                                                            "field": "android_sliding_image.image_type",
+                                                            "type": "string",
+                                                            "operator": "equal",
+                                                            "value": "{{'Sliding Image'}}",
+                                                            "data": {
+                                                              "table": "android_sliding_image",
+                                                              "column": "image_type",
+                                                              "type": "text",
+                                                              "columnObj": {
+                                                                "type": "string",
+                                                                "maxLength": -5,
+                                                                "primary": false,
+                                                                "unique": false,
+                                                                "nullable": true,
+                                                                "name": "image_type"
+                                                              }
+                                                            },
+                                                            "operation": "="
+                                                          }
+                                                        ],
+                                                        "conditional": null
                                                       }
                                                     ],
                                                     "conditional": null,
                                                     "valid": true
                                                   },
-                                                  "query": "SELECT sliding_image\nFROM android_sliding_image\nWHERE status = 1 AND image_type = :P1 /* {{'Sliding Image'}} */ AND (user_type = :P2 /* {{getSalt.user_type}} */ OR user_type = 0)",
+                                                  "query": "SELECT sliding_image\nFROM android_sliding_image\nWHERE status = 1 AND (user_type = :P1 /* {{getSalt.user_type}} */ OR user_type = 0) AND (image_type = '0' OR image_type = :P2 /* {{'Sliding Image'}} */)",
                                                   "params": [
                                                     {
                                                       "operator": "equal",
                                                       "type": "expression",
                                                       "name": ":P1",
-                                                      "value": "{{'Sliding Image'}}"
+                                                      "value": "{{getSalt.user_type}}"
                                                     },
                                                     {
                                                       "operator": "equal",
                                                       "type": "expression",
                                                       "name": ":P2",
-                                                      "value": "{{getSalt.user_type}}"
+                                                      "value": "{{'Sliding Image'}}"
                                                     }
                                                   ]
                                                 },
@@ -605,27 +632,6 @@
                                                         "operation": "="
                                                       },
                                                       {
-                                                        "id": "android_sliding_image.image_type",
-                                                        "field": "android_sliding_image.image_type",
-                                                        "type": "string",
-                                                        "operator": "equal",
-                                                        "value": "{{'Notification'}}",
-                                                        "data": {
-                                                          "table": "android_sliding_image",
-                                                          "column": "image_type",
-                                                          "type": "text",
-                                                          "columnObj": {
-                                                            "type": "string",
-                                                            "maxLength": -5,
-                                                            "primary": false,
-                                                            "unique": false,
-                                                            "nullable": true,
-                                                            "name": "image_type"
-                                                          }
-                                                        },
-                                                        "operation": "="
-                                                      },
-                                                      {
                                                         "condition": "OR",
                                                         "rules": [
                                                           {
@@ -670,24 +676,72 @@
                                                           }
                                                         ],
                                                         "conditional": null
+                                                      },
+                                                      {
+                                                        "condition": "OR",
+                                                        "rules": [
+                                                          {
+                                                            "id": "android_sliding_image.image_type",
+                                                            "field": "android_sliding_image.image_type",
+                                                            "type": "string",
+                                                            "operator": "equal",
+                                                            "value": "0",
+                                                            "data": {
+                                                              "table": "android_sliding_image",
+                                                              "column": "image_type",
+                                                              "type": "text",
+                                                              "columnObj": {
+                                                                "type": "string",
+                                                                "maxLength": -5,
+                                                                "primary": false,
+                                                                "unique": false,
+                                                                "nullable": true,
+                                                                "name": "image_type"
+                                                              }
+                                                            },
+                                                            "operation": "="
+                                                          },
+                                                          {
+                                                            "id": "android_sliding_image.image_type",
+                                                            "field": "android_sliding_image.image_type",
+                                                            "type": "string",
+                                                            "operator": "equal",
+                                                            "value": "{{'Notification'}}",
+                                                            "data": {
+                                                              "table": "android_sliding_image",
+                                                              "column": "image_type",
+                                                              "type": "text",
+                                                              "columnObj": {
+                                                                "type": "string",
+                                                                "maxLength": -5,
+                                                                "primary": false,
+                                                                "unique": false,
+                                                                "nullable": true,
+                                                                "name": "image_type"
+                                                              }
+                                                            },
+                                                            "operation": "="
+                                                          }
+                                                        ],
+                                                        "conditional": null
                                                       }
                                                     ],
                                                     "conditional": null,
                                                     "valid": true
                                                   },
-                                                  "query": "SELECT sliding_image\nFROM android_sliding_image\nWHERE status = 1 AND image_type = :P1 /* {{'Notification'}} */ AND (user_type = :P2 /* {{getSalt.user_type}} */ OR user_type = 0)",
+                                                  "query": "SELECT sliding_image\nFROM android_sliding_image\nWHERE status = 1 AND (user_type = :P1 /* {{getSalt.user_type}} */ OR user_type = 0) AND (image_type = '0' OR image_type = :P2 /* {{'Notification'}} */)",
                                                   "params": [
                                                     {
                                                       "operator": "equal",
                                                       "type": "expression",
                                                       "name": ":P1",
-                                                      "value": "{{'Notification'}}"
+                                                      "value": "{{getSalt.user_type}}"
                                                     },
                                                     {
                                                       "operator": "equal",
                                                       "type": "expression",
                                                       "name": ":P2",
-                                                      "value": "{{getSalt.user_type}}"
+                                                      "value": "{{'Notification'}}"
                                                     }
                                                   ]
                                                 },
