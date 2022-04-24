@@ -40,7 +40,7 @@
             <div class="col-md-2 col-sm-3 col-4 pb-3">
                 <div class="sw-card-pay text-center" dmx-on:click="dsAppInfo.clear();varTab.setValue('Operator');dsAppInfo.insert({servicesName: service_name, servicesId: services_id, servicesIndex: $index})" dmx-class:card-fastag="service_name=='FasTag'">
                     <div class="card-header border-0 bg-transparent px-0">
-                        <img class="sw-img-location" dmx-bind:src="'https://portal.swpay.in'+content.scServiceBBPS.data.All[$index].service_type" dmx-class:fastag="service_name=='FasTag'">
+                        <img class="sw-img-location sw-img-render" dmx-bind:src="'https://portal.swpay.in'+content.scServiceBBPS.data.All[$index].service_type" dmx-class:fastag="service_name=='FasTag'">
                     </div>
                     <div class="card-body px-0">
                         <p class="card-title text-primary mb-2 fs-5 sw-font-monospace">{{service_name}}</p>
@@ -62,7 +62,7 @@
         <div id="repeatOperators" class="d-flex justify-content-between flex-wrap flex-row align-content-start align-items-end w-100" is="dmx-repeat" dmx-bind:repeat="content.crOperator.inputSearchOperator.value ? content.scServiceBBPS.data.All[dsAppInfo.data[0].servicesIndex].op.where(`operator_name.lowercase()`, content.crOperator.inputSearchOperator.value.lowercase(), 'contains') : content.scServiceBBPS.data.All[dsAppInfo.data[0].servicesIndex].op" key="op_id" dmx-show="varTab.value == 'Operator'">
             <div class="col-12 col-md-6 my-2 px-2">
                 <div class="sw-doc border d-flex sw-mouse-pointer w-100 align-items-center p-2" dmx-on:click="varTab.setValue('CustomerInfo');dsAppInfo.update({$id: 1},{op_id: op_id, Operator: operator_name, OperatorIndex: $index, OperatorPic: op_image});">
-                    <img class="sw-avatar" dmx-bind:src="'https://portal.swpay.in'+op_image" height="72" width="72">
+                    <img class="sw-avatar sw-img-render" dmx-bind:src="'https://portal.swpay.in'+op_image" height="72" width="72">
                     <div class="ml-3 d-flex flex-column justify-content-start">
                         <h5>{{operator_name}}</h5>
                         <p class="sw-doc-specialty sw-font-14 m-0">{{content.dsAppInfo.data[0].servicesName}}</p>
@@ -81,7 +81,7 @@
             <div class="col-12 col-md-12 px-0">
                 <div class="mb-3">
                     <div class="d-flex w-100 align-items-center p-3 sw-patient-card-header flex-wrap">
-                        <img class="sw-avatar" dmx-bind:src="'https://portal.swpay.in/'+content.dsAppInfo.data[0].OperatorPic" height="72" width="auto">
+                        <img class="sw-avatar sw-img-render" dmx-bind:src="'https://portal.swpay.in/'+content.dsAppInfo.data[0].OperatorPic" height="72" width="auto">
                         <div class="d-flex flex-column justify-content-start pl-3">
                             <h5 class="mb-2 font-weight-bold">
                                 {{content.dsAppInfo.data[0].Operator}}
@@ -138,7 +138,7 @@
 
         <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100" dmx-show="(content.scFetchBill.data.api.data.status == 2 || content.scFetchBill.data.api.data.status == 1 ) && !scFetchBill.state.executing">
             <div class="d-flex w-100 align-items-center p-3 sw-patient-card-header">
-                <img class="sw-avatar" src="assets/images/icons/user-icon.png" height="72" width="72">
+                <img class="sw-avatar sw-img-render" src="assets/images/icons/user-icon.png" height="72" width="72">
                 <div class="d-flex flex-column justify-content-start pl-3">
                     <h5 class="mb-2 font-weight-bold">
                         {{content.scFetchBill.data.api.data.customername}}
@@ -179,7 +179,7 @@
         </div>
         <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100" dmx-show="content.scFetchBill.data.api.data.status == 3 && !scFetchBill.state.executing">
             <div class="d-flex w-100 align-items-center p-3 sw-patient-card-header">
-                <img class="sw-avatar" src="assets/images/icons/user-icon.svg" height="72" width="72">
+                <img class="sw-avatar sw-img-render" src="assets/images/icons/user-icon.svg" height="72" width="72">
                 <div class="d-flex flex-column justify-content-start pl-3">
                     <h5 class="mb-2 font-weight-bold">
                         {{content.scFetchBill.data.api.data.account}}
@@ -289,7 +289,7 @@
             <div class="modal-body">
                 <div class="row mx-0" dmx-show="content.crPayment.formAddBillPayment.data.apistatus == 'SUCCESS' || content.crPayment.formAddBillPayment.data.apistatus == 'PENDING' ">
                     <div class="col text-center">
-                        <img src="assets/images/mark-success.gif" height="130">
+                        <img src="assets/images/mark-success.gif" height="130" class="sw-img-render">
                         <p class="font-weight-bolder sw-font-20">Payment Success</p>
                         <p class="sw-font-14">You can print the receipt from by clicking print button.</p>
                         <p class="sw-font-14">Remarks: {{content.crPayment.formAddBillPayment.data.remarks}}</p>
@@ -297,7 +297,7 @@
                 </div>
                 <div class="row mx-0" dmx-show="content.crPayment.formAddBillPayment.data.apistatus == 'FAILED' ">
                     <div class="col text-center">
-                        <img src="assets/images/mark-failure.gif" height="130">
+                        <img src="assets/images/mark-failure.gif" height="130" class="sw-img-render">
                         <p class="font-weight-bolder sw-font-20">Failed!</p>
                         <p class="sw-font-14">Remarks: {{content.crPayment.formAddBillPayment.data.remarks}}</p>
                     </div>
@@ -306,7 +306,7 @@
                     <div class="col-md-12">
                         <div class="align-items-center d-flex px-2 py-1 sw-doctor">
                             <div class="flex-column px-2">
-                                <img dmx-bind:src="'https://portal.swpay.in/'+content.dsAppInfo.data[0].OperatorPic" width="60" class="sw-avatar">
+                                <img dmx-bind:src="'https://portal.swpay.in/'+content.dsAppInfo.data[0].OperatorPic" width="60" class="sw-avatar sw-img-render">
                             </div>
                             <div class="flex-column px-2">
                                 <p class="sw-font-14 sw-font-weight-600 mb-1 text-secondary">

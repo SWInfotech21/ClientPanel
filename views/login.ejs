@@ -36,7 +36,7 @@
     <div class="forms-container">
         <div class="signin-signup">
             <!--Sign in form-->
-            <form id="formLogin" class="sign-in-form" is="dmx-serverconnect-form" method="post" action="api/Users/login" dmx-on:success="browser1.goto('AEPS-settlement-report')" dmx-on:unauthorized="varInvalidLogin.setValue(1);formLogin.reset;" dmx-on:forbidden="Notification.danger(lastError.response)">
+            <form id="formLogin" class="sign-in-form" is="dmx-serverconnect-form" method="post" action="api/Users/login" dmx-on:success="browser1.goto('dashboard')" dmx-on:unauthorized="varInvalidLogin.setValue(1);formLogin.reset;" dmx-on:forbidden="Notification.danger(lastError.response)">
                 <h2 class="title">Log In</h2>
                 <div class="input-field">
                     <i class="fas fa-user"></i>

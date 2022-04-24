@@ -149,19 +149,20 @@
                             <div class="text-light py-1 ml-3">User Id: {{scLoginUser.data.LoginUserInfo.user_id}}</div>
                             <div class="text-light py-1 ml-3">{{scLoginUser.data.LoginUserInfo.user_fname}}</div>
                             <div class="text-light py-1 ml-3">{{scLoginUser.data.LoginUserInfo.user_mobile}}</div>
-
-
-                            <div class="sb-sidenav-menu-heading">Core</div>
+                            <div class="sb-sidenav-menu-heading">Explore</div>
                             <a class="nav-link" href="dashboard">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
-                            </a><a class="nav-link" href="/api-token" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 5">
+                            </a>
+                            <a class="nav-link" href="/api-token" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 5">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tram"></i></div>
                                 API Token
-                            </a><a class="nav-link" href="assets/API%20Document%20SW%20PAY.pdf" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 5" target="_blank">
+                            </a>
+                            <a class="nav-link" href="assets/API%20Document%20SW%20PAY.pdf" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 5" target="_blank">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                                 API Doc.
-                            </a><a class="nav-link" href="/recharge" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 3">
+                            </a>
+                            <a class="nav-link" href="/recharge" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 3">
                                 <div class="sb-nav-link-icon"><i class="fas fa-mobile-alt"></i></div>
                                 Recharge
                             </a><a class="nav-link" href="/bbps-services" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 3">
@@ -196,7 +197,6 @@
                                     <a class="nav-link" href="recharge-history">Transaction Report</a><a class="nav-link" href="complain-status">Complain Status</a><a class="nav-link" href="complain-other">Other Complaint</a><a class="nav-link" href="operatorwise-comm">Operatorwise Earning Report</a><a class="nav-link" href="paymet-load">Payment Load Report</a><a class="nav-link" href="payment-debit">Payment Debit Report</a><a class="nav-link" href="AEPS-settlement-report">AEPS Settlement Report</a>
                                 </nav>
                             </div>
-                            <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers" dmx-show="scLoginUser.data.LoginUserInfo.user_type != 3">
                                 <div class="sb-nav-link-icon"><i class="fas fa-people-arrows"></i></div>
                                 Manage
@@ -214,17 +214,6 @@
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages"><a class="nav-link" href="payment-request">My Payment Request</a><a class="nav-link" href="certificate">Certificate</a><a class="nav-link" href="commision">Commision</a><a class="nav-link" href="complain-raise">Raise Complain</a>
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="401.html">401 Page</a>
-                                            <a class="nav-link" href="404.html">404 Page</a>
-                                            <a class="nav-link" href="500.html">500 Page</a>
-                                        </nav>
-                                    </div>
                                 </nav>
                             </div>
                         </div>

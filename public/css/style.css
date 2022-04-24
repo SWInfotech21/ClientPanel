@@ -226,3 +226,87 @@ body{
   background-color: #FFF;
   color: #142E4A;
 }
+.sw-img-render{
+    image-rendering: -webkit-optimize-contrast;
+}
+.img-container{
+    position: absolute;
+}
+.text-block-certificate {
+  position: absolute;
+  bottom: 380px;
+  right: 180px;
+  background-color: transparent;
+  color: #000;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+@media screen and (min-width: 300px) {
+    h3{
+        font-size: 0.75rem;
+    }
+    .text-block-certificate {
+    bottom: 210px;
+    right: 100px;
+    }
+}
+@media screen and (min-width: 376px) {
+    .text-block-certificate {
+    bottom: 220px;
+    right: 100px;
+    }
+}
+@media screen and (min-width: 400px) {
+    h3{
+        font-size: 0.90rem;
+    }
+    .text-block-certificate {
+    bottom: 230px;
+    right: 100px;
+    }
+}
+@media screen and (min-width: 450px) {
+    h3{
+        font-size: 1.0rem;
+    }
+    .text-block-certificate {
+    bottom: 270px;
+    right: 120px;
+    }
+}
+@media screen and (min-width: 560px) {
+    h3{
+        font-size: 1.0rem;
+    }
+    .text-block-certificate {
+    bottom: 250px;
+    right: 100px;
+    }
+}
+@media screen and (min-width: 850px) {
+    h3{
+        font-size: 1.0rem;
+    }
+    .text-block-certificate {
+    bottom: 250px;
+    right: 100px;
+    }
+}
+@media screen and (min-width: 950px) {
+    h3{
+        font-size: 1.5rem;
+    }
+    .text-block-certificate {
+    bottom: 330px;
+    right: 150px;
+    }
+}
+@media screen and (min-width: 1025px) {
+    h3{
+        font-size: 1.5rem;
+    }
+    .text-block-certificate {
+    bottom: 400px;
+    right: 180px;
+    }
+}
