@@ -48,6 +48,56 @@
         "name": "pin"
       }
     ],
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "sms_message"
+      },
+      {
+        "type": "text",
+        "name": "sender_mobile"
+      },
+      {
+        "type": "datetime",
+        "name": "created_on"
+      },
+      {
+        "type": "text",
+        "name": "sms_type"
+      },
+      {
+        "type": "text",
+        "name": "ip_address"
+      },
+      {
+        "type": "boolean",
+        "name": "status"
+      },
+      {
+        "type": "text",
+        "name": "response"
+      },
+      {
+        "type": "text",
+        "name": "extra1"
+      },
+      {
+        "type": "text",
+        "name": "extra2"
+      },
+      {
+        "type": "text",
+        "name": "extra3"
+      },
+      {
+        "type": "text",
+        "name": "extra4"
+      },
+      {
+        "type": "number",
+        "name": "user_id"
+      }
+    ],
     "$_SERVER": [
       {
         "type": "text",
@@ -661,6 +711,142 @@
                         }
                       },
                       "output": false
+                    },
+                    {
+                      "name": "api_status",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{SMSapi.status}}"
+                      },
+                      "meta": [],
+                      "outputType": "text"
+                    },
+                    {
+                      "name": "api_response",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{SMSapi.data}}"
+                      },
+                      "meta": [],
+                      "outputType": "text"
+                    },
+                    {
+                      "name": "RecordingSMSLog",
+                      "module": "dbupdater",
+                      "action": "insert",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "insert",
+                          "values": [
+                            {
+                              "table": "t_sms_log",
+                              "column": "sms_message",
+                              "type": "text",
+                              "value": "{{'Dear Partner, Your Account has been created successfully. User Name '+$_GET.mobile+' Password  '+password+' TPIN XXXX . Thanks for using our service.\\nRegards S W Pay Team'}}"
+                            },
+                            {
+                              "table": "t_sms_log",
+                              "column": "sender_mobile",
+                              "type": "text",
+                              "value": "{{$_GET.mobile}}"
+                            },
+                            {
+                              "table": "t_sms_log",
+                              "column": "created_on",
+                              "type": "datetime",
+                              "value": "{{NOW}}"
+                            },
+                            {
+                              "table": "t_sms_log",
+                              "column": "sms_type",
+                              "type": "text",
+                              "value": "{{'Add New User SMS'}}"
+                            },
+                            {
+                              "table": "t_sms_log",
+                              "column": "ip_address",
+                              "type": "text",
+                              "value": "{{$_SERVER.REMOTE_ADDR}}"
+                            },
+                            {
+                              "table": "t_sms_log",
+                              "column": "status",
+                              "type": "boolean",
+                              "value": "{{api_status == 200 ? 1 : 0}}"
+                            },
+                            {
+                              "table": "t_sms_log",
+                              "column": "response",
+                              "type": "text",
+                              "value": "{{api_response}}"
+                            },
+                            {
+                              "table": "t_sms_log",
+                              "column": "user_id",
+                              "type": "number",
+                              "value": "{{UserCreate.identity}}"
+                            }
+                          ],
+                          "table": "t_sms_log",
+                          "returning": "id",
+                          "query": "INSERT INTO t_sms_log\n(sms_message, sender_mobile, created_on, sms_type, ip_address, status, response, user_id) VALUES (:P1 /* {{'Dear Partner, Your Account has been created successfully. User Name '+$_GET.mobile+' Password  '+password+' TPIN XXXX . Thanks for using our service.\\nRegards S W Pay Team'}} */, :P2 /* {{$_GET.mobile}} */, :P3 /* {{NOW}} */, :P4 /* {{'Add New User SMS'}} */, :P5 /* {{$_SERVER.REMOTE_ADDR}} */, :P6 /* {{api_status == 200 ? 1 : 0}} */, :P7 /* {{api_response}} */, :P8 /* {{UserCreate.identity}} */)",
+                          "params": [
+                            {
+                              "name": ":P1",
+                              "type": "expression",
+                              "value": "{{'Dear Partner, Your Account has been created successfully. User Name '+$_GET.mobile+' Password  '+password+' TPIN XXXX . Thanks for using our service.\\nRegards S W Pay Team'}}"
+                            },
+                            {
+                              "name": ":P2",
+                              "type": "expression",
+                              "value": "{{$_GET.mobile}}"
+                            },
+                            {
+                              "name": ":P3",
+                              "type": "expression",
+                              "value": "{{NOW}}"
+                            },
+                            {
+                              "name": ":P4",
+                              "type": "expression",
+                              "value": "{{'Add New User SMS'}}"
+                            },
+                            {
+                              "name": ":P5",
+                              "type": "expression",
+                              "value": "{{$_SERVER.REMOTE_ADDR}}"
+                            },
+                            {
+                              "name": ":P6",
+                              "type": "expression",
+                              "value": "{{api_status == 200 ? 1 : 0}}"
+                            },
+                            {
+                              "name": ":P7",
+                              "type": "expression",
+                              "value": "{{api_response}}"
+                            },
+                            {
+                              "name": ":P8",
+                              "type": "expression",
+                              "value": "{{UserCreate.identity}}"
+                            }
+                          ]
+                        }
+                      },
+                      "meta": [
+                        {
+                          "name": "identity",
+                          "type": "text"
+                        },
+                        {
+                          "name": "affected",
+                          "type": "number"
+                        }
+                      ]
                     },
                     {
                       "name": "Status",
