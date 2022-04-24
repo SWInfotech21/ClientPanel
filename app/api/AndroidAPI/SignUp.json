@@ -112,7 +112,8 @@
                       "name": ":P1",
                       "value": "{{$_GET.mobile}}"
                     }
-                  ]
+                  ],
+                  "primary": "id"
                 }
               },
               "output": false,
@@ -437,17 +438,226 @@
                       ]
                     },
                     {
+                      "name": "GetSMSAPI",
+                      "module": "dbconnector",
+                      "action": "single",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "m_api",
+                              "column": "api_code"
+                            },
+                            {
+                              "table": "m_api",
+                              "column": "username"
+                            },
+                            {
+                              "table": "m_api",
+                              "column": "api_password"
+                            },
+                            {
+                              "table": "m_api",
+                              "column": "senderid"
+                            },
+                            {
+                              "table": "m_api",
+                              "column": "api_url"
+                            },
+                            {
+                              "table": "sms_api_detail",
+                              "column": "entity_id"
+                            },
+                            {
+                              "table": "sms_api_detail",
+                              "column": "template_id"
+                            }
+                          ],
+                          "table": {
+                            "name": "m_api"
+                          },
+                          "primary": "id",
+                          "joins": [
+                            {
+                              "table": "t_sms_api_details",
+                              "column": "*",
+                              "alias": "sms_api_detail",
+                              "type": "LEFT",
+                              "clauses": {
+                                "condition": "AND",
+                                "rules": [
+                                  {
+                                    "table": "sms_api_detail",
+                                    "column": "api_id",
+                                    "operator": "equal",
+                                    "value": {
+                                      "table": "m_api",
+                                      "column": "id"
+                                    },
+                                    "operation": "="
+                                  }
+                                ]
+                              },
+                              "primary": "id"
+                            }
+                          ],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "m_api.api_type",
+                                "field": "m_api.api_type",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "{{'SMS'}}",
+                                "data": {
+                                  "table": "m_api",
+                                  "column": "api_type",
+                                  "type": "text",
+                                  "columnObj": {
+                                    "type": "string",
+                                    "maxLength": -5,
+                                    "primary": false,
+                                    "unique": false,
+                                    "nullable": true,
+                                    "name": "api_type"
+                                  }
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "m_api.status",
+                                "field": "m_api.status",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": 1,
+                                "data": {
+                                  "table": "m_api",
+                                  "column": "status",
+                                  "type": "number",
+                                  "columnObj": {
+                                    "type": "integer",
+                                    "primary": false,
+                                    "nullable": false,
+                                    "unique": false,
+                                    "name": "status"
+                                  }
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "sms_api_detail.sms_code",
+                                "field": "sms_api_detail.sms_code",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "{{'ADDU'}}",
+                                "data": {
+                                  "table": "sms_api_detail",
+                                  "column": "sms_code",
+                                  "type": "text",
+                                  "columnObj": {
+                                    "type": "string",
+                                    "maxLength": -5,
+                                    "primary": false,
+                                    "unique": false,
+                                    "nullable": true,
+                                    "name": "sms_code"
+                                  }
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "sms_api_detail.status",
+                                "field": "sms_api_detail.status",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "1",
+                                "data": {
+                                  "table": "sms_api_detail",
+                                  "column": "status",
+                                  "type": "text",
+                                  "columnObj": {
+                                    "type": "string",
+                                    "maxLength": -5,
+                                    "primary": false,
+                                    "unique": false,
+                                    "nullable": true,
+                                    "name": "status"
+                                  }
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT m_api.api_code, m_api.username, m_api.api_password, m_api.senderid, m_api.api_url, sms_api_detail.entity_id, sms_api_detail.template_id\nFROM m_api\nLEFT JOIN t_sms_api_details AS sms_api_detail ON (sms_api_detail.api_id = m_api.id)\nWHERE m_api.api_type = :P1 /* {{'SMS'}} */ AND m_api.status = 1 AND sms_api_detail.sms_code = :P2 /* {{'ADDU'}} */ AND sms_api_detail.status = '1'",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{'SMS'}}"
+                            },
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P2",
+                              "value": "{{'ADDU'}}"
+                            }
+                          ]
+                        }
+                      },
+                      "output": false,
+                      "meta": [
+                        {
+                          "type": "text",
+                          "name": "api_code"
+                        },
+                        {
+                          "type": "text",
+                          "name": "username"
+                        },
+                        {
+                          "type": "text",
+                          "name": "api_password"
+                        },
+                        {
+                          "type": "text",
+                          "name": "senderid"
+                        },
+                        {
+                          "type": "text",
+                          "name": "api_url"
+                        },
+                        {
+                          "type": "text",
+                          "name": "entity_id"
+                        },
+                        {
+                          "type": "text",
+                          "name": "template_id"
+                        }
+                      ],
+                      "outputType": "object"
+                    },
+                    {
                       "name": "SMSapi",
                       "module": "api",
                       "action": "send",
                       "options": {
-                        "url": "https://mobicomm.dove-sms.com//submitsms.jsp",
+                        "url": "{{GetSMSAPI.api_url}}",
                         "params": {
-                          "user": "{{'Bucks'}}",
-                          "key": "{{'797b4459a9XX'}}",
+                          "user": "{{GetSMSAPI.api_url}}",
+                          "key": "{{GetSMSAPI.api_password}}",
                           "mobile": "{{$_GET.mobile}}",
-                          "message": "{{'Congratulations! You have successfully registered with SW PAY with login id '+$_GET.mobile+' and password '+password}}",
-                          "senderid": "{{'BUCKSP'}}"
+                          "message": "{{'Dear Partner, Your Account has been created successfully. User Name '+$_GET.mobile+' Password  '+password+' TPIN XXXX . Thanks for using our service.\\nRegards S W Pay Team'}}",
+                          "senderid": "{{GetSMSAPI.senderid}}",
+                          "accusage": "1",
+                          "entityid": "{{GetSMSAPI.entity_id}}",
+                          "tempid": "{{GetSMSAPI.template_id}}"
                         }
                       },
                       "output": false
