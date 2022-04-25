@@ -591,7 +591,8 @@
                         "name": ":P14",
                         "value": "{{$_POST.UserId}}"
                       }
-                    ]
+                    ],
+                    "returning": "id"
                   }
                 },
                 "meta": [

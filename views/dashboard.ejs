@@ -569,7 +569,7 @@
                 </div>
             </div>
         </div-->
-        <div class="modal fade" id="modalKYC" is="dmx-bs5-modal" tabindex="-1" dmx-bind:show="!scLoginUser.data.LoginUserInfo.kyc_status">
+        <div class="modal fade" id="modalKYC" is="dmx-bs5-modal" tabindex="-1" dmx-bind:show="!scLoginUser.data.LoginUserInfo.kyc_status || scLoginUser.data.LoginUserInfo.kyc_status==2">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -577,7 +577,7 @@
                         <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form is="dmx-serverconnect-form" id="formAddEditKyc" method="post" action="api/Users/UserKYCUpload" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('KYC Updated'); formAddEditKyc.reset(); scOperator.load()" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(lastError.response)" dmx-on:unauthorized="scNotif.warning(lastError.response)" dmx-on:invalid="scNotif.warning(lastError.message)">
+                        <form is="dmx-serverconnect-form" id="formAddEditKyc" method="post" action="api/Users/UserKYCUpload" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('KYC Updated'); formAddEditKyc.reset(); scKYCFetch.load()" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(lastError.response)" dmx-on:unauthorized="scNotif.warning(lastError.response)" dmx-on:invalid="scNotif.warning(lastError.message)">
                             <div class="row mx-0">
                                 <div class="col-12">
                                     <div class="mb-3 row">

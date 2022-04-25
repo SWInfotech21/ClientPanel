@@ -1,5 +1,16 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="myprofile" appConnect="local" components="{dmxBootstrap5Navigation:{}}" -->
 <meta name="ac:route" content="/my-profile">
+<dmx-serverconnect id="scPinStateDist" url="api/PostalPin/GetStateDist" dmx-param:pincode="content.formUserInfo.InputPin.value"></dmx-serverconnect>
+<script is="dmx-flow" id="flowGetPIN" type="text/dmx-flow">{
+    condition: {
+    if: "{{content.formUserInfo.InputPin.value.length()==6}}",
+    then: {
+    steps: {
+    run: {action: "{{scPinStateDist.load({})}}"}
+    }
+    }
+    }
+    }</script>
 <div class="container">
     <div class="row">
         <div class="col-12">
@@ -10,105 +21,108 @@
             </ol>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12 col-sm-4 mb-3">
-            <label class="fw-bold" for="inlineFormInputGroup">Username</label>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text bg-body">
-                        <i class="far fa-user"></i>
+    <form is="dmx-serverconnect-form" id="formUserInfo" method="post" action="api/Users/ProfileUpdate" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('User Details Updated');scLoginUser.load();" dmx-on:error="scNotif.warning('An error occurred'); ">
+        <div class="row">
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="fw-bold" for="InputName">Username</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-body">
+                            <i class="far fa-user"></i>
+                        </div>
                     </div>
+                    <input type="text" class="form-control" id="InputName" name="InputName" disabled="true" readonly="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.user_fname">
                 </div>
-                <input type="text" class="form-control form-control-plaintext" id="inlineFormInputGroupName" disabled="true" readonly="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.user_fname">
             </div>
-        </div>
-        <div class="col-12 col-sm-4 mb-3">
-            <label class="fw-bold" for="inlineFormInputGroup">Mobile</label>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text bg-body">
-                        <i class="fas fa-mobile-alt"></i>
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="fw-bold" for="InputMobile">Mobile</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-body">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
                     </div>
+                    <input type="text" class="form-control" id="InputMobile" name="InputMobile" disabled="true" readonly="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.user_mobile">
                 </div>
-                <input type="text" class="form-control form-control-plaintext" id="inlineFormInputGroupMobile" disabled="true" readonly="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.user_mobile">
             </div>
-        </div>
-        <div class="col-12 col-sm-4 mb-3">
-            <label class="fw-bold" for="inlineFormInputGroup">Email</label>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text bg-body">
-                        <i class="far fa-envelope"></i>
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="fw-bold" for="InputEmail">Email</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-body">
+                            <i class="far fa-envelope"></i>
+                        </div>
                     </div>
+                    <input type="text" class="form-control " id="InputEmail" name="InputEmail" dmx-bind:value="scLoginUser.data.LoginUserInfo.user_email">
                 </div>
-                <input type="text" class="form-control form-control-plaintext" id="inlineFormInputGroupEmail" disabled="true" readonly="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.user_email">
             </div>
-        </div>
-        <div class="col-12 col-sm-4 mb-3">
-            <label class="fw-bold" for="inlineFormInputGroup">PAN No.</label>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text bg-body">
-                        <i class="far fa-address-card"></i>
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="fw-bold" for="InputPAN">PAN No.</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-body">
+                            <i class="far fa-address-card"></i>
+                        </div>
                     </div>
+                    <input type="text" class="form-control" id="InputPAN" name="InputPAN" dmx-bind:value="scLoginUser.data.LoginUserInfo.pan_no">
                 </div>
-                <input type="text" class="form-control form-control-plaintext" id="inlineFormInputGroupPAN" disabled="true" readonly="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.pan_no">
             </div>
-        </div>
-        <div class="col-12 col-sm-4 mb-3">
-            <label class="fw-bold" for="inlineFormInputGroup">Adhar No.</label>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text bg-body">
-                        <i class="fas fa-id-card"></i>
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="fw-bold" for="InputAadhar">Adhar No.</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-body">
+                            <i class="fas fa-id-card"></i>
+                        </div>
                     </div>
+                    <input type="text" class="form-control" id="InputAadhar" name="InputAadhar" dmx-bind:value="scLoginUser.data.LoginUserInfo.aadhar_no">
                 </div>
-                <input type="text" class="form-control form-control-plaintext" id="inlineFormInputGroupAadhar" disabled="true" readonly="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aadhar_no">
             </div>
-        </div>
-        <div class="col-12 col-sm-4 mb-3">
-            <label class="fw-bold" for="inlineFormInputGroup">PIN</label>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text bg-body">
-                        <i class="fas fa-home"></i>
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="fw-bold" for="InputPin">PIN</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-body">
+                            <i class="fas fa-home"></i>
+                        </div>
                     </div>
+                    <input type="text" class="form-control" id="InputPin" name="InputPin" dmx-bind:value="scLoginUser.data.LoginUserInfo.pin" dmx-on:keyup="flowGetPIN.run()">
                 </div>
-                <input type="text" class="form-control form-control-plaintext" id="inlineFormInputGroupPin" disabled="true" readonly="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.pin">
             </div>
-        </div>
-        <div class="col-12 col-sm-4 mb-3">
-            <label class="fw-bold" for="inlineFormInputGroup">State</label>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text bg-body">
-                        <i class="fas fa-address-card"></i>
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="fw-bold" for="InputState">State</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-body">
+                            <i class="fas fa-address-card"></i>
+                        </div>
                     </div>
+                    <input type="text" class="form-control" id="InputState" name="InputState" dmx-bind:value="scPinStateDist.data.PinAPI[0].Circle? scPinStateDist.data.PinAPI[0].Circle : scLoginUser.data.LoginUserInfo.state" readonly="true">
                 </div>
-                <input type="text" class="form-control form-control-plaintext" id="inlineFormInputGroupState" disabled="true" readonly="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.state">
             </div>
-        </div>
-        <div class="col-12 col-sm-4 mb-3">
-            <label class="fw-bold" for="inlineFormInputGroup">District</label>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text bg-body">
-                        <i class="fas fa-house-damage"></i>
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="fw-bold" for="InputDistrict">District</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-body">
+                            <i class="fas fa-house-damage"></i>
+                        </div>
                     </div>
+                    <input type="text" class="form-control" id="InputDistrict" name="InputDistrict" dmx-bind:value="scPinStateDist.data.PinAPI[0].District? scPinStateDist.data.PinAPI[0].District : scLoginUser.data.LoginUserInfo.district" readonly="true">
                 </div>
-                <input type="text" class="form-control form-control-plaintext" id="inlineFormInputGroupDistrict" disabled="true" readonly="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.district">
             </div>
-        </div>
-        <div class="col-12 col-sm-4 mb-3">
-            <label class="fw-bold" for="inlineFormInputGroup">Address</label>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text bg-body">
-                        <i class="far fa-address-card"></i>
+            <div class="col-12 col-sm-6 mb-3">
+                <label class="fw-bold" for="InputAddres">Address</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text bg-body">
+                            <i class="far fa-address-card"></i>
+                        </div>
                     </div>
+                    <textarea type="text" class="form-control" id="InputAddres" name="InputAddres" dmx-bind:value="scLoginUser.data.LoginUserInfo.address"></textarea>
                 </div>
-                <textarea type="text" class="form-control form-control-plaintext" id="inlineFormInputGroupAddres" disabled="true" readonly="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.address"></textarea>
             </div>
+            <div class="col-12 text-center"><button class="btn btn-primary" type="submit">Submit</button></div>
         </div>
-    </div>
+    </form>
 </div>

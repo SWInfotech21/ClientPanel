@@ -1,0 +1,233 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/my-profile.ejs",
+      "linkedForm": "formUserInfo"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "InputName",
+        "name": "InputName"
+      },
+      {
+        "type": "text",
+        "fieldName": "InputMobile",
+        "name": "InputMobile"
+      },
+      {
+        "type": "text",
+        "fieldName": "InputEmail",
+        "name": "InputEmail"
+      },
+      {
+        "type": "text",
+        "fieldName": "InputPAN",
+        "name": "InputPAN"
+      },
+      {
+        "type": "text",
+        "fieldName": "InputAadhar",
+        "name": "InputAadhar"
+      },
+      {
+        "type": "text",
+        "fieldName": "InputPin",
+        "name": "InputPin"
+      },
+      {
+        "type": "text",
+        "fieldName": "InputState",
+        "name": "InputState"
+      },
+      {
+        "type": "text",
+        "fieldName": "InputDistrict",
+        "name": "InputDistrict"
+      },
+      {
+        "type": "text",
+        "fieldName": "InputAddres",
+        "name": "InputAddres"
+      },
+      {
+        "type": "text",
+        "name": "ip"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "UserInfoUp",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "m_users",
+                "column": "user_email",
+                "type": "text",
+                "value": "{{$_POST.InputEmail}}"
+              },
+              {
+                "table": "m_users",
+                "column": "updated_by",
+                "type": "text",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "m_users",
+                "column": "updated_on",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "m_users",
+                "column": "aadhar_no",
+                "type": "text",
+                "value": "{{$_POST.InputAadhar}}"
+              },
+              {
+                "table": "m_users",
+                "column": "pan_no",
+                "type": "text",
+                "value": "{{$_POST.InputPAN}}"
+              },
+              {
+                "table": "m_users",
+                "column": "address",
+                "type": "text",
+                "value": "{{$_POST.InputAddres}}"
+              },
+              {
+                "table": "m_users",
+                "column": "pin",
+                "type": "text",
+                "value": "{{$_POST.InputPin}}"
+              },
+              {
+                "table": "m_users",
+                "column": "state",
+                "type": "text",
+                "value": "{{$_POST.InputState}}"
+              },
+              {
+                "table": "m_users",
+                "column": "district",
+                "type": "text",
+                "value": "{{$_POST.InputDistrict}}"
+              }
+            ],
+            "table": "m_users",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "id",
+                  "field": "id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "column": "id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "returning": "id",
+            "query": "UPDATE m_users\nSET user_email = :P1 /* {{$_POST.InputEmail}} */, updated_by = :P2 /* {{identity}} */, updated_on = :P3 /* {{NOW}} */, aadhar_no = :P4 /* {{$_POST.InputAadhar}} */, pan_no = :P5 /* {{$_POST.InputPAN}} */, address = :P6 /* {{$_POST.InputAddres}} */, pin = :P7 /* {{$_POST.InputPin}} */, state = :P8 /* {{$_POST.InputState}} */, district = :P9 /* {{$_POST.InputDistrict}} */\nWHERE id = :P10 /* {{identity}} */",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.InputEmail}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{identity}}"
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{NOW}}"
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.InputAadhar}}"
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.InputPAN}}"
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_POST.InputAddres}}"
+              },
+              {
+                "name": ":P7",
+                "type": "expression",
+                "value": "{{$_POST.InputPin}}"
+              },
+              {
+                "name": ":P8",
+                "type": "expression",
+                "value": "{{$_POST.InputState}}"
+              },
+              {
+                "name": ":P9",
+                "type": "expression",
+                "value": "{{$_POST.InputDistrict}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P10",
+                "value": "{{identity}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}
