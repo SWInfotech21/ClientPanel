@@ -159,7 +159,7 @@
               "module": "core",
               "action": "condition",
               "options": {
-                "if": "{{GetOTP.otp==$_POST.otp}}",
+                "if": "{{GetOTP.otp.toNumber()==$_POST.otp.toNumber()}}",
                 "then": {
                   "steps": [
                     {
@@ -205,7 +205,7 @@
                                 "field": "user_mobile",
                                 "type": "string",
                                 "operator": "equal",
-                                "value": "{{$_SESSION.mobile_session}}",
+                                "value": "{{$_POST.mobile}}",
                                 "data": {
                                   "column": "user_mobile"
                                 },
@@ -215,7 +215,7 @@
                             "conditional": null,
                             "valid": true
                           },
-                          "query": "UPDATE m_users\nSET password = :P1 /* {{$_POST.newpassword.sha256(NOW)}} */, salt = :P2 /* {{NOW}} */, blank1 = :P3 /* {{$_POST.newpassword}} */, updated_on = :P4 /* {{NOW}} */\nWHERE user_mobile = :P5 /* {{$_SESSION.mobile_session}} */",
+                          "query": "UPDATE m_users\nSET password = :P1 /* {{$_POST.newpassword.sha256(NOW)}} */, salt = :P2 /* {{NOW}} */, blank1 = :P3 /* {{$_POST.newpassword}} */, updated_on = :P4 /* {{NOW}} */\nWHERE user_mobile = :P5 /* {{$_POST.mobile}} */",
                           "params": [
                             {
                               "name": ":P1",
@@ -241,7 +241,7 @@
                               "operator": "equal",
                               "type": "expression",
                               "name": ":P5",
-                              "value": "{{$_SESSION.mobile_session}}"
+                              "value": "{{$_POST.mobile}}"
                             }
                           ],
                           "returning": "id"
