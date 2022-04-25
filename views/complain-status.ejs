@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="complainstatus" appConnect="local" components="{dmxDatePicker:{},dmxBootstrap5TableGenerator:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="complainstatus" appConnect="local" components="{dmxDatePicker:{},dmxBootstrap5TableGenerator:{},dmxDataTraversal:{},dmxStateManagement:{},dmxBootstrap5Modal:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
 <meta name="ac:route" content="/complain-status">
 <dmx-query-manager id="qm"></dmx-query-manager>
 <dmx-serverconnect id="scComplainStatus" url="api/Complain/ComplainStatus" dmx-param:offset="qm.data.offset" dmx-param:sort="qm.data.sort" dmx-param:dir="qm.data.dir" dmx-param:fromdate="content.formPendingDate.daterange.start" dmx-param:todate="content.formPendingDate.daterange.end"></dmx-serverconnect>
@@ -19,11 +19,6 @@
             </label>
         </form>
     </div>
-    <!-- <div class="col-auto order-2 order-md-1 d-flex align-items-center justify-content-start justify-content-md-center px-0 px-lg-2">
-        <label>From Date:</label><input type="date" name="fromdate" id="fromDate" class="w-25" required="">
-        &emsp;<label>To Date:</label><input type="date" name="todate" id="toDate" class="w-25" required="">
-        &emsp;<button id="btnFilter" class="btn btn-primary btn-sm" dmx-on:click="flowStatement.run()">Search</button>
-    </div> -->
     <div class="col-auto order-1 order-md-3 d-flex align-items-center justify-content-center">
         <form id="formSearchUser" class="sd-search-form">
             <div class="d-flex justify-content-end mb-3 mb-lg-0 mb-md-0">
