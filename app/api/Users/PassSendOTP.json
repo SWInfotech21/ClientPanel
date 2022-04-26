@@ -121,7 +121,7 @@
             ]
           }
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
             "type": "text",
@@ -162,7 +162,7 @@
             "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}"
           }
         },
-        "output": false
+        "output": true
       },
       {
         "name": "CheckUser",
