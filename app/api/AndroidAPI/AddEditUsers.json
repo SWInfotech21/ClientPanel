@@ -1501,17 +1501,6 @@
                                                               "outputType": "boolean"
                                                             },
                                                             {
-                                                              "name": "Status",
-                                                              "module": "core",
-                                                              "action": "setvalue",
-                                                              "options": {
-                                                                "value": "Success"
-                                                              },
-                                                              "meta": [],
-                                                              "output": true,
-                                                              "outputType": "text"
-                                                            },
-                                                            {
                                                               "name": "GetWhatsappAPI",
                                                               "module": "dbconnector",
                                                               "action": "single",
@@ -1646,7 +1635,7 @@
                                                                 "url": "{{GetWhatsappAPI.api_url}}",
                                                                 "params": {
                                                                   "api_token": "{{GetWhatsappAPI.api_password}}",
-                                                                  "mobile": "{{91+$_GET.mobile}}",
+                                                                  "mobile": "{{$_GET.mobile}}",
                                                                   "message": "{{'Dear '+$_GET.name+', Your Account has been created successfully. User Login Name  '+$_GET.mobile+', Password  '+password+' and generate TPIN after login to web portal or mobile app. Thanks for using our services. 😊\\nRegards \\nS W Pay Team\\n\\n'}}"
                                                                 }
                                                               },
@@ -2012,6 +2001,17 @@
                                                                   "type": "number"
                                                                 }
                                                               ]
+                                                            },
+                                                            {
+                                                              "name": "Status",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "Success"
+                                                              },
+                                                              "meta": [],
+                                                              "output": true,
+                                                              "outputType": "text"
                                                             }
                                                           ]
                                                         },
