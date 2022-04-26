@@ -743,9 +743,10 @@
                   "url": "{{GetWhatsappAPI.api_url}}",
                   "params": {
                     "api_token": "{{GetWhatsappAPI.api_password}}",
-                    "mobile": "{{$_POST.forgot_mobile}}",
+                    "mobile": "{{91+$_POST.forgot_mobile}}",
                     "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}"
-                  }
+                  },
+                  "method": "POST"
                 },
                 "output": false
               },

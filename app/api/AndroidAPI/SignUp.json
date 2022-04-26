@@ -481,10 +481,6 @@
                             },
                             {
                               "table": "m_api",
-                              "column": "senderid"
-                            },
-                            {
-                              "table": "m_api",
                               "column": "api_url"
                             }
                           ],
@@ -541,7 +537,7 @@
                             "conditional": null,
                             "valid": true
                           },
-                          "query": "SELECT api_code, username, api_password, api_type, senderid, api_url\nFROM m_api\nWHERE api_type = :P1 /* {{'Whatsapp'}} */ AND status = 1",
+                          "query": "SELECT api_code, username, api_password, api_type, api_url\nFROM m_api\nWHERE api_type = :P1 /* {{'Whatsapp'}} */ AND status = 1",
                           "params": [
                             {
                               "operator": "equal",
@@ -572,10 +568,6 @@
                         },
                         {
                           "type": "text",
-                          "name": "senderid"
-                        },
-                        {
-                          "type": "text",
                           "name": "api_url"
                         }
                       ],
@@ -589,9 +581,10 @@
                         "url": "{{GetWhatsappAPI.api_url}}",
                         "params": {
                           "api_token": "{{GetWhatsappAPI.api_password}}",
-                          "mobile": "{{$_GET.mobile}}",
+                          "mobile": "{{91+$_GET.mobile}}",
                           "message": "{{'Dear '+$_GET.user_name+', Your Account has been created successfully. User Login Name  '+$_GET.mobile+', Password  '+password+' and generate TPIN after login to web portal or mobile app. Thanks for using our services. 😊\\nRegards \\nS W Pay Team\\n\\n\\n'}}"
-                        }
+                        },
+                        "method": "POST"
                       },
                       "output": false
                     },
