@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="assets/images/swpay.png" type="image/ico" />
     <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/SignUp.css" />
     <link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
@@ -57,26 +58,14 @@
                 </p>
                 <button id="submitLogin" class="btn btn-primary text-white w-100 mt-2 mb-3 solid" type="submit" dmx-bind:disabled="state.executing">LogIn<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span>
                 </button>
-                <p class="social-text">Or sign in with social platforms</p>
-                <div class="social-media">
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-google"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                </div>
+                <p class="social-text">Forgot Password?&emsp;<a href="forgot-pass">Click Here</a></p>
+
             </form>
 
             <!--sign up form-->
-            <form is="dmx-serverconnect-form" method="post" class="sign-up-form" action="api/Users/SignUp" dmx-on:success="browser1.goto('signup')" dmx-on:unauthorized="formLogin.reset;" dmx-on:forbidden="Notification.danger('Please try again!')">
+            <form is="dmx-serverconnect-form" id="formSignUp" method="post" class="sign-up-form" action="api/Users/SignUp" dmx-on:success="scNotif.success('SignUp Successful, Check Your Mobile or Whatsapp for Username and Password.');" dmx-on:unauthorized="Notification.danger('Please try again!')" dmx-on:forbidden="Notification.danger('Please try again!')">
                 <h2 class="title">Sign up</h2>
+                <p>(Signup as a Retailer)</p>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
                     <input type="text" class="form-control" id="user_name" name="fname" placeholder="Enter user name" required="true">
@@ -91,21 +80,25 @@
                     <i class="fas fa-mobile-alt"></i>
                     <input type="number" class="form-control" id="MobileNo" name="mobile" placeholder="10 digit Mobile Number" required="true">
                 </div>
-
-                <div class="input-field">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" class="form-control" id="password" name="mpassword" placeholder="Enter Password" required="true" autofocus="true">
-                </div>
-
                 <div class="input-field">
                     <i class="fas fa-map-marked-alt"></i>
-                    <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address" required="true" autofocus="true">
+                    <input type="text" class="form-control" id="pin" name="pin" placeholder="Enter Area PIN" required="true">
                 </div>
 
+                <div class="input-field">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address" required="true" autofocus="true">
+                </div>
+                <div class="alert alert-success" role="alert" dmx-show="formSignUp.data.Status" dmx-style:color="formSignUp.data.Status=='true'?'#008000':'#ff0000'">
+                    {{formSignUp.data.message}}
+                </div>
                 <input type="submit" value="Sign Up" class="btn solid">
-
-                <p class="social-text">Or Sign up with social platforms</p>
-                <div class="social-media">
+            </form>
+        </div>
+    </div>
+    <!-- 
+                <p class="social-text">Or Sign up with social platforms</p> -->
+    <!-- <div class="social-media">
                     <a href="#" class="social-icon">
                         <i class="fab fa-facebook-f"></i>
                     </a>
@@ -118,11 +111,7 @@
                     <a href="#" class="social-icon">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
-                </div>
-            </form>
-        </div>
-    </div>
-
+                </div> -->
     <div class="panels-container">
         <div class="panel left-panel">
             <div class="content">

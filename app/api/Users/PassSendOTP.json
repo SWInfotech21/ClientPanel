@@ -766,7 +766,7 @@
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "OTP send to the registered mobile"
+                  "value": "OTP send via SMS and WhatsApp to the registered mobile"
                 },
                 "meta": [],
                 "output": true,

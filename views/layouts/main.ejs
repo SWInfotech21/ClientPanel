@@ -90,6 +90,7 @@
     <dmx-datetime id="dateNow" interval="days"></dmx-datetime>
     <meta charset="UTF-8">
     <title>SW Pay</title>
+    <link rel="icon" href="assets/images/swpay.png" type="image/ico" />
     <dmx-serverconnect id="scLoginUser" url="api/Users/userinfo" dmx-on:unauthorized="browserMain.goto('/login')" dmx-on:forbidden="browserMain.goto('/login')" dmx-on:error="browserMain.goto('/login')"></dmx-serverconnect>
     <!-- Custom Links Starts-->
     <link href="css/custom_styles.css" rel="stylesheet" />

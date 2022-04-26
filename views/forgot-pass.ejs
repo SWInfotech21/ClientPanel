@@ -1,0 +1,59 @@
+<!-- Wappler include fontawesome_5="cdn" bootstrap5="local" id="forgotpass" is="dmx-app" appConnect="local" components="{dmxValidator:{}}" -->
+<meta name="ac:route" content="/forgot-pass">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="dmxAppConnect/dmxAppConnect.js"></script>
+    <title>Forgot Password-SW Pay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="assets/images/swpay.png" type="image/ico" />
+    <link rel="stylesheet" href="css/forgot-pass-style.css" />
+    <script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
+    <script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
+
+    <link rel="stylesheet" href="dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+    <script src="dmxAppConnect/dmxNotifications/dmxNotifications.js" defer=""></script>
+</head>
+
+<body is="dmx-app" id="forgot">
+    <dmx-value id="varTab" dmx-bind:value="0"></dmx-value>
+    <dmx-value id="varMobile" dmx-bind:value="0"></dmx-value>
+    <dmx-value id="varBack" dmx-bind:value="0"></dmx-value>
+    <div class="center" id="ForgotPass" dmx-show="varTab.value==0">
+        <h1>Forgot Password</h1>
+        <form id="formForgotPass" class="sign-in-form" is="dmx-serverconnect-form" method="post" action="api/Users/PassSendOTP" dmx-on:success="varTab.setValue(1);varMobile.setValue(forgot_mobile.value); formForgotOTP.reset()" dmx-on:unauthorized="Notification.danger(lastError.response)" dmx-on:forbidden="Notification.danger(lastError.response)">
+            <div class="txt_field">
+                <input type="number" id="forgot_mobile" name="forgot_mobile" required>
+                <span></span>
+                <label>Mobile Number</label>
+            </div>
+            <input type="submit" id="submitForgot" value="Submit" dmx-class:disabled="state.executing"><span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span>
+            <div class="signup_link">
+                Not a member? <a class="link" href="https://login.swpay.in/login"> Signup</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="center" id="OTP" dmx-show="varTab.value==1">
+        <h1>Create New Password</h1>
+        <h6 style="text-align-last: center; color: #008000; font-weight: bold;" dmx-show="formForgotPass.data.Status && varBack.value!=1">{{formForgotPass.data.Message}}</h6>
+        <p style="text-align-last: center; color: #f44336; font-weight: bold;" dmx-show="formForgotOTP.data.Status==403 && varBack.value==1">{{formForgotOTP.data.Message}}</p>
+        <p style="text-align-last: center; color: #008000; font-weight: bold;" dmx-show="formForgotOTP.data.Status==200 && varBack.value==1">{{formForgotOTP.data.Message}}</p>
+        <form id="formForgotOTP" is="dmx-serverconnect-form" method="post" action="api/Users/OTPBasedResetPass" dmx-on:success="varBack.setValue(1);formForgotOTP.reset()" dmx-on:unauthorized="Notification.danger(lastError.response)" dmx-on:forbidden="Notification.danger(lastError.response)">
+            <input type="hidden" name="mobile" dmx-bind:value="varMobile.value" id="OTPMobile">
+            <div class="txt_field">
+                <input type="number" name="otp" id="otp" required>
+                <span></span>
+                <label>Enter OTP</label>
+            </div>
+            <div class="txt_field">
+                <input type="password" name="newpassword" id="newpassword" required>
+                <span></span>
+                <label>Enter New Password</label>
+            </div>
+            <input value="SUBMIT" id="submitOTP" type="submit" dmx-class:disabled="state.executing">
+            <input class="backButton" value="Back" id="BackForgot" dmx-on:click="varTab.setValue(0);varBack.setValue(0);formForgotOTP.reset();">
+        </form>
+    </div>
+
+</body>

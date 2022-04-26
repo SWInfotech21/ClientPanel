@@ -14,16 +14,6 @@
       "exec": "/api/PageAccess/UserAccess"
     },
     {
-      "path": "/login1",
-      "page": "login1",
-      "layout": "main"
-    },
-    {
-      "path": "/signup1",
-      "page": "signup1",
-      "layout": "main"
-    },
-    {
       "path": "/recharge-history",
       "page": "recharge-history",
       "layout": "main",
@@ -187,6 +177,10 @@
       "path": "/AEPS-settlement-report",
       "page": "AEPS-settlement-report",
       "layout": "main"
+    },
+    {
+      "path": "/forgot-pass",
+      "page": "forgot-pass"
     },
     {
       "path": "*",

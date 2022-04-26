@@ -162,5 +162,13 @@
   "AEPS-settlement-report.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "forgot-password.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "forgot-pass.ejs": {
+    "layoutPage": "",
+    "description": ""
   }
 }
