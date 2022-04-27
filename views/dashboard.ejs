@@ -201,7 +201,7 @@
                 </div>
             </div>
         </div-->
-        <div class="modal fade" id="modalKYC" is="dmx-bs5-modal" tabindex="-1" dmx-bind:show="!scLoginUser.data.LoginUserInfo.kyc_status || scLoginUser.data.LoginUserInfo.kyc_status==2">
+        <div class="modal fade" id="modalKYC" is="dmx-bs5-modal" tabindex="-1" dmx-bind:show="!scLoginUser.data.LoginUserInfo.kyc_status||scLoginUser.data.LoginUserInfo.kyc_status==2" dmx-on:hide-bs-modal="scLoginUser.data.LoginUserInfo.kyc_status==0||scLoginUser.data.LoginUserInfo.kyc_status==1">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
