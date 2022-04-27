@@ -834,7 +834,7 @@
                                   "primary": "id"
                                 }
                               },
-                              "output": true,
+                              "output": false,
                               "meta": [
                                 {
                                   "type": "text",
@@ -1438,7 +1438,7 @@
                                                   ]
                                                 }
                                               },
-                                              "output": true,
+                                              "output": false,
                                               "meta": [
                                                 {
                                                   "type": "text",
@@ -2527,6 +2527,28 @@
                                         "value": "{{RTChargeAmt.toNumber()+DTChargeAmt.toNumber()+MDTChargeAmt.toNumber()}}"
                                       },
                                       "meta": [],
+                                      "outputType": "text"
+                                    },
+                                    {
+                                      "name": "Amount",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{$_POST.recharge_amount}}"
+                                      },
+                                      "meta": [],
+                                      "output": true,
+                                      "outputType": "text"
+                                    },
+                                    {
+                                      "name": "Mobile",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "{{$_POST.mobile_number}}"
+                                      },
+                                      "meta": [],
+                                      "output": true,
                                       "outputType": "text"
                                     },
                                     {
@@ -3918,7 +3940,7 @@
                                                   "type": "number"
                                                 }
                                               ],
-                                              "output": true
+                                              "output": false
                                             },
                                             {
                                               "name": "DrBalanceRTUp",
@@ -4479,7 +4501,7 @@
                                                           "type": "number"
                                                         }
                                                       ],
-                                                      "output": true
+                                                      "output": false
                                                     },
                                                     {
                                                       "name": "DtUserBal",
@@ -4539,7 +4561,7 @@
                                                           "type": "number"
                                                         }
                                                       ],
-                                                      "output": true
+                                                      "output": false
                                                     }
                                                   ]
                                                 }
@@ -4724,7 +4746,7 @@
                                                           "type": "number"
                                                         }
                                                       ],
-                                                      "output": true
+                                                      "output": false
                                                     },
                                                     {
                                                       "name": "MdtUserAmtUp",
@@ -4783,7 +4805,7 @@
                                                           "type": "number"
                                                         }
                                                       ],
-                                                      "output": true
+                                                      "output": false
                                                     }
                                                   ]
                                                 }
@@ -4967,7 +4989,7 @@
                                                   "type": "number"
                                                 }
                                               ],
-                                              "output": true
+                                              "output": false
                                             },
                                             {
                                               "name": "DrBalanceRT_Failed",

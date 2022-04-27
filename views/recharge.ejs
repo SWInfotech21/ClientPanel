@@ -315,9 +315,17 @@
                     <img src="assets/images/mark-success.gif" width="200" height="200" class="img-fluid" dmx-show="content.formMobileRecharge.data.apistatus == 'SUCCESS' || content.formMobileRecharge.data.apistatus == 'PENDING' || content.formMobileRecharge.data.repeat[0].apistatus == 'SUCCESS'  || content.formMobileRecharge.data.repeat[0].apistatus == 'PENDING'">
                     <img src="assets/images/mark-failure.gif" width="200" height="200" class="img-fluid" dmx-show="content.formMobileRecharge.data.apistatus == 'FAILED' || content.formMobileRecharge.data.repeat[0].apistatus == 'FAILED'">
                 </div>
-                <h5 dmx-show="content.formMobileRecharge.lastError.response.error == 'true'">Status:{{content.formMobileRecharge.lastError.response.errorMessage}} {{content.formMobileRecharge.lastError.message}} {{content.formMobileRecharge.lastError.response.ip}}</h5>
-                <h5 dmx-show="content.formMobileRecharge.lastError.status == 0">Status:{{content.formMobileRecharge.data.apistatus}} {{ontent.formMobileRecharge.data.repeat[0].apistatus}}</h5>
-                <h6>Remarks: {{content.formMobileRecharge.data.remarks}} {{content.formMobileRecharge.data.repeat[0].remarks}}</h6>
+                <h5 dmx-show="content.formMobileRecharge.lastError.response.error == 'true'">Status:<b class="text-danger">{{content.formMobileRecharge.lastError.response.errorMessage}} {{content.formMobileRecharge.lastError.message}} {{content.formMobileRecharge.lastError.response.ip}}</b></h5>
+                <h5 dmx-show="content.formMobileRecharge.lastError.status == 0">Status: <span dmx-class:text-danger="content.formMobileRecharge.data.apistatus=='FAILED'" dmx-class:text-success="content.formMobileRecharge.data.apistatus=='SUCCESS'||content.formMobileRecharge.data.apistatus=='PENDING'">{{content.formMobileRecharge.data.apistatus}}</span><span dmx-class:text-danger="content.formMobileRecharge.data.apistatus=='FAILED'" dmx-class:text-success="content.formMobileRecharge.data.apistatus=='SUCCESS'||content.formMobileRecharge.data.apistatus=='PENDING'">{{content.formMobileRecharge.data.repeat[0].apistatus}}</span>&emsp;&emsp;&emsp;
+                    <span>Amount: {{content.formMobileRecharge.data.Amount}}/-</span>
+                </h5><!-- Ref ID -->
+                <h6>Mobile/Id: {{content.formMobileRecharge.data.Mobile}}
+                </h6>
+                <!-- Ref ID -->
+                <h6>Ref. Id: {{content.formMobileRecharge.data.api_ref}} {{content.formMobileRecharge.data.repeat[0].api_ref}}
+                </h6>
+                <!-- Remarks -->
+                <p>Remarks: {{content.formMobileRecharge.data.remarks}} {{content.formMobileRecharge.data.repeat[0].remarks}}</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
