@@ -1,6 +1,7 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appConnect="local" components="{dmxFormatter:{},dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appconnect="local"  components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" -->
 <meta name="ac:route" content="/dashboard">
 <dmx-serverconnect id="scKYCFetch" url="api/Users/UserKycFetch"></dmx-serverconnect>
+<dmx-value id="varKYC" dmx-bind:value="!scLoginUser.data.LoginUserInfo.kyc_status||scLoginUser.data.LoginUserInfo.kyc_status==2?0:1"></dmx-value>
 <main>
     <div class="container-fluid">
         <h1 class="mt-4">Dashboard
@@ -201,7 +202,7 @@
                 </div>
             </div>
         </div-->
-        <div class="modal fade" id="modalKYC" is="dmx-bs5-modal" tabindex="-1" dmx-bind:show="!scLoginUser.data.LoginUserInfo.kyc_status||scLoginUser.data.LoginUserInfo.kyc_status==2" dmx-on:hide-bs-modal="scLoginUser.data.LoginUserInfo.kyc_status==0||scLoginUser.data.LoginUserInfo.kyc_status==1">
+        <div class="modal fade" id="modalKYC" is="dmx-bs5-modal" tabindex="-1" dmx-bind:show="varKYC.value==1?false:true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
