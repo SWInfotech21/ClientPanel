@@ -210,7 +210,7 @@
                         <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form is="dmx-serverconnect-form" id="formAddEditKyc" method="post" action="api/Users/UserKYCUpload" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('KYC Updated'); formAddEditKyc.reset(); scKYCFetch.load()" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(lastError.response)" dmx-on:unauthorized="scNotif.warning(lastError.response)" dmx-on:invalid="scNotif.warning(lastError.message)">
+                        <form is="dmx-serverconnect-form" id="formAddEditKyc" method="post" action="api/Users/UserKYCUpload" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('KYC Updated'); formAddEditKyc.reset(); scKYCFetch.load();modalKYC.hide()" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(lastError.response)" dmx-on:unauthorized="scNotif.warning(lastError.response)" dmx-on:invalid="scNotif.warning(lastError.message)">
                             <div class="row mx-0">
                                 <div class="col-12">
                                     <div class="mb-3 row">
@@ -260,7 +260,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 text-center">
+                                <div class="col-12 text-center" dmx-hide="varKYC.value==1">
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>

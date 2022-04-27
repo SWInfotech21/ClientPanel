@@ -308,7 +308,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Recharge</h5>
-                <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="browserMain.goto('recharge')"></button>
             </div>
             <div class="modal-body">
                 <div class="col-12 text-center">
@@ -326,11 +326,9 @@
                 <!-- Ref ID -->
                 <h6>Ref. Id: {{content.formMobileRecharge.data.api_ref}} {{content.formMobileRecharge.data.repeat[0].api_ref}}{{content.formDTHRecharge.data.api_ref}} {{content.formDTHRecharge.data.repeat[0].api_ref}}{{content.formPostPaid.data.api_ref}} {{content.formPostPaid.data.repeat[0].api_ref}}
                 </h6>
-                <!-- Remarks -->
-                <p>Remarks: {{content.formMobileRecharge.data.remarks}} {{content.formMobileRecharge.data.repeat[0].remarks}}{{content.formDTHRecharge.data.remarks}} {{content.formDTHRecharge.data.repeat[0].remarks}}{{content.formPostPaid.data.remarks}} {{content.formPostPaid.data.repeat[0].remarks}}</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" data-dismiss="modal" dmx-on:click="browserMain.goto('recharge')">Close</button>
             </div>
         </div>
     </div>
