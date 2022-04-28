@@ -1,6 +1,6 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="AEPSFundTransfer" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxValidator:{}}" -->
-<meta name="ac:route" content="/AEPS-Fund-Transfer">
 <!-- New Wappler Page -->
+<meta name="ac:route" content="/AEPS-Fund-Transfer">
 <dmx-serverconnect id="scBeneficiary" url="api/AEPS/GetBeneficiary"></dmx-serverconnect>
 <div class="container-fluid">
     <h1 class="mt-4">AEPS Fund Transfer
@@ -92,7 +92,7 @@
                 <div class="tab-pane fade show active px-2" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                     <h4>Main Wallet Transfer</h4>
                     <div class="row">
-                        <form id="formMainWallet" method="post" action="api/AEPS/WalletTransfer" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMainWallet.lastError.response); formMainWallet.reset(); scLoginUser.load();" dmx-on:error="scNotif.warning(formMainWallet.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMainWallet.lastError.response)" dmx-on:forbidden="scNotif.warning(formMainWallet.lastError.response)" dmx-on:invalid="scNotif.warning(formMainWallet.lastError.response)">
+                        <form id="formMainWallet" method="post" action="api/AEPS/WalletTransfer" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMainWallet.data); formMainWallet.reset(); scLoginUser.load(); scBeneficiary.load();" dmx-on:error="scNotif.warning(formMainWallet.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMainWallet.lastError.response)" dmx-on:forbidden="scNotif.warning(formMainWallet.lastError.response)" dmx-on:invalid="scNotif.warning(formMainWallet.lastError.response)">
                             <div class="form-group mb-0">
                                 <label for="inputCurrent" class="col-form-label">Current Aeps Balance</label>
                                 <input type="text" class="form-control" id="inputCurrentBal" aria-describedby="inputName_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance">
