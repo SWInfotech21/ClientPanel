@@ -404,6 +404,72 @@
                     "msg": "{{MessageCodeBal+'~'+AuthCode+'~'+ReqIdBal+'~'+$_POST.CustMobile+'~0~0'}}"
                   }
                 },
+                "output": false
+              },
+              {
+                "name": "apiAvailableBal",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiEPAvailableBal.data}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Message",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiAvailableBal.split('~')[6]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "StatusCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiAvailableBal.split('~')[5]=='FAILED'?2:1}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Name",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiAvailableBal.split('~')[3]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "MobileNo",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiAvailableBal.split('~')[2]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "AvailableLimit",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiAvailableBal.split('~')[6]}}"
+                },
+                "meta": [],
+                "outputType": "text",
                 "output": true
               },
               {
@@ -427,51 +493,79 @@
                 "outputType": "text"
               },
               {
-                "name": "apiEPGetBen",
-                "module": "api",
-                "action": "send",
+                "name": "",
+                "module": "core",
+                "action": "condition",
                 "options": {
-                  "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
-                  "method": "POST",
-                  "dataType": "x-www-form-urlencoded",
-                  "data": {
-                    "msg": "{{MessageCodeBen+'~'+AuthCode+'~'+ReqIdBen+'~'+$_POST.CustMobile+'~0~0'}}"
+                  "if": "{{StatusCode==1}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "apiEPGetBen",
+                        "module": "api",
+                        "action": "send",
+                        "options": {
+                          "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
+                          "method": "POST",
+                          "dataType": "x-www-form-urlencoded",
+                          "data": {
+                            "msg": "{{MessageCodeBen+'~'+AuthCode+'~'+ReqIdBen+'~'+$_POST.CustMobile+'~0~0'}}"
+                          }
+                        },
+                        "output": false
+                      },
+                      {
+                        "name": "apiData",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{apiEPGetBen.data.parseJSON()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": false
+                      },
+                      {
+                        "name": "Recipients",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{apiData.Beneficiary}}"
+                        },
+                        "meta": [],
+                        "output": true,
+                        "outputType": "text"
+                      }
+                    ]
+                  },
+                  "else": {
+                    "steps": [
+                      {
+                        "name": "OTPStatusCode",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": 1
+                        },
+                        "meta": [],
+                        "output": true,
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "OTPMessage",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "output": true,
+                        "outputType": "text"
+                      }
+                    ]
                   }
                 },
-                "output": false
-              },
-              {
-                "name": "apiData",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{apiEPGetBen.data}}"
-                },
-                "meta": [],
-                "outputType": "text",
-                "output": true
-              },
-              {
-                "name": "Message",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{apiData.split('~')[6]}}"
-                },
-                "meta": [],
-                "outputType": "text",
-                "output": true
-              },
-              {
-                "name": "StatusCode",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{apiData.split('~')[5]=='FAILED'?2:1}}"
-                },
-                "meta": [],
-                "outputType": "text",
-                "output": true
+                "outputType": "boolean"
               }
             ]
           }

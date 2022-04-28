@@ -36,12 +36,7 @@
         "type": "number",
         "fieldName": "RemPINAdd",
         "options": {
-          "rules": {
-            "core:required": {
-              "param": ""
-            },
-            "core:number": {}
-          }
+          "rules": {}
         },
         "name": "RemPINAdd"
       },
@@ -49,20 +44,7 @@
         "type": "text",
         "fieldName": "RemOTP",
         "options": {
-          "rules": {
-            "core:required": {
-              "param": ""
-            },
-            "core:maxlength": {
-              "param": "6"
-            },
-            "core:minlength": {
-              "param": "6"
-            },
-            "core:number": {
-              "param": ""
-            }
-          }
+          "rules": {}
         },
         "name": "RemOTP"
       },
@@ -88,39 +70,341 @@
         }
       },
       {
-        "name": "api",
-        "module": "api",
-        "action": "send",
+        "name": "GetAPIForward",
+        "module": "dbconnector",
+        "action": "single",
         "options": {
-          "method": "POST",
-          "url": "https://apihub.moneyart.in/AddRemitters",
-          "params": {
-            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
-            "mobileNo": "{{$_POST.RemMobileAdd}}",
-            "name": "{{$_POST.RemNameAdd}}",
-            "pinCode": "{{$_POST.RemPINAdd}}",
-            "otp": "{{$_POST.RemOTP}}"
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_api",
+                "column": "api_code"
+              },
+              {
+                "table": "m_api",
+                "column": "username"
+              },
+              {
+                "table": "m_api",
+                "column": "api_password"
+              },
+              {
+                "table": "m_api",
+                "column": "api_url"
+              }
+            ],
+            "table": {
+              "name": "m_api_forward"
+            },
+            "joins": [
+              {
+                "table": "m_service",
+                "column": "*",
+                "alias": "ms",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "ms",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "m_api_forward",
+                        "column": "service_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              },
+              {
+                "table": "m_api",
+                "column": "*",
+                "alias": "m_api",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "m_api",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "m_api_forward",
+                        "column": "api_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "ms.service_name",
+                  "field": "ms.service_name",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{'Money'}}",
+                  "data": {
+                    "table": "ms",
+                    "column": "service_name",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "primary": false,
+                      "nullable": false,
+                      "name": "service_name"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT m_api.api_code, m_api.username, m_api.api_password, m_api.api_url\nFROM m_api_forward\nLEFT JOIN m_service AS ms ON (ms.id = m_api_forward.service_id) LEFT JOIN m_api AS m_api ON (m_api.id = m_api_forward.api_id)\nWHERE ms.service_name = :P1 /* {{'Money'}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{'Money'}}"
+              }
+            ]
           }
         },
-        "output": false
-      },
-      {
-        "name": "RemitterAdd",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{api.data}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
+        "output": false,
+        "meta": [
+          {
+            "type": "text",
+            "name": "api_code"
+          },
+          {
+            "type": "text",
+            "name": "username"
+          },
+          {
+            "type": "text",
+            "name": "api_password"
+          },
+          {
+            "type": "text",
+            "name": "api_url"
+          }
+        ],
+        "outputType": "object"
       },
       {
         "name": "",
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{RemitterAdd.StatusCode==1}}",
+          "if": "{{GetAPIForward.api_code=='MA'}}",
+          "then": {
+            "steps": [
+              {
+                "name": "api",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "method": "POST",
+                  "url": "https://apihub.moneyart.in/AddRemitters",
+                  "params": {
+                    "token": "{{GetAPIForward.api_password}}",
+                    "mobileNo": "{{$_POST.RemMobileAdd}}",
+                    "name": "{{$_POST.RemNameAdd}}",
+                    "pinCode": "{{$_POST.RemPINAdd}}",
+                    "otp": "{{$_POST.RemOTP}}"
+                  }
+                },
+                "output": true
+              },
+              {
+                "name": "RemitterAdd",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "RefNo",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": 0
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "RemAddStatusCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{RemitterAdd.StatusCode}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "RemAddMessage",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{RemitterAdd.Message}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "RemAddRemitterCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{RemitterAdd.RemitterCode}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{GetAPIForward.api_code=='DMEP'}}",
+          "then": {
+            "steps": [
+              {
+                "name": "AuthCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{GetAPIForward.api_password}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "MessageCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "E06003"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "ReqId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{NOW.md5(123456).substr(1, 9)}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "api",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "method": "POST",
+                  "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
+                  "dataType": "x-www-form-urlencoded",
+                  "data": {
+                    "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.RemMobileAdd+'~'+$_POST.RemNameAdd+'~0~0'}}"
+                  }
+                },
+                "output": false
+              },
+              {
+                "name": "RemitterAdd",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "RefNo",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{RemitterAdd.split('~')[4]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "RemAddMessage",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{'OTP Sent: '+RemitterAdd.split('~')[5]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Status",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{RemitterAdd.split('~')[5]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": false
+              },
+              {
+                "name": "RemAddStatusCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{Status=='SUCCESS'?1:2}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{RemAddStatusCode==1}}",
           "then": {
             "steps": {
               "name": "AddRemitter",
@@ -135,7 +419,7 @@
                       "table": "dmt_remitter",
                       "column": "remitter_id",
                       "type": "text",
-                      "value": "{{RemitterAdd.Data.RemitterCode}}"
+                      "value": "{{RemAddRemitterCode}}"
                     },
                     {
                       "table": "dmt_remitter",
@@ -153,7 +437,8 @@
                       "table": "dmt_remitter",
                       "column": "remit_pin",
                       "type": "text",
-                      "value": "{{$_POST.RemPINAdd}}"
+                      "value": "{{$_POST.RemPINAdd}}",
+                      "condition": "{{$_POST.RemPINAdd}}"
                     },
                     {
                       "table": "dmt_remitter",
@@ -176,12 +461,12 @@
                   ],
                   "table": "dmt_remitter",
                   "returning": "id",
-                  "query": "INSERT INTO dmt_remitter\n(remitter_id, remit_name, remit_mobile, remit_pin, rem_verify, created_on, status) VALUES (:P1 /* {{RemitterAdd.Data.RemitterCode}} */, :P2 /* {{$_POST.RemNameAdd}} */, :P3 /* {{$_POST.RemMobileAdd}} */, :P4 /* {{$_POST.RemPINAdd}} */, :P5 /* {{false}} */, :P6 /* {{NOW}} */, :P7 /* {{'Active'}} */)",
+                  "query": "INSERT INTO dmt_remitter\n(remitter_id, remit_name, remit_mobile, remit_pin, rem_verify, created_on, status) VALUES (:P1 /* {{RemAddRemitterCode}} */, :P2 /* {{$_POST.RemNameAdd}} */, :P3 /* {{$_POST.RemMobileAdd}} */, :P4 /* {{$_POST.RemPINAdd}} */, :P5 /* {{false}} */, :P6 /* {{NOW}} */, :P7 /* {{'Active'}} */)",
                   "params": [
                     {
                       "name": ":P1",
                       "type": "expression",
-                      "value": "{{RemitterAdd.Data.RemitterCode}}"
+                      "value": "{{RemAddRemitterCode}}"
                     },
                     {
                       "name": ":P2",
@@ -230,7 +515,8 @@
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "disabled": true
       }
     ]
   }
