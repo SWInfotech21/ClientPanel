@@ -147,7 +147,7 @@
             ]
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "text",
@@ -183,11 +183,121 @@
                 "options": {
                   "url": "https://apihub.moneyart.in/ValidateRemitter",
                   "params": {
-                    "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+                    "token": "{{GetAPIForward.api_password}}",
                     "mobileNo": "{{$_POST.CustMobile}}"
                   },
                   "method": "POST"
                 },
+                "output": false
+              },
+              {
+                "name": "Message",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiGetBeneficiary.data.Message}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "StatusCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiGetBeneficiary.data.StatusCode}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Data",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiGetBeneficiary.data.Data}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "RemitterID",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiGetBeneficiary.data.Data.RemitterID}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "AvailableLimit",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiGetBeneficiary.data.Data.AvailableLimit}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "MobileNo",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiGetBeneficiary.data.Data.MobileNo}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "MonthlyLimit",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiGetBeneficiary.data.Data.MonthlyLimit}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Name",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiGetBeneficiary.data.Data.Name}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "PinCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiGetBeneficiary.data.Data.PinCode}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Recipients",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiGetBeneficiary.data.Data.Recipients}}"
+                },
+                "meta": [],
+                "outputType": "text",
                 "output": true
               },
               {
@@ -199,13 +309,13 @@
                   "then": {
                     "steps": [
                       {
-                        "name": "api",
+                        "name": "apiOTPNewRemitter",
                         "module": "api",
                         "action": "send",
                         "options": {
                           "url": "https://apihub.moneyart.in/RemitterSendOtp",
                           "params": {
-                            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+                            "token": "{{GetAPIForward.api_password}}",
                             "mobileNo": "{{$_POST.CustMobile}}"
                           },
                           "method": "POST"
@@ -213,11 +323,22 @@
                         "output": false
                       },
                       {
-                        "name": "apiRemOTP",
+                        "name": "OTPStatusCode",
                         "module": "core",
                         "action": "setvalue",
                         "options": {
-                          "value": "{{api.data}}"
+                          "value": "{{apiOTPNewRemitter.data.StatusCode}}"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": true
+                      },
+                      {
+                        "name": "OTPMessage",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{apiOTPNewRemitter.data.Message}}"
                         },
                         "meta": [],
                         "outputType": "text",
@@ -242,16 +363,6 @@
           "then": {
             "steps": [
               {
-                "name": "MessageCode",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "E06011"
-                },
-                "meta": [],
-                "outputType": "text"
-              },
-              {
                 "name": "AuthCode",
                 "module": "core",
                 "action": "setvalue",
@@ -262,7 +373,17 @@
                 "outputType": "text"
               },
               {
-                "name": "ReqId",
+                "name": "MessageCodeBal",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "E06005"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "ReqIdBal",
                 "module": "core",
                 "action": "setvalue",
                 "options": {
@@ -272,16 +393,84 @@
                 "outputType": "text"
               },
               {
-                "name": "api",
+                "name": "apiEPAvailableBal",
                 "module": "api",
                 "action": "send",
                 "options": {
                   "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
-                  "params": {
-                    "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.CustMobile+'~0~0'}}"
-                  },
-                  "method": "POST"
+                  "method": "POST",
+                  "dataType": "x-www-form-urlencoded",
+                  "data": {
+                    "msg": "{{MessageCodeBal+'~'+AuthCode+'~'+ReqIdBal+'~'+$_POST.CustMobile+'~0~0'}}"
+                  }
                 },
+                "output": true
+              },
+              {
+                "name": "MessageCodeBen",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "E06011"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "ReqIdBen",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{NOW.md5(123456).substr(1, 9)}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "apiEPGetBen",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
+                  "method": "POST",
+                  "dataType": "x-www-form-urlencoded",
+                  "data": {
+                    "msg": "{{MessageCodeBen+'~'+AuthCode+'~'+ReqIdBen+'~'+$_POST.CustMobile+'~0~0'}}"
+                  }
+                },
+                "output": false
+              },
+              {
+                "name": "apiData",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiEPGetBen.data}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Message",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiData.split('~')[6]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "StatusCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiData.split('~')[5]=='FAILED'?2:1}}"
+                },
+                "meta": [],
+                "outputType": "text",
                 "output": true
               }
             ]

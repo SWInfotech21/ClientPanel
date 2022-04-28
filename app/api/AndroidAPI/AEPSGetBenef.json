@@ -1,782 +1,782 @@
 {
-    "meta": {
+  "meta": {
+    "options": {
+      "linkedForm": "formLogin"
+    },
+    "$_GET": [
+      {
+        "type": "text",
         "options": {
-            "linkedForm": "formLogin"
+          "rules": {
+            "core:required": {}
+          }
         },
-        "$_GET": [
+        "name": "username"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "password"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "trycatch",
+      "options": {
+        "try": {
+          "steps": [
             {
-                "type": "text",
-                "options": {
-                    "rules": {
-                        "core:required": {}
+              "name": "getSalt",
+              "module": "dbconnector",
+              "action": "single",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "m_users",
+                      "column": "salt",
+                      "alias": "saltvalue"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_tpin"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "md_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "ds_id"
                     }
+                  ],
+                  "table": {
+                    "name": "m_users"
+                  },
+                  "joins": [],
+                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_GET.username}} */",
+                  "params": [
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P1",
+                      "value": "{{$_GET.username}}"
+                    }
+                  ],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "m_users.user_type",
+                        "field": "m_users.user_type",
+                        "type": "double",
+                        "operator": "between",
+                        "value": [
+                          1,
+                          3
+                        ],
+                        "data": {
+                          "table": "m_users",
+                          "column": "user_type",
+                          "type": "number"
+                        },
+                        "operation": "BETWEEN"
+                      },
+                      {
+                        "id": "m_users.u_status",
+                        "field": "m_users.u_status",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "1",
+                        "data": {
+                          "table": "m_users",
+                          "column": "u_status",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "m_users.blank2",
+                        "field": "m_users.blank2",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "{{$_GET.username}}",
+                        "data": {
+                          "table": "m_users",
+                          "column": "blank2",
+                          "type": "text"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  }
+                }
+              },
+              "output": false,
+              "meta": [
+                {
+                  "type": "text",
+                  "name": "saltvalue"
                 },
-                "name": "username"
+                {
+                  "type": "text",
+                  "name": "user_tpin"
+                },
+                {
+                  "type": "number",
+                  "name": "id"
+                },
+                {
+                  "type": "text",
+                  "name": "md_id"
+                },
+                {
+                  "type": "text",
+                  "name": "ds_id"
+                }
+              ],
+              "outputType": "object"
             },
             {
-                "type": "text",
-                "options": {
-                    "rules": {
-                        "core:required": {}
-                    }
-                },
-                "name": "password"
-            }
-        ]
-    },
-    "exec": {
-        "steps": {
-            "name": "",
-            "module": "core",
-            "action": "trycatch",
-            "options": {
-                "try": {
-                    "steps": [
+              "name": "",
+              "module": "core",
+              "action": "condition",
+              "options": {
+                "if": "{{getSalt.saltvalue}}",
+                "then": {
+                  "steps": [
+                    {
+                      "name": "GetMdt",
+                      "module": "dbconnector",
+                      "action": "single",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "m_users",
+                              "column": "id",
+                              "alias": "countmdt",
+                              "aggregate": "COUNT"
+                            }
+                          ],
+                          "table": {
+                            "name": "m_users"
+                          },
+                          "joins": [],
+                          "groupBy": [],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "m_users.id",
+                                "field": "m_users.id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{getSalt.md_id.toNumber()}}",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "id",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "m_users.u_status",
+                                "field": "m_users.u_status",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "1",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "u_status",
+                                  "type": "text"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{getSalt.md_id.toNumber()}}"
+                            }
+                          ]
+                        }
+                      },
+                      "output": false,
+                      "meta": [
                         {
-                            "name": "getSalt",
-                            "module": "dbconnector",
-                            "action": "single",
-                            "options": {
+                          "type": "number",
+                          "name": "countmdt"
+                        }
+                      ],
+                      "outputType": "object"
+                    },
+                    {
+                      "name": "",
+                      "module": "core",
+                      "action": "condition",
+                      "options": {
+                        "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
+                        "then": {
+                          "steps": [
+                            {
+                              "name": "GetDt",
+                              "module": "dbconnector",
+                              "action": "single",
+                              "options": {
                                 "connection": "postgres_gcpServer",
                                 "sql": {
-                                    "type": "SELECT",
-                                    "columns": [
-                                        {
-                                            "table": "m_users",
-                                            "column": "salt",
-                                            "alias": "saltvalue"
-                                        },
-                                        {
-                                            "table": "m_users",
-                                            "column": "user_tpin"
-                                        },
-                                        {
-                                            "table": "m_users",
-                                            "column": "id"
-                                        },
-                                        {
-                                            "table": "m_users",
-                                            "column": "md_id"
-                                        },
-                                        {
-                                            "table": "m_users",
-                                            "column": "ds_id"
-                                        }
-                                    ],
-                                    "table": {
-                                        "name": "m_users"
-                                    },
-                                    "joins": [],
-                                    "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_GET.username}} */",
-                                    "params": [
-                                        {
-                                            "operator": "equal",
-                                            "type": "expression",
-                                            "name": ":P1",
-                                            "value": "{{$_GET.username}}"
-                                        }
-                                    ],
-                                    "wheres": {
-                                        "condition": "AND",
-                                        "rules": [
-                                            {
-                                                "id": "m_users.user_type",
-                                                "field": "m_users.user_type",
-                                                "type": "double",
-                                                "operator": "between",
-                                                "value": [
-                                                    1,
-                                                    3
-                                                ],
-                                                "data": {
-                                                    "table": "m_users",
-                                                    "column": "user_type",
-                                                    "type": "number"
-                                                },
-                                                "operation": "BETWEEN"
-                                            },
-                                            {
-                                                "id": "m_users.u_status",
-                                                "field": "m_users.u_status",
-                                                "type": "string",
-                                                "operator": "equal",
-                                                "value": "1",
-                                                "data": {
-                                                    "table": "m_users",
-                                                    "column": "u_status",
-                                                    "type": "text"
-                                                },
-                                                "operation": "="
-                                            },
-                                            {
-                                                "id": "m_users.blank2",
-                                                "field": "m_users.blank2",
-                                                "type": "string",
-                                                "operator": "equal",
-                                                "value": "{{$_GET.username}}",
-                                                "data": {
-                                                    "table": "m_users",
-                                                    "column": "blank2",
-                                                    "type": "text"
-                                                },
-                                                "operation": "="
-                                            }
-                                        ],
-                                        "conditional": null,
-                                        "valid": true
+                                  "type": "SELECT",
+                                  "columns": [
+                                    {
+                                      "table": "m_users",
+                                      "column": "id",
+                                      "alias": "countdt",
+                                      "aggregate": "COUNT"
                                     }
+                                  ],
+                                  "table": {
+                                    "name": "m_users"
+                                  },
+                                  "joins": [],
+                                  "groupBy": [],
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "m_users.id",
+                                        "field": "m_users.id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{getSalt.ds_id.toNumber()}}",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      },
+                                      {
+                                        "id": "m_users.u_status",
+                                        "field": "m_users.u_status",
+                                        "type": "string",
+                                        "operator": "equal",
+                                        "value": "1",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "u_status",
+                                          "type": "text"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
+                                  "params": [
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P1",
+                                      "value": "{{getSalt.ds_id.toNumber()}}"
+                                    }
+                                  ]
                                 }
+                              },
+                              "output": false,
+                              "meta": [
+                                {
+                                  "type": "number",
+                                  "name": "countdt"
+                                }
+                              ],
+                              "outputType": "object"
                             },
-                            "output": false,
-                            "meta": [
-                                {
-                                    "type": "text",
-                                    "name": "saltvalue"
-                                },
-                                {
-                                    "type": "text",
-                                    "name": "user_tpin"
-                                },
-                                {
-                                    "type": "number",
-                                    "name": "id"
-                                },
-                                {
-                                    "type": "text",
-                                    "name": "md_id"
-                                },
-                                {
-                                    "type": "text",
-                                    "name": "ds_id"
-                                }
-                            ],
-                            "outputType": "object"
-                        },
-                        {
-                            "name": "",
-                            "module": "core",
-                            "action": "condition",
-                            "options": {
-                                "if": "{{getSalt.saltvalue}}",
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
                                 "then": {
-                                    "steps": [
-                                        {
-                                            "name": "GetMdt",
-                                            "module": "dbconnector",
-                                            "action": "single",
-                                            "options": {
+                                  "steps": [
+                                    {
+                                      "name": "identity",
+                                      "module": "auth",
+                                      "action": "login",
+                                      "options": {
+                                        "provider": "securityAndroid",
+                                        "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
+                                        "username": "{{$_GET.username}}",
+                                        "remember": ""
+                                      },
+                                      "output": false,
+                                      "meta": []
+                                    },
+                                    {
+                                      "name": "",
+                                      "module": "core",
+                                      "action": "condition",
+                                      "options": {
+                                        "if": "{{identity}}",
+                                        "then": {
+                                          "steps": [
+                                            {
+                                              "name": "ViewBenef",
+                                              "module": "dbconnector",
+                                              "action": "select",
+                                              "options": {
+                                                "sql": {
+                                                  "type": "SELECT",
+                                                  "columns": [
+                                                    {
+                                                      "table": "t_aeps_benef_epay",
+                                                      "column": "id"
+                                                    },
+                                                    {
+                                                      "table": "t_aeps_benef_epay",
+                                                      "column": "benef_name"
+                                                    },
+                                                    {
+                                                      "table": "t_aeps_benef_epay",
+                                                      "column": "bank_name"
+                                                    },
+                                                    {
+                                                      "table": "t_aeps_benef_epay",
+                                                      "column": "bank_ifsc"
+                                                    },
+                                                    {
+                                                      "table": "t_aeps_benef_epay",
+                                                      "column": "account_no"
+                                                    },
+                                                    {
+                                                      "table": "t_aeps_benef_epay",
+                                                      "column": "contacts"
+                                                    },
+                                                    {
+                                                      "table": "t_aeps_benef_epay",
+                                                      "column": "created_on"
+                                                    },
+                                                    {
+                                                      "table": "t_aeps_benef_epay",
+                                                      "column": "blank1",
+                                                      "alias": "benef_id"
+                                                    }
+                                                  ],
+                                                  "table": {
+                                                    "name": "t_aeps_benef_epay"
+                                                  },
+                                                  "primary": "id",
+                                                  "joins": [],
+                                                  "wheres": {
+                                                    "condition": "AND",
+                                                    "rules": [
+                                                      {
+                                                        "id": "t_aeps_benef_epay.user_id",
+                                                        "field": "t_aeps_benef_epay.user_id",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": "{{identity}}",
+                                                        "data": {
+                                                          "table": "t_aeps_benef_epay",
+                                                          "column": "user_id",
+                                                          "type": "number",
+                                                          "columnObj": {
+                                                            "type": "integer",
+                                                            "primary": false,
+                                                            "unique": false,
+                                                            "nullable": false,
+                                                            "name": "user_id"
+                                                          }
+                                                        },
+                                                        "operation": "="
+                                                      }
+                                                    ],
+                                                    "conditional": null,
+                                                    "valid": true
+                                                  },
+                                                  "orders": [
+                                                    {
+                                                      "table": "t_aeps_benef_epay",
+                                                      "column": "id",
+                                                      "direction": "DESC",
+                                                      "recid": 1
+                                                    }
+                                                  ],
+                                                  "query": "SELECT id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_on, blank1 AS benef_id\nFROM t_aeps_benef_epay\nWHERE user_id = :P1 /* {{identity}} */\nORDER BY id DESC",
+                                                  "params": [
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P1",
+                                                      "value": "{{identity}}"
+                                                    }
+                                                  ]
+                                                },
+                                                "connection": "postgres_gcpServer"
+                                              },
+                                              "output": true,
+                                              "meta": [
+                                                {
+                                                  "type": "number",
+                                                  "name": "id"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "benef_name"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "bank_name"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "bank_ifsc"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "account_no"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "contacts"
+                                                },
+                                                {
+                                                  "type": "datetime",
+                                                  "name": "created_on"
+                                                },
+                                                {
+                                                  "type": "text",
+                                                  "name": "benef_id"
+                                                }
+                                              ],
+                                              "outputType": "array"
+                                            },
+                                            {
+                                              "name": "AEPSBalance",
+                                              "module": "dbconnector",
+                                              "action": "single",
+                                              "options": {
                                                 "connection": "postgres_gcpServer",
                                                 "sql": {
-                                                    "type": "SELECT",
-                                                    "columns": [
-                                                        {
-                                                            "table": "m_users",
-                                                            "column": "id",
-                                                            "alias": "countmdt",
-                                                            "aggregate": "COUNT"
-                                                        }
-                                                    ],
-                                                    "table": {
-                                                        "name": "m_users"
-                                                    },
-                                                    "joins": [],
-                                                    "groupBy": [],
-                                                    "wheres": {
-                                                        "condition": "AND",
-                                                        "rules": [
-                                                            {
-                                                                "id": "m_users.id",
-                                                                "field": "m_users.id",
-                                                                "type": "double",
-                                                                "operator": "equal",
-                                                                "value": "{{getSalt.md_id.toNumber()}}",
-                                                                "data": {
-                                                                    "table": "m_users",
-                                                                    "column": "id",
-                                                                    "type": "number"
-                                                                },
-                                                                "operation": "="
-                                                            },
-                                                            {
-                                                                "id": "m_users.u_status",
-                                                                "field": "m_users.u_status",
-                                                                "type": "string",
-                                                                "operator": "equal",
-                                                                "value": "1",
-                                                                "data": {
-                                                                    "table": "m_users",
-                                                                    "column": "u_status",
-                                                                    "type": "text"
-                                                                },
-                                                                "operation": "="
-                                                            }
-                                                        ],
-                                                        "conditional": null,
-                                                        "valid": true
-                                                    },
-                                                    "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
-                                                    "params": [
-                                                        {
-                                                            "operator": "equal",
-                                                            "type": "expression",
-                                                            "name": ":P1",
-                                                            "value": "{{getSalt.md_id.toNumber()}}"
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                            "output": false,
-                                            "meta": [
-                                                {
-                                                    "type": "number",
-                                                    "name": "countmdt"
-                                                }
-                                            ],
-                                            "outputType": "object"
-                                        },
-                                        {
-                                            "name": "",
-                                            "module": "core",
-                                            "action": "condition",
-                                            "options": {
-                                                "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
-                                                "then": {
-                                                    "steps": [
-                                                        {
-                                                            "name": "GetDt",
-                                                            "module": "dbconnector",
-                                                            "action": "single",
-                                                            "options": {
-                                                                "connection": "postgres_gcpServer",
-                                                                "sql": {
-                                                                    "type": "SELECT",
-                                                                    "columns": [
-                                                                        {
-                                                                            "table": "m_users",
-                                                                            "column": "id",
-                                                                            "alias": "countdt",
-                                                                            "aggregate": "COUNT"
-                                                                        }
-                                                                    ],
-                                                                    "table": {
-                                                                        "name": "m_users"
-                                                                    },
-                                                                    "joins": [],
-                                                                    "groupBy": [],
-                                                                    "wheres": {
-                                                                        "condition": "AND",
-                                                                        "rules": [
-                                                                            {
-                                                                                "id": "m_users.id",
-                                                                                "field": "m_users.id",
-                                                                                "type": "double",
-                                                                                "operator": "equal",
-                                                                                "value": "{{getSalt.ds_id.toNumber()}}",
-                                                                                "data": {
-                                                                                    "table": "m_users",
-                                                                                    "column": "id",
-                                                                                    "type": "number"
-                                                                                },
-                                                                                "operation": "="
-                                                                            },
-                                                                            {
-                                                                                "id": "m_users.u_status",
-                                                                                "field": "m_users.u_status",
-                                                                                "type": "string",
-                                                                                "operator": "equal",
-                                                                                "value": "1",
-                                                                                "data": {
-                                                                                    "table": "m_users",
-                                                                                    "column": "u_status",
-                                                                                    "type": "text"
-                                                                                },
-                                                                                "operation": "="
-                                                                            }
-                                                                        ],
-                                                                        "conditional": null,
-                                                                        "valid": true
-                                                                    },
-                                                                    "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
-                                                                    "params": [
-                                                                        {
-                                                                            "operator": "equal",
-                                                                            "type": "expression",
-                                                                            "name": ":P1",
-                                                                            "value": "{{getSalt.ds_id.toNumber()}}"
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            },
-                                                            "output": false,
-                                                            "meta": [
-                                                                {
-                                                                    "type": "number",
-                                                                    "name": "countdt"
-                                                                }
-                                                            ],
-                                                            "outputType": "object"
+                                                  "type": "SELECT",
+                                                  "columns": [
+                                                    {
+                                                      "table": "m_users",
+                                                      "column": "aeps_balance"
+                                                    }
+                                                  ],
+                                                  "table": {
+                                                    "name": "m_users"
+                                                  },
+                                                  "primary": "id",
+                                                  "joins": [],
+                                                  "wheres": {
+                                                    "condition": "AND",
+                                                    "rules": [
+                                                      {
+                                                        "id": "m_users.id",
+                                                        "field": "m_users.id",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": "{{identity}}",
+                                                        "data": {
+                                                          "table": "m_users",
+                                                          "column": "id",
+                                                          "type": "number",
+                                                          "columnObj": {
+                                                            "type": "increments",
+                                                            "default": "",
+                                                            "primary": true,
+                                                            "nullable": false,
+                                                            "unique": true,
+                                                            "name": "id"
+                                                          }
                                                         },
+                                                        "operation": "="
+                                                      }
+                                                    ],
+                                                    "conditional": null,
+                                                    "valid": true
+                                                  },
+                                                  "query": "SELECT aeps_balance\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
+                                                  "params": [
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P1",
+                                                      "value": "{{identity}}"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "output": true,
+                                              "meta": [
+                                                {
+                                                  "type": "text",
+                                                  "name": "aeps_balance"
+                                                }
+                                              ],
+                                              "outputType": "object"
+                                            },
+                                            {
+                                              "name": "GetAEPSLimit",
+                                              "module": "dbupdater",
+                                              "action": "custom",
+                                              "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "query": "SELECT SUM(tab.amount::int) as aeps_minus_amount from tt_aeps_trans tab \nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date AND tab.status=@status",
+                                                  "params": [
+                                                    {
+                                                      "name": "@user_id",
+                                                      "value": "{{identity}}",
+                                                      "test": "66"
+                                                    },
+                                                    {
+                                                      "name": "@status",
+                                                      "value": "{{'SUCCESS'}}",
+                                                      "test": "SUCCESS"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "output": false,
+                                              "meta": [],
+                                              "outputType": "array"
+                                            },
+                                            {
+                                              "name": "",
+                                              "module": "core",
+                                              "action": "condition",
+                                              "options": {
+                                                "if": "{{GetAEPSLimit[0].aeps_minus_amount==null}}",
+                                                "then": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "GetAEPSLimit2Number",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{GetAEPSLimit[0].aeps_minus_amount==null?0:GetAEPSLimit[0].aeps_minus_amount}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": false
+                                                    },
+                                                    {
+                                                      "name": "AEPSBal",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{AEPSBalance.aeps_balance==null?0:AEPSBalance.aeps_balance}}"
+                                                      },
+                                                      "meta": [
                                                         {
-                                                            "name": "",
-                                                            "module": "core",
-                                                            "action": "condition",
-                                                            "options": {
-                                                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
-                                                                "then": {
-                                                                    "steps": [
-                                                                        {
-                                                                            "name": "identity",
-                                                                            "module": "auth",
-                                                                            "action": "login",
-                                                                            "options": {
-                                                                                "provider": "securityAndroid",
-                                                                                "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
-                                                                                "username": "{{$_GET.username}}",
-                                                                                "remember": ""
-                                                                            },
-                                                                            "output": false,
-                                                                            "meta": []
-                                                                        },
-                                                                        {
-                                                                            "name": "",
-                                                                            "module": "core",
-                                                                            "action": "condition",
-                                                                            "options": {
-                                                                                "if": "{{identity}}",
-                                                                                "then": {
-                                                                                    "steps": [
-                                                                                        {
-                                                                                            "name": "ViewBenef",
-                                                                                            "module": "dbconnector",
-                                                                                            "action": "select",
-                                                                                            "options": {
-                                                                                                "sql": {
-                                                                                                    "type": "SELECT",
-                                                                                                    "columns": [
-                                                                                                        {
-                                                                                                            "table": "t_aeps_benef_epay",
-                                                                                                            "column": "id"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "t_aeps_benef_epay",
-                                                                                                            "column": "benef_name"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "t_aeps_benef_epay",
-                                                                                                            "column": "bank_name"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "t_aeps_benef_epay",
-                                                                                                            "column": "bank_ifsc"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "t_aeps_benef_epay",
-                                                                                                            "column": "account_no"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "t_aeps_benef_epay",
-                                                                                                            "column": "contacts"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "t_aeps_benef_epay",
-                                                                                                            "column": "created_on"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "table": "t_aeps_benef_epay",
-                                                                                                            "column": "blank1",
-                                                                                                            "alias": "benef_id"
-                                                                                                        }
-                                                                                                    ],
-                                                                                                    "table": {
-                                                                                                        "name": "t_aeps_benef_epay"
-                                                                                                    },
-                                                                                                    "primary": "id",
-                                                                                                    "joins": [],
-                                                                                                    "wheres": {
-                                                                                                        "condition": "AND",
-                                                                                                        "rules": [
-                                                                                                            {
-                                                                                                                "id": "t_aeps_benef_epay.user_id",
-                                                                                                                "field": "t_aeps_benef_epay.user_id",
-                                                                                                                "type": "double",
-                                                                                                                "operator": "equal",
-                                                                                                                "value": "{{identity}}",
-                                                                                                                "data": {
-                                                                                                                    "table": "t_aeps_benef_epay",
-                                                                                                                    "column": "user_id",
-                                                                                                                    "type": "number",
-                                                                                                                    "columnObj": {
-                                                                                                                        "type": "integer",
-                                                                                                                        "primary": false,
-                                                                                                                        "unique": false,
-                                                                                                                        "nullable": false,
-                                                                                                                        "name": "user_id"
-                                                                                                                    }
-                                                                                                                },
-                                                                                                                "operation": "="
-                                                                                                            }
-                                                                                                        ],
-                                                                                                        "conditional": null,
-                                                                                                        "valid": true
-                                                                                                    },
-                                                                                                    "orders": [
-                                                                                                        {
-                                                                                                            "table": "t_aeps_benef_epay",
-                                                                                                            "column": "id",
-                                                                                                            "direction": "DESC",
-                                                                                                            "recid": 1
-                                                                                                        }
-                                                                                                    ],
-                                                                                                    "query": "SELECT id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_on, blank1 AS benef_id\nFROM t_aeps_benef_epay\nWHERE user_id = :P1 /* {{identity}} */\nORDER BY id DESC",
-                                                                                                    "params": [
-                                                                                                        {
-                                                                                                            "operator": "equal",
-                                                                                                            "type": "expression",
-                                                                                                            "name": ":P1",
-                                                                                                            "value": "{{identity}}"
-                                                                                                        }
-                                                                                                    ]
-                                                                                                },
-                                                                                                "connection": "postgres_gcpServer"
-                                                                                            },
-                                                                                            "output": true,
-                                                                                            "meta": [
-                                                                                                {
-                                                                                                    "type": "number",
-                                                                                                    "name": "id"
-                                                                                                },
-                                                                                                {
-                                                                                                    "type": "text",
-                                                                                                    "name": "benef_name"
-                                                                                                },
-                                                                                                {
-                                                                                                    "type": "text",
-                                                                                                    "name": "bank_name"
-                                                                                                },
-                                                                                                {
-                                                                                                    "type": "text",
-                                                                                                    "name": "bank_ifsc"
-                                                                                                },
-                                                                                                {
-                                                                                                    "type": "text",
-                                                                                                    "name": "account_no"
-                                                                                                },
-                                                                                                {
-                                                                                                    "type": "text",
-                                                                                                    "name": "contacts"
-                                                                                                },
-                                                                                                {
-                                                                                                    "type": "datetime",
-                                                                                                    "name": "created_on"
-                                                                                                },
-                                                                                                {
-                                                                                                    "type": "text",
-                                                                                                    "name": "benef_id"
-                                                                                                }
-                                                                                            ],
-                                                                                            "outputType": "array"
-                                                                                        },
-                                                                                        {
-                                                                                            "name": "AEPSBalance",
-                                                                                            "module": "dbconnector",
-                                                                                            "action": "single",
-                                                                                            "options": {
-                                                                                                "connection": "postgres_gcpServer",
-                                                                                                "sql": {
-                                                                                                    "type": "SELECT",
-                                                                                                    "columns": [
-                                                                                                        {
-                                                                                                            "table": "m_users",
-                                                                                                            "column": "aeps_balance"
-                                                                                                        }
-                                                                                                    ],
-                                                                                                    "table": {
-                                                                                                        "name": "m_users"
-                                                                                                    },
-                                                                                                    "primary": "id",
-                                                                                                    "joins": [],
-                                                                                                    "wheres": {
-                                                                                                        "condition": "AND",
-                                                                                                        "rules": [
-                                                                                                            {
-                                                                                                                "id": "m_users.id",
-                                                                                                                "field": "m_users.id",
-                                                                                                                "type": "double",
-                                                                                                                "operator": "equal",
-                                                                                                                "value": "{{identity}}",
-                                                                                                                "data": {
-                                                                                                                    "table": "m_users",
-                                                                                                                    "column": "id",
-                                                                                                                    "type": "number",
-                                                                                                                    "columnObj": {
-                                                                                                                        "type": "increments",
-                                                                                                                        "default": "",
-                                                                                                                        "primary": true,
-                                                                                                                        "nullable": false,
-                                                                                                                        "unique": true,
-                                                                                                                        "name": "id"
-                                                                                                                    }
-                                                                                                                },
-                                                                                                                "operation": "="
-                                                                                                            }
-                                                                                                        ],
-                                                                                                        "conditional": null,
-                                                                                                        "valid": true
-                                                                                                    },
-                                                                                                    "query": "SELECT aeps_balance\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
-                                                                                                    "params": [
-                                                                                                        {
-                                                                                                            "operator": "equal",
-                                                                                                            "type": "expression",
-                                                                                                            "name": ":P1",
-                                                                                                            "value": "{{identity}}"
-                                                                                                        }
-                                                                                                    ]
-                                                                                                }
-                                                                                            },
-                                                                                            "output": false,
-                                                                                            "meta": [
-                                                                                                {
-                                                                                                    "type": "text",
-                                                                                                    "name": "aeps_balance"
-                                                                                                }
-                                                                                            ],
-                                                                                            "outputType": "object"
-                                                                                        },
-                                                                                        {
-                                                                                            "name": "GetAEPSLimit",
-                                                                                            "module": "dbupdater",
-                                                                                            "action": "custom",
-                                                                                            "options": {
-                                                                                                "connection": "postgres_gcpServer",
-                                                                                                "sql": {
-                                                                                                    "query": "SELECT SUM(tab.amount::int) as aeps_minus_amount from tt_aeps_trans tab \nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date AND tab.status=@status",
-                                                                                                    "params": [
-                                                                                                        {
-                                                                                                            "name": "@user_id",
-                                                                                                            "value": "{{identity}}",
-                                                                                                            "test": "66"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "name": "@status",
-                                                                                                            "value": "{{'SUCCESS'}}",
-                                                                                                            "test": "SUCCESS"
-                                                                                                        }
-                                                                                                    ]
-                                                                                                }
-                                                                                            },
-                                                                                            "output": false,
-                                                                                            "meta": [],
-                                                                                            "outputType": "array"
-                                                                                        },
-                                                                                        {
-                                                                                            "name": "",
-                                                                                            "module": "core",
-                                                                                            "action": "condition",
-                                                                                            "options": {
-                                                                                                "if": "{{GetAEPSLimit[0].aeps_minus_amount==null}}",
-                                                                                                "then": {
-                                                                                                    "steps": [
-                                                                                                        {
-                                                                                                            "name": "GetAEPSLimit2Number",
-                                                                                                            "module": "core",
-                                                                                                            "action": "setvalue",
-                                                                                                            "options": {
-                                                                                                                "value": "{{GetAEPSLimit[0].aeps_minus_amount==null?0:GetAEPSLimit[0].aeps_minus_amount}}"
-                                                                                                            },
-                                                                                                            "meta": [],
-                                                                                                            "outputType": "text",
-                                                                                                            "output": false
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "name": "AEPSBal",
-                                                                                                            "module": "core",
-                                                                                                            "action": "setvalue",
-                                                                                                            "options": {
-                                                                                                                "value": "{{AEPSBalance.aeps_balance==null?0:AEPSBalance.aeps_balance}}"
-                                                                                                            },
-                                                                                                            "meta": [
-                                                                                                                {
-                                                                                                                    "name": "aeps_balance",
-                                                                                                                    "type": "text"
-                                                                                                                }
-                                                                                                            ],
-                                                                                                            "outputType": "text",
-                                                                                                            "output": false
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "name": "AEPSLimit",
-                                                                                                            "module": "core",
-                                                                                                            "action": "setvalue",
-                                                                                                            "options": {
-                                                                                                                "value": "{{AEPSBal.toNumber()-GetAEPSLimit2Number.toNumber()}}"
-                                                                                                            },
-                                                                                                            "meta": [
-                                                                                                                {
-                                                                                                                    "name": "aeps_balance",
-                                                                                                                    "type": "text"
-                                                                                                                }
-                                                                                                            ],
-                                                                                                            "output": true,
-                                                                                                            "outputType": "text"
-                                                                                                        }
-                                                                                                    ]
-                                                                                                },
-                                                                                                "else": {
-                                                                                                    "steps": [
-                                                                                                        {
-                                                                                                            "name": "GetOpeningBal",
-                                                                                                            "module": "dbupdater",
-                                                                                                            "action": "custom",
-                                                                                                            "options": {
-                                                                                                                "connection": "postgres_gcpServer",
-                                                                                                                "sql": {
-                                                                                                                    "query": "SELECT tab.op_bal from tt_aeps_trans tab \nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date ORDER by id asc limit 1;",
-                                                                                                                    "params": [
-                                                                                                                        {
-                                                                                                                            "name": "@user_id",
-                                                                                                                            "value": "{{identity}}",
-                                                                                                                            "test": "63"
-                                                                                                                        }
-                                                                                                                    ]
-                                                                                                                }
-                                                                                                            },
-                                                                                                            "output": false,
-                                                                                                            "meta": [
-                                                                                                                {
-                                                                                                                    "name": "op_bal",
-                                                                                                                    "type": "text"
-                                                                                                                }
-                                                                                                            ],
-                                                                                                            "outputType": "array"
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "name": "GetAEPSLimit2Number",
-                                                                                                            "module": "core",
-                                                                                                            "action": "setvalue",
-                                                                                                            "options": {
-                                                                                                                "value": "{{GetAEPSLimit[0].aeps_minus_amount==null?0:GetAEPSLimit[0].aeps_minus_amount}}"
-                                                                                                            },
-                                                                                                            "meta": [],
-                                                                                                            "outputType": "text",
-                                                                                                            "output": false
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "name": "AEPSBal",
-                                                                                                            "module": "core",
-                                                                                                            "action": "setvalue",
-                                                                                                            "options": {
-                                                                                                                "value": "{{GetOpeningBal[0].op_bal}}"
-                                                                                                            },
-                                                                                                            "meta": [],
-                                                                                                            "outputType": "text",
-                                                                                                            "output": false
-                                                                                                        },
-                                                                                                        {
-                                                                                                            "name": "AEPSLimit",
-                                                                                                            "module": "core",
-                                                                                                            "action": "setvalue",
-                                                                                                            "options": {
-                                                                                                                "value": "{{AEPSBal.toNumber()-GetAEPSLimit2Number.toNumber()}}"
-                                                                                                            },
-                                                                                                            "meta": [],
-                                                                                                            "output": true,
-                                                                                                            "outputType": "text"
-                                                                                                        }
-                                                                                                    ]
-                                                                                                }
-                                                                                            },
-                                                                                            "outputType": "boolean"
-                                                                                        }
-                                                                                    ]
-                                                                                },
-                                                                                "else": {
-                                                                                    "steps": {
-                                                                                        "name": "Resp",
-                                                                                        "module": "core",
-                                                                                        "action": "setvalue",
-                                                                                        "options": {
-                                                                                            "value": "Password Mismatched"
-                                                                                        },
-                                                                                        "meta": [],
-                                                                                        "output": true,
-                                                                                        "outputType": "text"
-                                                                                    }
-                                                                                }
-                                                                            },
-                                                                            "outputType": "boolean"
-                                                                        }
-                                                                    ]
-                                                                },
-                                                                "else": {
-                                                                    "steps": {
-                                                                        "name": "Resp",
-                                                                        "module": "core",
-                                                                        "action": "setvalue",
-                                                                        "options": {
-                                                                            "value": "Your Distributor(DT) inactive, Please contact technical support team"
-                                                                        },
-                                                                        "meta": [],
-                                                                        "outputType": "text",
-                                                                        "output": true
-                                                                    }
-                                                                }
-                                                            },
-                                                            "outputType": "boolean"
+                                                          "name": "aeps_balance",
+                                                          "type": "text"
                                                         }
-                                                    ]
+                                                      ],
+                                                      "outputType": "text",
+                                                      "output": false
+                                                    },
+                                                    {
+                                                      "name": "AEPSLimit",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{AEPSBal.toNumber()-GetAEPSLimit2Number.toNumber()}}"
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "aeps_balance",
+                                                          "type": "text"
+                                                        }
+                                                      ],
+                                                      "output": true,
+                                                      "outputType": "text"
+                                                    }
+                                                  ]
                                                 },
                                                 "else": {
-                                                    "steps": {
-                                                        "name": "Resp",
-                                                        "module": "core",
-                                                        "action": "setvalue",
-                                                        "options": {
-                                                            "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
-                                                        },
-                                                        "meta": [],
-                                                        "output": true,
-                                                        "outputType": "text"
+                                                  "steps": [
+                                                    {
+                                                      "name": "GetOpeningBal",
+                                                      "module": "dbupdater",
+                                                      "action": "custom",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "query": "SELECT tab.op_bal from tt_aeps_trans tab \nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date ORDER by id asc limit 1;",
+                                                          "params": [
+                                                            {
+                                                              "name": "@user_id",
+                                                              "value": "{{identity}}",
+                                                              "test": "63"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "output": false,
+                                                      "meta": [
+                                                        {
+                                                          "name": "op_bal",
+                                                          "type": "text"
+                                                        }
+                                                      ],
+                                                      "outputType": "array"
+                                                    },
+                                                    {
+                                                      "name": "GetAEPSLimit2Number",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{GetAEPSLimit[0].aeps_minus_amount==null?0:GetAEPSLimit[0].aeps_minus_amount}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": false
+                                                    },
+                                                    {
+                                                      "name": "AEPSBal",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{GetOpeningBal[0].op_bal}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": false
+                                                    },
+                                                    {
+                                                      "name": "AEPSLimit",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{AEPSBal.toNumber()-GetAEPSLimit2Number.toNumber()}}"
+                                                      },
+                                                      "meta": [],
+                                                      "output": true,
+                                                      "outputType": "text"
                                                     }
+                                                  ]
                                                 }
+                                              },
+                                              "outputType": "boolean"
+                                            }
+                                          ]
+                                        },
+                                        "else": {
+                                          "steps": {
+                                            "name": "Resp",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                              "value": "Password Mismatched"
                                             },
-                                            "outputType": "boolean"
+                                            "meta": [],
+                                            "output": true,
+                                            "outputType": "text"
+                                          }
                                         }
-                                    ]
+                                      },
+                                      "outputType": "boolean"
+                                    }
+                                  ]
                                 },
                                 "else": {
-                                    "steps": {
-                                        "name": "Resp",
-                                        "module": "core",
-                                        "action": "setvalue",
-                                        "options": {
-                                            "value": "User does not exists or user inactive, Please contact technical support team"
-                                        },
-                                        "meta": [],
-                                        "outputType": "text",
-                                        "output": true
-                                    }
+                                  "steps": {
+                                    "name": "Resp",
+                                    "module": "core",
+                                    "action": "setvalue",
+                                    "options": {
+                                      "value": "Your Distributor(DT) inactive, Please contact technical support team"
+                                    },
+                                    "meta": [],
+                                    "outputType": "text",
+                                    "output": true
+                                  }
                                 }
-                            },
-                            "outputType": "boolean",
-                            "output": false
-                        }
-                    ]
-                },
-                "catch": {
-                    "steps": {
-                        "name": "Resp",
-                        "module": "core",
-                        "action": "setvalue",
-                        "options": {
-                            "value": "Do not even try to do this, we are watching & recording your wrong activity!"
+                              },
+                              "outputType": "boolean"
+                            }
+                          ]
                         },
-                        "meta": [],
-                        "output": true,
-                        "outputType": "text"
+                        "else": {
+                          "steps": {
+                            "name": "Resp",
+                            "module": "core",
+                            "action": "setvalue",
+                            "options": {
+                              "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                            },
+                            "meta": [],
+                            "output": true,
+                            "outputType": "text"
+                          }
+                        }
+                      },
+                      "outputType": "boolean"
                     }
+                  ]
+                },
+                "else": {
+                  "steps": {
+                    "name": "Resp",
+                    "module": "core",
+                    "action": "setvalue",
+                    "options": {
+                      "value": "User does not exists or user inactive, Please contact technical support team"
+                    },
+                    "meta": [],
+                    "outputType": "text",
+                    "output": true
+                  }
                 }
+              },
+              "outputType": "boolean",
+              "output": false
             }
+          ]
+        },
+        "catch": {
+          "steps": {
+            "name": "Resp",
+            "module": "core",
+            "action": "setvalue",
+            "options": {
+              "value": "Do not even try to do this, we are watching & recording your wrong activity!"
+            },
+            "meta": [],
+            "output": true,
+            "outputType": "text"
+          }
         }
+      }
     }
+  }
 }
