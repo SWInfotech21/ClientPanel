@@ -602,7 +602,7 @@
                                                   "conditional": null,
                                                   "valid": true
                                                 },
-                                                "query": "SELECT tt_aeps_trans.id, tt_aeps_trans.user_rt_id, tt_aeps_trans.merchant_id, tt_aeps_trans.op_bal, tt_aeps_trans.amount, tt_aeps_trans.comm_per, tt_aeps_trans.comm_val, tt_aeps_trans.comm_amt, tt_aeps_trans.charge_per, tt_aeps_trans.charge_val, tt_aeps_trans.charge_amt, tt_aeps_trans.net_amt, tt_aeps_trans.closing_bal, tt_aeps_trans.tr_mode, tt_aeps_trans.tr_type, tt_aeps_trans.status, tt_aeps_trans.tr_id, tt_aeps_trans.reason, tt_aeps_trans.api_logs, tt_aeps_trans.api_ref, tt_aeps_trans.api_response_time, tt_aeps_trans.process_mode, tt_aeps_trans.tr_date, tt_aeps_trans.raise_compain, tt_aeps_trans.bank_name, tt_aeps_trans.service_api, tt_aeps_trans.bank_acno, tt_aeps_trans.benef_name, tt_aeps_trans.benef_id, m_op.operator_name, user.user_fname\nFROM tt_aeps_trans\nLEFT JOIN m_operator AS m_op ON (m_op.id = tt_aeps_trans.op_id) LEFT JOIN m_users AS user ON (user.id = tt_aeps_trans.user_id)\nWHERE tt_aeps_trans.tr_date BETWEEN :P1 /* {{$_GET.fromdate}} */ AND :P2 /* {{$_GET.todate}} */ AND tt_aeps_trans.user_id = :P3 /* {{identity}} */",
+                                                "query": "SELECT tt_aeps_trans.id, tt_aeps_trans.user_rt_id, tt_aeps_trans.merchant_id, tt_aeps_trans.op_bal, tt_aeps_trans.amount, tt_aeps_trans.comm_per, tt_aeps_trans.comm_val, tt_aeps_trans.comm_amt, tt_aeps_trans.charge_per, tt_aeps_trans.charge_val, tt_aeps_trans.charge_amt, tt_aeps_trans.net_amt, tt_aeps_trans.closing_bal, tt_aeps_trans.tr_mode, tt_aeps_trans.tr_type, tt_aeps_trans.status, tt_aeps_trans.tr_id, tt_aeps_trans.reason, tt_aeps_trans.api_logs, tt_aeps_trans.api_ref, tt_aeps_trans.api_response_time, tt_aeps_trans.process_mode, tt_aeps_trans.tr_date, tt_aeps_trans.raise_compain, tt_aeps_trans.bank_name, tt_aeps_trans.service_api, tt_aeps_trans.bank_acno, tt_aeps_trans.benef_name, tt_aeps_trans.benef_id, m_op.operator_name, user.user_fname\nFROM tt_aeps_trans\nLEFT JOIN m_operator AS m_op ON (m_op.id = tt_aeps_trans.op_id) LEFT JOIN m_users AS user ON (user.id = tt_aeps_trans.user_id)\nWHERE tt_aeps_trans.tr_date BETWEEN :P1 /* {{$_GET.fromdate}} */ AND :P2 /* {{$_GET.todate}} */ AND tt_aeps_trans.user_id = :P3 /* {{identity}} */\nORDER BY tt_aeps_trans.id DESC",
                                                 "params": [
                                                   {
                                                     "operator": "between",
@@ -621,6 +621,13 @@
                                                     "type": "expression",
                                                     "name": ":P3",
                                                     "value": "{{identity}}"
+                                                  }
+                                                ],
+                                                "orders": [
+                                                  {
+                                                    "table": "tt_aeps_trans",
+                                                    "column": "id",
+                                                    "direction": "DESC"
                                                   }
                                                 ]
                                               },

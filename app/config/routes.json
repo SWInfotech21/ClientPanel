@@ -183,6 +183,11 @@
       "page": "forgot-pass"
     },
     {
+      "path": "/dmt-service-beta",
+      "page": "dmt-service-beta",
+      "layout": "main"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }

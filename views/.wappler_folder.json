@@ -170,5 +170,9 @@
   "forgot-pass.ejs": {
     "layoutPage": "",
     "description": ""
+  },
+  "dmt-service-beta.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }
