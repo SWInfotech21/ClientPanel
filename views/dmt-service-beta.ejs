@@ -1,5 +1,5 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dmtservicebeta" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxDataTraversal:{},dmxBootstrap5Modal:{}}" -->
-<!-- New Wappler Page -->
+
 <meta name="ac:route" content="/dmt-service-beta">
 <dmx-value id="varBenefId" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varBenBankName" dmx-bind:value="0"></dmx-value>
@@ -17,7 +17,7 @@
 
 <main>
     <div class="container-fluid">
-        <h5 class="mt-4">Domestic Money Transfer(DMT)
+        <h5 class="mt-4">Domestic Money Transfer(DMT)-Beta Version
             <span class="border-3 spinner-border spinner-border-sm" role="status" dmx-show="scLoginUser.state.executing"></span>
         </h5>
         <ol class="breadcrumb mb-4">
@@ -26,7 +26,7 @@
     </div>
     <div class="d-flex justify-content-between flex-wrap px-2 w-100">
         <div class="w-100 border-bottom p-2 px-sm-5 py-sm-3 sw-container mb-3">
-            <form id="formGetBeneficiary" is="dmx-serverconnect-form" action="api/DMT/GetBeneficiary" dmx-populate="" method="post" dmx-on:success="content.formGetBeneficiary.data.OTPStatusCode==1 ? modalAddRem.show() : '' " dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="">
+            <form id="formGetBeneficiary" is="dmx-serverconnect-form" action="api/DMT/BetaGetBeneficiary" dmx-populate="" method="post" dmx-on:success="content.formGetBeneficiary.data.OTPStatusCode==1 ? modalAddRem.show() : '' " dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="">
                 <div class="row mx-0 mt-3">
                     <div class="col-12 col-md-6 px-0">
                         <div class="form-group">
@@ -71,7 +71,7 @@
                         <th scope="col" style="width: 100px;">Action</th>
                     </tr>
                 </thead>
-                <tbody is="dmx-repeat" id="repeatReceipants" dmx-bind:repeat="content.formGetBeneficiary.data.Recipients" dmx-show="content.formGetBeneficiary.data.Recipients">
+                <tbody is="dmx-repeat" id="repeatReceipants" dmx-bind:repeat="content.formGetBeneficiary.data.Recipients" dmx-show="content.formGetBeneficiary.data.BenefStat==1">
                     <tr>
                         <th scope="row">{{$index+1}}</th>
                         <td>{{content.formGetBeneficiary.data.Recipients[$index].RPTID}}{{content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode}}</td>
@@ -99,6 +99,11 @@
                         </td>
                     </tr>
                 </tbody>
+                <tbody dmx-show="content.formGetBeneficiary.data.BenefStat==0">
+                    <tr>
+                        <td colspan="10" class="text-danger h6 text-center">{{content.formGetBeneficiary.data.BenefMSG}}</td>
+                    </tr>
+                </tbody>
             </table>
 
         </div>
@@ -115,7 +120,7 @@
                         <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalAddBen.hide()"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="formAddBen" is="dmx-serverconnect-form" action="api/DMT/AddBeneficiary" dmx-populate="" method="post" dmx-on:success="formAddBen.reset();scNotif.success(content.modalAddBen.formAddBen.data.apiAddBen.data.StatusCode == 0 ? content.modalAddBen.formAddBen.data.apiAddBen.data.Message : content.modalAddBen.formAddBen.data.apiAddBen.data.StatusCode == 1 ? content.modalAddBen.formAddBen.data.apiAddBen.data.Message : 'An Error Occured')" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="">
+                        <form id="formAddBen" is="dmx-serverconnect-form" action="api/DMT/AddBeneficiary" dmx-populate="" method="post" dmx-on:success="formAddBen.reset();scNotif.success(content.modalAddBen.formAddBen.data.apiAddBen.data.StatusCode == 0 ? content.modalAddBen.formAddBen.data.apiAddBen.data.Message : 'An Error Occured')" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="">
                             <input type="hidden" id="BenSenderId" class="form-control" name="BenSenderId" required="" dmx-bind:value="content.formGetBeneficiary.data.RemitterID">
                             <div class="row mx-0">
                                 <div class="col-12 col-md-6">
@@ -405,13 +410,12 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add A New Remitter</h5>
+                        <h5 class="modal-title">{{content.modalAddRem.formAddRem.data.RemAddStatusCode?'Add Remitter OTP':'Add A New Remitter'}}</h5>
                         <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalAddRem.hide();formOTPRem.reset();formAddRem.reset();varRemitterAdd.setValue(0)"></button>
                     </div>
                     <div class="modal-body">
-                        <h5 class="text-info text-center" dmx-show="varRemitterAdd.value==0&&content.formGetBeneficiary.data.OTPMessage!=0">{{content.formGetBeneficiary.data.OTPMessage}}</h5>
-                        <h5 class="text-info text-center" dmx-show="varRemitterAdd.value==1&&content.modalAddRem.formAddRem.data.RefNo==0">{{content.modalAddRem.formAddRem.data.RemAddMessage}}</h5>
-                        <form id="formAddRem" is="dmx-serverconnect-form" action="api/DMT/AddRemitter" dmx-populate="" method="post" dmx-on:success="formAddRem.reset(); varRemitterAdd.setValue(1); scNotif.success(content.modalAddRem.formAddRem.data.RemAddStatusCode?content.modalAddRem.formAddRem.data.RemAddMessage:'An Error Occured')" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="" dmx-show="varRemitterAdd.value==0 && content.formGetBeneficiary.data.OTPStatusCode==1">
+                        <h5 class="text-info text-center" dmx-show="varRemitterAdd.value==1">{{content.modalAddRem.formAddRem.data.RemAddMessage}}</h5>
+                        <form id="formAddRem" is="dmx-serverconnect-form" action="api/DMT/BetaAddRemitter" dmx-populate="" method="post" dmx-on:success="formAddRem.reset(); varRemitterAdd.setValue(1); scNotif.success(content.modalAddRem.formAddRem.data.RemAddStatusCode?content.modalAddRem.formAddRem.data.RemAddMessage:'An Error Occured')" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="" dmx-show="varRemitterAdd.value==0 && content.formGetBeneficiary.data.OTPStatusCode==1">
 
                             <div class="row mx-0">
                                 <div class="col-12 col-md-6">
@@ -426,28 +430,22 @@
                                         <input type="text" id="RemNameAdd" class="form-control" name="RemNameAdd" required="">
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6" dmx-show="content.formGetBeneficiary.data.OTPMessage!=0">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">PIN Code</label>
-                                        <input type="number" id="RemPINAdd" class="form-control" name="RemPINAdd">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6" dmx-show="content.formGetBeneficiary.data.OTPMessage!=0">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">OTP</label>
-                                        <input type="text" id="RemOTP" class="form-control" name="RemOTP">
-                                    </div>
-                                </div>
                                 <div class="col-12 mt-2 text-center">
                                     <button class="btn sw-btn-dark btn-sm" type="submit" dmx-bind:disabled="content.modalAddRem.formAddRem.state.executing" dmx-class:no-drop="content.modalAddRem.formAddRem.state.executing">Submit <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalAddRem.formAddRem.state.executing"></span></button>
                                 </div>
                             </div>
                         </form>
-                        <h5 class="text-info text-center" dmx-show="varRemitterAdd.value==2&&content.modalAddRem.formRemOTP.data.OTPStatusCode">{{content.modalAddRem.formRemOTP.data.OTPMessageCode}}</h5>
-                        <form id="formRemOTP" is="dmx-serverconnect-form" action="api/DMT/RemAddOTP" dmx-populate="" method="post" dmx-on:success="formRemOTP.reset(); varRemitterAdd.setValue(2); scNotif.success(content.modalAddRem.formRemOTP.data.OTPStatusCode? content.modalAddRem.formRemOTP.data.OTPMessageCode : 'An Error Occured')" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="" dmx-show="varRemitterAdd.value==1&&content.modalAddRem.formAddRem.data.RefNo!=0">
+                        <h5 class="text-info text-center" dmx-show="varRemitterAdd.value==2&&content.modalAddRem.formRemOTP.data.OTPStatusCode">{{content.modalAddRem.formRemOTP.data.OTPStatusCode}}: {{content.modalAddRem.formRemOTP.data.OTPMessageCode}}</h5>
+                        <form id="formRemOTP" is="dmx-serverconnect-form" action="api/DMT/BetaRemAddOTP" dmx-populate="" method="post" dmx-on:success="formRemOTP.reset(); varRemitterAdd.setValue(2); scNotif.success(content.modalAddRem.formRemOTP.data.OTPStatusCode? content.modalAddRem.formRemOTP.data.OTPMessageCode : 'An Error Occured')" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="" dmx-show="varRemitterAdd.value==1&&content.modalAddRem.formAddRem.data.RefNo!=0">
                             <div class="row mx-0">
-                                <input type="text" id="RemOTPRefNo" class="form-control px-3" name="RemOTPRefNo" dmx-bind:value="content.modalAddRem.formAddRem.data.RefNo" readonly="true">
-                                <div class="col-12 col-md-6 mt-3">
+                                <input type="hidden" id="RemName" class="form-control" name="RemName" dmx-bind:value="content.modalAddRem.formAddRem.data.RemName">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Ref. No.</label>
+                                        <input type="text" id="RemOTPRefNo" class="form-control" name="RemOTPRefNo" dmx-bind:value="content.modalAddRem.formAddRem.data.RefNo" readonly="true">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold">OTP</label>
                                         <input type="text" id="RemAddOTP" class="form-control" name="RemAddOTP">
