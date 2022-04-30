@@ -228,7 +228,7 @@
                         },
                         "meta": [],
                         "outputType": "text",
-                        "output": true
+                        "output": false
                       },
                       {
                         "name": "Recipients",

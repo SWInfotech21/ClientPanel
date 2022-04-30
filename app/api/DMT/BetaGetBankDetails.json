@@ -1,0 +1,59 @@
+[
+  {
+    "name": "",
+    "module": "auth",
+    "action": "restrict",
+    "options": {
+      "provider": "security",
+      "permissions": [
+        "write"
+      ],
+      "loginUrl": "/login",
+      "forbiddenUrl": "/403-forbidden"
+    }
+  },
+  {
+    "name": "AuthCode",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "65c43ccd6a7b41c884"
+    },
+    "meta": [],
+    "outputType": "text"
+  },
+  {
+    "name": "MessageCode",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "E06029"
+    },
+    "meta": [],
+    "outputType": "text"
+  },
+  {
+    "name": "ReqId",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "{{NOW.md5(123456).substr(1, 9)}}"
+    },
+    "meta": [],
+    "outputType": "text"
+  },
+  {
+    "name": "apiBanksEP",
+    "module": "api",
+    "action": "send",
+    "options": {
+      "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
+      "method": "POST",
+      "data": {
+        "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~SBIN~0~0'}}"
+      },
+      "dataType": "x-www-form-urlencoded"
+    },
+    "output": true
+  }
+]

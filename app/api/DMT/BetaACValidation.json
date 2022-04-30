@@ -1,0 +1,222 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/dmt-service-beta.ejs",
+      "linkedForm": "formVerifyBenAC"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "VerifyRemMobile",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "VerifyRemMobile"
+      },
+      {
+        "type": "text",
+        "fieldName": "VerifyBenAcNo",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "VerifyBenAcNo"
+      },
+      {
+        "type": "text",
+        "fieldName": "VerifyBenIFSC",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "VerifyBenIFSC"
+      },
+      {
+        "type": "number",
+        "fieldName": "VerifyAadharBenef",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            },
+            "core:number": {
+              "param": ""
+            }
+          }
+        },
+        "name": "VerifyAadharBenef"
+      },
+      {
+        "type": "text",
+        "fieldName": "VerifyPANBenef",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "VerifyPANBenef"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "AuthCode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "65c43ccd6a7b41c884"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "MessageCode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "E06031"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "ReqId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{NOW.md5(123456).substr(1, 9)}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "apiVerifyBen",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
+          "method": "POST",
+          "data": {
+            "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.VerifyRemMobile+'~'+$_POST.VerifyBenAcNo+'~'+$_POST.VerifyBenIFSC+'~'+$_POST.VerifyAadharBenef+'~'+$_POST.VerifyPANBenef+'~0~0'}}"
+          },
+          "dataType": "x-www-form-urlencoded"
+        },
+        "output": true
+      },
+      {
+        "name": "VerifyBenMobile",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiVerifyBen.data.split('~')[2]}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "VerifyIFSCCode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiVerifyBen.data.split('~')[3]}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "VerifyACNo",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiVerifyBen.data.split('~')[4]}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "VerifyStatusCode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiVerifyBen.data.split('~')[5]}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "VerifyMessage",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiVerifyBen.data.split('~')[7]}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "VerifyBenName",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiVerifyBen.data.split('~')[8]}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "VerifyTrId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiVerifyBen.data.split('~')[9]}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "VerifyBankName",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiVerifyBen.data.split('~')[10]}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      }
+    ]
+  }
+}
