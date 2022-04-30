@@ -1,173 +1,398 @@
 {
-  "meta": {
-    "$_GET": [
-      {
-        "type": "text",
-        "name": "sort"
-      },
-      {
-        "type": "text",
-        "name": "dir"
-      }
-    ]
-  },
-  "exec": {
-    "steps": [
-      {
-        "name": "apistatus",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "FAILED"
-        },
-        "meta": [],
-        "output": true,
-        "outputType": "text"
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "while",
-        "options": {
-          "while": "{{apistatus!='SUCCESS'||apistatus!='PENDING'}}",
-          "exec": {
-            "steps": {
-              "name": "apistatus",
-              "module": "core",
-              "action": "setvalue",
-              "options": {
-                "value": "SUCCESS"
-              },
-              "meta": [],
-              "output": true,
-              "outputType": "text"
+    "meta": {
+        "$_GET": [
+            {
+                "type": "text",
+                "name": "sort"
+            },
+            {
+                "type": "text",
+                "name": "dir"
             }
-          }
-        }
-      },
-      {
-        "name": "OTP",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{TIMESTAMP.substr(0, 6).randomize()}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "disabled": true
-      },
-      {
-        "name": "apiAuth",
-        "module": "api",
-        "action": "send",
-        "options": {
-          "url": "https://adharpay.in/authenticate",
-          "params": {
-            "Token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
-            "RetailerID": "{{100301}}",
-            "LogoUrl": "{{'https://buckspay.com'}}",
-            "Copyright": "{{'All'}}",
-            "MerchantId": "{{'7409747265'}}",
-            "FirmName": "{{'CashOnCash'}}",
-            "ServiceId": "{{'152'}}"
-          },
-          "method": "POST"
-        },
-        "output": true,
-        "disabled": true
-      },
-      {
-        "name": "apiDMT",
-        "module": "api",
-        "action": "send",
-        "options": {
-          "url": "https://apihub.moneyart.in/UserWalletBalance",
-          "method": "POST",
-          "params": {
-            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}"
-          }
-        },
-        "output": true,
-        "disabled": true
-      },
-      {
-        "name": "apiTrDMT",
-        "module": "api",
-        "action": "send",
-        "options": {
-          "url": "https://apihub.moneyart.in/ValidateRemitter",
-          "params": {
-            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
-            "mobileNo": "{{6396090835}}"
-          },
-          "method": "POST"
-        },
-        "output": true,
-        "disabled": true
-      },
-      {
-        "name": "apiBankList",
-        "module": "api",
-        "action": "send",
-        "options": {
-          "method": "POST",
-          "url": "https://apihub.moneyart.in/BankNameList",
-          "params": {
-            "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}"
-          }
-        },
-        "output": true,
-        "disabled": true
-      },
-      {
-        "name": "A",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": 125
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "disabled": true
-      },
-      {
-        "name": "B",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": 5000
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "disabled": true
-      },
-      {
-        "name": "C",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{floor(A / B)}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "disabled": true
-      },
-      {
-        "name": "D",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{A % B}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "disabled": true
-      }
-    ]
-  }
+        ]
+    },
+    "exec": {
+        "steps": [
+            {
+                "name": "GetComm",
+                "module": "dbconnector",
+                "action": "single",
+                "options": {
+                    "connection": "postgres_gcpServer",
+                    "sql": {
+                        "type": "SELECT",
+                        "columns": [
+                            {
+                                "table": "m_commission",
+                                "column": "comm_per"
+                            },
+                            {
+                                "table": "m_commission",
+                                "column": "comm_val"
+                            },
+                            {
+                                "table": "m_commission",
+                                "column": "service_charge_per"
+                            },
+                            {
+                                "table": "m_commission",
+                                "column": "service_charge_val"
+                            },
+                            {
+                                "table": "m_commission",
+                                "column": "operator_id"
+                            },
+                            {
+                                "table": "m_op",
+                                "column": "service_id"
+                            }
+                        ],
+                        "table": {
+                            "name": "m_commission"
+                        },
+                        "primary": "id",
+                        "joins": [
+                            {
+                                "table": "m_operator",
+                                "column": "*",
+                                "alias": "m_op",
+                                "type": "LEFT",
+                                "clauses": {
+                                    "condition": "AND",
+                                    "rules": [
+                                        {
+                                            "table": "m_op",
+                                            "column": "id",
+                                            "operator": "equal",
+                                            "value": {
+                                                "table": "m_commission",
+                                                "column": "operator_id"
+                                            },
+                                            "operation": "="
+                                        }
+                                    ]
+                                },
+                                "primary": "id"
+                            },
+                            {
+                                "table": "m_service",
+                                "column": "*",
+                                "alias": "m_service",
+                                "type": "LEFT",
+                                "clauses": {
+                                    "condition": "AND",
+                                    "rules": [
+                                        {
+                                            "table": "m_service",
+                                            "column": "id",
+                                            "operator": "equal",
+                                            "value": {
+                                                "table": "m_op",
+                                                "column": "service_id"
+                                            },
+                                            "operation": "="
+                                        }
+                                    ]
+                                },
+                                "primary": "id"
+                            },
+                            {
+                                "table": "t_op_api_rel",
+                                "column": "*",
+                                "alias": "toar",
+                                "type": "LEFT",
+                                "clauses": {
+                                    "condition": "AND",
+                                    "rules": [
+                                        {
+                                            "table": "toar",
+                                            "column": "op_id",
+                                            "operator": "equal",
+                                            "value": {
+                                                "table": "m_commission",
+                                                "column": "operator_id"
+                                            },
+                                            "operation": "="
+                                        }
+                                    ]
+                                },
+                                "primary": "id"
+                            }
+                        ],
+                        "query": "SELECT m_commission.comm_per, m_commission.comm_val, m_commission.service_charge_per, m_commission.service_charge_val, m_commission.operator_id, m_op.service_id\nFROM m_commission\nLEFT JOIN m_operator AS m_op ON (m_op.id = m_commission.operator_id) LEFT JOIN m_service AS m_service ON (m_service.id = m_op.service_id) LEFT JOIN t_op_api_rel AS toar ON (toar.op_id = m_commission.operator_id)\nWHERE m_op.operator_name = :P1 /* {{'DMT Account Verification'}} */ AND m_service.service_name = :P2 /* {{'Money'}} */ AND m_commission.scheme_id = :P3 /* {{GetUser.scheme_id}} */",
+                        "params": [
+                            {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P1",
+                                "value": "{{'DMT Account Verification'}}"
+                            },
+                            {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P2",
+                                "value": "{{'Money'}}"
+                            },
+                            {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P3",
+                                "value": "{{GetUser.scheme_id}}"
+                            }
+                        ],
+                        "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                                {
+                                    "id": "m_op.operator_name",
+                                    "field": "m_op.operator_name",
+                                    "type": "string",
+                                    "operator": "equal",
+                                    "value": "{{'DMT Account Verification'}}",
+                                    "data": {
+                                        "table": "m_op",
+                                        "column": "operator_name",
+                                        "type": "text",
+                                        "columnObj": {
+                                            "type": "string",
+                                            "primary": false,
+                                            "nullable": false,
+                                            "name": "operator_name"
+                                        }
+                                    },
+                                    "operation": "="
+                                },
+                                {
+                                    "id": "m_service.service_name",
+                                    "field": "m_service.service_name",
+                                    "type": "string",
+                                    "operator": "equal",
+                                    "value": "{{'Money'}}",
+                                    "data": {
+                                        "table": "m_service",
+                                        "column": "service_name",
+                                        "type": "text",
+                                        "columnObj": {
+                                            "type": "string",
+                                            "primary": false,
+                                            "nullable": false,
+                                            "name": "service_name"
+                                        }
+                                    },
+                                    "operation": "="
+                                },
+                                {
+                                    "id": "m_commission.scheme_id",
+                                    "field": "m_commission.scheme_id",
+                                    "type": "double",
+                                    "operator": "equal",
+                                    "value": "{{GetUser.scheme_id}}",
+                                    "data": {
+                                        "table": "m_commission",
+                                        "column": "scheme_id",
+                                        "type": "number",
+                                        "columnObj": {
+                                            "type": "integer",
+                                            "primary": false,
+                                            "nullable": true,
+                                            "name": "scheme_id"
+                                        }
+                                    },
+                                    "operation": "="
+                                }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                        }
+                    }
+                },
+                "output": true,
+                "meta": [
+                    {
+                        "type": "text",
+                        "name": "comm_per"
+                    },
+                    {
+                        "type": "text",
+                        "name": "comm_val"
+                    },
+                    {
+                        "type": "text",
+                        "name": "service_charge_per"
+                    },
+                    {
+                        "type": "text",
+                        "name": "service_charge_val"
+                    },
+                    {
+                        "type": "number",
+                        "name": "operator_id"
+                    },
+                    {
+                        "type": "number",
+                        "name": "service_id"
+                    }
+                ],
+                "outputType": "object"
+            },
+            {
+                "name": "apistatus",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "FAILED"
+                },
+                "meta": [],
+                "output": true,
+                "outputType": "text",
+                "disabled": true
+            },
+            {
+                "name": "",
+                "module": "core",
+                "action": "while",
+                "options": {
+                    "while": "{{apistatus!='SUCCESS'||apistatus!='PENDING'}}",
+                    "exec": {
+                        "steps": {
+                            "name": "apistatus",
+                            "module": "core",
+                            "action": "setvalue",
+                            "options": {
+                                "value": "SUCCESS"
+                            },
+                            "meta": [],
+                            "output": true,
+                            "outputType": "text",
+                            "disabled": true
+                        }
+                    }
+                },
+                "disabled": true
+            },
+            {
+                "name": "OTP",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{TIMESTAMP.substr(0, 6).randomize()}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true,
+                "disabled": true
+            },
+            {
+                "name": "apiAuth",
+                "module": "api",
+                "action": "send",
+                "options": {
+                    "url": "https://adharpay.in/authenticate",
+                    "params": {
+                        "Token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+                        "RetailerID": "{{100301}}",
+                        "LogoUrl": "{{'https://buckspay.com'}}",
+                        "Copyright": "{{'All'}}",
+                        "MerchantId": "{{'7409747265'}}",
+                        "FirmName": "{{'CashOnCash'}}",
+                        "ServiceId": "{{'152'}}"
+                    },
+                    "method": "POST"
+                },
+                "output": true,
+                "disabled": true
+            },
+            {
+                "name": "apiDMT",
+                "module": "api",
+                "action": "send",
+                "options": {
+                    "url": "https://apihub.moneyart.in/UserWalletBalance",
+                    "method": "POST",
+                    "params": {
+                        "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}"
+                    }
+                },
+                "output": true,
+                "disabled": true
+            },
+            {
+                "name": "apiTrDMT",
+                "module": "api",
+                "action": "send",
+                "options": {
+                    "url": "https://apihub.moneyart.in/ValidateRemitter",
+                    "params": {
+                        "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}",
+                        "mobileNo": "{{6396090835}}"
+                    },
+                    "method": "POST"
+                },
+                "output": true,
+                "disabled": true
+            },
+            {
+                "name": "apiBankList",
+                "module": "api",
+                "action": "send",
+                "options": {
+                    "method": "POST",
+                    "url": "https://apihub.moneyart.in/BankNameList",
+                    "params": {
+                        "token": "{{'a20818a9-a062-40ec-ac57-29ee18b6e124'}}"
+                    }
+                },
+                "output": true,
+                "disabled": true
+            },
+            {
+                "name": "A",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": 125
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true,
+                "disabled": true
+            },
+            {
+                "name": "B",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": 5000
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true,
+                "disabled": true
+            },
+            {
+                "name": "C",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{floor(A / B)}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true,
+                "disabled": true
+            },
+            {
+                "name": "D",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{A % B}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true,
+                "disabled": true
+            }
+        ]
+    }
 }

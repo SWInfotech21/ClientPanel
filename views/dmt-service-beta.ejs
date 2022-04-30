@@ -46,7 +46,7 @@
             <img class="sw-avatar" src="assets/images/icons/user-icon.svg" height="72" width="72">
             <div class="d-flex flex-column justify-content-start pl-3">
                 <h5 class="mb-2 font-weight-bold">
-                    {{content.formGetBeneficiary.data.Name}} / {{content.formGetBeneficiary.data.MobileNo}} / {{content.formGetBeneficiary.data.RemitterID}}
+                    {{content.formGetBeneficiary.data.Name}} / {{content.formGetBeneficiary.data.MobileNo}}
                 </h5>
                 <p class="sw-font-14 mb-1">
                     Available Limit: Rs. {{content.formGetBeneficiary.data.AvailableLimit}} / Monthly Limit: Rs. {{content.formGetBeneficiary.data.MonthlyLimit}}
@@ -88,7 +88,7 @@
                                 <i class="far fa-trash-alt" title="Delete Beneficiary"></i>
                             </a>
 
-                            <a href="#" class="sw-col-dr p-1 align-self-center" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.Recipients[0].BeneficiaryCode); varBenBankName.setValue(content.formGetBeneficiary.data.Recipients[$index].BankName); varBenName.setValue(content.formGetBeneficiary.data.Recipients[$index].Name); varBenAcNo.setValue(content.formGetBeneficiary.data.Recipients[$index].AccountNumber); varBenMobile.setValue(content.formGetBeneficiary.data.Recipients[$index].MobileNo);modalTransBen.show();" data-bs-toggle="modal" data-bs-target="#modalTransBen"><i class="fas fa-hand-holding-usd" title="Do Transaction"></i></a>
+                            <a href="#" class="sw-col-dr p-1 align-self-center" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.Recipients[0].BeneficiaryCode); varBenBankName.setValue(content.formGetBeneficiary.data.Recipients[$index].BankName); varBenName.setValue(content.formGetBeneficiary.data.Recipients[$index].Name); varBenAcNo.setValue(content.formGetBeneficiary.data.Recipients[$index].AccountNumber); varBenMobile.setValue(content.formGetBeneficiary.data.MobileNo);modalTransBen.show();" data-bs-toggle="modal" data-bs-target="#modalTransBen"><i class="fas fa-hand-holding-usd" title="Do Transaction"></i></a>
 
                             <a class=" p-1 align-self-center text-success" href="#" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.Recipients[0].BeneficiaryCode);varBenAcNo.setValue(content.formGetBeneficiary.data.Recipients[$index].AccountNumber); varIFSC.setValue(content.formGetBeneficiary.data.Recipients[$index].IFSC); modalVerifyBen.show();" data-bs-toggle="modal" data-bs-target="#modalVerifyBen">
                                 <i class="fas fa-shield-alt" title="Varify Beneficiary Account using Rs. 1"></i>
@@ -117,7 +117,7 @@
                         <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalAddBen.hide();browserMain.goto('dmt-service-beta')"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="formAddBen" is="dmx-serverconnect-form" action="api/DMT/AddBeneficiaryBeta" dmx-populate="" method="post" dmx-on:success="formAddBen.reset();scNotif.success(content.modalAddBen.formAddBen.data.StatusCode? content.modalAddBen.formAddBen.data.Message : 'An Error Occured')" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="" dmx-hide="content.modalAddBen.formAddBen.data.StatusCode">
+                        <form id="formAddBen" is="dmx-serverconnect-form" action="api/DMT/BetaAddBeneficiary" dmx-populate="" method="post" dmx-on:success="formAddBen.reset();scNotif.success(content.modalAddBen.formAddBen.data.StatusCode? content.modalAddBen.formAddBen.data.Message : 'An Error Occured')" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="" dmx-hide="content.modalAddBen.formAddBen.data.StatusCode">
 
                             <div class="row mx-0">
                                 <div class="col-12 col-md-6">
@@ -224,6 +224,7 @@
                     <div class="modal-body">
                         <form id="formVerifyBenAC" method="post" action="api/DMT/BetaACValidation" is="dmx-serverconnect-form" dmx-show="varVerifyModal.value == 0" dmx-on:success="scLoginUser.load();varVerifyModal.setValue(1);">
                             <input type="hidden" id="VerifyRemMobile" class="form-control" name="VerifyRemMobile" required="" dmx-bind:value="content.formGetBeneficiary.data.MobileNo">
+                            <input type="hidden" id="VerifyBenId" class="form-control" name="VerifyBenId" required="" dmx-bind:value="varBenefId.value">
                             <input type="hidden" id="VerifyBenAcNo" class="form-control" name="VerifyBenAcNo" required="" dmx-bind:value="varBenAcNo.value">
                             <input type="hidden" id="VerifyBenIFSC" class="form-control" name="VerifyBenIFSC" required="" dmx-bind:value="varIFSC.value">
                             <div class="col-12 my-4"><b>Verify the account details before transaction?</b></div>
@@ -323,10 +324,10 @@
                                 </div>
                             </div>
                         </div>
-                        <form id="formBenTrans" method="post" action="api/DMT/Transaction" is="dmx-serverconnect-form" dmx-show="varTransStatus.value == 0" dmx-on:success="varTransStatus.setValue(1);formBenTrans.reset();scLoginUser.load()">
-                            <input type="hidden" id="SenderIdTrans" class="form-control" name="SenderIdTrans" required="" dmx-bind:value="content.formGetBeneficiary.data.RemitterID">
+                        <form id="formBenTrans" method="post" action="api/DMT/BetaTransaction" is="dmx-serverconnect-form" dmx-show="varTransStatus.value == 0" dmx-on:success="varTransStatus.setValue(1);formBenTrans.reset();scLoginUser.load()">
+                            <input type="hidden" id="SenderIdTrans" class="form-control" name="SenderIdTrans" required="" dmx-bind:value="content.formGetBeneficiary.data.MobileNo">
                             <input type="hidden" id="RecipientIdTrans" class="form-control" name="RecipientIdTrans" required="" dmx-bind:value="varBenefId.value">
-                            <input type="hidden" id="BenAcNo" class="form-control" name="BenAcNo" required="" dmx-bind:value="varBenAcNo.value">
+                            <input type="hidden" id="BenAadharNo" class="form-control" name="BenAadharNo" required="" dmx-bind:value="varBenAadharNo.value"><input type="hidden" id="BenPanNo" class="form-control" name="BenPanNo" required="" dmx-bind:value="varBenPanNo.value">
                             <input type="hidden" id="BenMobileNo" class="form-control" name="BenMobileNo" required="" dmx-bind:value="varBenMobile.value">
                             <div class="row mx-0">
                                 <div class="col-12">
@@ -349,8 +350,8 @@
                                         <label class="font-weight-bold">Transaction Type</label>
                                         <select id="BenOrderIdTrans" class="form-control form-select" name="trans_type" required="">
                                             <option value="">Select</option>
-                                            <option value="IMPS">IMPS</option>
-                                            <option value="NEFT">NEFT</option>
+                                            <option value="58">IMPS</option>
+                                            <option value="127">NEFT</option>
                                         </select>
                                     </div>
                                 </div>
