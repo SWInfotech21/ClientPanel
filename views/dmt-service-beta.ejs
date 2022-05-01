@@ -26,7 +26,7 @@
         </ol>
     </div>
     <div class="d-flex justify-content-between flex-wrap px-2 w-100">
-        <div class="w-100 border-bottom p-2 px-sm-5 py-sm-3 sw-container mb-3">
+        <div class="w-100 border-bottom p-2 px-sm-5 py-sm-3 sw-container-beta mb-3">
             <form id="formGetBeneficiary" is="dmx-serverconnect-form" action="api/DMT/BetaGetBeneficiary" dmx-populate="" method="post" dmx-on:success="content.formGetBeneficiary.data.OTPStatusCode==1 ? modalAddRem.show() : '' " dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="">
                 <div class="row mx-0 mt-3">
                     <div class="col-12 col-md-6 px-0">
@@ -42,7 +42,7 @@
                 </div>
             </form>
         </div>
-        <div class="d-flex w-100 align-items-center justify-content-between p-2 sw-container-head" dmx-show="content.formGetBeneficiary.data.StatusCode == 1">
+        <div class="d-flex w-100 align-items-center justify-content-between p-2 sw-container-beta-head" dmx-show="content.formGetBeneficiary.data.StatusCode == 1">
             <img class="sw-avatar" src="assets/images/icons/user-icon.svg" height="72" width="72">
             <div class="d-flex flex-column justify-content-start pl-3">
                 <h5 class="mb-2 font-weight-bold">
@@ -56,7 +56,7 @@
                 <button class="btn sw-btn-dark px-5" type="submit" dmx-on:click="modalAddBen.show();modalAddBen.formAddBen.reset()">Add Beneficiary</button>
             </div>
         </div>
-        <div class="d-flex w-100 align-items-start p-3 border-bottom sw-container table-responsive" dmx-show="content.formGetBeneficiary.data.StatusCode == 1">
+        <div class="d-flex w-100 align-items-start p-3 border-bottom sw-container-beta table-responsive" dmx-show="content.formGetBeneficiary.data.StatusCode == 1">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -104,7 +104,7 @@
             </table>
 
         </div>
-        <div class="d-flex w-100 align-items-start p-3 border-bottom sw-container" dmx-show="content.formGetBeneficiary.data.StatusCode == 2">
+        <div class="d-flex w-100 align-items-start p-3 border-bottom sw-container-beta" dmx-show="content.formGetBeneficiary.data.StatusCode == 2">
             <h5 class="mb-2 font-weight-bold">
                 {{content.formGetBeneficiary.data.Message}}
             </h5>

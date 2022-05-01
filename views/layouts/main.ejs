@@ -182,13 +182,17 @@
                                 </nav>
                             </div>
                             <!-- DMT Service -->
-                            <a class="nav-link" href="/dmt-service" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 3">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDMT" aria-expanded="false" aria-controls="collapseDMT">
                                 <div class="sb-nav-link-icon"><i class="fas fa-money-check"></i></div>
-                                DMT Alpha
-                            </a><a class="nav-link" href="/dmt-service-beta" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 3">
-                                <div class="sb-nav-link-icon"><i class="fas fa-money-check"></i></div>
-                                DMT Beta
+                                DMT
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
+                            <div class="collapse" id="collapseDMT" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/dmt-service" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 3">DMT Alpha</a>
+                                    <a class="nav-link" href="/dmt-service-beta" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 3">DMT Beta</a>
+                                </nav>
+                            </div>
                             <!-- Reports -->
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>

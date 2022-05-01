@@ -209,7 +209,16 @@ body{
     background-color: rgb(25 145 235 / 40%); 
     border-radius: 10px;
 }
+.sw-container-beta-head{
+    background-color: #009688; 
+    color: #fff;
+    border-radius: 10px;
+}
 
+.sw-container-beta{
+    background-color: #8bc34a; 
+    border-radius: 10px;
+}
 .sw-btn-dark {
   background-color: #142E4A;
   color: #FFF;
