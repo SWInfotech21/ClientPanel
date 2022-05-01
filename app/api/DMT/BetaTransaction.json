@@ -8460,22 +8460,27 @@
                                   ]
                                 },
                                 {
-                                  "name": "ben_name",
-                                  "type": "text",
-                                  "sub": []
-                                },
-                                {
-                                  "name": "VerifyIFSCCode",
-                                  "type": "text",
-                                  "sub": []
-                                },
-                                {
                                   "name": "bank_tr_amount",
                                   "type": "text",
                                   "sub": []
                                 },
                                 {
-                                  "name": "VerifyStatusCode",
+                                  "name": "ben_mobile",
+                                  "type": "text",
+                                  "sub": []
+                                },
+                                {
+                                  "name": "ben_code",
+                                  "type": "text",
+                                  "sub": []
+                                },
+                                {
+                                  "name": "apistatus",
+                                  "type": "text",
+                                  "sub": []
+                                },
+                                {
+                                  "name": "api_ref",
                                   "type": "text",
                                   "sub": []
                                 },
@@ -8485,7 +8490,7 @@
                                   "sub": []
                                 },
                                 {
-                                  "name": "api_ref",
+                                  "name": "ben_name",
                                   "type": "text",
                                   "sub": []
                                 },
@@ -8496,16 +8501,6 @@
                                 },
                                 {
                                   "name": "bank_ac_no",
-                                  "type": "text",
-                                  "sub": []
-                                },
-                                {
-                                  "name": "apistatus",
-                                  "type": "text",
-                                  "sub": []
-                                },
-                                {
-                                  "name": "ben_mobile",
                                   "type": "text",
                                   "sub": []
                                 },

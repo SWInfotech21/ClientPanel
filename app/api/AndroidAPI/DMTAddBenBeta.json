@@ -4,7 +4,52 @@
       "linkedFile": "/views/login.ejs",
       "linkedForm": "formLogin"
     },
-    "$_GET": [
+    "$_POST": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "BenMobileAdd"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "BenNameAdd"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "BenACAdd"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "BenAddIFSC"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "BenAddBank"
+      },
       {
         "type": "text",
         "options": {
@@ -22,39 +67,6 @@
           }
         },
         "name": "password"
-      },
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:required": {}
-          }
-        },
-        "name": "refno"
-      },
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:required": {}
-          }
-        },
-        "name": "otp"
-      },
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:required": {}
-          }
-        },
-        "name": "remname"
-      }
-    ],
-    "$_POST": [
-      {
-        "type": "text",
-        "name": "RemName"
       }
     ],
     "$_SERVER": [
@@ -107,13 +119,13 @@
                     "name": "m_users"
                   },
                   "joins": [],
-                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_GET.username}} */",
+                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_POST.username}} */",
                   "params": [
                     {
                       "operator": "equal",
                       "type": "expression",
                       "name": ":P1",
-                      "value": "{{$_GET.username}}"
+                      "value": "{{$_POST.username}}"
                     }
                   ],
                   "wheres": {
@@ -153,7 +165,7 @@
                         "field": "m_users.blank2",
                         "type": "string",
                         "operator": "equal",
-                        "value": "{{$_GET.username}}",
+                        "value": "{{$_POST.username}}",
                         "data": {
                           "table": "m_users",
                           "column": "blank2",
@@ -164,7 +176,8 @@
                     ],
                     "conditional": null,
                     "valid": true
-                  }
+                  },
+                  "primary": "id"
                 }
               },
               "output": false,
@@ -370,8 +383,8 @@
                                       "action": "login",
                                       "options": {
                                         "provider": "securityAndroid",
-                                        "password": "{{$_GET.password.sha256(getSalt.saltvalue)}}",
-                                        "username": "{{$_GET.username}}",
+                                        "password": "{{$_POST.password.sha256(getSalt.saltvalue)}}",
+                                        "username": "{{$_POST.username}}",
                                         "remember": ""
                                       },
                                       "output": false,
@@ -400,7 +413,7 @@
                                               "module": "core",
                                               "action": "setvalue",
                                               "options": {
-                                                "value": "E06021"
+                                                "value": "E06009"
                                               },
                                               "meta": [],
                                               "outputType": "text"
@@ -420,54 +433,65 @@
                                               "module": "api",
                                               "action": "send",
                                               "options": {
-                                                "method": "POST",
                                                 "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
+                                                "method": "POST",
                                                 "dataType": "x-www-form-urlencoded",
                                                 "data": {
-                                                  "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_GET.refno+'~'+$_GET.otp+'~0~0'}}"
+                                                  "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.BenMobileAdd+'~'+$_POST.BenNameAdd+'~'+$_POST.BenACAdd+'~'+$_POST.BenAddIFSC+'~'+$_POST.BenAddBank+'~0'}}"
                                                 }
                                               },
                                               "output": false
                                             },
                                             {
-                                              "name": "apiVerifyOTP",
+                                              "name": "Mobile",
                                               "module": "core",
                                               "action": "setvalue",
                                               "options": {
-                                                "value": "{{api.data}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text",
-                                              "output": false
-                                            },
-                                            {
-                                              "name": "OTPMobile",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{apiVerifyOTP.split('~')[2]}}"
+                                                "value": "{{api.data.split('~')[2]}}"
                                               },
                                               "meta": [],
                                               "outputType": "text",
                                               "output": true
                                             },
                                             {
-                                              "name": "OTPStatusCode",
+                                              "name": "BenName",
                                               "module": "core",
                                               "action": "setvalue",
                                               "options": {
-                                                "value": "{{apiVerifyOTP.split('~')[5]}}"
+                                                "value": "{{api.data.split('~')[3]}}"
                                               },
                                               "meta": [],
                                               "outputType": "text",
                                               "output": true
                                             },
                                             {
-                                              "name": "OTPMessageCode",
+                                              "name": "StatusCode",
                                               "module": "core",
                                               "action": "setvalue",
                                               "options": {
-                                                "value": "{{apiVerifyOTP.split('~')[6]}}"
+                                                "value": "{{api.data.split('~')[5]}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "Message",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{api.data.split('~')[6]}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "BenefId",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{api.data.split('~')[7]}}"
                                               },
                                               "meta": [],
                                               "outputType": "text",
@@ -478,10 +502,10 @@
                                               "module": "core",
                                               "action": "condition",
                                               "options": {
-                                                "if": "{{OTPStatusCode=='SUCCESS'}}",
+                                                "if": "{{StatusCode=='SUCCESS'}}",
                                                 "then": {
                                                   "steps": {
-                                                    "name": "AddRemitter",
+                                                    "name": "AddBen",
                                                     "module": "dbupdater",
                                                     "action": "insert",
                                                     "options": {
@@ -490,75 +514,119 @@
                                                         "type": "insert",
                                                         "values": [
                                                           {
-                                                            "table": "dmt_remitter",
+                                                            "table": "dmt_beneficiary",
+                                                            "column": "ben_name",
+                                                            "type": "text",
+                                                            "value": "{{$_POST.BenNameAdd}}"
+                                                          },
+                                                          {
+                                                            "table": "dmt_beneficiary",
+                                                            "column": "ben_mobile",
+                                                            "type": "text",
+                                                            "value": "{{$_POST.BenMobileAdd}}"
+                                                          },
+                                                          {
+                                                            "table": "dmt_beneficiary",
+                                                            "column": "ben_ac_no",
+                                                            "type": "text",
+                                                            "value": "{{$_POST.BenACAdd}}"
+                                                          },
+                                                          {
+                                                            "table": "dmt_beneficiary",
+                                                            "column": "ben_ifsc",
+                                                            "type": "text",
+                                                            "value": "{{$_POST.BenAddIFSC}}"
+                                                          },
+                                                          {
+                                                            "table": "dmt_beneficiary",
                                                             "column": "remitter_id",
                                                             "type": "text",
-                                                            "value": "{{$_GET.refno}}"
+                                                            "value": "{{$_POST.BenMobileAdd}}"
                                                           },
                                                           {
-                                                            "table": "dmt_remitter",
-                                                            "column": "remit_name",
-                                                            "type": "text",
-                                                            "value": "{{$_GET.remname}}"
-                                                          },
-                                                          {
-                                                            "table": "dmt_remitter",
-                                                            "column": "remit_mobile",
-                                                            "type": "text",
-                                                            "value": "{{OTPMobile}}"
-                                                          },
-                                                          {
-                                                            "table": "dmt_remitter",
-                                                            "column": "rem_verify",
+                                                            "table": "dmt_beneficiary",
+                                                            "column": "ben_verify",
                                                             "type": "boolean",
                                                             "value": "{{false}}"
                                                           },
                                                           {
-                                                            "table": "dmt_remitter",
+                                                            "table": "dmt_beneficiary",
+                                                            "column": "status",
+                                                            "type": "text",
+                                                            "value": "{{'Active'}}"
+                                                          },
+                                                          {
+                                                            "table": "dmt_beneficiary",
+                                                            "column": "created_by",
+                                                            "type": "text",
+                                                            "value": "{{identity}}"
+                                                          },
+                                                          {
+                                                            "table": "dmt_beneficiary",
                                                             "column": "created_on",
                                                             "type": "datetime",
                                                             "value": "{{NOW}}"
                                                           },
                                                           {
-                                                            "table": "dmt_remitter",
-                                                            "column": "status",
+                                                            "table": "dmt_beneficiary",
+                                                            "column": "ben_id",
                                                             "type": "text",
-                                                            "value": "{{'Active'}}"
+                                                            "value": "{{BenefId}}"
                                                           }
                                                         ],
-                                                        "table": "dmt_remitter",
+                                                        "table": "dmt_beneficiary",
                                                         "returning": "id",
-                                                        "query": "INSERT INTO dmt_remitter\n(remitter_id, remit_name, remit_mobile, rem_verify, created_on, status) VALUES (:P1 /* {{$_GET.refno}} */, :P2 /* {{$_GET.remname}} */, :P3 /* {{OTPMobile}} */, :P4 /* {{false}} */, :P5 /* {{NOW}} */, :P6 /* {{'Active'}} */)",
+                                                        "query": "INSERT INTO dmt_beneficiary\n(ben_name, ben_mobile, ben_ac_no, ben_ifsc, remitter_id, ben_verify, status, created_by, created_on, ben_id) VALUES (:P1 /* {{$_POST.BenNameAdd}} */, :P2 /* {{$_POST.BenMobileAdd}} */, :P3 /* {{$_POST.BenACAdd}} */, :P4 /* {{$_POST.BenAddIFSC}} */, :P5 /* {{$_POST.BenMobileAdd}} */, :P6 /* {{false}} */, :P7 /* {{'Active'}} */, :P8 /* {{identity}} */, :P9 /* {{NOW}} */, :P10 /* {{BenefId}} */)",
                                                         "params": [
                                                           {
                                                             "name": ":P1",
                                                             "type": "expression",
-                                                            "value": "{{$_GET.refno}}"
+                                                            "value": "{{$_POST.BenNameAdd}}"
                                                           },
                                                           {
                                                             "name": ":P2",
                                                             "type": "expression",
-                                                            "value": "{{$_GET.remname}}"
+                                                            "value": "{{$_POST.BenMobileAdd}}"
                                                           },
                                                           {
                                                             "name": ":P3",
                                                             "type": "expression",
-                                                            "value": "{{OTPMobile}}"
+                                                            "value": "{{$_POST.BenACAdd}}"
                                                           },
                                                           {
                                                             "name": ":P4",
                                                             "type": "expression",
-                                                            "value": "{{false}}"
+                                                            "value": "{{$_POST.BenAddIFSC}}"
                                                           },
                                                           {
                                                             "name": ":P5",
                                                             "type": "expression",
-                                                            "value": "{{NOW}}"
+                                                            "value": "{{$_POST.BenMobileAdd}}"
                                                           },
                                                           {
                                                             "name": ":P6",
                                                             "type": "expression",
+                                                            "value": "{{false}}"
+                                                          },
+                                                          {
+                                                            "name": ":P7",
+                                                            "type": "expression",
                                                             "value": "{{'Active'}}"
+                                                          },
+                                                          {
+                                                            "name": ":P8",
+                                                            "type": "expression",
+                                                            "value": "{{identity}}"
+                                                          },
+                                                          {
+                                                            "name": ":P9",
+                                                            "type": "expression",
+                                                            "value": "{{NOW}}"
+                                                          },
+                                                          {
+                                                            "name": ":P10",
+                                                            "type": "expression",
+                                                            "value": "{{BenefId}}"
                                                           }
                                                         ]
                                                       }
@@ -572,8 +640,7 @@
                                                         "name": "affected",
                                                         "type": "number"
                                                       }
-                                                    ],
-                                                    "output": true
+                                                    ]
                                                   }
                                                 }
                                               },
