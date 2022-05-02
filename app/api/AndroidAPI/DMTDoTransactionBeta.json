@@ -1891,13 +1891,17 @@
                                                                                     "table": "m_api",
                                                                                     "column": "id",
                                                                                     "alias": "api_id"
+                                                                                  },
+                                                                                  {
+                                                                                    "table": "m_api",
+                                                                                    "column": "api_code"
                                                                                   }
                                                                                 ],
                                                                                 "table": {
                                                                                   "name": "m_api"
                                                                                 },
                                                                                 "joins": [],
-                                                                                "query": "SELECT id AS api_id\nFROM m_api\nWHERE api_code = :P1 /* {{'DMEP'}} */ AND status = 1",
+                                                                                "query": "SELECT id AS api_id, api_code\nFROM m_api\nWHERE api_code = :P1 /* {{'DMEP'}} */ AND status = 1",
                                                                                 "params": [
                                                                                   {
                                                                                     "operator": "equal",
@@ -1962,6 +1966,10 @@
                                                                               {
                                                                                 "type": "number",
                                                                                 "name": "api_id"
+                                                                              },
+                                                                              {
+                                                                                "type": "text",
+                                                                                "name": "api_code"
                                                                               }
                                                                             ],
                                                                             "outputType": "object"
@@ -3496,7 +3504,7 @@
                                                                                     "module": "core",
                                                                                     "action": "condition",
                                                                                     "options": {
-                                                                                      "if": "{{RepeatGetOpAPICodeFwrd.api_code=='DMEP'}}",
+                                                                                      "if": "{{GetOpAPICodeFwrd.api_code=='DMEP'}}",
                                                                                       "then": {
                                                                                         "steps": [
                                                                                           {
@@ -8729,6 +8737,11 @@
                                                                       {
                                                                         "name": "$value",
                                                                         "type": "object"
+                                                                      },
+                                                                      {
+                                                                        "name": "Resp",
+                                                                        "type": "text",
+                                                                        "sub": []
                                                                       },
                                                                       {
                                                                         "name": "bank_tr_amount",

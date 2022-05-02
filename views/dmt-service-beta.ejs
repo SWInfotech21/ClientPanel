@@ -11,8 +11,21 @@
 <dmx-value id="varShowLive" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varVerifyModal" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varRemitterAdd" dmx-bind:value="0"></dmx-value>
+<dmx-value id="varBenAadharNo" dmx-bind:value="0"></dmx-value>
+<dmx-value id="varBenPanNo" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varBenTrAmt" dmx-bind:value="content.modalTransBen.formBenTrans.BenTrAmount.value"></dmx-value>
 <dmx-serverconnect id="scBankList" url="api/DMT/GetBankList"></dmx-serverconnect>
+<script is="dmx-flow" id="flowGetBDBen" type="text/dmx-flow">{
+  condition: {
+    if: "{{content.formGetBeneficiary.CustMobile.value}}",
+    then: {
+      steps: {
+        run: {action: "{{scGetBDBen.load({})}}"}
+      }
+    }
+  }
+}</script>
+<dmx-serverconnect id="scGetBDBen" url="api/DMT/GetAllDBBeneficiary" noload dmx-param:rem_id="content.formGetBeneficiary.CustMobile.value"></dmx-serverconnect>
 <dmx-serverconnect id="scLiveDMT" url="api/DMT/LiveTransDMT" sockets="true"></dmx-serverconnect>
 <dmx-data-view id="dvBankList" filter="(BankName.contains(Search.value.titlecase()))" dmx-bind:data="content.scBankList.data.apiBanks"></dmx-data-view>
 
@@ -37,7 +50,7 @@
                     </div>
 
                     <div class="col-12 col-md-6 my-3 align-self-end">
-                        <button class="btn sw-btn-dark px-5" dmx-bind:disabled="state.executing" type="submit" dmx-class:no-drop="state.executing">Get Details<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="state.executing"></span></button>
+                        <button class="btn sw-btn-dark px-5" dmx-bind:disabled="state.executing" type="submit" dmx-class:no-drop="state.executing" dmx-on:click="flowGetBDBen.run();">Get Details<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="state.executing"></span></button>
                     </div>
                 </div>
             </form>
@@ -81,16 +94,16 @@
                         <td>{{content.formGetBeneficiary.data.Recipients[$index].AccountNumber}}</td>
                         <td>{{content.formGetBeneficiary.data.Recipients[$index].Bankname}}</td>
                         <td>{{content.formGetBeneficiary.data.Recipients[$index].IFSC}}</td>
-                        <td dmx-text="content.formGetBeneficiary.data.Recipients[$index].IsValidate" dmx-class:text-dark="content.formGetBeneficiary.data.Recipients[$index].IsValidate == true" dmx-class:text-danger="content.formGetBeneficiary.data.Recipients[$index].IsValidate == false"></td>
-                        <td dmx-text="content.formGetBeneficiary.data.Recipients[$index].Status" dmx-class:text-dark="content.formGetBeneficiary.data.Recipients[$index].Status == 'Active'" dmx-class:text-danger="content.formGetBeneficiary.data.Recipients[$index].Status == 'InActive'"></td>
+                        <td dmx-text="content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode, '==')[0].ben_verify" dmx-class:text-dark="content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode, '==')[0].ben_verify == true" dmx-class:text-danger="content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode, '==')[0].ben_verify == false"></td>
+                        <td dmx-text="content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode, '==')[0].status" dmx-class:text-dark="content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode, '==')[0].status == 'Active'" dmx-class:text-danger="content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode, '==')[0].status == 'InActive'"></td>
                         <td class="p-2">
                             <a href="#" class="text-danger p-1 align-self-center" dmx-on:click="modalDelBen.show(); varBenefId.setValue(content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode)" data-bs-toggle="modal" data-bs-target="#modalDelBen">
                                 <i class="far fa-trash-alt" title="Delete Beneficiary"></i>
                             </a>
 
-                            <a href="#" class="sw-col-dr p-1 align-self-center" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.Recipients[0].BeneficiaryCode); varBenBankName.setValue(content.formGetBeneficiary.data.Recipients[$index].BankName); varBenName.setValue(content.formGetBeneficiary.data.Recipients[$index].Name); varBenAcNo.setValue(content.formGetBeneficiary.data.Recipients[$index].AccountNumber); varBenMobile.setValue(content.formGetBeneficiary.data.MobileNo);modalTransBen.show();" data-bs-toggle="modal" data-bs-target="#modalTransBen"><i class="fas fa-hand-holding-usd" title="Do Transaction"></i></a>
+                            <a href="#" class="sw-col-dr p-1 align-self-center" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.Recipients[0].BeneficiaryCode); varBenBankName.setValue(content.formGetBeneficiary.data.Recipients[$index].Bankname); varBenName.setValue(content.formGetBeneficiary.data.Recipients[$index].BeneficiaryName); varBenAcNo.setValue(content.formGetBeneficiary.data.Recipients[$index].AccountNumber); varBenMobile.setValue(content.formGetBeneficiary.data.MobileNo); varBenAadharNo.setValue(content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode, '==')[0].aadhar_no); varBenPanNo.setValue(content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode, '==')[0].pan_no);modalTransBen.show();" data-bs-toggle="modal" data-bs-target="#modalTransBen"><i class="fas fa-hand-holding-usd" title="Do Transaction"></i></a>
 
-                            <a class=" p-1 align-self-center text-success" href="#" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.Recipients[0].BeneficiaryCode);varBenAcNo.setValue(content.formGetBeneficiary.data.Recipients[$index].AccountNumber); varIFSC.setValue(content.formGetBeneficiary.data.Recipients[$index].IFSC); modalVerifyBen.show();" data-bs-toggle="modal" data-bs-target="#modalVerifyBen">
+                            <a class=" p-1 align-self-center text-success" href="#" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.Recipients[0].BeneficiaryCode);varBenAcNo.setValue(content.formGetBeneficiary.data.Recipients[$index].AccountNumber); varIFSC.setValue(content.formGetBeneficiary.data.Recipients[$index].IFSC); modalVerifyBen.show();" data-bs-toggle="modal" data-bs-target="#modalVerifyBen" dmx-show="content.scGetBDBen.data.DBBenefFetch[$index].ben_verify == true">
                                 <i class="fas fa-shield-alt" title="Varify Beneficiary Account using Rs. 1"></i>
                             </a>
                         </td>
@@ -364,7 +377,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label class="font-weight-bold">T-Pin</label>
-                                        <input type="number" id="BenTrTPIN" class="form-control" name="BenTrTPIN" required="" data-rule-number="">
+                                        <input type="number" id="BenTrTPIN" class="form-control" name="BenTrTPIN" required="">
                                     </div>
                                 </div>
                                 <div class="col-12 mt-2 text-center">
