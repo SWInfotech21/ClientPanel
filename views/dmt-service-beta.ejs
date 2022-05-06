@@ -14,7 +14,6 @@
 <dmx-value id="varBenAadharNo" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varBenPanNo" dmx-bind:value="0"></dmx-value>
 <dmx-value id="varBenTrAmt" dmx-bind:value="content.modalTransBen.formBenTrans.BenTrAmount.value"></dmx-value>
-<dmx-serverconnect id="scBankList" url="api/DMT/GetBankList"></dmx-serverconnect>
 <script is="dmx-flow" id="flowGetBDBen" type="text/dmx-flow">{
   condition: {
     if: "{{content.formGetBeneficiary.CustMobile.value}}",
@@ -27,6 +26,7 @@
 }</script>
 <dmx-serverconnect id="scGetBDBen" url="api/DMT/GetAllDBBeneficiary" noload dmx-param:rem_id="content.formGetBeneficiary.CustMobile.value"></dmx-serverconnect>
 <dmx-serverconnect id="scLiveDMT" url="api/DMT/LiveTransDMT" sockets="true"></dmx-serverconnect>
+<dmx-serverconnect id="scBankList" url="api/DMT/GetBankList"></dmx-serverconnect>
 <dmx-data-view id="dvBankList" filter="(BankName.contains(Search.value.titlecase()))" dmx-bind:data="content.scBankList.data.apiBanks"></dmx-data-view>
 
 <main>
@@ -103,7 +103,7 @@
 
                             <a href="#" class="sw-col-dr p-1 align-self-center" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.Recipients[0].BeneficiaryCode); varBenBankName.setValue(content.formGetBeneficiary.data.Recipients[$index].Bankname); varBenName.setValue(content.formGetBeneficiary.data.Recipients[$index].BeneficiaryName); varBenAcNo.setValue(content.formGetBeneficiary.data.Recipients[$index].AccountNumber); varBenMobile.setValue(content.formGetBeneficiary.data.MobileNo); varBenAadharNo.setValue(content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode, '==')[0].aadhar_no); varBenPanNo.setValue(content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode, '==')[0].pan_no);modalTransBen.show();" data-bs-toggle="modal" data-bs-target="#modalTransBen"><i class="fas fa-hand-holding-usd" title="Do Transaction"></i></a>
 
-                            <a class=" p-1 align-self-center text-success" href="#" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.Recipients[0].BeneficiaryCode);varBenAcNo.setValue(content.formGetBeneficiary.data.Recipients[$index].AccountNumber); varIFSC.setValue(content.formGetBeneficiary.data.Recipients[$index].IFSC); modalVerifyBen.show();" data-bs-toggle="modal" data-bs-target="#modalVerifyBen" dmx-show="content.scGetBDBen.data.DBBenefFetch[$index].ben_verify == true">
+                            <a class=" p-1 align-self-center text-success" href="#" dmx-on:click="varBenefId.setValue(content.formGetBeneficiary.data.Recipients[0].BeneficiaryCode);varBenAcNo.setValue(content.formGetBeneficiary.data.Recipients[$index].AccountNumber); varIFSC.setValue(content.formGetBeneficiary.data.Recipients[$index].IFSC); modalVerifyBen.show();" data-bs-toggle="modal" data-bs-target="#modalVerifyBen" dmx-show="content.scGetBDBen.data.DBBenefFetch[$index].ben_verify == false">
                                 <i class="fas fa-shield-alt" title="Varify Beneficiary Account using Rs. 1"></i>
                             </a>
                         </td>
