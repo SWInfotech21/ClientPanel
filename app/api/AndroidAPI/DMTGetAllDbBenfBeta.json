@@ -413,6 +413,10 @@
                                                   {
                                                     "table": "dmt_beneficiary",
                                                     "column": "pan_no"
+                                                  },
+                                                  {
+                                                    "table": "dmt_beneficiary",
+                                                    "column": "remarks"
                                                   }
                                                 ],
                                                 "table": {
@@ -420,7 +424,7 @@
                                                 },
                                                 "primary": "id",
                                                 "joins": [],
-                                                "query": "SELECT id, ben_id, ben_name, ben_mobile, ben_ac_no, ben_ifsc, ben_bankname, ben_verify, status, aadhar_no, pan_no\nFROM dmt_beneficiary\nWHERE remitter_id = :P1 /* {{$_GET.remetter_id}} */ AND deleted_on IS NULL",
+                                                "query": "SELECT id, ben_id, ben_name, ben_mobile, ben_ac_no, ben_ifsc, ben_bankname, ben_verify, status, aadhar_no, pan_no, remarks\nFROM dmt_beneficiary\nWHERE remitter_id = :P1 /* {{$_GET.remetter_id}} */ AND deleted_on IS NULL",
                                                 "params": [
                                                   {
                                                     "operator": "equal",
@@ -525,6 +529,10 @@
                                               {
                                                 "type": "text",
                                                 "name": "pan_no"
+                                              },
+                                              {
+                                                "type": "text",
+                                                "name": "remarks"
                                               }
                                             ],
                                             "outputType": "array"
