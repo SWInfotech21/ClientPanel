@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dmtservicebeta" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxDataTraversal:{},dmxBootstrap5Modal:{}}" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dmtservicebeta" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxDataTraversal:{},dmxBootstrap5Modal:{},dmxSockets:{}}" -->
 
 <meta name="ac:route" content="/dmt-service-beta">
 <dmx-value id="varBenefId" dmx-bind:value="0"></dmx-value>
@@ -205,7 +205,7 @@
                         <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalDelBen.hide()"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="formDelBen" is="dmx-serverconnect-form" action="api/DMT/BetaDelBen" dmx-populate="" method="post" dmx-on:success="formDelBen.reset();scNotif.success(content.modalDelBen.formDelBen.data.DelStatusCode? content.modalDelBen.formDelBen.data.DelMessage: 'An Error Occured');modalDelBen.hide()" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="">
+                        <form id="formDelBen" is="dmx-serverconnect-form" action="api/DMT/BetaDelBen" dmx-populate="" method="post" dmx-on:success="formDelBen.reset();scNotif.success(content.modalDelBen.formDelBen.data.DelStatusCode? content.modalDelBen.formDelBen.data.DelMessage: 'An Error Occured');modalDelBen.hide();flowGetBDBen.run();" dmx-on:error="" dmx-on:unauthorized="" dmx-on:forbidden="">
                             <input type="hidden" id="RemMobileDel" class="form-control" name="RemMobileDel" required="" dmx-bind:value="content.formGetBeneficiary.data.MobileNo">
                             <input type="hidden" id="BenIdDel" class="form-control" name="BenIdDel" required="" dmx-bind:value="varBenefId.value">
                             <div class="row mx-0">
