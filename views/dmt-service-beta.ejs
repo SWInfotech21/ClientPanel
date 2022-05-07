@@ -25,7 +25,7 @@
   }
 }</script>
 <dmx-serverconnect id="scGetBDBen" url="api/DMT/GetAllDBBeneficiary" noload dmx-param:rem_id="content.formGetBeneficiary.CustMobile.value"></dmx-serverconnect>
-<dmx-serverconnect id="scLiveDMT" url="api/DMT/LiveTransDMT" sockets="true"></dmx-serverconnect>
+<dmx-serverconnect id="scLiveDMT" url="api/DMT/LiveTransDMT"></dmx-serverconnect>
 <dmx-serverconnect id="scBankList" url="api/DMT/GetBankList"></dmx-serverconnect>
 <dmx-data-view id="dvBankList" filter="(BankName.contains(Search.value.titlecase()))" dmx-bind:data="content.scBankList.data.apiBanks"></dmx-data-view>
 
