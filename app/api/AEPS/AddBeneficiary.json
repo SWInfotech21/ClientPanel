@@ -141,7 +141,7 @@
             }
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "number",
@@ -162,6 +162,10 @@
               {
                 "table": "m_users",
                 "column": "aeps_merchant_id"
+              },
+              {
+                "table": "m_users",
+                "column": "user_fname"
               }
             ],
             "table": {
@@ -169,7 +173,7 @@
             },
             "joins": [],
             "primary": "id",
-            "query": "SELECT aeps_merchant_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
+            "query": "SELECT aeps_merchant_id, user_fname\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
             "params": [
               {
                 "operator": "equal",
@@ -208,64 +212,18 @@
             }
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "text",
             "name": "aeps_merchant_id"
+          },
+          {
+            "type": "text",
+            "name": "user_fname"
           }
         ],
         "outputType": "object"
-      },
-      {
-        "name": "apiAddContact",
-        "module": "api",
-        "action": "send",
-        "options": {
-          "url": "https://180.179.23.1:444/Aeps/AepsSettlement",
-          "method": "POST",
-          "dataType": "json",
-          "data": {
-            "Code": "A00052",
-            "Authcode": "65c43ccd6a7b41c884",
-            "Mpin": "7170",
-            "Contact": "7060881441",
-            "ContactName": "Banti"
-          }
-        },
-        "output": true
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{apiAddContact.data.Status==1}}",
-          "then": {
-            "steps": {
-              "name": "apiAddBeneficiary",
-              "module": "api",
-              "action": "send",
-              "options": {
-                "url": "https://180.179.23.1:444/Aeps/AepsSettlement",
-                "method": "POST",
-                "dataType": "json",
-                "data": {
-                  "Code": "A00054",
-                  "Authcode": "65c43ccd6a7b41c884",
-                  "Mpin": "7170",
-                  "BeneficiaryName": "Banti",
-                  "AccountNumer": "50100441265301",
-                  "IFSC": "HDFC0002620",
-                  "Contact": "7060881441",
-                  "BankName": "HDFC Bank Ltd."
-                }
-              },
-              "output": true
-            }
-          }
-        },
-        "outputType": "boolean"
       },
       {
         "name": "",
@@ -276,7 +234,7 @@
           "then": {
             "steps": [
               {
-                "name": "apiBeneficiary",
+                "name": "apiAddContact",
                 "module": "api",
                 "action": "send",
                 "options": {
@@ -284,16 +242,35 @@
                   "method": "POST",
                   "dataType": "json",
                   "data": {
-                    "Code": "A00054",
+                    "Code": "A00052",
                     "Authcode": "65c43ccd6a7b41c884",
                     "Mpin": "7170",
-                    "BeneficiaryName": "{{$_POST.UserName}}",
-                    "AccountNumer": "{{$_POST.BankAC}}",
-                    "IFSC": "{{$_POST.BankIFSC}}",
                     "Contact": "{{GetMobile.aeps_merchant_id}}",
-                    "BankName": "{{$_POST.BankName}}"
+                    "ContactName": "{{GetMobile.user_fname}}"
                   }
                 },
+                "output": false
+              },
+              {
+                "name": "AddContactDesc",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiAddContact.data.Description}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "AddContactStatus",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiAddContact.data.Status}}"
+                },
+                "meta": [],
+                "outputType": "text",
                 "output": true
               },
               {
@@ -301,7 +278,39 @@
                 "module": "core",
                 "action": "condition",
                 "options": {
-                  "if": "{{apiBeneficiary.data.Status==1}}",
+                  "if": "{{apiAddContact.data.Status==1}}",
+                  "then": {
+                    "steps": {
+                      "name": "apiAddBeneficiary",
+                      "module": "api",
+                      "action": "send",
+                      "options": {
+                        "url": "https://180.179.23.1:444/Aeps/AepsSettlement",
+                        "method": "POST",
+                        "dataType": "json",
+                        "data": {
+                          "Code": "A00054",
+                          "Authcode": "65c43ccd6a7b41c884",
+                          "Mpin": "7170",
+                          "BeneficiaryName": "{{$_POST.UserName}}",
+                          "AccountNumer": "{{$_POST.BankAC}}",
+                          "IFSC": "{{$_POST.BankIFSC}}",
+                          "Contact": "{{GetMobile.aeps_merchant_id}}",
+                          "BankName": "{{$_POST.BankName}}"
+                        }
+                      },
+                      "output": false
+                    }
+                  }
+                },
+                "outputType": "boolean"
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{apiAddBeneficiary.data.Status==1}}",
                   "then": {
                     "steps": [
                       {
@@ -365,12 +374,12 @@
                                 "table": "t_aeps_benef_epay",
                                 "column": "blank1",
                                 "type": "text",
-                                "value": "{{apiBeneficiary.data.BeneficiaryID}}"
+                                "value": "{{apiAddBeneficiary.data.BeneficiaryID}}"
                               }
                             ],
                             "table": "t_aeps_benef_epay",
                             "returning": "id",
-                            "query": "INSERT INTO t_aeps_benef_epay\n(user_id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_by, created_on, blank1) VALUES (:P1 /* {{identity}} */, :P2 /* {{$_POST.UserName}} */, :P3 /* {{$_POST.BankName}} */, :P4 /* {{$_POST.BankIFSC}} */, :P5 /* {{$_POST.BankAC}} */, :P6 /* {{GetMobile.aeps_merchant_id}} */, :P7 /* {{identity}} */, :P8 /* {{NOW}} */, :P9 /* {{apiBeneficiary.data.BeneficiaryID}} */)",
+                            "query": "INSERT INTO t_aeps_benef_epay\n(user_id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_by, created_on, blank1) VALUES (:P1 /* {{identity}} */, :P2 /* {{$_POST.UserName}} */, :P3 /* {{$_POST.BankName}} */, :P4 /* {{$_POST.BankIFSC}} */, :P5 /* {{$_POST.BankAC}} */, :P6 /* {{GetMobile.aeps_merchant_id}} */, :P7 /* {{identity}} */, :P8 /* {{NOW}} */, :P9 /* {{apiAddBeneficiary.data.BeneficiaryID}} */)",
                             "params": [
                               {
                                 "name": ":P1",
@@ -415,7 +424,7 @@
                               {
                                 "name": ":P9",
                                 "type": "expression",
-                                "value": "{{apiBeneficiary.data.BeneficiaryID}}"
+                                "value": "{{apiAddBeneficiary.data.BeneficiaryID}}"
                               }
                             ]
                           }
@@ -436,7 +445,7 @@
                         "module": "core",
                         "action": "setvalue",
                         "options": {
-                          "value": "{{apiBeneficiary.data.Description}}"
+                          "value": "{{apiAddBeneficiary.data.Description}}"
                         },
                         "meta": [],
                         "outputType": "text",
@@ -447,7 +456,18 @@
                         "module": "core",
                         "action": "setvalue",
                         "options": {
-                          "value": "{{apiBeneficiary.data.Contact}}"
+                          "value": "{{apiAddBeneficiary.data.Contact}}"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": true
+                      },
+                      {
+                        "name": "BenefId",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{apiAddBeneficiary.data.BeneficiaryID}}"
                         },
                         "meta": [],
                         "outputType": "text",
@@ -485,8 +505,7 @@
             }
           }
         },
-        "outputType": "boolean",
-        "disabled": true
+        "outputType": "boolean"
       }
     ]
   }
