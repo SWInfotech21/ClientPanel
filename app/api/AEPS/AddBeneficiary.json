@@ -452,6 +452,17 @@
                         "output": true
                       },
                       {
+                        "name": "Status",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{apiAddBeneficiary.data.Status}}"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": true
+                      },
+                      {
                         "name": "Contact",
                         "module": "core",
                         "action": "setvalue",
