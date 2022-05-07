@@ -298,7 +298,7 @@
                         <div class="row mx-0" dmx-show="content.modalTransBen.formBenTrans.data.apistatus == 'SUCCESS' || content.modalTransBen.formBenTrans.data.apistatus == 'PENDING' && varTransStatus.value == 1">
                             <div class="col text-center">
                                 <img src="assets/images/mark-success.gif" height="130">
-                                <p class="font-weight-bolder sw-font-20">Payment Success</p>
+                                <p class="font-weight-bolder sw-font-20">Payment Status: <b>{{content.modalTransBen.formBenTrans.data.apistatus}}</b></p>
                                 <!-- <p class="sw-font-14">You can print the receipt from by clicking print button.</p> -->
                                 <p class="sw-font-14">Remarks: {{content.modalTransBen.formBenTrans.data.remarks}}</p>
                             </div>
@@ -306,7 +306,7 @@
                         <div class="row mx-0" dmx-show="content.modalTransBen.formBenTrans.data.apistatus == 'FAILED' && varTransStatus.value == 1">
                             <div class="col text-center">
                                 <img src="assets/images/mark-failure.gif" height="130">
-                                <p class="font-weight-bolder sw-font-20">Failed!</p>
+                                <p class="font-weight-bolder sw-font-20">Payment Status: <b>{{content.modalTransBen.formBenTrans.data.apistatus}}</b></p>
                                 <p class="sw-font-14">Remarks: {{content.modalTransBen.formBenTrans.data.remarks}}</p>
                             </div>
                         </div>
@@ -342,6 +342,7 @@
                             <input type="hidden" id="RecipientIdTrans" class="form-control" name="RecipientIdTrans" required="" dmx-bind:value="varBenefId.value">
                             <input type="hidden" id="BenAadharNo" class="form-control" name="BenAadharNo" required="" dmx-bind:value="varBenAadharNo.value"><input type="hidden" id="BenPanNo" class="form-control" name="BenPanNo" required="" dmx-bind:value="varBenPanNo.value">
                             <input type="hidden" id="BenMobileNo" class="form-control" name="BenMobileNo" required="" dmx-bind:value="varBenMobile.value">
+                            <input type="hidden" id="BenAcNo" class="form-control" name="BenAcNo" required="" dmx-bind:value="varBenAcNo.value">
                             <div class="row mx-0">
                                 <div class="col-12">
                                     <div class="form-group">

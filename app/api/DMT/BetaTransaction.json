@@ -2125,7 +2125,7 @@
                                                       "module": "core",
                                                       "action": "condition",
                                                       "options": {
-                                                        "if": "{{GetDTCreator.dt_user_type.toNumber()==3}}",
+                                                        "if": "{{GetDTCreator.dt_user_type.toNumber()==1}}",
                                                         "then": {
                                                           "steps": [
                                                             {
