@@ -229,7 +229,6 @@
             ]
           }
         },
-        "output": true,
         "meta": [
           {
             "name": "comm_per",

@@ -245,13 +245,13 @@
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold">Beneficiary AADHAR No. </label>
-                                        <input type="number" id="VerifyAadharBenef" class="form-control" name="VerifyAadharBenef" placeholder="Enter 12 digit AADHAR No." required="" data-rule-number="">
+                                        <input type="number" id="VerifyAadharBenef" class="form-control" name="VerifyAadharBenef" placeholder="Enter 12 digit AADHAR No." required="" data-rule-number="" dmx-bind:value="content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode, '==')[0].aadhar_no">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <div class="form-group">
                                         <label class="font-weight-bold">Beneficiary PAN No. </label>
-                                        <input type="text" id="VerifyPANBenef" class="form-control" name="VerifyPANBenef" placeholder="Enter 8 digit AADHAR No." required="">
+                                        <input type="text" id="VerifyPANBenef" class="form-control" name="VerifyPANBenef" placeholder="Enter 8 digit AADHAR No." required="" dmx-bind="content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, content.formGetBeneficiary.data.Recipients[$index].BeneficiaryCode, '==')[0].pan_no">
                                     </div>
                                 </div>
                                 <div class="col-12 mt-2 text-center">
