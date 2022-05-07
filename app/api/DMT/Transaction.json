@@ -8477,7 +8477,8 @@
                                                       "action": "refresh",
                                                       "options": {
                                                         "action": "DMT/LiveTransDMT"
-                                                      }
+                                                      },
+                                                      "output": true
                                                     }
                                                   ]
                                                 }
@@ -8571,6 +8572,10 @@
                                   "name": "ben_name",
                                   "type": "text",
                                   "sub": []
+                                },
+                                {
+                                  "name": "refresh6",
+                                  "type": "text"
                                 },
                                 {
                                   "name": "AdminClosingBalUserUp_copy",
