@@ -2449,7 +2449,7 @@
                             "Amount": "{{$_POST.WithdrawAmtBank}}"
                           }
                         },
-                        "output": true
+                        "output": false
                       },
                       {
                         "name": "Status",

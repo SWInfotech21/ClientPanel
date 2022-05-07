@@ -394,7 +394,8 @@
             "Contact": "{{ViewBenef[0].contacts}}"
           }
         },
-        "output": true
+        "output": true,
+        "disabled": true
       }
     ]
   }
