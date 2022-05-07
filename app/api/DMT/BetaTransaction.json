@@ -308,7 +308,7 @@
                       },
                       "meta": [],
                       "outputType": "text",
-                      "output": false
+                      "output": true
                     },
                     {
                       "name": "Remainder",
@@ -319,7 +319,7 @@
                       },
                       "meta": [],
                       "outputType": "text",
-                      "output": false
+                      "output": true
                     },
                     {
                       "name": "GetAdmin",
