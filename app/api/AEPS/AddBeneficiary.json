@@ -233,8 +233,7 @@
             "ContactName": "Banti"
           }
         },
-        "output": true,
-        "disabled": true
+        "output": true
       },
       {
         "name": "",
@@ -262,13 +261,11 @@
                   "BankName": "HDFC Bank Ltd."
                 }
               },
-              "output": true,
-              "disabled": true
+              "output": true
             }
           }
         },
-        "outputType": "boolean",
-        "disabled": true
+        "outputType": "boolean"
       },
       {
         "name": "",
@@ -291,7 +288,7 @@
                     "Authcode": "65c43ccd6a7b41c884",
                     "Mpin": "7170",
                     "BeneficiaryName": "{{$_POST.UserName}}",
-                    "AccountNumber": "{{$_POST.BankAC}}",
+                    "AccountNumer": "{{$_POST.BankAC}}",
                     "IFSC": "{{$_POST.BankIFSC}}",
                     "Contact": "{{GetMobile.aeps_merchant_id}}",
                     "BankName": "{{$_POST.BankName}}"
@@ -488,7 +485,8 @@
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "disabled": true
       }
     ]
   }
