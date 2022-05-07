@@ -292,7 +292,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">DMT Transaction:{{varBenefId.value}}</h5>
-                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0); varBenMobile.setValue(0); varBenBankName.setValue(0);varTransStatus.setValue(0);varShowLive.setValue(0);"></button>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0); varBenMobile.setValue(0); varBenBankName.setValue(0);varTransStatus.setValue(0);varShowLive.setValue(0);varBenTrAmt.setValue(0);"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row mx-0" dmx-show="content.modalTransBen.formBenTrans.data.apistatus == 'SUCCESS' || content.modalTransBen.formBenTrans.data.apistatus == 'PENDING' && varTransStatus.value == 1">
@@ -318,17 +318,17 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="font-weight-bold">Beneficiary Name: <span class="text-muted">{{content.modalTransBen.formBenTrans.data.ben_name}}</span></label>
+                                    <label class="font-weight-bold">Beneficiary Name: <span class="text-muted">{{content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, varBenefId.value, '==')[0].ben_name}}</span></label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="font-weight-bold">Ben. Account No.: <span class="text-muted">{{content.modalTransBen.formBenTrans.data.bank_ac_no}}</span></label>
+                                    <label class="font-weight-bold">Ben. Account No.: <span class="text-muted">{{content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, varBenefId.value, '==')[0].ben_ac_no}}</span></label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="font-weight-bold">Ben. Bank A/C No.: <span class="text-muted">{{content.modalTransBen.formBenTrans.data.bank_ac_no}}</span></label>
+                                    <label class="font-weight-bold">Ben. Bank IFSC: <span class="text-muted">{{content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, varBenefId.value, '==')[0].ben_ifsc}}</span></label>
                                 </div>
                             </div>
                             <div class="col-12">
