@@ -247,7 +247,7 @@
             "primary": "id"
           }
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
             "type": "text",
@@ -738,7 +738,7 @@
                                         "primary": "id"
                                       }
                                     },
-                                    "output": false,
+                                    "output": true,
                                     "meta": [
                                       {
                                         "type": "text",
@@ -938,7 +938,7 @@
                                         "primary": "id"
                                       }
                                     },
-                                    "output": false,
+                                    "output": true,
                                     "meta": [
                                       {
                                         "type": "text",
@@ -1138,7 +1138,7 @@
                                         "primary": "id"
                                       }
                                     },
-                                    "output": false,
+                                    "output": true,
                                     "meta": [
                                       {
                                         "type": "text",
@@ -1338,7 +1338,7 @@
                                         "primary": "id"
                                       }
                                     },
-                                    "output": false,
+                                    "output": true,
                                     "meta": [
                                       {
                                         "type": "text",
@@ -1538,7 +1538,7 @@
                                         "primary": "id"
                                       }
                                     },
-                                    "output": false,
+                                    "output": true,
                                     "meta": [
                                       {
                                         "type": "text",
@@ -1686,7 +1686,7 @@
                                           }
                                         }
                                       },
-                                      "output": false,
+                                      "output": true,
                                       "meta": [
                                         {
                                           "type": "number",
@@ -3012,7 +3012,7 @@
                                                   "type": "number"
                                                 }
                                               ],
-                                              "output": false
+                                              "output": true
                                             },
                                             {
                                               "name": "DrBalanceRT",
@@ -3571,7 +3571,7 @@
                                                           "type": "number"
                                                         }
                                                       ],
-                                                      "output": false
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "DrBalanceRTUp",
@@ -4610,7 +4610,7 @@
                                                           "type": "number"
                                                         }
                                                       ],
-                                                      "output": false
+                                                      "output": true
                                                     },
                                                     {
                                                       "name": "DrBalanceRT_Failed",
