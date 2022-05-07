@@ -95,6 +95,21 @@
           }
         },
         "name": "trans_type"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "BenAcNo"
+      }
+    ],
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "REMOTE_ADDR"
       }
     ]
   },
@@ -564,7 +579,7 @@
                                               "module": "core",
                                               "action": "condition",
                                               "options": {
-                                                "if": "{{UserWalletBalCheck.user_tpin.toNumber() == $_POST.BenTrTPIN.toNumber()}}",
+                                                "if": "{{UserWalletBalCheck.user_tpin.toNumber()==$_POST.BenTrTPIN.toNumber()}}",
                                                 "then": {
                                                   "steps": {
                                                     "name": "",
@@ -583,7 +598,7 @@
                                                             },
                                                             "meta": [],
                                                             "outputType": "text",
-                                                            "output": false
+                                                            "output": true
                                                           },
                                                           {
                                                             "name": "Remainder",
@@ -594,7 +609,7 @@
                                                             },
                                                             "meta": [],
                                                             "outputType": "text",
-                                                            "output": false
+                                                            "output": true
                                                           },
                                                           {
                                                             "name": "GetAdmin",
@@ -2400,7 +2415,7 @@
                                                                                             "module": "core",
                                                                                             "action": "condition",
                                                                                             "options": {
-                                                                                              "if": "{{GetDTCreator.dt_user_type.toNumber()==3}}",
+                                                                                              "if": "{{GetDTCreator.dt_user_type.toNumber()==1}}",
                                                                                               "then": {
                                                                                                 "steps": [
                                                                                                   {
@@ -2869,7 +2884,7 @@
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "tr_mode",
                                                                                             "type": "text",
-                                                                                            "value": "{{'Web'}}"
+                                                                                            "value": "{{'Android'}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
@@ -3072,7 +3087,7 @@
                                                                                         ],
                                                                                         "table": "tt_recharge_trans",
                                                                                         "returning": "id",
-                                                                                        "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed, bank_ac_no, remitter_id) VALUES (:P1 /* {{GetCommision.operator_id}} */, :P2 /* {{GetCommision.service_id}} */, :P3 /* {{GetOpAPICodeFwrd.api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_POST.RecipientIdTrans}} */, :P6 /* {{$_POST.BenMobileNo}} */, :P7 /* {{Remainder}} */, :P8 /* {{'Web'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{TransactionId}} */, :P12 /* {{'Transfer of Rs. '+Remainder+' by  '+UserWalletBalCheck.user_mobile+' | '+UserWalletBalCheck.user_fname+' to A/C '+$_POST.BenAcNo+' Mobile: '+$_POST.BenMobileNo}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2C'}} */, :P15 /* {{NOW}} */, :P16 /* {{identity}} */, :P17 /* {{UserWalletBalCheck.balance_amt}} */, :P18 /* {{GetCommision.comm_per}} */, :P19 /* {{GetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{GetCommision.service_charge_val}} */, :P22 /* {{GetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{UserWalletBalCheck.balance_amt}} */, :P26 /* {{DTCommPer}} */, :P27 /* {{DTCommVal}} */, :P28 /* {{DTCommAmt}} */, :P29 /* {{DTChargePer}} */, :P30 /* {{DTChargeVal}} */, :P31 /* {{DTChargeAmt}} */, :P32 /* {{MDTCommPer}} */, :P33 /* {{MDTCommVal}} */, :P34 /* {{MDTCommAmt}} */, :P35 /* {{MDTChargePer}} */, :P36 /* {{MDTChargeVal}} */, :P37 /* {{MDTChargeAmt}} */, :P38 /* {{'N/A'}} */, :P39 /* {{$_POST.BenAcNo}} */, :P40 /* {{$_POST.SenderIdTrans}} */)",
+                                                                                        "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed, bank_ac_no, remitter_id) VALUES (:P1 /* {{GetCommision.operator_id}} */, :P2 /* {{GetCommision.service_id}} */, :P3 /* {{GetOpAPICodeFwrd.api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_POST.RecipientIdTrans}} */, :P6 /* {{$_POST.BenMobileNo}} */, :P7 /* {{Remainder}} */, :P8 /* {{'Android'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{TransactionId}} */, :P12 /* {{'Transfer of Rs. '+Remainder+' by  '+UserWalletBalCheck.user_mobile+' | '+UserWalletBalCheck.user_fname+' to A/C '+$_POST.BenAcNo+' Mobile: '+$_POST.BenMobileNo}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2C'}} */, :P15 /* {{NOW}} */, :P16 /* {{identity}} */, :P17 /* {{UserWalletBalCheck.balance_amt}} */, :P18 /* {{GetCommision.comm_per}} */, :P19 /* {{GetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{GetCommision.service_charge_val}} */, :P22 /* {{GetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{UserWalletBalCheck.balance_amt}} */, :P26 /* {{DTCommPer}} */, :P27 /* {{DTCommVal}} */, :P28 /* {{DTCommAmt}} */, :P29 /* {{DTChargePer}} */, :P30 /* {{DTChargeVal}} */, :P31 /* {{DTChargeAmt}} */, :P32 /* {{MDTCommPer}} */, :P33 /* {{MDTCommVal}} */, :P34 /* {{MDTCommAmt}} */, :P35 /* {{MDTChargePer}} */, :P36 /* {{MDTChargeVal}} */, :P37 /* {{MDTChargeAmt}} */, :P38 /* {{'N/A'}} */, :P39 /* {{$_POST.BenAcNo}} */, :P40 /* {{$_POST.SenderIdTrans}} */)",
                                                                                         "params": [
                                                                                           {
                                                                                             "name": ":P1",
@@ -3112,7 +3127,7 @@
                                                                                           {
                                                                                             "name": ":P8",
                                                                                             "type": "expression",
-                                                                                            "value": "{{'Web'}}"
+                                                                                            "value": "{{'Android'}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P9",
@@ -3480,14 +3495,6 @@
                                                                                       "url": "https://portal.swpay.in/api/RefreshTrans"
                                                                                     },
                                                                                     "output": false
-                                                                                  },
-                                                                                  {
-                                                                                    "name": "refresh1",
-                                                                                    "module": "sockets",
-                                                                                    "action": "refresh",
-                                                                                    "options": {
-                                                                                      "action": "DMT/LiveTransDMT"
-                                                                                    }
                                                                                   },
                                                                                   {
                                                                                     "name": "AdminChargesAmt",
@@ -4159,14 +4166,6 @@
                                                                                               "url": "https://portal.swpay.in/api/RefreshTrans"
                                                                                             },
                                                                                             "output": false
-                                                                                          },
-                                                                                          {
-                                                                                            "name": "refresh2",
-                                                                                            "module": "sockets",
-                                                                                            "action": "refresh",
-                                                                                            "options": {
-                                                                                              "action": "DMT/LiveTransDMT"
-                                                                                            }
                                                                                           },
                                                                                           {
                                                                                             "name": "AdminClosingBalUserUp",
@@ -5078,14 +5077,6 @@
                                                                                               "url": "https://portal.swpay.in/api/RefreshTrans"
                                                                                             },
                                                                                             "output": false
-                                                                                          },
-                                                                                          {
-                                                                                            "name": "refresh3",
-                                                                                            "module": "sockets",
-                                                                                            "action": "refresh",
-                                                                                            "options": {
-                                                                                              "action": "DMT/LiveTransDMT"
-                                                                                            }
                                                                                           }
                                                                                         ]
                                                                                       }
@@ -6008,7 +5999,7 @@
                                                                                             "module": "core",
                                                                                             "action": "condition",
                                                                                             "options": {
-                                                                                              "if": "{{GetDTCreator.dt_user_type.toNumber()==3}}",
+                                                                                              "if": "{{GetDTCreator.dt_user_type.toNumber()==1}}",
                                                                                               "then": {
                                                                                                 "steps": [
                                                                                                   {
@@ -6238,7 +6229,7 @@
                                                                                               "else": {
                                                                                                 "steps": [
                                                                                                   {
-                                                                                                    "name": "MDTCommPer_copy",
+                                                                                                    "name": "MDTCommPer",
                                                                                                     "module": "core",
                                                                                                     "action": "setvalue",
                                                                                                     "options": {
@@ -6248,7 +6239,7 @@
                                                                                                     "outputType": "text"
                                                                                                   },
                                                                                                   {
-                                                                                                    "name": "MDTCommVal_copy",
+                                                                                                    "name": "MDTCommVal",
                                                                                                     "module": "core",
                                                                                                     "action": "setvalue",
                                                                                                     "options": {
@@ -6258,7 +6249,7 @@
                                                                                                     "outputType": "text"
                                                                                                   },
                                                                                                   {
-                                                                                                    "name": "MDTCommAmt_copy",
+                                                                                                    "name": "MDTCommAmt",
                                                                                                     "module": "core",
                                                                                                     "action": "setvalue",
                                                                                                     "options": {
@@ -6268,7 +6259,7 @@
                                                                                                     "outputType": "text"
                                                                                                   },
                                                                                                   {
-                                                                                                    "name": "MDTChargePer_copy",
+                                                                                                    "name": "MDTChargePer",
                                                                                                     "module": "core",
                                                                                                     "action": "setvalue",
                                                                                                     "options": {
@@ -6278,7 +6269,7 @@
                                                                                                     "outputType": "text"
                                                                                                   },
                                                                                                   {
-                                                                                                    "name": "MDTChargeVal_copy",
+                                                                                                    "name": "MDTChargeVal",
                                                                                                     "module": "core",
                                                                                                     "action": "setvalue",
                                                                                                     "options": {
@@ -6288,7 +6279,7 @@
                                                                                                     "outputType": "text"
                                                                                                   },
                                                                                                   {
-                                                                                                    "name": "MDTChargeAmt_copy",
+                                                                                                    "name": "MDTChargeAmt",
                                                                                                     "module": "core",
                                                                                                     "action": "setvalue",
                                                                                                     "options": {
@@ -6298,7 +6289,7 @@
                                                                                                     "outputType": "text"
                                                                                                   },
                                                                                                   {
-                                                                                                    "name": "MDTNetAmt_copy",
+                                                                                                    "name": "MDTNetAmt",
                                                                                                     "module": "core",
                                                                                                     "action": "setvalue",
                                                                                                     "options": {
@@ -6308,7 +6299,7 @@
                                                                                                     "outputType": "text"
                                                                                                   },
                                                                                                   {
-                                                                                                    "name": "MDTClosingBalance_copy",
+                                                                                                    "name": "MDTClosingBalance",
                                                                                                     "module": "core",
                                                                                                     "action": "setvalue",
                                                                                                     "options": {
@@ -6318,7 +6309,7 @@
                                                                                                     "outputType": "text"
                                                                                                   },
                                                                                                   {
-                                                                                                    "name": "AdminClosingBalance_copy",
+                                                                                                    "name": "AdminClosingBalance",
                                                                                                     "module": "core",
                                                                                                     "action": "setvalue",
                                                                                                     "options": {
@@ -6337,7 +6328,7 @@
                                                                                       "else": {
                                                                                         "steps": [
                                                                                           {
-                                                                                            "name": "DTCommPer_copy",
+                                                                                            "name": "DTCommPer",
                                                                                             "module": "core",
                                                                                             "action": "setvalue",
                                                                                             "options": {
@@ -6347,7 +6338,7 @@
                                                                                             "outputType": "text"
                                                                                           },
                                                                                           {
-                                                                                            "name": "DTCommVal_copy",
+                                                                                            "name": "DTCommVal",
                                                                                             "module": "core",
                                                                                             "action": "setvalue",
                                                                                             "options": {
@@ -6357,7 +6348,7 @@
                                                                                             "outputType": "text"
                                                                                           },
                                                                                           {
-                                                                                            "name": "DTCommAmt_copy",
+                                                                                            "name": "DTCommAmt",
                                                                                             "module": "core",
                                                                                             "action": "setvalue",
                                                                                             "options": {
@@ -6367,7 +6358,7 @@
                                                                                             "outputType": "text"
                                                                                           },
                                                                                           {
-                                                                                            "name": "DTChargePer_copy",
+                                                                                            "name": "DTChargePer",
                                                                                             "module": "core",
                                                                                             "action": "setvalue",
                                                                                             "options": {
@@ -6377,7 +6368,7 @@
                                                                                             "outputType": "text"
                                                                                           },
                                                                                           {
-                                                                                            "name": "DTChargeVal_copy",
+                                                                                            "name": "DTChargeVal",
                                                                                             "module": "core",
                                                                                             "action": "setvalue",
                                                                                             "options": {
@@ -6387,7 +6378,7 @@
                                                                                             "outputType": "text"
                                                                                           },
                                                                                           {
-                                                                                            "name": "DTChargeAmt_copy",
+                                                                                            "name": "DTChargeAmt",
                                                                                             "module": "core",
                                                                                             "action": "setvalue",
                                                                                             "options": {
@@ -6397,7 +6388,7 @@
                                                                                             "outputType": "text"
                                                                                           },
                                                                                           {
-                                                                                            "name": "DTNetAmt_copy",
+                                                                                            "name": "DTNetAmt",
                                                                                             "module": "core",
                                                                                             "action": "setvalue",
                                                                                             "options": {
@@ -6407,7 +6398,7 @@
                                                                                             "outputType": "text"
                                                                                           },
                                                                                           {
-                                                                                            "name": "AdminClosingBalance_copy",
+                                                                                            "name": "AdminClosingBalance",
                                                                                             "module": "core",
                                                                                             "action": "setvalue",
                                                                                             "options": {
@@ -7089,14 +7080,6 @@
                                                                                     "output": false
                                                                                   },
                                                                                   {
-                                                                                    "name": "refresh4",
-                                                                                    "module": "sockets",
-                                                                                    "action": "refresh",
-                                                                                    "options": {
-                                                                                      "action": "DMT/LiveTransDMT"
-                                                                                    }
-                                                                                  },
-                                                                                  {
                                                                                     "name": "AdminChargesAmt",
                                                                                     "module": "core",
                                                                                     "action": "setvalue",
@@ -7768,15 +7751,7 @@
                                                                                             "output": false
                                                                                           },
                                                                                           {
-                                                                                            "name": "refresh5",
-                                                                                            "module": "sockets",
-                                                                                            "action": "refresh",
-                                                                                            "options": {
-                                                                                              "action": "DMT/LiveTransDMT"
-                                                                                            }
-                                                                                          },
-                                                                                          {
-                                                                                            "name": "AdminClosingBalUserUp_copy",
+                                                                                            "name": "AdminClosingBalUserUp",
                                                                                             "module": "dbupdater",
                                                                                             "action": "update",
                                                                                             "options": {
@@ -7844,7 +7819,7 @@
                                                                                               "then": {
                                                                                                 "steps": [
                                                                                                   {
-                                                                                                    "name": "DtBalance_copy",
+                                                                                                    "name": "DtBalance",
                                                                                                     "module": "dbupdater",
                                                                                                     "action": "insert",
                                                                                                     "options": {
@@ -8016,7 +7991,7 @@
                                                                                                     "output": false
                                                                                                   },
                                                                                                   {
-                                                                                                    "name": "DtUserBal_copy",
+                                                                                                    "name": "DtUserBal",
                                                                                                     "module": "dbupdater",
                                                                                                     "action": "update",
                                                                                                     "options": {
@@ -8084,7 +8059,7 @@
                                                                                                       "then": {
                                                                                                         "steps": [
                                                                                                           {
-                                                                                                            "name": "MdtBalance_copy",
+                                                                                                            "name": "MdtBalance",
                                                                                                             "module": "dbupdater",
                                                                                                             "action": "insert",
                                                                                                             "options": {
@@ -8256,7 +8231,7 @@
                                                                                                             "output": false
                                                                                                           },
                                                                                                           {
-                                                                                                            "name": "MdtUserAmtUp_copy",
+                                                                                                            "name": "MdtUserAmtUp",
                                                                                                             "module": "dbupdater",
                                                                                                             "action": "update",
                                                                                                             "options": {
@@ -8685,14 +8660,6 @@
                                                                                               "url": "https://portal.swpay.in/api/RefreshTrans"
                                                                                             },
                                                                                             "output": false
-                                                                                          },
-                                                                                          {
-                                                                                            "name": "refresh6",
-                                                                                            "module": "sockets",
-                                                                                            "action": "refresh",
-                                                                                            "options": {
-                                                                                              "action": "DMT/LiveTransDMT"
-                                                                                            }
                                                                                           }
                                                                                         ]
                                                                                       }
@@ -8710,12 +8677,13 @@
                                                                                     "value": "API Inactive/ API Not Forwarded/ Operator API Code Not Updated"
                                                                                   },
                                                                                   "meta": [],
-                                                                                  "output": true,
-                                                                                  "outputType": "text"
+                                                                                  "outputType": "text",
+                                                                                  "output": true
                                                                                 }
                                                                               }
                                                                             },
-                                                                            "outputType": "boolean"
+                                                                            "outputType": "boolean",
+                                                                            "output": false
                                                                           }
                                                                         ]
                                                                       }
@@ -8737,11 +8705,6 @@
                                                                       {
                                                                         "name": "$value",
                                                                         "type": "object"
-                                                                      },
-                                                                      {
-                                                                        "name": "Resp",
-                                                                        "type": "text",
-                                                                        "sub": []
                                                                       },
                                                                       {
                                                                         "name": "bank_tr_amount",
@@ -8789,7 +8752,7 @@
                                                                         "sub": []
                                                                       },
                                                                       {
-                                                                        "name": "AdminClosingBalUserUp_copy",
+                                                                        "name": "AdminClosingBalUserUp",
                                                                         "type": "text",
                                                                         "sub": [
                                                                           {
@@ -8817,8 +8780,8 @@
                                                             "value": "You do not have sufficient wallet balance!"
                                                           },
                                                           "meta": [],
-                                                          "output": true,
-                                                          "outputType": "text"
+                                                          "outputType": "text",
+                                                          "output": true
                                                         }
                                                       }
                                                     },
@@ -8834,8 +8797,8 @@
                                                       "value": "T-Pin Mismatched"
                                                     },
                                                     "meta": [],
-                                                    "output": true,
-                                                    "outputType": "text"
+                                                    "outputType": "text",
+                                                    "output": true
                                                   }
                                                 }
                                               },
