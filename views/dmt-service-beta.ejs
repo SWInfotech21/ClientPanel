@@ -232,7 +232,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Verify Beneficiary:{{varBenefId.value}} <span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalVerifyBen.formVerifyBenAC.state.executing"></span></h5>
-                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalVerifyBen.hide(); formVerifyBenAC.reset();formBenVerifyResult.reset(); varVerifyModal.setValue(0)"></button>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalVerifyBen.hide(); formVerifyBenAC.reset();formBenVerifyResult.reset(); varVerifyModal.setValue(0);browserMain.goto('dmt-service-beta')"></button>
                     </div>
                     <div class="modal-body">
                         <form id="formVerifyBenAC" method="post" action="api/DMT/BetaACValidation" is="dmx-serverconnect-form" dmx-show="varVerifyModal.value == 0" dmx-on:success="scLoginUser.load();varVerifyModal.setValue(1);">
@@ -280,7 +280,7 @@
                     <div class="modal-footer">
                         <div class="row mx-0 text-right">
                             <div class="col-12">
-                                <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalVerifyBen.hide(); formVerifyBenAC.reset();formBenVerifyResult.reset(); varVerifyModal.setValue(0)">Close</button>
+                                <button class="btn btn-secondary sw-font-14 btn-sm" dmx-on:click="modalVerifyBen.hide(); formVerifyBenAC.reset();formBenVerifyResult.reset(); varVerifyModal.setValue(0);browserMain.goto('dmt-service-beta')">Close</button>
                             </div>
                         </div>
                     </div>
