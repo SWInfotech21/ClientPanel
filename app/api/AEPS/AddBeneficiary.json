@@ -141,7 +141,7 @@
             }
           }
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
             "type": "number",
@@ -208,7 +208,7 @@
             }
           }
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
             "type": "text",
@@ -222,7 +222,7 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{CountNo.CountId<=10}}",
+          "if": "{{CountNo.CountId<=5}}",
           "then": {
             "steps": [
               {
