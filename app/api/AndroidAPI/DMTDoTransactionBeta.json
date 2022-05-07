@@ -4884,7 +4884,7 @@
                                                                                                 "type": "number"
                                                                                               }
                                                                                             ],
-                                                                                            "output": false
+                                                                                            "output": true
                                                                                           },
                                                                                           {
                                                                                             "name": "DrBalanceRT_Failed",
@@ -8705,6 +8705,11 @@
                                                                       {
                                                                         "name": "$value",
                                                                         "type": "object"
+                                                                      },
+                                                                      {
+                                                                        "name": "Resp",
+                                                                        "type": "text",
+                                                                        "sub": []
                                                                       },
                                                                       {
                                                                         "name": "bank_tr_amount",
