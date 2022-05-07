@@ -1676,345 +1676,6 @@
                                                                 }
                                                               ],
                                                               "outputType": "object"
-                                                            },
-                                                            {
-                                                              "name": "",
-                                                              "module": "core",
-                                                              "action": "condition",
-                                                              "options": {
-                                                                "if": "{{GetDTCreator.mdt_user_type.toNumber()==1}}",
-                                                                "then": {
-                                                                  "steps": [
-                                                                    {
-                                                                      "name": "GetMDTComm",
-                                                                      "module": "dbconnector",
-                                                                      "action": "single",
-                                                                      "options": {
-                                                                        "connection": "postgres_gcpServer",
-                                                                        "sql": {
-                                                                          "type": "SELECT",
-                                                                          "columns": [
-                                                                            {
-                                                                              "table": "m_commission",
-                                                                              "column": "comm_per",
-                                                                              "alias": "mdt_comm_per"
-                                                                            },
-                                                                            {
-                                                                              "table": "m_commission",
-                                                                              "column": "comm_val",
-                                                                              "alias": "mdt_comm_val"
-                                                                            },
-                                                                            {
-                                                                              "table": "m_commission",
-                                                                              "column": "service_charge_per",
-                                                                              "alias": "mdt_charge_per"
-                                                                            },
-                                                                            {
-                                                                              "table": "m_commission",
-                                                                              "column": "service_charge_val",
-                                                                              "alias": "mdt_charge_val"
-                                                                            }
-                                                                          ],
-                                                                          "table": {
-                                                                            "name": "m_commission"
-                                                                          },
-                                                                          "primary": "id",
-                                                                          "joins": [],
-                                                                          "wheres": {
-                                                                            "condition": "AND",
-                                                                            "rules": [
-                                                                              {
-                                                                                "id": "m_commission.operator_id",
-                                                                                "field": "m_commission.operator_id",
-                                                                                "type": "double",
-                                                                                "operator": "equal",
-                                                                                "value": "{{GetOpComm.operator_id}}",
-                                                                                "data": {
-                                                                                  "table": "m_commission",
-                                                                                  "column": "operator_id",
-                                                                                  "type": "number",
-                                                                                  "columnObj": {
-                                                                                    "type": "integer",
-                                                                                    "primary": false,
-                                                                                    "nullable": false,
-                                                                                    "name": "operator_id"
-                                                                                  }
-                                                                                },
-                                                                                "operation": "="
-                                                                              },
-                                                                              {
-                                                                                "id": "m_commission.scheme_id",
-                                                                                "field": "m_commission.scheme_id",
-                                                                                "type": "double",
-                                                                                "operator": "equal",
-                                                                                "value": "{{GetDTCreator.mdt_scheme_id}}",
-                                                                                "data": {
-                                                                                  "table": "m_commission",
-                                                                                  "column": "scheme_id",
-                                                                                  "type": "number",
-                                                                                  "columnObj": {
-                                                                                    "type": "integer",
-                                                                                    "primary": false,
-                                                                                    "nullable": true,
-                                                                                    "name": "scheme_id"
-                                                                                  }
-                                                                                },
-                                                                                "operation": "="
-                                                                              }
-                                                                            ],
-                                                                            "conditional": null,
-                                                                            "valid": true
-                                                                          },
-                                                                          "query": "SELECT comm_per AS mdt_comm_per, comm_val AS mdt_comm_val, service_charge_per AS mdt_charge_per, service_charge_val AS mdt_charge_val\nFROM m_commission\nWHERE operator_id = :P1 /* {{GetOpComm.operator_id}} */ AND scheme_id = :P2 /* {{GetDTCreator.mdt_scheme_id}} */",
-                                                                          "params": [
-                                                                            {
-                                                                              "operator": "equal",
-                                                                              "type": "expression",
-                                                                              "name": ":P1",
-                                                                              "value": "{{GetOpComm.operator_id}}"
-                                                                            },
-                                                                            {
-                                                                              "operator": "equal",
-                                                                              "type": "expression",
-                                                                              "name": ":P2",
-                                                                              "value": "{{GetDTCreator.mdt_scheme_id}}"
-                                                                            }
-                                                                          ]
-                                                                        }
-                                                                      },
-                                                                      "output": false,
-                                                                      "meta": [
-                                                                        {
-                                                                          "type": "text",
-                                                                          "name": "mdt_comm_per"
-                                                                        },
-                                                                        {
-                                                                          "type": "text",
-                                                                          "name": "mdt_comm_val"
-                                                                        },
-                                                                        {
-                                                                          "type": "text",
-                                                                          "name": "mdt_charge_per"
-                                                                        },
-                                                                        {
-                                                                          "type": "text",
-                                                                          "name": "mdt_charge_val"
-                                                                        }
-                                                                      ],
-                                                                      "outputType": "object"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTCommPer",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": "{{GetMDTComm.mdt_comm_per.toNumber()}}"
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTCommVal",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": "{{GetMDTComm.mdt_comm_val.toNumber()}}"
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTCommTotal",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": "{{($_POST.WithdrawAmtBank.toNumber()*GetMDTComm.mdt_comm_per.toNumber()/100)+GetMDTComm.mdt_comm_val.toNumber()}}"
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTCommAmt",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": "{{MDTCommTotal.toNumber()-DTCommTotal.toNumber()}}"
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTChargePer",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": "{{GetMDTComm.mdt_charge_per}}"
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTChargeVal",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": "{{GetMDTComm.mdt_charge_val}}"
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTChargeTotal",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": "{{($_POST.WithdrawAmtBank.toNumber()*MDTChargePer.toNumber()/100)+MDTChargeVal.toNumber()}}"
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTChargeAmt",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": "{{MDTChargeTotal.toNumber()-DTChargeTotal.toNumber()}}"
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text",
-                                                                      "output": false
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTNetAmt",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": "{{MDTCommAmt.toNumber()-MDTChargeAmt.toNumber()}}"
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text",
-                                                                      "output": false
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTClosingBalance",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": "{{GetDTCreator.mdt_aeps_bal.toNumber()+MDTNetAmt.toNumber()}}"
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text",
-                                                                      "output": false
-                                                                    },
-                                                                    {
-                                                                      "name": "AdminClosingBalance",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": "{{AdminClosingBalance.toNumber()+MDTChargeAmt.toNumber()}}"
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text",
-                                                                      "output": false
-                                                                    }
-                                                                  ]
-                                                                },
-                                                                "else": {
-                                                                  "steps": [
-                                                                    {
-                                                                      "name": "MDTCommPer",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": 0
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTCommVal",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": 0
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTCommAmt",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": 0
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTChargePer",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": 0
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTChargeVal",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": 0
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTChargeAmt",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": 0
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTNetAmt",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": 0
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "MDTClosingBalance",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": 0
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    },
-                                                                    {
-                                                                      "name": "AdminClosingBalance",
-                                                                      "module": "core",
-                                                                      "action": "setvalue",
-                                                                      "options": {
-                                                                        "value": "{{AdminClosingBalance}}"
-                                                                      },
-                                                                      "meta": [],
-                                                                      "outputType": "text"
-                                                                    }
-                                                                  ]
-                                                                }
-                                                              },
-                                                              "outputType": "boolean"
                                                             }
                                                           ]
                                                         },
@@ -2082,6 +1743,345 @@
                                                             },
                                                             {
                                                               "name": "DTNetAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "AdminClosingBalance",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{AdminClosingBalance}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "outputType": "boolean"
+                                                    },
+                                                    {
+                                                      "name": "",
+                                                      "module": "core",
+                                                      "action": "condition",
+                                                      "options": {
+                                                        "if": "{{GetDTCreator.mdt_user_type.toNumber()==1}}",
+                                                        "then": {
+                                                          "steps": [
+                                                            {
+                                                              "name": "GetMDTComm",
+                                                              "module": "dbconnector",
+                                                              "action": "single",
+                                                              "options": {
+                                                                "connection": "postgres_gcpServer",
+                                                                "sql": {
+                                                                  "type": "SELECT",
+                                                                  "columns": [
+                                                                    {
+                                                                      "table": "m_commission",
+                                                                      "column": "comm_per",
+                                                                      "alias": "mdt_comm_per"
+                                                                    },
+                                                                    {
+                                                                      "table": "m_commission",
+                                                                      "column": "comm_val",
+                                                                      "alias": "mdt_comm_val"
+                                                                    },
+                                                                    {
+                                                                      "table": "m_commission",
+                                                                      "column": "service_charge_per",
+                                                                      "alias": "mdt_charge_per"
+                                                                    },
+                                                                    {
+                                                                      "table": "m_commission",
+                                                                      "column": "service_charge_val",
+                                                                      "alias": "mdt_charge_val"
+                                                                    }
+                                                                  ],
+                                                                  "table": {
+                                                                    "name": "m_commission"
+                                                                  },
+                                                                  "primary": "id",
+                                                                  "joins": [],
+                                                                  "wheres": {
+                                                                    "condition": "AND",
+                                                                    "rules": [
+                                                                      {
+                                                                        "id": "m_commission.operator_id",
+                                                                        "field": "m_commission.operator_id",
+                                                                        "type": "double",
+                                                                        "operator": "equal",
+                                                                        "value": "{{GetOpComm.operator_id}}",
+                                                                        "data": {
+                                                                          "table": "m_commission",
+                                                                          "column": "operator_id",
+                                                                          "type": "number",
+                                                                          "columnObj": {
+                                                                            "type": "integer",
+                                                                            "primary": false,
+                                                                            "nullable": false,
+                                                                            "name": "operator_id"
+                                                                          }
+                                                                        },
+                                                                        "operation": "="
+                                                                      },
+                                                                      {
+                                                                        "id": "m_commission.scheme_id",
+                                                                        "field": "m_commission.scheme_id",
+                                                                        "type": "double",
+                                                                        "operator": "equal",
+                                                                        "value": "{{GetDTCreator.mdt_scheme_id}}",
+                                                                        "data": {
+                                                                          "table": "m_commission",
+                                                                          "column": "scheme_id",
+                                                                          "type": "number",
+                                                                          "columnObj": {
+                                                                            "type": "integer",
+                                                                            "primary": false,
+                                                                            "nullable": true,
+                                                                            "name": "scheme_id"
+                                                                          }
+                                                                        },
+                                                                        "operation": "="
+                                                                      }
+                                                                    ],
+                                                                    "conditional": null,
+                                                                    "valid": true
+                                                                  },
+                                                                  "query": "SELECT comm_per AS mdt_comm_per, comm_val AS mdt_comm_val, service_charge_per AS mdt_charge_per, service_charge_val AS mdt_charge_val\nFROM m_commission\nWHERE operator_id = :P1 /* {{GetOpComm.operator_id}} */ AND scheme_id = :P2 /* {{GetDTCreator.mdt_scheme_id}} */",
+                                                                  "params": [
+                                                                    {
+                                                                      "operator": "equal",
+                                                                      "type": "expression",
+                                                                      "name": ":P1",
+                                                                      "value": "{{GetOpComm.operator_id}}"
+                                                                    },
+                                                                    {
+                                                                      "operator": "equal",
+                                                                      "type": "expression",
+                                                                      "name": ":P2",
+                                                                      "value": "{{GetDTCreator.mdt_scheme_id}}"
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "output": false,
+                                                              "meta": [
+                                                                {
+                                                                  "type": "text",
+                                                                  "name": "mdt_comm_per"
+                                                                },
+                                                                {
+                                                                  "type": "text",
+                                                                  "name": "mdt_comm_val"
+                                                                },
+                                                                {
+                                                                  "type": "text",
+                                                                  "name": "mdt_charge_per"
+                                                                },
+                                                                {
+                                                                  "type": "text",
+                                                                  "name": "mdt_charge_val"
+                                                                }
+                                                              ],
+                                                              "outputType": "object"
+                                                            },
+                                                            {
+                                                              "name": "MDTCommPer",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{GetMDTComm.mdt_comm_per.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTCommVal",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{GetMDTComm.mdt_comm_val.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTCommTotal",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{($_POST.WithdrawAmtBank.toNumber()*GetMDTComm.mdt_comm_per.toNumber()/100)+GetMDTComm.mdt_comm_val.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTCommAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{MDTCommTotal.toNumber()-DTCommTotal.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTChargePer",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{GetMDTComm.mdt_charge_per}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTChargeVal",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{GetMDTComm.mdt_charge_val}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTChargeTotal",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{($_POST.WithdrawAmtBank.toNumber()*MDTChargePer.toNumber()/100)+MDTChargeVal.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTChargeAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{MDTChargeTotal.toNumber()-DTChargeTotal.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "MDTNetAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{MDTCommAmt.toNumber()-MDTChargeAmt.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "MDTClosingBalance",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{GetDTCreator.mdt_aeps_bal.toNumber()+MDTNetAmt.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "AdminClosingBalance",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{AdminClosingBalance.toNumber()+MDTChargeAmt.toNumber()}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text",
+                                                              "output": false
+                                                            }
+                                                          ]
+                                                        },
+                                                        "else": {
+                                                          "steps": [
+                                                            {
+                                                              "name": "MDTCommPer",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTCommVal",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTCommAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTChargePer",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTChargeVal",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTChargeAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTNetAmt",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": 0
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "MDTClosingBalance",
                                                               "module": "core",
                                                               "action": "setvalue",
                                                               "options": {
@@ -2771,7 +2771,7 @@
                                                                   "Code": "A00056",
                                                                   "Authcode": "65c43ccd6a7b41c884",
                                                                   "Mpin": "7170",
-                                                                  "Contact": "{{GetUserDetails.aeps_merchant_id}}",
+                                                                  "Contact": "{{UserWalletBalCheck.aeps_merchant_id}}",
                                                                   "RequestID": "{{TransactionId}}",
                                                                   "BeneficiaryID": "{{$_POST.BenefIdBank}}",
                                                                   "TxnMode": "{{$_POST.SelectMode}}",
@@ -2788,8 +2788,7 @@
                                                                 "value": "{{apiEPAY.data.Status==1?'SUCCESS':apiEPAY.data.Status==100?'PENDING':'FAILED'}}"
                                                               },
                                                               "meta": [],
-                                                              "outputType": "text",
-                                                              "output": true
+                                                              "outputType": "text"
                                                             },
                                                             {
                                                               "name": "Remarks",
@@ -3303,28 +3302,6 @@
                                                                   "type": "number"
                                                                 }
                                                               ]
-                                                            },
-                                                            {
-                                                              "name": "Stat",
-                                                              "module": "core",
-                                                              "action": "setvalue",
-                                                              "options": {
-                                                                "value": 200
-                                                              },
-                                                              "meta": [],
-                                                              "output": true,
-                                                              "outputType": "text"
-                                                            },
-                                                            {
-                                                              "name": "Resp",
-                                                              "module": "core",
-                                                              "action": "setvalue",
-                                                              "options": {
-                                                                "value": "Transaction Success"
-                                                              },
-                                                              "meta": [],
-                                                              "output": true,
-                                                              "outputType": "text"
                                                             },
                                                             {
                                                               "name": "",
@@ -4095,17 +4072,6 @@
                                                                 }
                                                               ],
                                                               "output": false
-                                                            },
-                                                            {
-                                                              "name": "Resp",
-                                                              "module": "core",
-                                                              "action": "setvalue",
-                                                              "options": {
-                                                                "value": "Fransaction Failed"
-                                                              },
-                                                              "meta": [],
-                                                              "output": true,
-                                                              "outputType": "text"
                                                             }
                                                           ]
                                                         }
