@@ -3223,7 +3223,8 @@
                                               "action": "refresh",
                                               "options": {
                                                 "action": "DMT/LiveTransDMT"
-                                              }
+                                              },
+                                              "disabled": true
                                             },
                                             {
                                               "name": "AdminChargesAmt",
@@ -3902,7 +3903,8 @@
                                                       "action": "refresh",
                                                       "options": {
                                                         "action": "DMT/LiveTransDMT"
-                                                      }
+                                                      },
+                                                      "disabled": true
                                                     },
                                                     {
                                                       "name": "AdminClosingBalUserUp",
@@ -4821,7 +4823,8 @@
                                                       "action": "refresh",
                                                       "options": {
                                                         "action": "DMT/LiveTransDMT"
-                                                      }
+                                                      },
+                                                      "disabled": true
                                                     }
                                                   ]
                                                 }
@@ -6829,7 +6832,8 @@
                                               "action": "refresh",
                                               "options": {
                                                 "action": "DMT/LiveTransDMT"
-                                              }
+                                              },
+                                              "disabled": true
                                             },
                                             {
                                               "name": "AdminChargesAmt",
@@ -7508,7 +7512,8 @@
                                                       "action": "refresh",
                                                       "options": {
                                                         "action": "DMT/LiveTransDMT"
-                                                      }
+                                                      },
+                                                      "disabled": true
                                                     },
                                                     {
                                                       "name": "AdminClosingBalUserUp",
@@ -8427,7 +8432,8 @@
                                                       "action": "refresh",
                                                       "options": {
                                                         "action": "DMT/LiveTransDMT"
-                                                      }
+                                                      },
+                                                      "disabled": true
                                                     }
                                                   ]
                                                 }
