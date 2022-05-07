@@ -295,97 +295,98 @@
                         <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0); varBenMobile.setValue(0); varBenBankName.setValue(0);varTransStatus.setValue(0);varShowLive.setValue(0);varBenTrAmt.setValue(0);"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row mx-0" dmx-show="content.modalTransBen.formBenTrans.data.apistatus == 'SUCCESS' || content.modalTransBen.formBenTrans.data.apistatus == 'PENDING' && varTransStatus.value == 1">
-                            <div class="col text-center">
-                                <img src="assets/images/mark-success.gif" height="130">
-                                <p class="font-weight-bolder sw-font-20">Payment Status: <b>{{content.modalTransBen.formBenTrans.data.apistatus}}</b></p>
-                                <!-- <p class="sw-font-14">You can print the receipt from by clicking print button.</p> -->
-                                <p class="sw-font-14">Remarks: {{content.modalTransBen.formBenTrans.data.remarks}}</p>
-                            </div>
-                        </div>
-                        <div class="row mx-0" dmx-show="content.modalTransBen.formBenTrans.data.apistatus == 'FAILED' && varTransStatus.value == 1">
-                            <div class="col text-center">
-                                <img src="assets/images/mark-failure.gif" height="130">
-                                <p class="font-weight-bolder sw-font-20">Payment Status: <b>{{content.modalTransBen.formBenTrans.data.apistatus}}</b></p>
-                                <p class="sw-font-14">Remarks: {{content.modalTransBen.formBenTrans.data.remarks}}</p>
-                            </div>
-                        </div>
-                        <div class="row mx-0" dmx-show="varTransStatus.value == 1">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Amount: Rs. <span class="text-muted">{{varBenTrAmt.value}}</span></label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Beneficiary Name: <span class="text-muted">{{content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, varBenefId.value, '==')[0].ben_name}}</span></label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Ben. Account No.: <span class="text-muted">{{content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, varBenefId.value, '==')[0].ben_ac_no}}</span></label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Ben. Bank IFSC: <span class="text-muted">{{content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, varBenefId.value, '==')[0].ben_ifsc}}</span></label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Bank Tr. Id: <span class="text-muted">{{content.modalTransBen.formBenTrans.data.bank_tr_id}}</span></label>
-                                </div>
-                            </div>
-                        </div>
-                        <form id="formBenTrans" method="post" action="api/DMT/BetaTransaction" is="dmx-serverconnect-form" dmx-show="varTransStatus.value == 0" dmx-on:success="varTransStatus.setValue(1);formBenTrans.reset();scLoginUser.load()">
-                            <input type="hidden" id="SenderIdTrans" class="form-control" name="SenderIdTrans" required="" dmx-bind:value="content.formGetBeneficiary.data.MobileNo">
-                            <input type="hidden" id="RecipientIdTrans" class="form-control" name="RecipientIdTrans" required="" dmx-bind:value="varBenefId.value">
-                            <input type="hidden" id="BenAadharNo" class="form-control" name="BenAadharNo" required="" dmx-bind:value="varBenAadharNo.value"><input type="hidden" id="BenPanNo" class="form-control" name="BenPanNo" required="" dmx-bind:value="varBenPanNo.value">
-                            <input type="hidden" id="BenMobileNo" class="form-control" name="BenMobileNo" required="" dmx-bind:value="varBenMobile.value">
-                            <input type="hidden" id="BenAcNo" class="form-control" name="BenAcNo" required="" dmx-bind:value="varBenAcNo.value">
-                            <div class="row mx-0">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Beneficiary Name: <span class="text-muted">{{varBenName.value}}</span></label>
+                        <h5 dmx-show="content.modalTransBen.formBenTrans.lastError.status!=200">{{content.modalTransBen.formBenTrans.lastError.response}}<h5>
+                                <div class="row mx-0" dmx-show="content.modalTransBen.formBenTrans.data.apistatus == 'SUCCESS' || content.modalTransBen.formBenTrans.data.apistatus == 'PENDING' && varTransStatus.value == 1">
+                                    <div class="col text-center">
+                                        <img src="assets/images/mark-success.gif" height="130">
+                                        <p class="font-weight-bolder sw-font-20">Payment Status: <b>{{content.modalTransBen.formBenTrans.data.apistatus}}</b></p>
+                                        <!-- <p class="sw-font-14">You can print the receipt from by clicking print button.</p> -->
+                                        <p class="sw-font-14">Remarks: {{content.modalTransBen.formBenTrans.data.remarks}}</p>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Ben. Account No.: <span class="text-muted">{{varBenAcNo.value}}</span></label>
+                                <div class="row mx-0" dmx-show="content.modalTransBen.formBenTrans.data.apistatus == 'FAILED' && varTransStatus.value == 1">
+                                    <div class="col text-center">
+                                        <img src="assets/images/mark-failure.gif" height="130">
+                                        <p class="font-weight-bolder sw-font-20">Payment Status: <b>{{content.modalTransBen.formBenTrans.data.apistatus}}</b></p>
+                                        <p class="sw-font-14">Remarks: {{content.modalTransBen.formBenTrans.data.remarks}}</p>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Ben. Bank Name: <span class="text-muted">{{varBenBankName.value}}</span></label>
+                                <div class="row mx-0" dmx-show="varTransStatus.value == 1">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Amount: Rs. <span class="text-muted">{{varBenTrAmt.value}}</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Beneficiary Name: <span class="text-muted">{{content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, varBenefId.value, '==')[0].ben_name}}</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Ben. Account No.: <span class="text-muted">{{content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, varBenefId.value, '==')[0].ben_ac_no}}</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Ben. Bank IFSC: <span class="text-muted">{{content.scGetBDBen.data.DBBenefFetch.where(`ben_id`, varBenefId.value, '==')[0].ben_ifsc}}</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Bank Tr. Id: <span class="text-muted">{{content.modalTransBen.formBenTrans.data.bank_tr_id}}</span></label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Transaction Type</label>
-                                        <select id="BenOrderIdTrans" class="form-control form-select" name="trans_type" required="">
-                                            <option value="">Select</option>
-                                            <option value="58">IMPS</option>
-                                            <option value="127">NEFT</option>
-                                        </select>
+                                <form id="formBenTrans" method="post" action="api/DMT/BetaTransaction" is="dmx-serverconnect-form" dmx-show="varTransStatus.value == 0" dmx-on:success="varTransStatus.setValue(1);formBenTrans.reset();scLoginUser.load()">
+                                    <input type="hidden" id="SenderIdTrans" class="form-control" name="SenderIdTrans" required="" dmx-bind:value="content.formGetBeneficiary.data.MobileNo">
+                                    <input type="hidden" id="RecipientIdTrans" class="form-control" name="RecipientIdTrans" required="" dmx-bind:value="varBenefId.value">
+                                    <input type="hidden" id="BenAadharNo" class="form-control" name="BenAadharNo" required="" dmx-bind:value="varBenAadharNo.value"><input type="hidden" id="BenPanNo" class="form-control" name="BenPanNo" required="" dmx-bind:value="varBenPanNo.value">
+                                    <input type="hidden" id="BenMobileNo" class="form-control" name="BenMobileNo" required="" dmx-bind:value="varBenMobile.value">
+                                    <input type="hidden" id="BenAcNo" class="form-control" name="BenAcNo" required="" dmx-bind:value="varBenAcNo.value">
+                                    <div class="row mx-0">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Beneficiary Name: <span class="text-muted">{{varBenName.value}}</span></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Ben. Account No.: <span class="text-muted">{{varBenAcNo.value}}</span></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Ben. Bank Name: <span class="text-muted">{{varBenBankName.value}}</span></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Transaction Type</label>
+                                                <select id="BenOrderIdTrans" class="form-control form-select" name="trans_type" required="">
+                                                    <option value="">Select</option>
+                                                    <option value="58">IMPS</option>
+                                                    <option value="127">NEFT</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Amount (in Rs.)</label>
+                                                <input type="text" id="BenTrAmount" class="form-control" name="BenTrAmount" value="0" required="" min="" data-rule-min="1" data-msg-min="Please enter a value greater than or equal to {1}.">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">T-Pin</label>
+                                                <input type="number" id="BenTrTPIN" class="form-control" name="BenTrTPIN" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-2 text-center">
+                                            <button class="btn sw-btn-dark w-100" type="submit" dmx-bind:disabled="content.modalTransBen.formBenTrans.state.executing" dmx-class:no-drop="content.modalTransBen.formBenTrans.state.executing" dmx-on:click="varShowLive.setValue(1)">Pay Now<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalTransBen.formBenTrans.state.executing"></span></button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Amount (in Rs.)</label>
-                                        <input type="text" id="BenTrAmount" class="form-control" name="BenTrAmount" value="0" required="" min="" data-rule-min="1" data-msg-min="Please enter a value greater than or equal to {1}.">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">T-Pin</label>
-                                        <input type="number" id="BenTrTPIN" class="form-control" name="BenTrTPIN" required="">
-                                    </div>
-                                </div>
-                                <div class="col-12 mt-2 text-center">
-                                    <button class="btn sw-btn-dark w-100" type="submit" dmx-bind:disabled="content.modalTransBen.formBenTrans.state.executing" dmx-class:no-drop="content.modalTransBen.formBenTrans.state.executing" dmx-on:click="varShowLive.setValue(1)">Pay Now<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="content.modalTransBen.formBenTrans.state.executing"></span></button>
-                                </div>
-                            </div>
-                        </form>
+                                </form>
                     </div>
                     <div class="modal-footer">
                         <div class="row mx-0" dmx-show="varShowLive.value == 1">
