@@ -291,8 +291,8 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">DMT- Transaction:{{varBenefId.value}}</h5>
-                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0); varBenMobile.setValue(0); varBenBankName.setValue(0);varTransStatus.setValue(0);varShowLive.setValue(0);varBenTrAmt.setValue(0);formBenTrans.reset();"></button>
+                        <h5 class="modal-title">DMT Transaction:{{varBenefId.value}}</h5>
+                        <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close" dmx-on:click="modalTransBen.hide();formBenTrans.reset();varBenefId.setValue(0); varBenName.setValue(0); varBenAcNo.setValue(0); varBenMobile.setValue(0); varBenBankName.setValue(0);varTransStatus.setValue(0);varShowLive.setValue(0);varBenTrAmt.setValue(0);"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row mx-0 text-danger text-center ">
@@ -316,7 +316,7 @@
                         <div class="row mx-0" dmx-show="varTransStatus.value == 1">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="font-weight-bold">Amount: Rs. <span class="text-muted">{{varBenTrAmt.value}}</span></label>
+                                    <label class="font-weight-bold">Total Amount: Rs. <span class="text-muted">{{content.modalTransBen.formBenTrans.data.TotalAmount}}</span></label>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -340,7 +340,7 @@
                                 </div>
                             </div>
                         </div>
-                        <form id="formBenTrans" method="post" action="api/DMT/BetaTransaction" is="dmx-serverconnect-form" dmx-show="varTransStatus.value == 0" dmx-on:success="varTransStatus.setValue(1);scLoginUser.load()">
+                        <form id="formBenTrans" method="post" action="api/DMT/BetaTransaction" is="dmx-serverconnect-form" dmx-show="varTransStatus.value == 0" dmx-on:success="varTransStatus.setValue(1);scLoginUser.load();formBenTrans.reset();">
                             <input type="hidden" id="SenderIdTrans" class="form-control" name="SenderIdTrans" required="" dmx-bind:value="content.formGetBeneficiary.data.MobileNo">
                             <input type="hidden" id="RecipientIdTrans" class="form-control" name="RecipientIdTrans" required="" dmx-bind:value="varBenefId.value">
                             <input type="hidden" id="BenAadharNo" class="form-control" name="BenAadharNo" required="" dmx-bind:value="varBenAadharNo.value"><input type="hidden" id="BenPanNo" class="form-control" name="BenPanNo" required="" dmx-bind:value="varBenPanNo.value">
