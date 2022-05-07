@@ -233,7 +233,8 @@
             "ContactName": "Banti"
           }
         },
-        "output": true
+        "output": true,
+        "disabled": true
       },
       {
         "name": "",
@@ -261,11 +262,13 @@
                   "BankName": "HDFC Bank Ltd."
                 }
               },
-              "output": true
+              "output": true,
+              "disabled": true
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "disabled": true
       },
       {
         "name": "",
@@ -485,8 +488,7 @@
             }
           }
         },
-        "outputType": "boolean",
-        "disabled": true
+        "outputType": "boolean"
       }
     ]
   }
