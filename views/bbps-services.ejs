@@ -25,7 +25,8 @@
     <div class="col-lg-3 col-md-3 col-3" dmx-on:click="run({condition:{if:`dsAppInfo.data[0].servicesId`,then:{steps:{run:{action:`varTab.setValue(\'Operator\')`}}}}})">
         <a class="btn btn-block sw-tabs sw-tabs-middle py-2" dmx-class:disabled="varTab.value != 'Operator'" href="#" dmx-class:sw-tabs-active="((varTab.value == 'Operator') || (varTab.value == 'Service'))">Select Operator</a>
     </div>
-    <div class="col-lg-3 col-md-3 col-3" dmx-on:click="run({condition:{if:`dsAppInfo.data[0].op_id`,then:{steps:{run:{action:`varTab.setValue(\'CustomerInfo\')`}}}}})">
+    <div class="col-lg-3 col-md-3 col-3" dmx-on:click="">
+        <!-- run({condition:{if:`dsAppInfo.data[0].op_id`,then:{steps:{run:{action:`varTab.setValue(\'CustomerInfo\')`}}}}}) -->
         <a class="btn btn-block sw-tabs sw-tabs-middle py-2" dmx-class:disabled="varTab.value != 'CustomerInfo'" href="#" dmx-class:sw-tabs-active="varTab.value == 'CustomerInfo'">Customer Info</a>
     </div>
     <div class="col-lg-3 col-md-3 col-3" dmx-on:click="">
