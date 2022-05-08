@@ -18,6 +18,10 @@
           }
         },
         "name": "account"
+      },
+      {
+        "type": "text",
+        "name": "mobile"
       }
     ]
   },
@@ -98,10 +102,11 @@
                 "name": ":P1",
                 "value": "{{$_GET.op_id}}"
               }
-            ]
+            ],
+            "primary": "id"
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "text",
@@ -132,7 +137,7 @@
             "Optional3": "",
             "Optional4": "",
             "GEOCode": "{{'23.8530,87.9727'}}",
-            "CustomerNumber": "",
+            "CustomerNumber": "{{$_GET.mobile}}",
             "Pincode": "{{243601}}",
             "Format": "1"
           }
