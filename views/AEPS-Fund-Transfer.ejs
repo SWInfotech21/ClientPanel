@@ -163,8 +163,8 @@
                     <img src="assets/images/mark-success.gif" width="200" height="200" class="img-fluid" dmx-show="content.formBankTransfer.data.Status == 'SUCCESS' || content.formBankTransfer.data.Status == 'PENDING'">
                     <img src="assets/images/mark-failure.gif" width="200" height="200" class="img-fluid" dmx-show="content.formBankTransfer.data.Status == 'FAILED'">
                 </div>
-                <h5 dmx-show="content.formBankTransfer.lastError.response.status == 'true'">Status:<b class="text-danger">{{content.formBankTransfer.lastError.message}} {{content.formBankTransfer.lastError.response}}</b></h5>
-                <h5 dmx-show="content.formBankTransfer.lastError.response.status == 0">Status: <span dmx-class:text-danger="content.formBankTransfer.data.Status=='FAILED'" dmx-class:text-success="content.formBankTransfer.data.Status=='SUCCESS'||content.formBankTransfer.data.Status=='PENDING'">{{content.formBankTransfer.data.Status}}</span>
+                <h5 dmx-show="content.formBankTransfer.lastError.status == 'true'">Status:<b class="text-danger">{{content.formBankTransfer.lastError.message}} {{content.formBankTransfer.lastError.response}}</b></h5>
+                <h5 dmx-show="content.formBankTransfer.lastError.status== 0">Status: <span dmx-class:text-danger="content.formBankTransfer.data.Status=='FAILED'" dmx-class:text-success="content.formBankTransfer.data.Status=='SUCCESS'||content.formBankTransfer.data.Status=='PENDING'">{{content.formBankTransfer.data.Status}}</span>
                 </h5>
                 <h5>Amount: {{content.formBankTransfer.data.Amount}}/-</h5>
                 <h6>Account No.: {{content.formBankTransfer.data.ac_no}}</h6>
