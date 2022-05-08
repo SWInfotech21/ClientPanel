@@ -1,0 +1,275 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "offset"
+      },
+      {
+        "type": "text",
+        "name": "limit"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "fromdate"
+      },
+      {
+        "type": "text",
+        "name": "todate"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "GetCommision",
+        "module": "dbconnector",
+        "action": "paged",
+        "options": {
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_charge_aeps_cal",
+                "column": "pay_ref_id"
+              },
+              {
+                "table": "t_charge_aeps_cal",
+                "column": "crdr_type"
+              },
+              {
+                "table": "t_charge_aeps_cal",
+                "column": "old_bal"
+              },
+              {
+                "table": "t_charge_aeps_cal",
+                "column": "net_amt"
+              },
+              {
+                "table": "t_charge_aeps_cal",
+                "column": "new_bal"
+              },
+              {
+                "table": "t_charge_aeps_cal",
+                "column": "tr_type"
+              },
+              {
+                "table": "t_charge_aeps_cal",
+                "column": "tr_date"
+              },
+              {
+                "table": "t_charge_aeps_cal",
+                "column": "remarks"
+              }
+            ],
+            "table": {
+              "name": "t_charge_aeps_cal"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "t_charge_aeps_cal.user_id",
+                  "field": "t_charge_aeps_cal.user_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "t_charge_aeps_cal",
+                    "column": "user_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "user_id"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "t_charge_aeps_cal.tr_date",
+                  "field": "t_charge_aeps_cal.tr_date",
+                  "type": "datetime",
+                  "operator": "between",
+                  "value": [
+                    "{{$_GET.fromdate}}",
+                    "{{$_GET.todate}}"
+                  ],
+                  "data": {
+                    "table": "t_charge_aeps_cal",
+                    "column": "tr_date",
+                    "type": "datetime",
+                    "columnObj": {
+                      "type": "timestamp",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "name": "tr_date"
+                    }
+                  },
+                  "operation": "BETWEEN"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT pay_ref_id, crdr_type, old_bal, net_amt, new_bal, tr_type, tr_date, remarks\nFROM t_charge_aeps_cal\nWHERE user_id = :P1 /* {{identity}} */ AND tr_date BETWEEN :P2 /* {{$_GET.fromdate}} */ AND :P3 /* {{$_GET.todate}} */\nORDER BY id DESC",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              },
+              {
+                "operator": "between",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.fromdate}}"
+              },
+              {
+                "operator": "between",
+                "type": "expression",
+                "name": ":P3",
+                "value": "{{$_GET.todate}}"
+              }
+            ],
+            "orders": [
+              {
+                "table": "t_charge_aeps_cal",
+                "column": "id",
+                "direction": "DESC"
+              }
+            ]
+          },
+          "connection": "postgres_gcpServer"
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "offset",
+            "type": "number"
+          },
+          {
+            "name": "limit",
+            "type": "number"
+          },
+          {
+            "name": "total",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "type": "object",
+            "sub": [
+              {
+                "name": "offset",
+                "type": "object",
+                "sub": [
+                  {
+                    "name": "first",
+                    "type": "number"
+                  },
+                  {
+                    "name": "prev",
+                    "type": "number"
+                  },
+                  {
+                    "name": "next",
+                    "type": "number"
+                  },
+                  {
+                    "name": "last",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "current",
+                "type": "number"
+              },
+              {
+                "name": "total",
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "name": "data",
+            "type": "array",
+            "sub": [
+              {
+                "type": "number",
+                "name": "pay_ref_id"
+              },
+              {
+                "type": "text",
+                "name": "crdr_type"
+              },
+              {
+                "type": "text",
+                "name": "old_bal"
+              },
+              {
+                "type": "text",
+                "name": "net_amt"
+              },
+              {
+                "type": "text",
+                "name": "new_bal"
+              },
+              {
+                "type": "text",
+                "name": "tr_type"
+              },
+              {
+                "type": "datetime",
+                "name": "tr_date"
+              },
+              {
+                "type": "text",
+                "name": "remarks"
+              }
+            ]
+          }
+        ],
+        "outputType": "object"
+      }
+    ]
+  }
+}

@@ -188,6 +188,12 @@
       "layout": "main"
     },
     {
+      "path": "/AEPS-Commision-Report",
+      "page": "AEPS-Commision-Report",
+      "layout": "main",
+      "exec": "/api/PageAccess/PagesFrDTMDT"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }

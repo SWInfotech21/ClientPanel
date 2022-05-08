@@ -174,5 +174,9 @@
   "dmt-service-beta.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "AEPS-Commision-Report.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }
