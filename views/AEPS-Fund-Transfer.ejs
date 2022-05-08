@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="AEPSFundTransfer" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxValidator:{}}" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="AEPSFundTransfer" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxValidator:{},dmxBootstrap5Modal:{}}" -->
 
 <meta name="ac:route" content="/AEPS-Fund-Transfer">
 <dmx-serverconnect id="scBeneficiary" url="api/AEPS/GetBeneficiary"></dmx-serverconnect>
@@ -113,7 +113,7 @@
                 <div class="tab-pane fade px-2" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" dmx-show="scLoginUser.data.LoginUserInfo.user_type == 3 || scLoginUser.data.LoginUserInfo.user_type == 4">
                     <h4>Direct Bank Transfer</h4>
                     <div class="row">
-                        <form id="formBankTransfer" method="post" action="api/AEPS/AEPSBankTransfer" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formBankTransfer.data.Resp); formBankTransfer.reset(); scLoginUser.load();scBeneficiary.load();" dmx-on:error="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:unauthorized="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:forbidden="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:invalid="scNotif.warning(formBankTransfer.lastError.response)">
+                        <form id="formBankTransfer" method="post" action="api/AEPS/AEPSBankTransfer" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formBankTransfer.data.Resp); formBankTransfer.reset(); scLoginUser.load();scBeneficiary.load(); modalResponse.show();" dmx-on:error="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:unauthorized="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:forbidden="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:invalid="scNotif.warning(formBankTransfer.lastError.response)">
                             <div class="form-group mb-0">
                                 <label for="inputCurrentBank" class="col-form-label">Current Aeps Balance</label>
                                 <input type="text" class="form-control" id="inputCurrentBalBank" aria-describedby="inputNamebank_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance">
@@ -149,5 +149,34 @@
         </div>
 
 
+    </div>
+</div>
+<div class="modal fade" id="modalResponse" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Transaction Response</h5>
+                <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-12 text-center">
+                    <img src="assets/images/mark-success.gif" width="200" height="200" class="img-fluid" dmx-show="content.formBankTransfer.data.Status == 'SUCCESS' || content.formBankTransfer.data.Status == 'PENDING'">
+                    <img src="assets/images/mark-failure.gif" width="200" height="200" class="img-fluid" dmx-show="content.formBankTransfer.data.Status == 'FAILED'">
+                </div>
+                <h5 dmx-show="content.formBankTransfer.lastError.response.status == 'true'">Status:<b class="text-danger">{{content.formBankTransfer.lastError.message}} {{content.formBankTransfer.lastError.response}}</b></h5>
+                <h5 dmx-show="content.formBankTransfer.lastError.response.status == 0">Status: <span dmx-class:text-danger="content.formBankTransfer.data.Status=='FAILED'" dmx-class:text-success="content.formBankTransfer.data.Status=='SUCCESS'||content.formBankTransfer.data.Status=='PENDING'">{{content.formBankTransfer.data.Status}}</span>
+                </h5>
+                <h5>Amount: {{content.formBankTransfer.data.Amount}}/-</h5>
+                <h6>Account No.: {{content.formBankTransfer.data.ac_no}}</h6>
+                <h6>Benef. Bank: {{content.formBankTransfer.data.bank_name}}</h6>
+                <h6>Beneficiary Name.: {{content.formBankTransfer.data.benef_name}}</h6>
+                <!-- Ref ID -->
+                <h6>Transaction Ref.: {{content.formBankTransfer.data.api_ref}}</h6>
+                <h6>Remarks: {{content.formBankTransfer.data.Remarks}}</h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>

@@ -888,7 +888,7 @@
                                                               },
                                                               "meta": [],
                                                               "outputType": "text",
-                                                              "output": true
+                                                              "output": false
                                                             },
                                                             {
                                                               "name": "RTChargeAmt",
@@ -898,8 +898,7 @@
                                                                 "value": "{{($_POST.WithdrawAmt.toNumber()*GetOpComm.service_charge_per.toNumber()/100)+GetOpComm.service_charge_val.toNumber()}}"
                                                               },
                                                               "meta": [],
-                                                              "outputType": "text",
-                                                              "output": true
+                                                              "outputType": "text"
                                                             },
                                                             {
                                                               "name": "RTNetAmt",
@@ -919,8 +918,7 @@
                                                                 "value": "{{GetUserDetails.aeps_balance.toNumber()-$_POST.WithdrawAmt.toNumber()}}"
                                                               },
                                                               "meta": [],
-                                                              "outputType": "text",
-                                                              "output": true
+                                                              "outputType": "text"
                                                             },
                                                             {
                                                               "name": "WalletNetAmt",
@@ -930,8 +928,7 @@
                                                                 "value": "{{GetUserDetails.balance_amt.toNumber()+RTNetAmt.toNumber()}}"
                                                               },
                                                               "meta": [],
-                                                              "outputType": "text",
-                                                              "output": true
+                                                              "outputType": "text"
                                                             },
                                                             {
                                                               "name": "AddAEPSTrans",

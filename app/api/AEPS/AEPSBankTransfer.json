@@ -2474,7 +2474,8 @@
                           "value": "{{apiEPAY.data.Status==1?'SUCCESS':apiEPAY.data.Status==100?'PENDING':'FAILED'}}"
                         },
                         "meta": [],
-                        "outputType": "text"
+                        "outputType": "text",
+                        "output": true
                       },
                       {
                         "name": "Remarks",
@@ -2536,6 +2537,17 @@
                         "action": "setvalue",
                         "options": {
                           "value": "{{apiEPAY.data.BeneficiaryName}}"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": true
+                      },
+                      {
+                        "name": "Amount",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{$_POST.WithdrawAmtBank}}"
                         },
                         "meta": [],
                         "outputType": "text",
