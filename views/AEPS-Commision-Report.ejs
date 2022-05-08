@@ -3,7 +3,7 @@
 <dmx-query-manager id="qm"></dmx-query-manager>
 <dmx-serverconnect id="scAEPSCommReport" url="api/Reports/AEPSParentComm" dmx-param:fromdate="content.formPendingDate.daterange.start" dmx-param:todate="content.formPendingDate.daterange.end"></dmx-serverconnect>
 
-<dmx-data-view id="dvAEPSCommReport" dmx-bind:data="content.scAEPSCommReport.data.GetCommision.data" filter="(pay_ref_id.contains(formSearchUser.Search.value) || crdr_type.lowercase().contains(formSearchUser.Search.value.lowercase()) || tr_type.lowercase().contains(formSearchUser.Search.value.lowercase()) || tr_date.contains(formSearchUser.Search.value))"></dmx-data-view>
+<dmx-data-view id="dvAEPSCommReport" dmx-bind:data="content.scAEPSCommReport.data.GetCommision.data" filter="(pay_ref_id.toNumber().contains(formSearchUser.Search.value.toNumber()) || crdr_type.lowercase().contains(formSearchUser.Search.value.lowercase()) || tr_type.lowercase().contains(formSearchUser.Search.value.lowercase()) || tr_date.contains(formSearchUser.Search.value))"></dmx-data-view>
 <dmx-data-detail id="ddAEPSCommReport" dmx-bind:data="dvAEPSCommReport.data" key="id"></dmx-data-detail>
 <div class="row align-items-center justify-content-between px-4 mb-3 sd-secondary-header mx-0">
     <div class="col-12 col-md-auto me-auto ps-4">
