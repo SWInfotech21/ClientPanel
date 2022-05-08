@@ -3,22 +3,6 @@
     "$_GET": [
       {
         "type": "text",
-        "name": "offset"
-      },
-      {
-        "type": "text",
-        "name": "limit"
-      },
-      {
-        "type": "text",
-        "name": "sort"
-      },
-      {
-        "type": "text",
-        "name": "dir"
-      },
-      {
-        "type": "text",
         "name": "fromdate"
       },
       {
@@ -60,6 +44,10 @@
           "sql": {
             "type": "SELECT",
             "columns": [
+              {
+                "table": "t_charge_aeps_cal",
+                "column": "id"
+              },
               {
                 "table": "t_charge_aeps_cal",
                 "column": "pay_ref_id"
@@ -148,7 +136,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT pay_ref_id, crdr_type, old_bal, net_amt, new_bal, tr_type, tr_date, remarks\nFROM t_charge_aeps_cal\nWHERE user_id = :P1 /* {{identity}} */ AND tr_date BETWEEN :P2 /* {{$_GET.fromdate}} */ AND :P3 /* {{$_GET.todate}} */\nORDER BY id DESC",
+            "query": "SELECT id, pay_ref_id, crdr_type, old_bal, net_amt, new_bal, tr_type, tr_date, remarks\nFROM t_charge_aeps_cal\nWHERE user_id = :P1 /* {{identity}} */ AND tr_date BETWEEN :P2 /* {{$_GET.fromdate}} */ AND :P3 /* {{$_GET.todate}} */\nORDER BY id DESC\nOFFSET  ROWS",
             "params": [
               {
                 "operator": "equal",
@@ -173,9 +161,14 @@
               {
                 "table": "t_charge_aeps_cal",
                 "column": "id",
-                "direction": "DESC"
+                "direction": "DESC",
+                "recid": 1
               }
-            ]
+            ],
+            "dir": "",
+            "sort": "",
+            "limit": "",
+            "offset": ""
           },
           "connection": "postgres_gcpServer"
         },
@@ -233,6 +226,10 @@
             "name": "data",
             "type": "array",
             "sub": [
+              {
+                "type": "number",
+                "name": "id"
+              },
               {
                 "type": "number",
                 "name": "pay_ref_id"

@@ -32,7 +32,7 @@
 <div class="container px-4" id="Recharges">
     <div class="card">
         <div class="card-header sw-bg-col-primary">
-            <b>Report From {{content.formPendingDate.daterange.start.formatDate('dd MMM yyyy')}} ---- {{content.formPendingDate.daterange.end.formatDate('dd MMM yyyy')}}</b>
+            <b>Commision Report From {{content.formPendingDate.daterange.start.formatDate('dd MMM yyyy')}} ---- {{content.formPendingDate.daterange.end.formatDate('dd MMM yyyy')}}</b>
         </div>
 
         <div class="card-body">
@@ -42,36 +42,23 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Trans. Id</th>
-                            <th scope="col">API Ref.</th>
-                            <th scope="col">Merchant/ Number</th>
-                            <th scope="col">Operator & Service</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Old Bal.</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Net Amt.</th>
-                            <th scope="col">New Bal.</th>
-                            <th scope="col">Tr. Name</th>
+                            <th scope="col">Cr/Dr Type</th>
+                            <th scope="col">Net Amount</th>
                             <th scope="col">Tr. Type</th>
                             <th scope="col">Tr. Date</th>
-                            <th scope="col">API</th>
+                            <th scope="col">Remarks</th>
                         </tr>
                     </thead>
                     <tbody is="dmx-repeat" dmx-bind:repeat="content.dvAEPSCommReport.data" id="tableRepeat1" key="id">
                         <tr>
                             <th scope="row">{{$index+1}}</th>
-                            <td dmx-text="id"></td>
-                            <td dmx-text="api_ref"></td>
-                            <td dmx-text="merchant_id"></td>
-                            <td dmx-text="operator_name"></td>
-                            <td dmx-text="status"></td>
-                            <td dmx-text="op_bal"></td>
-                            <td dmx-text="amount"></td>
+                            <td dmx-text="pay_ref_id"></td>
+                            <td dmx-text="crdr_type"></td>
                             <td dmx-text="net_amt"></td>
-                            <td dmx-text="closing_bal"></td>
-                            <td dmx-text="reason"></td>
                             <td dmx-text="tr_type"></td>
-                            <td dmx-text="tr_date"></td>
-                            <td dmx-text="api_log"></td>
+                            <td dmx-text="tr_date.formatDate('dd-MM-yyyy hh:mm:ss A')"></td>
+                            <td dmx-text="remarks"></td>
+
                         </tr>
                     </tbody>
                     <tbody dmx-show="dvAEPSCommReport.data.length==0">
