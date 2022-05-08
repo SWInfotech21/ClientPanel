@@ -2990,6 +2990,17 @@
                         ]
                       },
                       {
+                        "name": "Resp",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{'SUCCESS: Transfer of Rs. '+$_POST.WithdrawAmtBank+'\\n From AEPS Wallet to Bank Account Successful.'}}"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": true
+                      },
+                      {
                         "name": "",
                         "module": "core",
                         "action": "condition",
@@ -3526,7 +3537,7 @@
                             "type": "number"
                           }
                         ],
-                        "output": true
+                        "output": false
                       },
                       {
                         "name": "UpAEPSBalance",
@@ -3758,6 +3769,17 @@
                           }
                         ],
                         "output": false
+                      },
+                      {
+                        "name": "Resp",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{'FAILED! Transfer of Rs. '+$_POST.WithdrawAmtBank+'\\n From AEPS Wallet to Bank Account Failed.'}}"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": true
                       }
                     ]
                   }

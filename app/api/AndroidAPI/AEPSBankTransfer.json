@@ -3305,6 +3305,16 @@
                                                               ]
                                                             },
                                                             {
+                                                              "name": "Resp",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{'SUCCESS! Transfer of Rs. '+$_POST.WithdrawAmtBank+' From AEPS Wallet to Bank Account Successful.'}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
                                                               "name": "",
                                                               "module": "core",
                                                               "action": "condition",
@@ -4073,6 +4083,16 @@
                                                                 }
                                                               ],
                                                               "output": false
+                                                            },
+                                                            {
+                                                              "name": "Resp",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{'FAILED! Transfer of Rs. '+$_POST.WithdrawAmtBank+' From AEPS Wallet to Bank Account Failed.'}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
                                                             }
                                                           ]
                                                         }

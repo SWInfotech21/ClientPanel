@@ -2246,7 +2246,7 @@
                                                               "module": "core",
                                                               "action": "setvalue",
                                                               "options": {
-                                                                "value": "{{'Transfer of Rs. '+$_POST.WithdrawAmt+'\\n From AEPS Wallet to Main Wallet Successful.'}}"
+                                                                "value": "{{'Transfer of Rs. '+$_POST.WithdrawAmt+' From AEPS Wallet to Main Wallet Successful.'}}"
                                                               },
                                                               "meta": [],
                                                               "outputType": "text",
