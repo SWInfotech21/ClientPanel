@@ -6,30 +6,65 @@
     "$_GET": [
       {
         "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
         "name": "username"
       },
       {
         "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
         "name": "password"
       },
       {
         "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
         "name": "credit_amount"
       },
       {
         "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
         "name": "tpin"
       },
       {
         "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
         "name": "comment"
       },
       {
         "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
         "name": "user_type"
       },
       {
         "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
         "name": "target_user_id"
       }
     ],
