@@ -201,22 +201,22 @@ body{
     line-height: 18px;
 }
 .sw-container-head{
-    background-color: #1991EB; 
+    background-color: #009688; 
     color: #fff;
     border-radius: 10px;
 }
 .sw-container{
-    background-color: rgb(25 145 235 / 40%); 
+    background-color: #ffa07a;
     border-radius: 10px;
 }
 .sw-container-beta-head{
-    background-color: #009688; 
+    background-color:  #1991EB; 
     color: #fff;
     border-radius: 10px;
 }
 
 .sw-container-beta{
-    background-color: #ffa07a; 
+    background-color:  rgb(25 145 235 / 40%); 
     border-radius: 10px;
 }
 .sw-btn-dark {
