@@ -2307,6 +2307,16 @@
           "then": {
             "steps": [
               {
+                "name": "NewRTBal",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{RTClosingBalance}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
                 "name": "UpAEPSRechTrans",
                 "module": "dbupdater",
                 "action": "update",
@@ -2506,7 +2516,7 @@
                         "table": "m_users",
                         "column": "aeps_balance",
                         "type": "text",
-                        "value": "{{RTClosingBalance}}"
+                        "value": "{{NewRTBal}}"
                       }
                     ],
                     "table": "m_users",
@@ -2529,12 +2539,12 @@
                       "valid": true
                     },
                     "returning": "id",
-                    "query": "UPDATE m_users\nSET aeps_balance = :P1 /* {{RTClosingBalance}} */\nWHERE id = :P2 /* {{UserWalletBalCheck.id}} */",
+                    "query": "UPDATE m_users\nSET aeps_balance = :P1 /* {{NewRTBal}} */\nWHERE id = :P2 /* {{UserWalletBalCheck.id}} */",
                     "params": [
                       {
                         "name": ":P1",
                         "type": "expression",
-                        "value": "{{RTClosingBalance}}"
+                        "value": "{{NewRTBal}}"
                       },
                       {
                         "operator": "equal",
