@@ -194,10 +194,6 @@
       "exec": "/api/PageAccess/PagesFrDTMDT"
     },
     {
-      "path": "*",
-      "page": "404-not-found"
-    },
-    {
       "path": "/privacy-policy",
       "page": "privacy-policy",
       "layout": "web-main"
@@ -206,6 +202,10 @@
       "path": "/terms-and-conditions",
       "page": "terms-and-conditions",
       "layout": "web-main"
+    },
+    {
+      "path": "*",
+      "page": "404-not-found"
     }
   ],
   "layouts": {
