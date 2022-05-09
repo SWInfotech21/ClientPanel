@@ -4,8 +4,8 @@
       "path": "/",
       "page": "index",
       "routeType": "page",
-      "layout": "main",
-      "exec": "/api/PageAccess/RedirectBlank"
+      "layout": "web-main",
+      "exec": ""
     },
     {
       "path": "/dashboard",
@@ -196,6 +196,16 @@
     {
       "path": "*",
       "page": "404-not-found"
+    },
+    {
+      "path": "/privacy-policy",
+      "page": "privacy-policy",
+      "layout": "web-main"
+    },
+    {
+      "path": "/terms-and-conditions",
+      "page": "terms-and-conditions",
+      "layout": "web-main"
     }
   ],
   "layouts": {

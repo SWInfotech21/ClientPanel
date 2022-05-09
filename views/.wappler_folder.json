@@ -84,7 +84,7 @@
     "description": ""
   },
   "index.ejs": {
-    "layoutPage": "main",
+    "layoutPage": "web-main",
     "description": ""
   },
   "403-forbidden.ejs": {
@@ -177,6 +177,14 @@
   },
   "AEPS-Commision-Report.ejs": {
     "layoutPage": "main",
+    "description": ""
+  },
+  "privacy-policy.ejs": {
+    "layoutPage": "web-main",
+    "description": ""
+  },
+  "terms-and-conditions.ejs": {
+    "layoutPage": "web-main",
     "description": ""
   }
 }
