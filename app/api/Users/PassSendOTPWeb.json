@@ -474,11 +474,17 @@
                         "column": "user_id",
                         "type": "number",
                         "value": "{{CheckUser.id}}"
+                      },
+                      {
+                        "table": "t_sms_log",
+                        "column": "extra1",
+                        "type": "text",
+                        "value": "{{'Web'}}"
                       }
                     ],
                     "table": "t_sms_log",
                     "returning": "id",
-                    "query": "INSERT INTO t_sms_log\n(sms_message, sender_mobile, created_on, sms_type, ip_address, status, response, user_id) VALUES (:P1 /* {{'Your one time password is '+OTP+' \\\\nRegards S W Pays'}} */, :P2 /* {{$_POST.forgot_mobile}} */, :P3 /* {{NOW}} */, :P4 /* {{'Forgot Password OTP'}} */, :P5 /* {{$_SERVER.REMOTE_ADDR}} */, :P6 /* {{api_status == 200 ? 1 : 0}} */, :P7 /* {{api_response}} */, :P8 /* {{CheckUser.id}} */)",
+                    "query": "INSERT INTO t_sms_log\n(sms_message, sender_mobile, created_on, sms_type, ip_address, status, response, user_id, extra1) VALUES (:P1 /* {{'Your one time password is '+OTP+' \\\\nRegards S W Pays'}} */, :P2 /* {{$_POST.forgot_mobile}} */, :P3 /* {{NOW}} */, :P4 /* {{'Forgot Password OTP'}} */, :P5 /* {{$_SERVER.REMOTE_ADDR}} */, :P6 /* {{api_status == 200 ? 1 : 0}} */, :P7 /* {{api_response}} */, :P8 /* {{CheckUser.id}} */, :P9 /* {{'Web'}} */)",
                     "params": [
                       {
                         "name": ":P1",
@@ -519,6 +525,11 @@
                         "name": ":P8",
                         "type": "expression",
                         "value": "{{CheckUser.id}}"
+                      },
+                      {
+                        "name": ":P9",
+                        "type": "expression",
+                        "value": "{{'Web'}}"
                       }
                     ]
                   }
@@ -567,17 +578,11 @@
                         "column": "status",
                         "type": "number",
                         "value": "{{1}}"
-                      },
-                      {
-                        "table": "forgot_otp",
-                        "column": "request_from",
-                        "type": "text",
-                        "value": "{{'Web'}}"
                       }
                     ],
                     "table": "forgot_otp",
                     "returning": "id",
-                    "query": "INSERT INTO forgot_otp\n(mobile, otp, entytime, status, request_from) VALUES (:P1 /* {{$_POST.forgot_mobile}} */, :P2 /* {{OTP}} */, :P3 /* {{NOW}} */, :P4 /* {{1}} */, :P5 /* {{'Web'}} */)",
+                    "query": "INSERT INTO forgot_otp\n(mobile, otp, entytime, status) VALUES (:P1 /* {{$_POST.forgot_mobile}} */, :P2 /* {{OTP}} */, :P3 /* {{NOW}} */, :P4 /* {{1}} */)",
                     "params": [
                       {
                         "name": ":P1",
@@ -598,11 +603,6 @@
                         "name": ":P4",
                         "type": "expression",
                         "value": "{{1}}"
-                      },
-                      {
-                        "name": ":P5",
-                        "type": "expression",
-                        "value": "{{'Web'}}"
                       }
                     ]
                   }
