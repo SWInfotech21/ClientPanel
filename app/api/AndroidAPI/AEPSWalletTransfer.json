@@ -522,17 +522,27 @@
                                               "options": {
                                                 "connection": "postgres_gcpServer",
                                                 "sql": {
-                                                  "query": "SELECT SUM(tab.amount::int) as aeps_minus_amount from tt_aeps_trans tab \nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date AND tab.status=@status",
+                                                  "query": "SELECT SUM(tab.amount::int) as aeps_minus_amount from tt_aeps_trans tab \nleft join m_operator mo on (mo.id=tab.op_id and mo.service_id=tab.service_id)\nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date AND tab.status=@status and (mo.operator_name = @op1\nor mo.operator_name = @op2);",
                                                   "params": [
                                                     {
                                                       "name": "@user_id",
                                                       "value": "{{identity}}",
-                                                      "test": "66"
+                                                      "test": "110"
                                                     },
                                                     {
                                                       "name": "@status",
                                                       "value": "{{'SUCCESS'}}",
                                                       "test": "SUCCESS"
+                                                    },
+                                                    {
+                                                      "name": "@op1",
+                                                      "value": "{{'AEPS Wallet Settlement'}}",
+                                                      "test": "AEPS Wallet Settlement"
+                                                    },
+                                                    {
+                                                      "name": "@op2",
+                                                      "value": "{{'AEPS Bank Transfer'}}",
+                                                      "test": "AEPS Bank Transfer"
                                                     }
                                                   ]
                                                 }
@@ -648,7 +658,7 @@
                                                             {
                                                               "name": "@user_id",
                                                               "value": "{{identity}}",
-                                                              "test": "63"
+                                                              "test": "110"
                                                             }
                                                           ]
                                                         }

@@ -24,8 +24,7 @@
           ],
           "loginUrl": "/login",
           "forbiddenUrl": "/403-forbidden"
-        },
-        "disabled": true
+        }
       },
       {
         "name": "identity",
@@ -35,8 +34,7 @@
           "provider": "security"
         },
         "output": false,
-        "meta": [],
-        "disabled": true
+        "meta": []
       },
       {
         "name": "ViewBenef",
@@ -93,7 +91,7 @@
                   "field": "t_aeps_benef_epay.user_id",
                   "type": "double",
                   "operator": "equal",
-                  "value": 110,
+                  "value": "{{identity}}",
                   "data": {
                     "table": "t_aeps_benef_epay",
                     "column": "user_id",
@@ -120,8 +118,15 @@
                 "recid": 1
               }
             ],
-            "query": "SELECT id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_on, blank1 AS benef_id\nFROM t_aeps_benef_epay\nWHERE user_id = 110\nORDER BY id DESC",
-            "params": []
+            "query": "SELECT id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_on, blank1 AS benef_id\nFROM t_aeps_benef_epay\nWHERE user_id = :P1 /* {{identity}} */\nORDER BY id DESC",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ]
           },
           "connection": "postgres_gcpServer"
         },
@@ -189,7 +194,7 @@
                   "field": "m_users.id",
                   "type": "double",
                   "operator": "equal",
-                  "value": 110,
+                  "value": "{{identity}}",
                   "data": {
                     "table": "m_users",
                     "column": "id",
@@ -209,11 +214,19 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT aeps_balance\nFROM m_users\nWHERE id = 110",
-            "params": []
+            "query": "SELECT aeps_balance\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ],
+            "orders": []
           }
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
             "type": "text",
@@ -233,7 +246,7 @@
             "params": [
               {
                 "name": "@user_id",
-                "value": "110",
+                "value": "{{identity}}",
                 "test": "110"
               },
               {
@@ -254,10 +267,36 @@
             ]
           }
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
             "name": "aeps_minus_amount",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "GetOpeningBal",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "query": "SELECT tab.op_bal from tt_aeps_trans tab \nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date ORDER by id asc limit 1;",
+            "params": [
+              {
+                "name": "@user_id",
+                "value": "{{identity}}",
+                "test": "110"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "op_bal",
             "type": "text"
           }
         ],
@@ -292,11 +331,11 @@
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{AEPSBalance.aeps_balance==null?0:AEPSBalance.aeps_balance}}"
+                  "value": "{{GetOpeningBal[0].op_bal==null?0:GetOpeningBal[0].op_bal}}"
                 },
                 "meta": [
                   {
-                    "name": "aeps_balance",
+                    "name": "op_bal",
                     "type": "text"
                   }
                 ],
@@ -312,7 +351,7 @@
                 },
                 "meta": [
                   {
-                    "name": "aeps_balance",
+                    "name": "op_bal",
                     "type": "text"
                   }
                 ],
@@ -324,44 +363,13 @@
           "else": {
             "steps": [
               {
-                "name": "GetOpeningBal",
-                "module": "dbupdater",
-                "action": "custom",
-                "options": {
-                  "connection": "postgres_gcpServer",
-                  "sql": {
-                    "query": "SELECT tab.op_bal from tt_aeps_trans tab \nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date ORDER by id asc limit 1;",
-                    "params": [
-                      {
-                        "name": "@user_id",
-                        "value": "110",
-                        "test": "63"
-                      }
-                    ]
-                  }
-                },
-                "output": true,
-                "meta": [
-                  {
-                    "name": "op_bal",
-                    "type": "text"
-                  }
-                ],
-                "outputType": "array"
-              },
-              {
                 "name": "GetAEPSLimit2Number",
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{GetAEPSLimit[0].aeps_minus_amount==null?0:GetAEPSLimit[0].aeps_minus_amount}}"
+                  "value": "{{GetAEPSLimit[0].aeps_minus_amount}}"
                 },
-                "meta": [
-                  {
-                    "name": "aeps_minus_amount",
-                    "type": "text"
-                  }
-                ],
+                "meta": [],
                 "outputType": "text",
                 "output": true
               },
@@ -370,9 +378,14 @@
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{GetOpeningBal[0].op_bal}}"
+                  "value": "{{GetOpeningBal[0].op_bal==null?0:GetOpeningBal[0].op_bal}}"
                 },
-                "meta": [],
+                "meta": [
+                  {
+                    "name": "op_bal",
+                    "type": "text"
+                  }
+                ],
                 "outputType": "text",
                 "output": true
               },
@@ -383,7 +396,12 @@
                 "options": {
                   "value": "{{AEPSBal.toNumber()-GetAEPSLimit2Number.toNumber()}}"
                 },
-                "meta": [],
+                "meta": [
+                  {
+                    "name": "op_bal",
+                    "type": "text"
+                  }
+                ],
                 "output": true,
                 "outputType": "text"
               }
