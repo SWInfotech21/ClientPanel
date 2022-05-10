@@ -227,9 +227,9 @@
             "City": "{{$_POST.City}}",
             "State": "{{$_POST.State}}",
             "Address": "{{$_POST.Address}}",
-            "PanImage": "{{'https://login.swpay.in/'+GetImage.pan_card}}",
-            "AdharImageFront": "{{'https://login.swpay.in/'+GetImage.aadhar_front}}",
-            "AdharImageBack": "{{'https://login.swpay.in/'+GetImage.aadhar_back}}"
+            "PanImage": "{{'https://swpay.in/'+GetImage.pan_card}}",
+            "AdharImageFront": "{{'https://swpay.in/'+GetImage.aadhar_front}}",
+            "AdharImageBack": "{{'https://swpay.in/'+GetImage.aadhar_back}}"
           }
         },
         "output": true
