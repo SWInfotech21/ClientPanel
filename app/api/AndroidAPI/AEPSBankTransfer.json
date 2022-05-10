@@ -612,195 +612,73 @@
                                               "outputType": "array"
                                             },
                                             {
-                                              "name": "",
-                                              "module": "core",
-                                              "action": "condition",
+                                              "name": "GetOpeningBal",
+                                              "module": "dbupdater",
+                                              "action": "custom",
                                               "options": {
-                                                "if": "{{GetAEPSLimit[0].aeps_minus_amount==null}}",
-                                                "then": {
-                                                  "steps": [
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "query": "SELECT tab.op_bal from tt_aeps_trans tab \nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date ORDER by id asc limit 1;",
+                                                  "params": [
                                                     {
-                                                      "name": "GetAEPSLimit2Number",
-                                                      "module": "core",
-                                                      "action": "setvalue",
-                                                      "options": {
-                                                        "value": "{{GetAEPSLimit[0].aeps_minus_amount==null?0:GetAEPSLimit[0].aeps_minus_amount}}"
-                                                      },
-                                                      "meta": [],
-                                                      "outputType": "text",
-                                                      "output": false
-                                                    },
-                                                    {
-                                                      "name": "AEPSBal",
-                                                      "module": "core",
-                                                      "action": "setvalue",
-                                                      "options": {
-                                                        "value": "{{UserWalletBalCheck.aeps_balance==null?0:UserWalletBalCheck.aeps_balance}}"
-                                                      },
-                                                      "meta": [
-                                                        {
-                                                          "name": "id",
-                                                          "type": "number"
-                                                        },
-                                                        {
-                                                          "name": "RT_id",
-                                                          "type": "text"
-                                                        },
-                                                        {
-                                                          "name": "user_fname",
-                                                          "type": "text"
-                                                        },
-                                                        {
-                                                          "name": "user_mobile",
-                                                          "type": "text"
-                                                        },
-                                                        {
-                                                          "name": "user_type",
-                                                          "type": "number"
-                                                        },
-                                                        {
-                                                          "name": "md_id",
-                                                          "type": "text"
-                                                        },
-                                                        {
-                                                          "name": "ds_id",
-                                                          "type": "text"
-                                                        },
-                                                        {
-                                                          "name": "scheme_id",
-                                                          "type": "number"
-                                                        },
-                                                        {
-                                                          "name": "aeps_balance",
-                                                          "type": "text"
-                                                        },
-                                                        {
-                                                          "name": "aeps_merchant_id",
-                                                          "type": "text"
-                                                        }
-                                                      ],
-                                                      "outputType": "text",
-                                                      "output": false
-                                                    },
-                                                    {
-                                                      "name": "AEPSLimit",
-                                                      "module": "core",
-                                                      "action": "setvalue",
-                                                      "options": {
-                                                        "value": "{{AEPSBal.toNumber()-GetAEPSLimit2Number.toNumber()}}"
-                                                      },
-                                                      "meta": [
-                                                        {
-                                                          "name": "id",
-                                                          "type": "number"
-                                                        },
-                                                        {
-                                                          "name": "RT_id",
-                                                          "type": "text"
-                                                        },
-                                                        {
-                                                          "name": "user_fname",
-                                                          "type": "text"
-                                                        },
-                                                        {
-                                                          "name": "user_mobile",
-                                                          "type": "text"
-                                                        },
-                                                        {
-                                                          "name": "user_type",
-                                                          "type": "number"
-                                                        },
-                                                        {
-                                                          "name": "md_id",
-                                                          "type": "text"
-                                                        },
-                                                        {
-                                                          "name": "ds_id",
-                                                          "type": "text"
-                                                        },
-                                                        {
-                                                          "name": "scheme_id",
-                                                          "type": "number"
-                                                        },
-                                                        {
-                                                          "name": "aeps_balance",
-                                                          "type": "text"
-                                                        },
-                                                        {
-                                                          "name": "aeps_merchant_id",
-                                                          "type": "text"
-                                                        }
-                                                      ],
-                                                      "output": false,
-                                                      "outputType": "text"
-                                                    }
-                                                  ]
-                                                },
-                                                "else": {
-                                                  "steps": [
-                                                    {
-                                                      "name": "GetOpeningBal",
-                                                      "module": "dbupdater",
-                                                      "action": "custom",
-                                                      "options": {
-                                                        "connection": "postgres_gcpServer",
-                                                        "sql": {
-                                                          "query": "SELECT tab.op_bal from tt_aeps_trans tab \nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date ORDER by id asc limit 1;",
-                                                          "params": [
-                                                            {
-                                                              "name": "@user_id",
-                                                              "value": "{{identity}}",
-                                                              "test": "63"
-                                                            }
-                                                          ]
-                                                        }
-                                                      },
-                                                      "output": false,
-                                                      "meta": [
-                                                        {
-                                                          "name": "op_bal",
-                                                          "type": "text"
-                                                        }
-                                                      ],
-                                                      "outputType": "array"
-                                                    },
-                                                    {
-                                                      "name": "GetAEPSLimit2Number",
-                                                      "module": "core",
-                                                      "action": "setvalue",
-                                                      "options": {
-                                                        "value": "{{GetAEPSLimit[0].aeps_minus_amount==null?0:GetAEPSLimit[0].aeps_minus_amount}}"
-                                                      },
-                                                      "meta": [],
-                                                      "outputType": "text",
-                                                      "output": false
-                                                    },
-                                                    {
-                                                      "name": "AEPSBal",
-                                                      "module": "core",
-                                                      "action": "setvalue",
-                                                      "options": {
-                                                        "value": "{{GetOpeningBal[0].op_bal}}"
-                                                      },
-                                                      "meta": [],
-                                                      "outputType": "text",
-                                                      "output": false
-                                                    },
-                                                    {
-                                                      "name": "AEPSLimit",
-                                                      "module": "core",
-                                                      "action": "setvalue",
-                                                      "options": {
-                                                        "value": "{{AEPSBal.toNumber()-GetAEPSLimit2Number.toNumber()}}"
-                                                      },
-                                                      "meta": [],
-                                                      "output": false,
-                                                      "outputType": "text"
+                                                      "name": "@user_id",
+                                                      "value": "{{identity}}",
+                                                      "test": "63"
                                                     }
                                                   ]
                                                 }
                                               },
-                                              "outputType": "boolean"
+                                              "output": false,
+                                              "meta": [
+                                                {
+                                                  "name": "op_bal",
+                                                  "type": "text"
+                                                }
+                                              ],
+                                              "outputType": "array"
+                                            },
+                                            {
+                                              "name": "GetAEPSLimit2Number",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{GetAEPSLimit[0].aeps_minus_amount==null?0:GetAEPSLimit[0].aeps_minus_amount}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": false
+                                            },
+                                            {
+                                              "name": "AEPSBal",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{GetOpeningBal[0].op_bal==null?0:GetOpeningBal[0].op_bal}}"
+                                              },
+                                              "meta": [
+                                                {
+                                                  "name": "op_bal",
+                                                  "type": "text"
+                                                }
+                                              ],
+                                              "outputType": "text",
+                                              "output": false
+                                            },
+                                            {
+                                              "name": "AEPSLimit",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{AEPSBal.toNumber()-GetAEPSLimit2Number.toNumber()}}"
+                                              },
+                                              "meta": [
+                                                {
+                                                  "name": "op_bal",
+                                                  "type": "text"
+                                                }
+                                              ],
+                                              "output": false,
+                                              "outputType": "text"
                                             },
                                             {
                                               "name": "",
