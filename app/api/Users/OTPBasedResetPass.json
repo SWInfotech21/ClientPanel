@@ -132,6 +132,14 @@
           {
             "type": "number",
             "name": "status"
+          },
+          {
+            "type": "text",
+            "name": "request_from"
+          },
+          {
+            "type": "text",
+            "name": "blank1"
           }
         ],
         "outputType": "object"

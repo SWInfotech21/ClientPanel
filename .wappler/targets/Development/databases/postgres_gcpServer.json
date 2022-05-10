@@ -1147,6 +1147,24 @@
               "unique": false,
               "nullable": true
             }
+          },
+          "request_from": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "blank1": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
           }
         }
       },

@@ -21,7 +21,7 @@
     <dmx-value id="varBack" dmx-bind:value="0"></dmx-value>
     <div class="center" id="ForgotPass" dmx-show="varTab.value==0">
         <h1>Forgot Password</h1>
-        <form id="formForgotPass" class="sign-in-form" is="dmx-serverconnect-form" method="post" action="api/Users/PassSendOTP" dmx-on:success="varTab.setValue(1);varMobile.setValue(forgot_mobile.value); formForgotOTP.reset()" dmx-on:unauthorized="Notification.danger(lastError.response)" dmx-on:forbidden="Notification.danger(lastError.response)">
+        <form id="formForgotPass" class="sign-in-form" is="dmx-serverconnect-form" method="post" action="api/Users/PassSendOTPWeb" dmx-on:success="varTab.setValue(1);varMobile.setValue(forgot_mobile.value); formForgotOTP.reset()" dmx-on:unauthorized="Notification.danger(lastError.response)" dmx-on:forbidden="Notification.danger(lastError.response)">
             <div class="txt_field">
                 <input type="number" id="forgot_mobile" name="forgot_mobile" required>
                 <span></span>

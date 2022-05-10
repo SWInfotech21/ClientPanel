@@ -24,7 +24,8 @@
           ],
           "loginUrl": "/login",
           "forbiddenUrl": "/403-forbidden"
-        }
+        },
+        "disabled": true
       },
       {
         "name": "identity",
@@ -34,7 +35,8 @@
           "provider": "security"
         },
         "output": false,
-        "meta": []
+        "meta": [],
+        "disabled": true
       },
       {
         "name": "ViewBenef",
@@ -91,7 +93,7 @@
                   "field": "t_aeps_benef_epay.user_id",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{identity}}",
+                  "value": 110,
                   "data": {
                     "table": "t_aeps_benef_epay",
                     "column": "user_id",
@@ -118,19 +120,12 @@
                 "recid": 1
               }
             ],
-            "query": "SELECT id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_on, blank1 AS benef_id\nFROM t_aeps_benef_epay\nWHERE user_id = :P1 /* {{identity}} */\nORDER BY id DESC",
-            "params": [
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P1",
-                "value": "{{identity}}"
-              }
-            ]
+            "query": "SELECT id, benef_name, bank_name, bank_ifsc, account_no, contacts, created_on, blank1 AS benef_id\nFROM t_aeps_benef_epay\nWHERE user_id = 110\nORDER BY id DESC",
+            "params": []
           },
           "connection": "postgres_gcpServer"
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "number",
@@ -194,7 +189,7 @@
                   "field": "m_users.id",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{identity}}",
+                  "value": 110,
                   "data": {
                     "table": "m_users",
                     "column": "id",
@@ -214,15 +209,8 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT aeps_balance\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
-            "params": [
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P1",
-                "value": "{{identity}}"
-              }
-            ]
+            "query": "SELECT aeps_balance\nFROM m_users\nWHERE id = 110",
+            "params": []
           }
         },
         "output": false,
@@ -245,7 +233,7 @@
             "params": [
               {
                 "name": "@user_id",
-                "value": "{{identity}}",
+                "value": "110",
                 "test": "66"
               },
               {
@@ -326,13 +314,13 @@
                     "params": [
                       {
                         "name": "@user_id",
-                        "value": "{{identity}}",
+                        "value": "110",
                         "test": "63"
                       }
                     ]
                   }
                 },
-                "output": false,
+                "output": true,
                 "meta": [
                   {
                     "name": "op_bal",
@@ -350,7 +338,7 @@
                 },
                 "meta": [],
                 "outputType": "text",
-                "output": false
+                "output": true
               },
               {
                 "name": "AEPSBal",
@@ -361,7 +349,7 @@
                 },
                 "meta": [],
                 "outputType": "text",
-                "output": false
+                "output": true
               },
               {
                 "name": "AEPSLimit",

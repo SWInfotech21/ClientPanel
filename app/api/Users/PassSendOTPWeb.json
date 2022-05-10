@@ -572,12 +572,12 @@
                         "table": "forgot_otp",
                         "column": "request_from",
                         "type": "text",
-                        "value": "{{'Android'}}"
+                        "value": "{{'Web'}}"
                       }
                     ],
                     "table": "forgot_otp",
                     "returning": "id",
-                    "query": "INSERT INTO forgot_otp\n(mobile, otp, entytime, status, request_from) VALUES (:P1 /* {{$_POST.forgot_mobile}} */, :P2 /* {{OTP}} */, :P3 /* {{NOW}} */, :P4 /* {{1}} */, :P5 /* {{'Android'}} */)",
+                    "query": "INSERT INTO forgot_otp\n(mobile, otp, entytime, status, request_from) VALUES (:P1 /* {{$_POST.forgot_mobile}} */, :P2 /* {{OTP}} */, :P3 /* {{NOW}} */, :P4 /* {{1}} */, :P5 /* {{'Web'}} */)",
                     "params": [
                       {
                         "name": ":P1",
@@ -602,7 +602,7 @@
                       {
                         "name": ":P5",
                         "type": "expression",
-                        "value": "{{'Android'}}"
+                        "value": "{{'Web'}}"
                       }
                     ]
                   }
