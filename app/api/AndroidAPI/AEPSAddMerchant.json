@@ -598,7 +598,7 @@
                                               "module": "core",
                                               "action": "setvalue",
                                               "options": {
-                                                "value": "{{apiMerchantAddEpay.Status}}"
+                                                "value": "{{apiMerchantAddEpay.data.Status}}"
                                               },
                                               "meta": [],
                                               "outputType": "text",
