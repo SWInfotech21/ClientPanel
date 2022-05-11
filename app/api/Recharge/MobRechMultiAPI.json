@@ -1018,7 +1018,7 @@
                                   "primary": "id"
                                 }
                               },
-                              "output": false,
+                              "output": true,
                               "meta": [
                                 {
                                   "type": "text",
