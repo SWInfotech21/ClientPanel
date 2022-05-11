@@ -104,7 +104,7 @@
                 "outputType": "text"
               },
               {
-                "name": "tr_id",
+                "name": "api_ref",
                 "module": "core",
                 "action": "setvalue",
                 "options": {
@@ -114,7 +114,7 @@
                 "outputType": "text"
               },
               {
-                "name": "api_ref",
+                "name": "tr_id",
                 "module": "core",
                 "action": "setvalue",
                 "options": {
