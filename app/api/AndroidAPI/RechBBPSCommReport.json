@@ -392,22 +392,22 @@
                                             "options": {
                                               "connection": "postgres_gcpServer",
                                               "sql": {
-                                                "query": "select tcl.id, tcl.netamt, tcl.transaction_type, tcl.tr_date, tcl.crdr_type, tcl.remarks, mu.user_id \nFROM t_charge_cal tcl\nleft join m_users mu ON (mu.id = tcl.user_id)\nwhere tcl.user_id = @identity and tcl.tr_date between @fromdate and @todate ",
+                                                "query": "select tcl.id, tcl.netamt, tcl.transaction_type, tcl.tr_date, tcl.crdr_type, tcl.remarks, mu.user_id as rt_id, mu.user_fname as rt_name, \ntrt.status,  trt.user_number as recharge_number\nFROM t_charge_cal tcl\nleft join m_users mu ON (mu.id = tcl.user_id)\nleft join tt_recharge_trans trt on (trt.id=tcl.pay_ref_id)\nwhere tcl.user_id = @identity and tcl.tr_date between @fromdate and @todate ",
                                                 "params": [
                                                   {
                                                     "name": "@identity",
                                                     "value": "{{identity}}",
-                                                    "test": "65"
+                                                    "test": "110"
                                                   },
                                                   {
                                                     "name": "@fromdate",
                                                     "value": "{{$_GET.fromdate}}",
-                                                    "test": "2022-04-01 00:00:00"
+                                                    "test": "2022-05-01 00:00:00"
                                                   },
                                                   {
                                                     "name": "@todate",
                                                     "value": "{{$_GET.todate}}",
-                                                    "test": "2022-05-08 23:59:59"
+                                                    "test": "2022-05-11 23:59:59"
                                                   }
                                                 ]
                                               }
@@ -439,7 +439,19 @@
                                                 "type": "text"
                                               },
                                               {
-                                                "name": "user_id",
+                                                "name": "rt_id",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "rt_name",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "status",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "recharge_number",
                                                 "type": "text"
                                               }
                                             ],
