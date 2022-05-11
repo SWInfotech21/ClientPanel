@@ -3224,7 +3224,8 @@
                                                                 "value": "SN"
                                                               },
                                                               "meta": [],
-                                                              "outputType": "text"
+                                                              "outputType": "text",
+                                                              "output": true
                                                             },
                                                             {
                                                               "name": "apibalance",
@@ -3355,7 +3356,7 @@
                                                               },
                                                               "meta": [],
                                                               "outputType": "text",
-                                                              "output": false
+                                                              "output": true
                                                             },
                                                             {
                                                               "name": "apibalance",
@@ -3496,7 +3497,7 @@
                                                               },
                                                               "meta": [],
                                                               "outputType": "text",
-                                                              "output": false
+                                                              "output": true
                                                             },
                                                             {
                                                               "name": "apibalance",
@@ -3637,7 +3638,7 @@
                                                               },
                                                               "meta": [],
                                                               "outputType": "text",
-                                                              "output": false
+                                                              "output": true
                                                             },
                                                             {
                                                               "name": "apibalance",
@@ -3732,6 +3733,11 @@
                                                 },
                                                 {
                                                   "name": "ec",
+                                                  "type": "text",
+                                                  "sub": []
+                                                },
+                                                {
+                                                  "name": "api_log",
                                                   "type": "text",
                                                   "sub": []
                                                 },
