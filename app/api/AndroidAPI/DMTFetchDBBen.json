@@ -389,6 +389,14 @@
                                                   {
                                                     "table": "dmt_beneficiary",
                                                     "column": "status"
+                                                  },
+                                                  {
+                                                    "table": "dmt_beneficiary",
+                                                    "column": "aadhar_no"
+                                                  },
+                                                  {
+                                                    "table": "dmt_beneficiary",
+                                                    "column": "pan_no"
                                                   }
                                                 ],
                                                 "table": {
@@ -444,7 +452,7 @@
                                                   "conditional": null,
                                                   "valid": true
                                                 },
-                                                "query": "SELECT id, ben_id, ben_ac_no, ben_ifsc, ben_bankname, ben_verify, status\nFROM dmt_beneficiary\nWHERE remitter_id = :P1 /* {{$_GET.rem_id}} */ AND deleted_on IS NULL",
+                                                "query": "SELECT id, ben_id, ben_ac_no, ben_ifsc, ben_bankname, ben_verify, status, aadhar_no, pan_no\nFROM dmt_beneficiary\nWHERE remitter_id = :P1 /* {{$_GET.rem_id}} */ AND deleted_on IS NULL",
                                                 "params": [
                                                   {
                                                     "operator": "equal",
@@ -485,6 +493,14 @@
                                               {
                                                 "type": "text",
                                                 "name": "status"
+                                              },
+                                              {
+                                                "type": "text",
+                                                "name": "aadhar_no"
+                                              },
+                                              {
+                                                "type": "text",
+                                                "name": "pan_no"
                                               }
                                             ],
                                             "outputType": "array"
