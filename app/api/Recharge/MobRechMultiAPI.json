@@ -3763,7 +3763,7 @@
                                       "module": "core",
                                       "action": "condition",
                                       "options": {
-                                        "if": "{{apistatus == 'SUCCESS' || apistatus == 'PENDING'}}",
+                                        "if": "{{apistatus=='SUCCESS'||apistatus=='PENDING'||repeat[$index].apistatus=='SUCCESS'||repeat[$index].apistatus=='PENDING'}}",
                                         "then": {
                                           "steps": [
                                             {
@@ -3779,31 +3779,31 @@
                                                       "table": "tt_recharge_trans",
                                                       "column": "status",
                                                       "type": "text",
-                                                      "value": "{{apistatus}}"
+                                                      "value": "{{apistatus||repeat[$index].apistatus}}"
                                                     },
                                                     {
                                                       "table": "tt_recharge_trans",
                                                       "column": "api_logs",
                                                       "type": "text",
-                                                      "value": "{{api_log}}"
+                                                      "value": "{{api_log||repeat[$index].api_log}}"
                                                     },
                                                     {
                                                       "table": "tt_recharge_trans",
                                                       "column": "is_processed",
                                                       "type": "text",
-                                                      "value": "{{apifiredid}}"
+                                                      "value": "{{apifiredid||repeat[$index].apifiredid}}"
                                                     },
                                                     {
                                                       "table": "tt_recharge_trans",
                                                       "column": "operator_ref",
                                                       "type": "text",
-                                                      "value": "{{remarks}}"
+                                                      "value": "{{remarks||repeat[$index].remarks}}"
                                                     },
                                                     {
                                                       "table": "tt_recharge_trans",
                                                       "column": "api_ref",
                                                       "type": "text",
-                                                      "value": "{{api_ref}}"
+                                                      "value": "{{api_ref||repeat[$index].api_ref}}"
                                                     },
                                                     {
                                                       "table": "tt_recharge_trans",
@@ -3867,32 +3867,32 @@
                                                     "conditional": null,
                                                     "valid": true
                                                   },
-                                                  "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus}} */, api_logs = :P2 /* {{api_log}} */, is_processed = :P3 /* {{apifiredid}} */, operator_ref = :P4 /* {{remarks}} */, api_ref = :P5 /* {{api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance}} */, closing_balance = :P11 /* {{RTClosingBalance}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
+                                                  "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus||repeat[$index].apistatus}} */, api_logs = :P2 /* {{api_log||repeat[$index].api_log}} */, is_processed = :P3 /* {{apifiredid||repeat[$index].apifiredid}} */, operator_ref = :P4 /* {{remarks||repeat[$index].remarks}} */, api_ref = :P5 /* {{api_ref||repeat[$index].api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance}} */, closing_balance = :P11 /* {{RTClosingBalance}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
                                                   "params": [
                                                     {
                                                       "name": ":P1",
                                                       "type": "expression",
-                                                      "value": "{{apistatus}}"
+                                                      "value": "{{apistatus||repeat[$index].apistatus}}"
                                                     },
                                                     {
                                                       "name": ":P2",
                                                       "type": "expression",
-                                                      "value": "{{api_log}}"
+                                                      "value": "{{api_log||repeat[$index].api_log}}"
                                                     },
                                                     {
                                                       "name": ":P3",
                                                       "type": "expression",
-                                                      "value": "{{apifiredid}}"
+                                                      "value": "{{apifiredid||repeat[$index].apifiredid}}"
                                                     },
                                                     {
                                                       "name": ":P4",
                                                       "type": "expression",
-                                                      "value": "{{remarks}}"
+                                                      "value": "{{remarks||repeat[$index].remarks}}"
                                                     },
                                                     {
                                                       "name": ":P5",
                                                       "type": "expression",
-                                                      "value": "{{api_ref}}"
+                                                      "value": "{{api_ref||repeat[$index].api_ref}}"
                                                     },
                                                     {
                                                       "name": ":P6",
