@@ -27,8 +27,7 @@
         "type": "text",
         "options": {
           "rules": {
-            "core:required": {},
-            "core:number": {}
+            "core:required": {}
           }
         },
         "name": "mobile"
@@ -37,8 +36,7 @@
         "type": "text",
         "options": {
           "rules": {
-            "core:required": {},
-            "core:number": {}
+            "core:required": {}
           }
         },
         "name": "amount"
@@ -48,7 +46,6 @@
         "options": {
           "rules": {
             "core:required": {},
-            "core:number": {},
             "core:minlength": {
               "param": 4
             }
