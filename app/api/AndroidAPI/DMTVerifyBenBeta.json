@@ -738,7 +738,7 @@
                                                               "table": "tt_recharge_trans",
                                                               "column": "tr_mode",
                                                               "type": "text",
-                                                              "value": "{{'Web'}}"
+                                                              "value": "{{'Android'}}"
                                                             },
                                                             {
                                                               "table": "tt_recharge_trans",
@@ -875,7 +875,7 @@
                                                           ],
                                                           "table": "tt_recharge_trans",
                                                           "returning": "id",
-                                                          "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, opening_balance, amount, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, tr_mode, tr_type, status, tr_id, reason, ip_address, process_mode, live, tr_date, transaction_by, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, remitter_id) VALUES (:P1 /* {{GetComm[0].operator_id}} */, :P2 /* {{GetComm[0].service_id}} */, :P3 /* {{GetComm[0].api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_POST.VerifyBenId}} */, :P6 /* {{'AADHAR No: '+$_POST.VerifyAadharBenef+' | PAN No: '+$_POST.VerifyPANBenef}} */, :P7 /* {{GetUser.balance_amt}} */, :P8 /* {{Amount}} */, :P9 /* {{GetComm[0].comm_per}} */, :P10 /* {{GetComm[0].comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetComm[0].service_charge_val}} */, :P13 /* {{GetComm[0].service_charge_per}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTPayableAmt}} */, :P16 /* {{RTClosingBalance.toNumber()}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{TransactionId}} */, :P21 /* {{'Transfer of Rs. '+Amount+' by '+GetUser.user_mobile+'  and Benef. Id '+$_POST.VerifyBenId+' for Money Transfer Verification | Net Amt. '+RTPayableAmt}} */, :P22 /* {{$_SERVER.REMOTE_ADDR}} */, :P23 /* {{'A2P'}} */, :P24 /* {{'Live'}} */, :P25 /* {{NOW}} */, :P26 /* {{identity}} */, :P27 /* {{0}} */, :P28 /* {{0}} */, :P29 /* {{0}} */, :P30 /* {{0}} */, :P31 /* {{0}} */, :P32 /* {{0}} */, :P33 /* {{0}} */, :P34 /* {{0}} */, :P35 /* {{0}} */, :P36 /* {{0}} */, :P37 /* {{0}} */, :P38 /* {{0}} */, :P39 /* {{$_POST.VerifyRemMobile}} */)",
+                                                          "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, opening_balance, amount, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, tr_mode, tr_type, status, tr_id, reason, ip_address, process_mode, live, tr_date, transaction_by, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, remitter_id) VALUES (:P1 /* {{GetComm[0].operator_id}} */, :P2 /* {{GetComm[0].service_id}} */, :P3 /* {{GetComm[0].api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_POST.VerifyBenId}} */, :P6 /* {{'AADHAR No: '+$_POST.VerifyAadharBenef+' | PAN No: '+$_POST.VerifyPANBenef}} */, :P7 /* {{GetUser.balance_amt}} */, :P8 /* {{Amount}} */, :P9 /* {{GetComm[0].comm_per}} */, :P10 /* {{GetComm[0].comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetComm[0].service_charge_val}} */, :P13 /* {{GetComm[0].service_charge_per}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTPayableAmt}} */, :P16 /* {{RTClosingBalance.toNumber()}} */, :P17 /* {{'Android'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{TransactionId}} */, :P21 /* {{'Transfer of Rs. '+Amount+' by '+GetUser.user_mobile+'  and Benef. Id '+$_POST.VerifyBenId+' for Money Transfer Verification | Net Amt. '+RTPayableAmt}} */, :P22 /* {{$_SERVER.REMOTE_ADDR}} */, :P23 /* {{'A2P'}} */, :P24 /* {{'Live'}} */, :P25 /* {{NOW}} */, :P26 /* {{identity}} */, :P27 /* {{0}} */, :P28 /* {{0}} */, :P29 /* {{0}} */, :P30 /* {{0}} */, :P31 /* {{0}} */, :P32 /* {{0}} */, :P33 /* {{0}} */, :P34 /* {{0}} */, :P35 /* {{0}} */, :P36 /* {{0}} */, :P37 /* {{0}} */, :P38 /* {{0}} */, :P39 /* {{$_POST.VerifyRemMobile}} */)",
                                                           "params": [
                                                             {
                                                               "name": ":P1",
@@ -960,7 +960,7 @@
                                                             {
                                                               "name": ":P17",
                                                               "type": "expression",
-                                                              "value": "{{'Web'}}"
+                                                              "value": "{{'Android'}}"
                                                             },
                                                             {
                                                               "name": ":P18",
