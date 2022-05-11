@@ -3545,7 +3545,7 @@
                                                                                       "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
                                                                                       "method": "POST",
                                                                                       "data": {
-                                                                                        "msg": "{{MessageCode+'~'+AuthCode+'~'+TransactionId+'~'+$_POST.BenMobileNo+'~'+$_POST.RecipientIdTrans+'~'+$_POST.BenTrAmount+'~'+$_POST.trans_type+'~'+$_POST.BenAadharNo+'~'+$_POST.BenPanNo+'~0~0~0'}}"
+                                                                                        "msg": "{{MessageCode+'~'+AuthCode+'~'+TransactionId+'~'+$_POST.BenMobileNo+'~'+$_POST.RecipientIdTrans+'~'+Remainder+'~'+$_POST.trans_type+'~'+$_POST.BenAadharNo+'~'+$_POST.BenPanNo+'~0~0~0'}}"
                                                                                       },
                                                                                       "dataType": "x-www-form-urlencoded"
                                                                                     },
@@ -3556,7 +3556,7 @@
                                                                                     "module": "core",
                                                                                     "action": "setvalue",
                                                                                     "options": {
-                                                                                      "value": "{{RepeatAmt}}"
+                                                                                      "value": "{{Remainder}}"
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text",
@@ -7123,7 +7123,7 @@
                                                                                               "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
                                                                                               "method": "POST",
                                                                                               "data": {
-                                                                                                "msg": "{{MessageCode+'~'+AuthCode+'~'+RepeatTransactionId+'~'+$_POST.BenMobileNo+'~'+$_POST.RecipientIdTrans+'~'+$_POST.BenTrAmount+'~'+$_POST.trans_type+'~'+$_POST.BenAadharNo+'~'+$_POST.BenPanNo+'~0~0~0'}}"
+                                                                                                "msg": "{{MessageCode+'~'+AuthCode+'~'+RepeatTransactionId+'~'+$_POST.BenMobileNo+'~'+$_POST.RecipientIdTrans+'~'+RepeatAmt+'~'+$_POST.trans_type+'~'+$_POST.BenAadharNo+'~'+$_POST.BenPanNo+'~0~0~0'}}"
                                                                                               },
                                                                                               "dataType": "x-www-form-urlencoded"
                                                                                             },
