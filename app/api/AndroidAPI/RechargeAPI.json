@@ -3057,7 +3057,7 @@
                                                                                     "options": {
                                                                                       "connection": "postgres_gcpServer",
                                                                                       "sql": {
-                                                                                        "query": "SELECT t_random_root.api_id, ma.api_code, ma.username, ma.api_password, toar.api_code1, toar.api_code2, toar.api_code3, \ntoar.api_code4, toar.api_code5, toar.api_code6, toar.api_code7 \nFROM t_random_root \nLEFT JOIN m_api AS ma ON (ma.id = t_random_root.api_id) \nLEFT JOIN t_op_api_rel AS toar ON (toar.op_id = t_random_root.op_id) \nWHERE t_random_root.service_id = @service AND t_random_root.op_id = @operator AND ma.status = 1 order by t_random_root.id DESC;",
+                                                                                        "query": "SELECT t_random_root.api_id, ma.api_code, ma.username, ma.api_password, toar.api_code1, toar.api_code2, toar.api_code3, \ntoar.api_code4, toar.api_code5, toar.api_code6, toar.api_code7 \nFROM t_random_root \nLEFT JOIN m_api AS ma ON (ma.id = t_random_root.api_id) \nLEFT JOIN t_op_api_rel AS toar ON (toar.op_id = t_random_root.op_id) \nWHERE t_random_root.service_id = @service AND t_random_root.op_id = @operator AND ma.status = 1 order by random();",
                                                                                         "params": [
                                                                                           {
                                                                                             "name": "@service",
@@ -3067,7 +3067,7 @@
                                                                                           {
                                                                                             "name": "@operator",
                                                                                             "value": "{{$_GET.op}}",
-                                                                                            "test": "28"
+                                                                                            "test": "25"
                                                                                           }
                                                                                         ]
                                                                                       }
