@@ -63,6 +63,12 @@
         "name": "op"
       }
     ],
+    "$_POST": [
+      {
+        "type": "number",
+        "name": "id"
+      }
+    ],
     "$_SERVER": [
       {
         "type": "text",
@@ -3261,6 +3267,85 @@
                                                                                                     "output": false
                                                                                                   },
                                                                                                   {
+                                                                                                    "name": "UpRechAPI",
+                                                                                                    "module": "dbupdater",
+                                                                                                    "action": "update",
+                                                                                                    "options": {
+                                                                                                      "connection": "postgres_gcpServer",
+                                                                                                      "sql": {
+                                                                                                        "type": "update",
+                                                                                                        "values": [
+                                                                                                          {
+                                                                                                            "table": "tt_recharge_trans",
+                                                                                                            "column": "api_logs",
+                                                                                                            "type": "text",
+                                                                                                            "value": "{{api_log}}"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "table": "tt_recharge_trans",
+                                                                                                            "column": "status",
+                                                                                                            "type": "text",
+                                                                                                            "value": "{{apistatus}}"
+                                                                                                          }
+                                                                                                        ],
+                                                                                                        "table": "tt_recharge_trans",
+                                                                                                        "wheres": {
+                                                                                                          "condition": "AND",
+                                                                                                          "rules": [
+                                                                                                            {
+                                                                                                              "id": "id",
+                                                                                                              "field": "id",
+                                                                                                              "type": "double",
+                                                                                                              "operator": "equal",
+                                                                                                              "value": "{{RechTrans.identity}}",
+                                                                                                              "data": {
+                                                                                                                "column": "id"
+                                                                                                              },
+                                                                                                              "operation": "="
+                                                                                                            }
+                                                                                                          ],
+                                                                                                          "conditional": null,
+                                                                                                          "valid": true
+                                                                                                        },
+                                                                                                        "returning": "id",
+                                                                                                        "query": "UPDATE tt_recharge_trans\nSET api_logs = :P1 /* {{api_log}} */, status = :P2 /* {{apistatus}} */\nWHERE id = :P3 /* {{RechTrans.identity}} */",
+                                                                                                        "params": [
+                                                                                                          {
+                                                                                                            "name": ":P1",
+                                                                                                            "type": "expression",
+                                                                                                            "value": "{{api_log}}"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "name": ":P2",
+                                                                                                            "type": "expression",
+                                                                                                            "value": "{{apistatus}}"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "operator": "equal",
+                                                                                                            "type": "expression",
+                                                                                                            "name": ":P3",
+                                                                                                            "value": "{{RechTrans.identity}}"
+                                                                                                          }
+                                                                                                        ]
+                                                                                                      }
+                                                                                                    },
+                                                                                                    "meta": [
+                                                                                                      {
+                                                                                                        "name": "affected",
+                                                                                                        "type": "number"
+                                                                                                      }
+                                                                                                    ]
+                                                                                                  },
+                                                                                                  {
+                                                                                                    "name": "LiveApi",
+                                                                                                    "module": "api",
+                                                                                                    "action": "send",
+                                                                                                    "options": {
+                                                                                                      "url": "https://portal.swpay.in/api/RefreshTrans"
+                                                                                                    },
+                                                                                                    "output": false
+                                                                                                  },
+                                                                                                  {
                                                                                                     "name": "",
                                                                                                     "module": "core",
                                                                                                     "action": "condition",
@@ -3401,6 +3486,85 @@
                                                                                                     "meta": [],
                                                                                                     "outputType": "text",
                                                                                                     "output": true
+                                                                                                  },
+                                                                                                  {
+                                                                                                    "name": "UpRechAPI",
+                                                                                                    "module": "dbupdater",
+                                                                                                    "action": "update",
+                                                                                                    "options": {
+                                                                                                      "connection": "postgres_gcpServer",
+                                                                                                      "sql": {
+                                                                                                        "type": "update",
+                                                                                                        "values": [
+                                                                                                          {
+                                                                                                            "table": "tt_recharge_trans",
+                                                                                                            "column": "api_logs",
+                                                                                                            "type": "text",
+                                                                                                            "value": "{{api_log}}"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "table": "tt_recharge_trans",
+                                                                                                            "column": "status",
+                                                                                                            "type": "text",
+                                                                                                            "value": "{{apistatus}}"
+                                                                                                          }
+                                                                                                        ],
+                                                                                                        "table": "tt_recharge_trans",
+                                                                                                        "wheres": {
+                                                                                                          "condition": "AND",
+                                                                                                          "rules": [
+                                                                                                            {
+                                                                                                              "id": "id",
+                                                                                                              "field": "id",
+                                                                                                              "type": "double",
+                                                                                                              "operator": "equal",
+                                                                                                              "value": "{{RechTrans.identity}}",
+                                                                                                              "data": {
+                                                                                                                "column": "id"
+                                                                                                              },
+                                                                                                              "operation": "="
+                                                                                                            }
+                                                                                                          ],
+                                                                                                          "conditional": null,
+                                                                                                          "valid": true
+                                                                                                        },
+                                                                                                        "returning": "id",
+                                                                                                        "query": "UPDATE tt_recharge_trans\nSET api_logs = :P1 /* {{api_log}} */, status = :P2 /* {{apistatus}} */\nWHERE id = :P3 /* {{RechTrans.identity}} */",
+                                                                                                        "params": [
+                                                                                                          {
+                                                                                                            "name": ":P1",
+                                                                                                            "type": "expression",
+                                                                                                            "value": "{{api_log}}"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "name": ":P2",
+                                                                                                            "type": "expression",
+                                                                                                            "value": "{{apistatus}}"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "operator": "equal",
+                                                                                                            "type": "expression",
+                                                                                                            "name": ":P3",
+                                                                                                            "value": "{{RechTrans.identity}}"
+                                                                                                          }
+                                                                                                        ]
+                                                                                                      }
+                                                                                                    },
+                                                                                                    "meta": [
+                                                                                                      {
+                                                                                                        "name": "affected",
+                                                                                                        "type": "number"
+                                                                                                      }
+                                                                                                    ]
+                                                                                                  },
+                                                                                                  {
+                                                                                                    "name": "LiveApi",
+                                                                                                    "module": "api",
+                                                                                                    "action": "send",
+                                                                                                    "options": {
+                                                                                                      "url": "https://portal.swpay.in/api/RefreshTrans"
+                                                                                                    },
+                                                                                                    "output": false
                                                                                                   },
                                                                                                   {
                                                                                                     "name": "",
@@ -3544,6 +3708,85 @@
                                                                                                     "output": true
                                                                                                   },
                                                                                                   {
+                                                                                                    "name": "UpRechAPI",
+                                                                                                    "module": "dbupdater",
+                                                                                                    "action": "update",
+                                                                                                    "options": {
+                                                                                                      "connection": "postgres_gcpServer",
+                                                                                                      "sql": {
+                                                                                                        "type": "update",
+                                                                                                        "values": [
+                                                                                                          {
+                                                                                                            "table": "tt_recharge_trans",
+                                                                                                            "column": "api_logs",
+                                                                                                            "type": "text",
+                                                                                                            "value": "{{api_log}}"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "table": "tt_recharge_trans",
+                                                                                                            "column": "status",
+                                                                                                            "type": "text",
+                                                                                                            "value": "{{apistatus}}"
+                                                                                                          }
+                                                                                                        ],
+                                                                                                        "table": "tt_recharge_trans",
+                                                                                                        "wheres": {
+                                                                                                          "condition": "AND",
+                                                                                                          "rules": [
+                                                                                                            {
+                                                                                                              "id": "id",
+                                                                                                              "field": "id",
+                                                                                                              "type": "double",
+                                                                                                              "operator": "equal",
+                                                                                                              "value": "{{RechTrans.identity}}",
+                                                                                                              "data": {
+                                                                                                                "column": "id"
+                                                                                                              },
+                                                                                                              "operation": "="
+                                                                                                            }
+                                                                                                          ],
+                                                                                                          "conditional": null,
+                                                                                                          "valid": true
+                                                                                                        },
+                                                                                                        "returning": "id",
+                                                                                                        "query": "UPDATE tt_recharge_trans\nSET api_logs = :P1 /* {{api_log}} */, status = :P2 /* {{apistatus}} */\nWHERE id = :P3 /* {{RechTrans.identity}} */",
+                                                                                                        "params": [
+                                                                                                          {
+                                                                                                            "name": ":P1",
+                                                                                                            "type": "expression",
+                                                                                                            "value": "{{api_log}}"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "name": ":P2",
+                                                                                                            "type": "expression",
+                                                                                                            "value": "{{apistatus}}"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "operator": "equal",
+                                                                                                            "type": "expression",
+                                                                                                            "name": ":P3",
+                                                                                                            "value": "{{RechTrans.identity}}"
+                                                                                                          }
+                                                                                                        ]
+                                                                                                      }
+                                                                                                    },
+                                                                                                    "meta": [
+                                                                                                      {
+                                                                                                        "name": "affected",
+                                                                                                        "type": "number"
+                                                                                                      }
+                                                                                                    ]
+                                                                                                  },
+                                                                                                  {
+                                                                                                    "name": "LiveApi",
+                                                                                                    "module": "api",
+                                                                                                    "action": "send",
+                                                                                                    "options": {
+                                                                                                      "url": "https://portal.swpay.in/api/RefreshTrans"
+                                                                                                    },
+                                                                                                    "output": false
+                                                                                                  },
+                                                                                                  {
                                                                                                     "name": "",
                                                                                                     "module": "core",
                                                                                                     "action": "condition",
@@ -3683,6 +3926,85 @@
                                                                                                     "meta": [],
                                                                                                     "outputType": "text",
                                                                                                     "output": true
+                                                                                                  },
+                                                                                                  {
+                                                                                                    "name": "UpRechAPI",
+                                                                                                    "module": "dbupdater",
+                                                                                                    "action": "update",
+                                                                                                    "options": {
+                                                                                                      "connection": "postgres_gcpServer",
+                                                                                                      "sql": {
+                                                                                                        "type": "update",
+                                                                                                        "values": [
+                                                                                                          {
+                                                                                                            "table": "tt_recharge_trans",
+                                                                                                            "column": "api_logs",
+                                                                                                            "type": "text",
+                                                                                                            "value": "{{api_log}}"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "table": "tt_recharge_trans",
+                                                                                                            "column": "status",
+                                                                                                            "type": "text",
+                                                                                                            "value": "{{apistatus}}"
+                                                                                                          }
+                                                                                                        ],
+                                                                                                        "table": "tt_recharge_trans",
+                                                                                                        "wheres": {
+                                                                                                          "condition": "AND",
+                                                                                                          "rules": [
+                                                                                                            {
+                                                                                                              "id": "id",
+                                                                                                              "field": "id",
+                                                                                                              "type": "double",
+                                                                                                              "operator": "equal",
+                                                                                                              "value": "{{RechTrans.identity}}",
+                                                                                                              "data": {
+                                                                                                                "column": "id"
+                                                                                                              },
+                                                                                                              "operation": "="
+                                                                                                            }
+                                                                                                          ],
+                                                                                                          "conditional": null,
+                                                                                                          "valid": true
+                                                                                                        },
+                                                                                                        "returning": "id",
+                                                                                                        "query": "UPDATE tt_recharge_trans\nSET api_logs = :P1 /* {{api_log}} */, status = :P2 /* {{apistatus}} */\nWHERE id = :P3 /* {{RechTrans.identity}} */",
+                                                                                                        "params": [
+                                                                                                          {
+                                                                                                            "name": ":P1",
+                                                                                                            "type": "expression",
+                                                                                                            "value": "{{api_log}}"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "name": ":P2",
+                                                                                                            "type": "expression",
+                                                                                                            "value": "{{apistatus}}"
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "operator": "equal",
+                                                                                                            "type": "expression",
+                                                                                                            "name": ":P3",
+                                                                                                            "value": "{{RechTrans.identity}}"
+                                                                                                          }
+                                                                                                        ]
+                                                                                                      }
+                                                                                                    },
+                                                                                                    "meta": [
+                                                                                                      {
+                                                                                                        "name": "affected",
+                                                                                                        "type": "number"
+                                                                                                      }
+                                                                                                    ]
+                                                                                                  },
+                                                                                                  {
+                                                                                                    "name": "LiveApi",
+                                                                                                    "module": "api",
+                                                                                                    "action": "send",
+                                                                                                    "options": {
+                                                                                                      "url": "https://portal.swpay.in/api/RefreshTrans"
+                                                                                                    },
+                                                                                                    "output": false
                                                                                                   },
                                                                                                   {
                                                                                                     "name": "",
