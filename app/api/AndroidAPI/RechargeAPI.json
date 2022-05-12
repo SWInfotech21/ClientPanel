@@ -994,7 +994,8 @@
                                                                                   "operation": "="
                                                                                 }
                                                                               ]
-                                                                            }
+                                                                            },
+                                                                            "primary": "id"
                                                                           }
                                                                         ],
                                                                         "query": "SELECT t_op_api_rel.api_code1, t_op_api_rel.api_code2, t_op_api_rel.api_code3, t_op_api_rel.api_code4, t_op_api_rel.api_code5, t_op_api_rel.api_code6, m_api_fwd.service_id, m_api_fwd.api_id, m_api.api_name, m_api.api_code, m_api.username, m_api.api_password\nFROM t_op_api_rel\nLEFT JOIN m_api_forward AS m_api_fwd ON (m_api_fwd.operator_id = t_op_api_rel.op_id) LEFT JOIN m_api AS m_api ON (m_api.id = m_api_fwd.api_id)\nWHERE t_op_api_rel.op_id = :P1 /* {{$_GET.op}} */ AND m_api.status = 1",
@@ -1038,7 +1039,9 @@
                                                                           ],
                                                                           "conditional": null,
                                                                           "valid": true
-                                                                        }
+                                                                        },
+                                                                        "primary": "id",
+                                                                        "orders": []
                                                                       }
                                                                     },
                                                                     "output": false,
@@ -2555,7 +2558,7 @@
                                                                             "module": "core",
                                                                             "action": "condition",
                                                                             "options": {
-                                                                              "if": "{{GetOpAPICodeFwrd.api_code == 'SN'}}",
+                                                                              "if": "{{GetOpAPICodeFwrd.api_code=='SN'}}",
                                                                               "then": {
                                                                                 "steps": [
                                                                                   {
@@ -2920,7 +2923,7 @@
                                                                             "module": "core",
                                                                             "action": "condition",
                                                                             "options": {
-                                                                              "if": "{{GetOpAPICodeFwrd.api_code == 'MRO'}}",
+                                                                              "if": "{{GetOpAPICodeFwrd.api_code=='MRO'}}",
                                                                               "then": {
                                                                                 "steps": [
                                                                                   {
@@ -2950,34 +2953,6 @@
                                                                                     "meta": [],
                                                                                     "outputType": "text",
                                                                                     "output": false
-                                                                                  },
-                                                                                  {
-                                                                                    "name": "",
-                                                                                    "module": "core",
-                                                                                    "action": "condition",
-                                                                                    "options": {
-                                                                                      "if": "{{stat == 'failure'}}",
-                                                                                      "then": {
-                                                                                        "steps": {
-                                                                                          "name": "apimrobotic",
-                                                                                          "module": "api",
-                                                                                          "action": "send",
-                                                                                          "options": {
-                                                                                            "url": "https://mrobotics.in/api/recharge_get",
-                                                                                            "params": {
-                                                                                              "api_token": "{{GetOpAPICodeFwrd.api_password}}",
-                                                                                              "mobile_no": "{{$_POST.mobile_number}}",
-                                                                                              "amount": "{{$_POST.recharge_amount}}",
-                                                                                              "company_id": "{{GetOpAPICodeFwrd.api_code3}}",
-                                                                                              "order_id": "{{TransactionId}}",
-                                                                                              "is_stv": "{{true}}"
-                                                                                            }
-                                                                                          },
-                                                                                          "output": false
-                                                                                        }
-                                                                                      }
-                                                                                    },
-                                                                                    "outputType": "boolean"
                                                                                   },
                                                                                   {
                                                                                     "name": "apistatus",
@@ -3805,7 +3780,7 @@
                                                                             "module": "core",
                                                                             "action": "condition",
                                                                             "options": {
-                                                                              "if": "{{apistatus == 'SUCCESS' || apistatus == 'PENDING'}}",
+                                                                              "if": "{{apistatus=='SUCCESS'||apistatus=='PENDING'||repeat[0].apistatus=='SUCCESS'||repeat[0].apistatus=='PENDING'}}",
                                                                               "then": {
                                                                                 "steps": [
                                                                                   {
@@ -3821,31 +3796,31 @@
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "status",
                                                                                             "type": "text",
-                                                                                            "value": "{{apistatus}}"
+                                                                                            "value": "{{apistatus||repeat[0].apistatus}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "api_logs",
                                                                                             "type": "text",
-                                                                                            "value": "{{api_log}}"
+                                                                                            "value": "{{api_log||repeat[0].api_log}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "is_processed",
                                                                                             "type": "text",
-                                                                                            "value": "{{apifiredid}}"
+                                                                                            "value": "{{apifiredid||repeat[0].apifiredid}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "operator_ref",
                                                                                             "type": "text",
-                                                                                            "value": "{{remarks}}"
+                                                                                            "value": "{{remarks||repeat[0].remarks}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "api_ref",
                                                                                             "type": "text",
-                                                                                            "value": "{{api_ref}}"
+                                                                                            "value": "{{api_ref||repeat[0].api_ref}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
@@ -3875,13 +3850,13 @@
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "extra1",
                                                                                             "type": "text",
-                                                                                            "value": "{{ec}}"
+                                                                                            "value": "{{ec||repeat[0].ec}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "extra3",
                                                                                             "type": "text",
-                                                                                            "value": "{{apibalance}}"
+                                                                                            "value": "{{apibalance||repeat[0].apibalance}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
@@ -3909,32 +3884,32 @@
                                                                                           "conditional": null,
                                                                                           "valid": true
                                                                                         },
-                                                                                        "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus}} */, api_logs = :P2 /* {{api_log}} */, is_processed = :P3 /* {{apifiredid}} */, operator_ref = :P4 /* {{remarks}} */, api_ref = :P5 /* {{api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance}} */, closing_balance = :P11 /* {{RTClosingBalance}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
+                                                                                        "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus||repeat[0].apistatus}} */, api_logs = :P2 /* {{api_log||repeat[0].api_log}} */, is_processed = :P3 /* {{apifiredid||repeat[0].apifiredid}} */, operator_ref = :P4 /* {{remarks||repeat[0].remarks}} */, api_ref = :P5 /* {{api_ref||repeat[0].api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec||repeat[0].ec}} */, extra3 = :P10 /* {{apibalance||repeat[0].apibalance}} */, closing_balance = :P11 /* {{RTClosingBalance}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
                                                                                         "params": [
                                                                                           {
                                                                                             "name": ":P1",
                                                                                             "type": "expression",
-                                                                                            "value": "{{apistatus}}"
+                                                                                            "value": "{{apistatus||repeat[0].apistatus}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P2",
                                                                                             "type": "expression",
-                                                                                            "value": "{{api_log}}"
+                                                                                            "value": "{{api_log||repeat[0].api_log}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P3",
                                                                                             "type": "expression",
-                                                                                            "value": "{{apifiredid}}"
+                                                                                            "value": "{{apifiredid||repeat[0].apifiredid}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P4",
                                                                                             "type": "expression",
-                                                                                            "value": "{{remarks}}"
+                                                                                            "value": "{{remarks||repeat[0].remarks}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P5",
                                                                                             "type": "expression",
-                                                                                            "value": "{{api_ref}}"
+                                                                                            "value": "{{api_ref||repeat[0].api_ref}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P6",
@@ -3954,12 +3929,12 @@
                                                                                           {
                                                                                             "name": ":P9",
                                                                                             "type": "expression",
-                                                                                            "value": "{{ec}}"
+                                                                                            "value": "{{ec||repeat[0].ec}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P10",
                                                                                             "type": "expression",
-                                                                                            "value": "{{apibalance}}"
+                                                                                            "value": "{{apibalance||repeat[0].apibalance}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P11",
@@ -3972,7 +3947,8 @@
                                                                                             "name": ":P12",
                                                                                             "value": "{{RechTrans.identity}}"
                                                                                           }
-                                                                                        ]
+                                                                                        ],
+                                                                                        "returning": "id"
                                                                                       }
                                                                                     },
                                                                                     "meta": [
@@ -3996,7 +3972,7 @@
                                                                                             "table": "tt_balance",
                                                                                             "column": "status",
                                                                                             "type": "text",
-                                                                                            "value": "{{apistatus}}"
+                                                                                            "value": "{{apistatus||repeat[0].apistatus}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_balance",
@@ -4024,12 +4000,12 @@
                                                                                           "conditional": null,
                                                                                           "valid": true
                                                                                         },
-                                                                                        "query": "UPDATE tt_balance\nSET status = :P1 /* {{apistatus}} */, new_balance = :P2 /* {{RTClosingBalance}} */\nWHERE id = :P3 /* {{DrBalanceRT.identity}} */",
+                                                                                        "query": "UPDATE tt_balance\nSET status = :P1 /* {{apistatus||repeat[0].apistatus}} */, new_balance = :P2 /* {{RTClosingBalance}} */\nWHERE id = :P3 /* {{DrBalanceRT.identity}} */",
                                                                                         "params": [
                                                                                           {
                                                                                             "name": ":P1",
                                                                                             "type": "expression",
-                                                                                            "value": "{{apistatus}}"
+                                                                                            "value": "{{apistatus||repeat[0].apistatus}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P2",
@@ -4042,7 +4018,8 @@
                                                                                             "name": ":P3",
                                                                                             "value": "{{DrBalanceRT.identity}}"
                                                                                           }
-                                                                                        ]
+                                                                                        ],
+                                                                                        "returning": "id"
                                                                                       }
                                                                                     },
                                                                                     "meta": [
@@ -4101,7 +4078,8 @@
                                                                                             "name": ":P2",
                                                                                             "value": "{{identity}}"
                                                                                           }
-                                                                                        ]
+                                                                                        ],
+                                                                                        "returning": "id"
                                                                                       }
                                                                                     },
                                                                                     "meta": [
@@ -4887,25 +4865,25 @@
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "api_logs",
                                                                                             "type": "text",
-                                                                                            "value": "{{api_log}}"
+                                                                                            "value": "{{api_log||repeat[0].api_log}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "is_processed",
                                                                                             "type": "text",
-                                                                                            "value": "{{apifiredid}}"
+                                                                                            "value": "{{apifiredid||repeat[0].apifiredid}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "operator_ref",
                                                                                             "type": "text",
-                                                                                            "value": "{{remarks}}"
+                                                                                            "value": "{{remarks||repeat[0].remarks}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "api_ref",
                                                                                             "type": "text",
-                                                                                            "value": "{{api_ref}}"
+                                                                                            "value": "{{api_ref||repeat[0].api_ref}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
@@ -4935,13 +4913,13 @@
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "extra1",
                                                                                             "type": "text",
-                                                                                            "value": "{{ec}}"
+                                                                                            "value": "{{ec||repeat[0].ec}}"
                                                                                           },
                                                                                           {
                                                                                             "table": "tt_recharge_trans",
                                                                                             "column": "extra3",
                                                                                             "type": "text",
-                                                                                            "value": "{{apibalance}}"
+                                                                                            "value": "{{apibalance||repeat[0].apibalance}}"
                                                                                           }
                                                                                         ],
                                                                                         "table": "tt_recharge_trans",
@@ -4963,7 +4941,7 @@
                                                                                           "conditional": null,
                                                                                           "valid": true
                                                                                         },
-                                                                                        "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{'FAILED'}} */, api_logs = :P2 /* {{api_log}} */, is_processed = :P3 /* {{apifiredid}} */, operator_ref = :P4 /* {{remarks}} */, api_ref = :P5 /* {{api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance}} */\nWHERE id = :P11 /* {{RechTrans.identity}} */",
+                                                                                        "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{'FAILED'}} */, api_logs = :P2 /* {{api_log||repeat[0].api_log}} */, is_processed = :P3 /* {{apifiredid||repeat[0].apifiredid}} */, operator_ref = :P4 /* {{remarks||repeat[0].remarks}} */, api_ref = :P5 /* {{api_ref||repeat[0].api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec||repeat[0].ec}} */, extra3 = :P10 /* {{apibalance||repeat[0].apibalance}} */\nWHERE id = :P11 /* {{RechTrans.identity}} */",
                                                                                         "params": [
                                                                                           {
                                                                                             "name": ":P1",
@@ -4973,22 +4951,22 @@
                                                                                           {
                                                                                             "name": ":P2",
                                                                                             "type": "expression",
-                                                                                            "value": "{{api_log}}"
+                                                                                            "value": "{{api_log||repeat[0].api_log}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P3",
                                                                                             "type": "expression",
-                                                                                            "value": "{{apifiredid}}"
+                                                                                            "value": "{{apifiredid||repeat[0].apifiredid}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P4",
                                                                                             "type": "expression",
-                                                                                            "value": "{{remarks}}"
+                                                                                            "value": "{{remarks||repeat[0].remarks}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P5",
                                                                                             "type": "expression",
-                                                                                            "value": "{{api_ref}}"
+                                                                                            "value": "{{api_ref||repeat[0].api_ref}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P6",
@@ -5008,12 +4986,12 @@
                                                                                           {
                                                                                             "name": ":P9",
                                                                                             "type": "expression",
-                                                                                            "value": "{{ec}}"
+                                                                                            "value": "{{ec||repeat[0].ec}}"
                                                                                           },
                                                                                           {
                                                                                             "name": ":P10",
                                                                                             "type": "expression",
-                                                                                            "value": "{{apibalance}}"
+                                                                                            "value": "{{apibalance||repeat[0].apibalance}}"
                                                                                           },
                                                                                           {
                                                                                             "operator": "equal",
@@ -5021,7 +4999,8 @@
                                                                                             "name": ":P11",
                                                                                             "value": "{{RechTrans.identity}}"
                                                                                           }
-                                                                                        ]
+                                                                                        ],
+                                                                                        "returning": "id"
                                                                                       }
                                                                                     },
                                                                                     "meta": [

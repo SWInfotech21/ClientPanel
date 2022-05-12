@@ -54,6 +54,30 @@
         "name": "VerifyBenIFSC"
       },
       {
+        "type": "text",
+        "fieldName": "VerifyBenName",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "VerifyBenName"
+      },
+      {
+        "type": "text",
+        "fieldName": "VerifyBenBankName",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "VerifyBenBankName"
+      },
+      {
         "type": "number",
         "fieldName": "VerifyAadharBenef",
         "options": {
@@ -79,6 +103,10 @@
           }
         },
         "name": "VerifyPANBenef"
+      },
+      {
+        "type": "boolean",
+        "name": "ben_verify"
       }
     ],
     "$_SERVER": [
@@ -260,6 +288,103 @@
           }
         ],
         "outputType": "array"
+      },
+      {
+        "name": "GetBenFromDB",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "dmt_beneficiary",
+                "column": "id",
+                "alias": "CountId",
+                "aggregate": "COUNT"
+              }
+            ],
+            "table": {
+              "name": "dmt_beneficiary"
+            },
+            "primary": "id",
+            "joins": [],
+            "groupBy": [],
+            "query": "SELECT COUNT(id) AS CountId\nFROM dmt_beneficiary\nWHERE remitter_id = :P1 /* {{$_POST.VerifyRemMobile}} */ AND ben_id = :P2 /* {{$_POST.VerifyBenId}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.VerifyRemMobile}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_POST.VerifyBenId}}"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "dmt_beneficiary.remitter_id",
+                  "field": "dmt_beneficiary.remitter_id",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.VerifyRemMobile}}",
+                  "data": {
+                    "table": "dmt_beneficiary",
+                    "column": "remitter_id",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "primary": false,
+                      "nullable": true,
+                      "maxLength": -5,
+                      "unique": false,
+                      "name": "remitter_id"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "dmt_beneficiary.ben_id",
+                  "field": "dmt_beneficiary.ben_id",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.VerifyBenId}}",
+                  "data": {
+                    "table": "dmt_beneficiary",
+                    "column": "ben_id",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "primary": false,
+                      "nullable": true,
+                      "maxLength": -5,
+                      "unique": false,
+                      "name": "ben_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "number",
+            "name": "CountId"
+          }
+        ],
+        "outputType": "object"
       },
       {
         "name": "",
@@ -1143,126 +1268,6 @@
                   "then": {
                     "steps": [
                       {
-                        "name": "UpBen",
-                        "module": "dbupdater",
-                        "action": "update",
-                        "options": {
-                          "connection": "postgres_gcpServer",
-                          "sql": {
-                            "type": "update",
-                            "values": [
-                              {
-                                "table": "dmt_beneficiary",
-                                "column": "ben_verify",
-                                "type": "boolean",
-                                "value": "{{true}}"
-                              },
-                              {
-                                "table": "dmt_beneficiary",
-                                "column": "updated_by",
-                                "type": "number",
-                                "value": "{{identity}}"
-                              },
-                              {
-                                "table": "dmt_beneficiary",
-                                "column": "updated_on",
-                                "type": "datetime",
-                                "value": "{{NOW}}"
-                              },
-                              {
-                                "table": "dmt_beneficiary",
-                                "column": "aadhar_no",
-                                "type": "text",
-                                "value": "{{$_POST.VerifyAadharBenef}}"
-                              },
-                              {
-                                "table": "dmt_beneficiary",
-                                "column": "pan_no",
-                                "type": "text",
-                                "value": "{{$_POST.VerifyPANBenef}}"
-                              }
-                            ],
-                            "table": "dmt_beneficiary",
-                            "wheres": {
-                              "condition": "AND",
-                              "rules": [
-                                {
-                                  "id": "remitter_id",
-                                  "field": "remitter_id",
-                                  "type": "string",
-                                  "operator": "equal",
-                                  "value": "{{$_POST.VerifyRemMobile}}",
-                                  "data": {
-                                    "column": "remitter_id"
-                                  },
-                                  "operation": "="
-                                },
-                                {
-                                  "id": "ben_id",
-                                  "field": "ben_id",
-                                  "type": "string",
-                                  "operator": "equal",
-                                  "value": "{{$_POST.VerifyBenId}}",
-                                  "data": {
-                                    "column": "ben_id"
-                                  },
-                                  "operation": "="
-                                }
-                              ],
-                              "conditional": null,
-                              "valid": true
-                            },
-                            "query": "UPDATE dmt_beneficiary\nSET ben_verify = :P1 /* {{true}} */, updated_by = :P2 /* {{identity}} */, updated_on = :P3 /* {{NOW}} */, aadhar_no = :P4 /* {{$_POST.VerifyAadharBenef}} */, pan_no = :P5 /* {{$_POST.VerifyPANBenef}} */\nWHERE remitter_id = :P6 /* {{$_POST.VerifyRemMobile}} */ AND ben_id = :P7 /* {{$_POST.VerifyBenId}} */",
-                            "params": [
-                              {
-                                "name": ":P1",
-                                "type": "expression",
-                                "value": "{{true}}"
-                              },
-                              {
-                                "name": ":P2",
-                                "type": "expression",
-                                "value": "{{identity}}"
-                              },
-                              {
-                                "name": ":P3",
-                                "type": "expression",
-                                "value": "{{NOW}}"
-                              },
-                              {
-                                "name": ":P4",
-                                "type": "expression",
-                                "value": "{{$_POST.VerifyAadharBenef}}"
-                              },
-                              {
-                                "name": ":P5",
-                                "type": "expression",
-                                "value": "{{$_POST.VerifyPANBenef}}"
-                              },
-                              {
-                                "operator": "equal",
-                                "type": "expression",
-                                "name": ":P6",
-                                "value": "{{$_POST.VerifyRemMobile}}"
-                              },
-                              {
-                                "operator": "equal",
-                                "type": "expression",
-                                "name": ":P7",
-                                "value": "{{$_POST.VerifyBenId}}"
-                              }
-                            ],
-                            "returning": "id"
-                          }
-                        },
-                        "meta": [
-                          {
-                            "name": "affected",
-                            "type": "number"
-                          }
-                        ]
-                      },
-                      {
                         "name": "UpRechTrans",
                         "module": "dbupdater",
                         "action": "update",
@@ -1521,6 +1526,310 @@
                             "type": "number"
                           }
                         ]
+                      },
+                      {
+                        "name": "",
+                        "module": "core",
+                        "action": "condition",
+                        "options": {
+                          "if": "{{GetBenFromDB.CountId>0}}",
+                          "then": {
+                            "steps": {
+                              "name": "UpBen",
+                              "module": "dbupdater",
+                              "action": "update",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "update",
+                                  "values": [
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "ben_verify",
+                                      "type": "boolean",
+                                      "value": "{{true}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "updated_by",
+                                      "type": "number",
+                                      "value": "{{identity}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "updated_on",
+                                      "type": "datetime",
+                                      "value": "{{NOW}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "aadhar_no",
+                                      "type": "text",
+                                      "value": "{{$_POST.VerifyAadharBenef}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "pan_no",
+                                      "type": "text",
+                                      "value": "{{$_POST.VerifyPANBenef}}"
+                                    }
+                                  ],
+                                  "table": "dmt_beneficiary",
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "remitter_id",
+                                        "field": "remitter_id",
+                                        "type": "string",
+                                        "operator": "equal",
+                                        "value": "{{$_POST.VerifyRemMobile}}",
+                                        "data": {
+                                          "column": "remitter_id"
+                                        },
+                                        "operation": "="
+                                      },
+                                      {
+                                        "id": "ben_id",
+                                        "field": "ben_id",
+                                        "type": "string",
+                                        "operator": "equal",
+                                        "value": "{{$_POST.VerifyBenId}}",
+                                        "data": {
+                                          "column": "ben_id"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "UPDATE dmt_beneficiary\nSET ben_verify = :P1 /* {{true}} */, updated_by = :P2 /* {{identity}} */, updated_on = :P3 /* {{NOW}} */, aadhar_no = :P4 /* {{$_POST.VerifyAadharBenef}} */, pan_no = :P5 /* {{$_POST.VerifyPANBenef}} */\nWHERE remitter_id = :P6 /* {{$_POST.VerifyRemMobile}} */ AND ben_id = :P7 /* {{$_POST.VerifyBenId}} */",
+                                  "params": [
+                                    {
+                                      "name": ":P1",
+                                      "type": "expression",
+                                      "value": "{{true}}"
+                                    },
+                                    {
+                                      "name": ":P2",
+                                      "type": "expression",
+                                      "value": "{{identity}}"
+                                    },
+                                    {
+                                      "name": ":P3",
+                                      "type": "expression",
+                                      "value": "{{NOW}}"
+                                    },
+                                    {
+                                      "name": ":P4",
+                                      "type": "expression",
+                                      "value": "{{$_POST.VerifyAadharBenef}}"
+                                    },
+                                    {
+                                      "name": ":P5",
+                                      "type": "expression",
+                                      "value": "{{$_POST.VerifyPANBenef}}"
+                                    },
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P6",
+                                      "value": "{{$_POST.VerifyRemMobile}}"
+                                    },
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P7",
+                                      "value": "{{$_POST.VerifyBenId}}"
+                                    }
+                                  ],
+                                  "returning": "id"
+                                }
+                              },
+                              "meta": [
+                                {
+                                  "name": "affected",
+                                  "type": "number"
+                                }
+                              ]
+                            }
+                          },
+                          "else": {
+                            "steps": {
+                              "name": "AddBenefToDB",
+                              "module": "dbupdater",
+                              "action": "insert",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "insert",
+                                  "values": [
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "remitter_id",
+                                      "type": "text",
+                                      "value": "{{$_POST.VerifyRemMobile}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "ben_id",
+                                      "type": "text",
+                                      "value": "{{$_POST.VerifyBenId}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "ben_name",
+                                      "type": "text",
+                                      "value": "{{$_POST.VerifyBenName}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "ben_mobile",
+                                      "type": "text",
+                                      "value": "{{$_POST.VerifyRemMobile}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "ben_ac_no",
+                                      "type": "text",
+                                      "value": "{{$_POST.VerifyBenAcNo}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "ben_ifsc",
+                                      "type": "text",
+                                      "value": "{{$_POST.VerifyBenIFSC}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "ben_bankname",
+                                      "type": "text",
+                                      "value": "{{$_POST.VerifyBenBankName}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "ben_verify",
+                                      "type": "boolean",
+                                      "value": "{{true}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "status",
+                                      "type": "text",
+                                      "value": "{{'Active'}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "created_by",
+                                      "type": "text",
+                                      "value": "{{identity}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "created_on",
+                                      "type": "datetime",
+                                      "value": "{{NOW}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "aadhar_no",
+                                      "type": "text",
+                                      "value": "{{$_POST.VerifyAadharBenef}}"
+                                    },
+                                    {
+                                      "table": "dmt_beneficiary",
+                                      "column": "pan_no",
+                                      "type": "text",
+                                      "value": "{{$_POST.VerifyPANBenef}}"
+                                    }
+                                  ],
+                                  "table": "dmt_beneficiary",
+                                  "returning": "id",
+                                  "query": "INSERT INTO dmt_beneficiary\n(remitter_id, ben_id, ben_name, ben_mobile, ben_ac_no, ben_ifsc, ben_bankname, ben_verify, status, created_by, created_on, aadhar_no, pan_no) VALUES (:P1 /* {{$_POST.VerifyRemMobile}} */, :P2 /* {{$_POST.VerifyBenId}} */, :P3 /* {{$_POST.VerifyBenName}} */, :P4 /* {{$_POST.VerifyRemMobile}} */, :P5 /* {{$_POST.VerifyBenAcNo}} */, :P6 /* {{$_POST.VerifyBenIFSC}} */, :P7 /* {{$_POST.VerifyBenBankName}} */, :P8 /* {{true}} */, :P9 /* {{'Active'}} */, :P10 /* {{identity}} */, :P11 /* {{NOW}} */, :P12 /* {{$_POST.VerifyAadharBenef}} */, :P13 /* {{$_POST.VerifyPANBenef}} */)",
+                                  "params": [
+                                    {
+                                      "name": ":P1",
+                                      "type": "expression",
+                                      "value": "{{$_POST.VerifyRemMobile}}"
+                                    },
+                                    {
+                                      "name": ":P2",
+                                      "type": "expression",
+                                      "value": "{{$_POST.VerifyBenId}}"
+                                    },
+                                    {
+                                      "name": ":P3",
+                                      "type": "expression",
+                                      "value": "{{$_POST.VerifyBenName}}"
+                                    },
+                                    {
+                                      "name": ":P4",
+                                      "type": "expression",
+                                      "value": "{{$_POST.VerifyRemMobile}}"
+                                    },
+                                    {
+                                      "name": ":P5",
+                                      "type": "expression",
+                                      "value": "{{$_POST.VerifyBenAcNo}}"
+                                    },
+                                    {
+                                      "name": ":P6",
+                                      "type": "expression",
+                                      "value": "{{$_POST.VerifyBenIFSC}}"
+                                    },
+                                    {
+                                      "name": ":P7",
+                                      "type": "expression",
+                                      "value": "{{$_POST.VerifyBenBankName}}"
+                                    },
+                                    {
+                                      "name": ":P8",
+                                      "type": "expression",
+                                      "value": "{{true}}"
+                                    },
+                                    {
+                                      "name": ":P9",
+                                      "type": "expression",
+                                      "value": "{{'Active'}}"
+                                    },
+                                    {
+                                      "name": ":P10",
+                                      "type": "expression",
+                                      "value": "{{identity}}"
+                                    },
+                                    {
+                                      "name": ":P11",
+                                      "type": "expression",
+                                      "value": "{{NOW}}"
+                                    },
+                                    {
+                                      "name": ":P12",
+                                      "type": "expression",
+                                      "value": "{{$_POST.VerifyAadharBenef}}"
+                                    },
+                                    {
+                                      "name": ":P13",
+                                      "type": "expression",
+                                      "value": "{{$_POST.VerifyPANBenef}}"
+                                    }
+                                  ]
+                                }
+                              },
+                              "meta": [
+                                {
+                                  "name": "identity",
+                                  "type": "text"
+                                },
+                                {
+                                  "name": "affected",
+                                  "type": "number"
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        "outputType": "boolean"
                       },
                       {
                         "name": "LiveApi",
