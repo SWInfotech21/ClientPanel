@@ -1044,7 +1044,7 @@
                                                                         "orders": []
                                                                       }
                                                                     },
-                                                                    "output": false,
+                                                                    "output": true,
                                                                     "meta": [
                                                                       {
                                                                         "type": "text",
@@ -2934,8 +2934,8 @@
                                                                                       "url": "https://mrobotics.in/api/recharge_get",
                                                                                       "params": {
                                                                                         "api_token": "{{GetOpAPICodeFwrd.api_password}}",
-                                                                                        "mobile_no": "{{$_POST.mobile_number}}",
-                                                                                        "amount": "{{$_POST.recharge_amount}}",
+                                                                                        "mobile_no": "{{$_GET.mobile}}",
+                                                                                        "amount": "{{$_GET.amount}}",
                                                                                         "company_id": "{{GetOpAPICodeFwrd.api_code3}}",
                                                                                         "order_id": "{{TransactionId}}",
                                                                                         "is_stv": "{{false}}"
@@ -3061,7 +3061,7 @@
                                                                                           {
                                                                                             "name": "@operator",
                                                                                             "value": "{{$_GET.op}}",
-                                                                                            "test": "25"
+                                                                                            "test": "28"
                                                                                           }
                                                                                         ]
                                                                                       }
