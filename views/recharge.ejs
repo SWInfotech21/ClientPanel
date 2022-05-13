@@ -2,7 +2,7 @@
 <meta name="ac:route" content="/recharge">
 <dmx-value id="varROfferAmt" dmx-bind:value="0"></dmx-value>
 <dmx-serverconnect id="scOperator" url="api/Operator/MobileOpFetch" noload></dmx-serverconnect>
-<dmx-serverconnect id="scRechargeLive" url="api/Reports/LiveRechargeTr" sockets="true"></dmx-serverconnect>
+<dmx-serverconnect id="scRechargeLive" url="api/Reports/LiveRechargeTr"></dmx-serverconnect>
 <dmx-serverconnect id="scMobileOffer" url="api/CheckAPIs/ROfferMobile" dmx-param:tel="content.formMobileRecharge.inpMobile.value" dmx-param:op="content.formMobileRecharge.inp_opname.selectedText" noload></dmx-serverconnect>
 <script is="dmx-flow" id="flowMobileRech" type="text/dmx-flow">
     {
@@ -73,7 +73,7 @@
                 <div class="tab-pane fade show active px-2" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                     <h4 class="mb-4">Mobile Recharge</h4>
                     <div class="row">
-                        <form id="formMobileRecharge" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load();modalRecharge.show();" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
+                        <form id="formMobileRecharge" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load();modalRecharge.show();scRechargeLive.load();" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
                             <div class="form-group row">
                                 <label class="text-monospace col-3 pe-0">Mobile No. (+91)</label>
                                 <div class="input-group mb-2 col-9 ps-0">
@@ -139,7 +139,7 @@
                 <div class="tab-pane fade px-2" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <h4 class="mb-4">DTH Recharge</h4>
                     <div class="row">
-                        <form id="formDTHRecharge" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load();modalRecharge.show();" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
+                        <form id="formDTHRecharge" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load();modalRecharge.show();scRechargeLive.load();" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
                             <div class="form-group row">
                                 <label class="text-monospace col-3 pe-0">Subscriber ID</label>
                                 <div class="input-group mb-2 col-9 ps-0">
@@ -200,7 +200,7 @@
                 <div class="tab-pane fade px-2" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <h4 class="mb-4">PostPaid Recharge</h4>
                     <div class="row">
-                        <form id="formPostPaid" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load()" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
+                        <form id="formPostPaid" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load();scRechargeLive.load();" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
                             <div class="form-group row">
                                 <label class="text-monospace col-3 pe-0">PostPaid Number</label>
                                 <div class="input-group mb-2 col-9 ps-0">
@@ -210,9 +210,9 @@
                                         </div>
                                     </div>
                                     <div class="input-group-prepend">
-                                        <input type="number" class="form-control" id="inpPostpaidMobile" name="mobile_number" placeholder="Enter 6 digit PostPaid No." maxlength="20" required="" title="Enter PostPaid No." autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid PostPaid No.">
+                                        <input type="number" class="form-control" id="inpPostpaidMobile" name="mobile_number" placeholder="Enter PostPaid No." maxlength="20" required="" title="Enter PostPaid No." autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid PostPaid No.">
                                     </div>
-                                    <input type="number" class="form-control" id="inpPostpaidstdcode" name="stdcode" placeholder="STD Code" maxlength="6" required="" title="Enter STD Code" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid STD Code">
+                                    <!-- <input type="number" class="form-control" id="inpPostpaidstdcode" name="stdcode" placeholder="STD Code" maxlength="6" required="" title="Enter STD Code" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid STD Code"> -->
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -239,9 +239,9 @@
                                     </div>
                                     <input type="number" class="form-control" id="inpPostPaidAmount" name="recharge_amount" placeholder="Enter Amount" maxlength="5" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
                                     <div class="input-group-prepend" dmx-on:click="flowBSNLCheck.run();modalBSNLCheck.show()" title="Check Only BSNL Land Line">
-                                        <div class="input-group-text bg-primary text-light">
+                                        <!-- <div class="input-group-text bg-primary text-light">
                                             Check
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
