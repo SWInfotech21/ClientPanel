@@ -40,22 +40,6 @@
           }
         },
         "name": "todate"
-      },
-      {
-        "type": "text",
-        "name": "offset"
-      },
-      {
-        "type": "text",
-        "name": "limit"
-      },
-      {
-        "type": "text",
-        "name": "sort"
-      },
-      {
-        "type": "text",
-        "name": "dir"
       }
     ],
     "$_SERVER": [
@@ -392,12 +376,12 @@
                                             "options": {
                                               "connection": "postgres_gcpServer",
                                               "sql": {
-                                                "query": "select tcl.id, tcl.netamt, tcl.transaction_type, tcl.tr_date, tcl.crdr_type, tcl.remarks, mu.user_id as rt_id, mu.user_fname as rt_name, \ntrt.status,  trt.user_number as recharge_number\nFROM t_charge_cal tcl\nleft join m_users mu ON (mu.id = tcl.user_id)\nleft join tt_recharge_trans trt on (trt.id=tcl.pay_ref_id)\nwhere tcl.user_id = @identity and tcl.tr_date between @fromdate and @todate ",
+                                                "query": "select tb.pay_ref_id, tb.amount, tb.tr_date, tb.crdr_type, tb.remarks, tb.status, trt.user_number as recharge_number,\nmu.user_id as rt_id, mu.user_fname as rt_name,trt.dtcommamt, trt.dtchargeamt, trt.mdtcommamt, trt.mdtchargeamt, trt.bank_ac_no, trt.operator_ref\nFROM tt_balance tb\nleft join tt_recharge_trans trt on (trt.id = tb.pay_ref_id)\nleft join m_users mu ON (mu.id = trt.user_id)\nwhere mu.created_by = @identity and tb.tr_date between @fromdate and @todate ;",
                                                 "params": [
                                                   {
                                                     "name": "@identity",
                                                     "value": "{{identity}}",
-                                                    "test": "110"
+                                                    "test": "123"
                                                   },
                                                   {
                                                     "name": "@fromdate",
@@ -407,7 +391,7 @@
                                                   {
                                                     "name": "@todate",
                                                     "value": "{{$_GET.todate}}",
-                                                    "test": "2022-05-11 23:59:59"
+                                                    "test": "2022-05-13 23:59:59"
                                                   }
                                                 ]
                                               }
@@ -415,15 +399,11 @@
                                             "output": true,
                                             "meta": [
                                               {
-                                                "name": "id",
+                                                "name": "pay_ref_id",
                                                 "type": "number"
                                               },
                                               {
-                                                "name": "netamt",
-                                                "type": "text"
-                                              },
-                                              {
-                                                "name": "transaction_type",
+                                                "name": "amount",
                                                 "type": "text"
                                               },
                                               {
@@ -439,6 +419,14 @@
                                                 "type": "text"
                                               },
                                               {
+                                                "name": "status",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "recharge_number",
+                                                "type": "text"
+                                              },
+                                              {
                                                 "name": "rt_id",
                                                 "type": "text"
                                               },
@@ -447,11 +435,27 @@
                                                 "type": "text"
                                               },
                                               {
-                                                "name": "status",
+                                                "name": "dtcommamt",
                                                 "type": "text"
                                               },
                                               {
-                                                "name": "recharge_number",
+                                                "name": "dtchargeamt",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "mdtcommamt",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "mdtchargeamt",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "bank_ac_no",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "operator_ref",
                                                 "type": "text"
                                               }
                                             ],
