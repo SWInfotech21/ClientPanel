@@ -22,13 +22,6 @@
           "rules": {
             "core:required": {
               "param": ""
-            },
-            "core:number": {
-              "param": "",
-              "message": "Please enter a valid amount."
-            },
-            "core:maxlength": {
-              "param": "10"
             }
           }
         },
