@@ -22,7 +22,7 @@
     }
     }
     }</script>
-<dmx-serverconnect id="scUsers" url="api/Users/Users"></dmx-serverconnect>
+<dmx-serverconnect id="scUsers" url="api/Users/Users" dmx-param:limit="100000"></dmx-serverconnect>
 <dmx-data-view id="dvUsers" dmx-bind:data="scUsers.data.FetchUsers.data" pageSize="100" page="10"></dmx-data-view>
 <dmx-data-detail id="ddUsers" dmx-bind:data="dvUsers.data" key="id"></dmx-data-detail>
 <div class="container">
