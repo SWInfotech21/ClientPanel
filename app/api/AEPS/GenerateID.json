@@ -11,8 +11,7 @@
       "loginUrl": "/login",
       "forbiddenUrl": "/403-forbidden"
     },
-    "output": false,
-    "disabled": true
+    "output": false
   },
   {
     "name": "identity",
@@ -208,7 +207,7 @@
                 "Mpin": "7170",
                 "RetailerID": "{{GetUserDetails.RT_ID}}",
                 "MerchantID": "{{GetUserDetails.aeps_merchant_id}}",
-                "Logo": "https://swpay.in/assets/img/SwpayLogo.png",
+                "Logo": "https://swpay.in/assets-web/img/SwpayLogo.png",
                 "CompanyName": "SWPAY"
               }
             },

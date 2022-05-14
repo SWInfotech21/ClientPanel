@@ -48,242 +48,6 @@
       {
         "type": "text",
         "name": "process_mode"
-      },
-      {
-        "type": "text",
-        "name": "live"
-      },
-      {
-        "type": "datetime",
-        "name": "tr_date"
-      },
-      {
-        "type": "text",
-        "name": "trans_by"
-      },
-      {
-        "type": "datetime",
-        "name": "updated_on"
-      },
-      {
-        "type": "text",
-        "name": "updated_by"
-      },
-      {
-        "type": "text",
-        "name": "ec"
-      },
-      {
-        "type": "text",
-        "name": "raise_compain"
-      },
-      {
-        "type": "text",
-        "name": "api_bal"
-      },
-      {
-        "type": "text",
-        "name": "dt_comm_per"
-      },
-      {
-        "type": "text",
-        "name": "dt_comm_val"
-      },
-      {
-        "type": "text",
-        "name": "dt_comm_amt"
-      },
-      {
-        "type": "text",
-        "name": "dt_charge_per"
-      },
-      {
-        "type": "text",
-        "name": "dt_charge_val"
-      },
-      {
-        "type": "text",
-        "name": "dt_charge_amount"
-      },
-      {
-        "type": "text",
-        "name": "mdt_comm_per"
-      },
-      {
-        "type": "text",
-        "name": "mdt_comm_val"
-      },
-      {
-        "type": "text",
-        "name": "mdt_comm_amt"
-      },
-      {
-        "type": "text",
-        "name": "mdt_charge_per"
-      },
-      {
-        "type": "text",
-        "name": "mdt_charge_val"
-      },
-      {
-        "type": "text",
-        "name": "mdt_charge_amt"
-      },
-      {
-        "type": "text",
-        "name": "bank_name"
-      },
-      {
-        "type": "text",
-        "name": "service_api"
-      },
-      {
-        "type": "text",
-        "name": "api_tnx_date"
-      },
-      {
-        "type": "text",
-        "name": "blank1"
-      },
-      {
-        "type": "text",
-        "name": "blank2"
-      },
-      {
-        "type": "text",
-        "name": "blank3"
-      },
-      {
-        "type": "number",
-        "name": "service_id"
-      },
-      {
-        "type": "number",
-        "name": "op_id"
-      },
-      {
-        "type": "number",
-        "name": "api_id"
-      },
-      {
-        "type": "number",
-        "name": "user_id"
-      },
-      {
-        "type": "text",
-        "name": "user_rt_id"
-      },
-      {
-        "type": "text",
-        "name": "merchant_id"
-      },
-      {
-        "type": "text",
-        "name": "amount"
-      },
-      {
-        "type": "text",
-        "name": "op_bal"
-      },
-      {
-        "type": "text",
-        "name": "comm_per"
-      },
-      {
-        "type": "text",
-        "name": "comm_val"
-      },
-      {
-        "type": "text",
-        "name": "comm_amt"
-      },
-      {
-        "type": "text",
-        "name": "charge_per"
-      },
-      {
-        "type": "text",
-        "name": "charge_val"
-      },
-      {
-        "type": "text",
-        "name": "charge_amt"
-      },
-      {
-        "type": "text",
-        "name": "net_amt"
-      },
-      {
-        "type": "text",
-        "name": "closing_bal"
-      },
-      {
-        "type": "text",
-        "name": "tr_mode"
-      },
-      {
-        "type": "text",
-        "name": "tr_type"
-      },
-      {
-        "type": "text",
-        "name": "status"
-      },
-      {
-        "type": "text",
-        "name": "tr_id"
-      },
-      {
-        "type": "text",
-        "name": "reason"
-      },
-      {
-        "type": "text",
-        "name": "api_logs"
-      },
-      {
-        "type": "text",
-        "name": "is_processed"
-      },
-      {
-        "type": "text",
-        "name": "operator_ref"
-      },
-      {
-        "type": "text",
-        "name": "api_ref"
-      },
-      {
-        "type": "text",
-        "name": "revert_trans"
-      },
-      {
-        "type": "text",
-        "name": "api_response_time"
-      },
-      {
-        "type": "number",
-        "name": "pay_ref_id"
-      },
-      {
-        "type": "text",
-        "name": "crdr_type"
-      },
-      {
-        "type": "text",
-        "name": "old_bal"
-      },
-      {
-        "type": "text",
-        "name": "new_bal"
-      },
-      {
-        "type": "text",
-        "name": "remarks"
-      },
-      {
-        "type": "number",
-        "name": "created_by"
       }
     ],
     "$_SERVER": [
@@ -1875,11 +1639,17 @@
                 "column": "api_tnx_date",
                 "type": "text",
                 "value": "{{$_POST.TxnDate}}"
+              },
+              {
+                "table": "tt_aeps_trans",
+                "column": "aeps_number",
+                "type": "text",
+                "value": "{{$_POST.MerchantID}}"
               }
             ],
             "table": "tt_aeps_trans",
             "returning": "id",
-            "query": "INSERT INTO tt_aeps_trans\n(service_id, op_id, api_id, user_id, user_rt_id, merchant_id, amount, op_bal, comm_per, comm_val, comm_amt, charge_per, charge_val, charge_amt, net_amt, closing_bal, tr_mode, tr_type, status, tr_id, reason, api_logs, operator_ref, api_ref, revert_trans, ip_address, api_response_time, process_mode, live, tr_date, trans_by, ec, dt_comm_per, dt_comm_val, dt_comm_amt, dt_charge_per, dt_charge_val, dt_charge_amount, mdt_comm_per, mdt_comm_val, mdt_comm_amt, mdt_charge_per, mdt_charge_val, mdt_charge_amt, bank_name, service_api, api_tnx_date) VALUES (:P1 /* {{GetCommision[0].service_id}} */, :P2 /* {{GetCommision[0].operator_id}} */, :P3 /* {{0}} */, :P4 /* {{UserWalletBalCheck.id}} */, :P5 /* {{$_POST.Reatilerid}} */, :P6 /* {{$_POST.MerchantID}} */, :P7 /* {{$_POST.Amount}} */, :P8 /* {{UserWalletBalCheck.aeps_balance}} */, :P9 /* {{GetCommision[0].comm_per}} */, :P10 /* {{GetCommision[0].comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetCommision[0].service_charge_per}} */, :P13 /* {{GetCommision[0].service_charge_val}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTNetAmt}} */, :P16 /* {{RTClosingBalance}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{$_POST.TxnID}} */, :P21 /* {{$_POST.Service+' of Rs. '+$_POST.Amount+' by RT Id:'+$_POST.RRN+' | Merchant Id: '+$_POST.MerchantID+' | Txn. Id:'+$_POST.TxnID}} */, :P22 /* {{'UH'}} */, :P23 /* {{$_POST.Description}} */, :P24 /* {{$_POST.RRN}} */, '0', :P25 /* {{$_SERVER.REMOTE_ADDR}} */, :P26 /* {{apiResponseTime}} */, :P27 /* {{'A2C'}} */, :P28 /* {{'Live'}} */, :P29 /* {{NOW}} */, :P30 /* {{UserWalletBalCheck.id}} */, :P31 /* {{$_POST.Status}} */, :P32 /* {{DTCommPer}} */, :P33 /* {{DTCommVal}} */, :P34 /* {{DTCommAmt}} */, :P35 /* {{DTChargePer}} */, :P36 /* {{DTChargeVal}} */, :P37 /* {{DTChargeAmt}} */, :P38 /* {{MDTCommPer}} */, :P39 /* {{MDTCommVal}} */, :P40 /* {{MDTCommAmt}} */, :P41 /* {{MDTChargePer}} */, :P42 /* {{MDTChargeVal}} */, :P43 /* {{MDTChargeAmt}} */, :P44 /* {{$_POST.BankName}} */, :P45 /* {{$_POST.Service}} */, :P46 /* {{$_POST.TxnDate}} */)",
+            "query": "INSERT INTO tt_aeps_trans\n(service_id, op_id, api_id, user_id, user_rt_id, merchant_id, amount, op_bal, comm_per, comm_val, comm_amt, charge_per, charge_val, charge_amt, net_amt, closing_bal, tr_mode, tr_type, status, tr_id, reason, api_logs, operator_ref, api_ref, revert_trans, ip_address, api_response_time, process_mode, live, tr_date, trans_by, ec, dt_comm_per, dt_comm_val, dt_comm_amt, dt_charge_per, dt_charge_val, dt_charge_amount, mdt_comm_per, mdt_comm_val, mdt_comm_amt, mdt_charge_per, mdt_charge_val, mdt_charge_amt, bank_name, service_api, api_tnx_date, aeps_number) VALUES (:P1 /* {{GetCommision[0].service_id}} */, :P2 /* {{GetCommision[0].operator_id}} */, :P3 /* {{0}} */, :P4 /* {{UserWalletBalCheck.id}} */, :P5 /* {{$_POST.Reatilerid}} */, :P6 /* {{$_POST.MerchantID}} */, :P7 /* {{$_POST.Amount}} */, :P8 /* {{UserWalletBalCheck.aeps_balance}} */, :P9 /* {{GetCommision[0].comm_per}} */, :P10 /* {{GetCommision[0].comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetCommision[0].service_charge_per}} */, :P13 /* {{GetCommision[0].service_charge_val}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTNetAmt}} */, :P16 /* {{RTClosingBalance}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{$_POST.TxnID}} */, :P21 /* {{$_POST.Service+' of Rs. '+$_POST.Amount+' by RT Id:'+$_POST.RRN+' | Merchant Id: '+$_POST.MerchantID+' | Txn. Id:'+$_POST.TxnID}} */, :P22 /* {{'UH'}} */, :P23 /* {{$_POST.Description}} */, :P24 /* {{$_POST.RRN}} */, '0', :P25 /* {{$_SERVER.REMOTE_ADDR}} */, :P26 /* {{apiResponseTime}} */, :P27 /* {{'A2C'}} */, :P28 /* {{'Live'}} */, :P29 /* {{NOW}} */, :P30 /* {{UserWalletBalCheck.id}} */, :P31 /* {{$_POST.Status}} */, :P32 /* {{DTCommPer}} */, :P33 /* {{DTCommVal}} */, :P34 /* {{DTCommAmt}} */, :P35 /* {{DTChargePer}} */, :P36 /* {{DTChargeVal}} */, :P37 /* {{DTChargeAmt}} */, :P38 /* {{MDTCommPer}} */, :P39 /* {{MDTCommVal}} */, :P40 /* {{MDTCommAmt}} */, :P41 /* {{MDTChargePer}} */, :P42 /* {{MDTChargeVal}} */, :P43 /* {{MDTChargeAmt}} */, :P44 /* {{$_POST.BankName}} */, :P45 /* {{$_POST.Service}} */, :P46 /* {{$_POST.TxnDate}} */, :P47 /* {{$_POST.MerchantID}} */)",
             "params": [
               {
                 "name": ":P1",
@@ -2110,6 +1880,11 @@
                 "name": ":P46",
                 "type": "expression",
                 "value": "{{$_POST.TxnDate}}"
+              },
+              {
+                "name": ":P47",
+                "type": "expression",
+                "value": "{{$_POST.MerchantID}}"
               }
             ]
           }
