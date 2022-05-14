@@ -2646,13 +2646,13 @@
                                                 "table": "tt_recharge_trans",
                                                 "column": "user_number",
                                                 "type": "text",
-                                                "value": "{{$_POST.RecipientIdTrans}}"
+                                                "value": "{{$_POST.BenAcNo}}"
                                               },
                                               {
                                                 "table": "tt_recharge_trans",
                                                 "column": "details",
                                                 "type": "text",
-                                                "value": "{{$_POST.BenMobileNo}}"
+                                                "value": "{{$_POST.RecipientIdTrans}}"
                                               },
                                               {
                                                 "table": "tt_recharge_trans",
@@ -2867,7 +2867,7 @@
                                             ],
                                             "table": "tt_recharge_trans",
                                             "returning": "id",
-                                            "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed, bank_ac_no, remitter_id) VALUES (:P1 /* {{GetCommision.operator_id}} */, :P2 /* {{GetCommision.service_id}} */, :P3 /* {{GetOpAPICodeFwrd.api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_POST.RecipientIdTrans}} */, :P6 /* {{$_POST.BenMobileNo}} */, :P7 /* {{Remainder}} */, :P8 /* {{'Web'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{TransactionId}} */, :P12 /* {{'Transfer of Rs. '+Remainder+' by  '+UserWalletBalCheck.user_mobile+' | '+UserWalletBalCheck.user_fname+' to A/C '+$_POST.BenAcNo+' Mobile: '+$_POST.BenMobileNo}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2C'}} */, :P15 /* {{NOW}} */, :P16 /* {{identity}} */, :P17 /* {{UserWalletBalCheck.balance_amt}} */, :P18 /* {{GetCommision.comm_per}} */, :P19 /* {{GetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{GetCommision.service_charge_val}} */, :P22 /* {{GetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{UserWalletBalCheck.balance_amt}} */, :P26 /* {{DTCommPer}} */, :P27 /* {{DTCommVal}} */, :P28 /* {{DTCommAmt}} */, :P29 /* {{DTChargePer}} */, :P30 /* {{DTChargeVal}} */, :P31 /* {{DTChargeAmt}} */, :P32 /* {{MDTCommPer}} */, :P33 /* {{MDTCommVal}} */, :P34 /* {{MDTCommAmt}} */, :P35 /* {{MDTChargePer}} */, :P36 /* {{MDTChargeVal}} */, :P37 /* {{MDTChargeAmt}} */, :P38 /* {{'N/A'}} */, :P39 /* {{$_POST.BenAcNo}} */, :P40 /* {{$_POST.SenderIdTrans}} */)",
+                                            "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed, bank_ac_no, remitter_id) VALUES (:P1 /* {{GetCommision.operator_id}} */, :P2 /* {{GetCommision.service_id}} */, :P3 /* {{GetOpAPICodeFwrd.api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_POST.BenAcNo}} */, :P6 /* {{$_POST.RecipientIdTrans}} */, :P7 /* {{Remainder}} */, :P8 /* {{'Web'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{TransactionId}} */, :P12 /* {{'Transfer of Rs. '+Remainder+' by  '+UserWalletBalCheck.user_mobile+' | '+UserWalletBalCheck.user_fname+' to A/C '+$_POST.BenAcNo+' Mobile: '+$_POST.BenMobileNo}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2C'}} */, :P15 /* {{NOW}} */, :P16 /* {{identity}} */, :P17 /* {{UserWalletBalCheck.balance_amt}} */, :P18 /* {{GetCommision.comm_per}} */, :P19 /* {{GetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{GetCommision.service_charge_val}} */, :P22 /* {{GetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{UserWalletBalCheck.balance_amt}} */, :P26 /* {{DTCommPer}} */, :P27 /* {{DTCommVal}} */, :P28 /* {{DTCommAmt}} */, :P29 /* {{DTChargePer}} */, :P30 /* {{DTChargeVal}} */, :P31 /* {{DTChargeAmt}} */, :P32 /* {{MDTCommPer}} */, :P33 /* {{MDTCommVal}} */, :P34 /* {{MDTCommAmt}} */, :P35 /* {{MDTChargePer}} */, :P36 /* {{MDTChargeVal}} */, :P37 /* {{MDTChargeAmt}} */, :P38 /* {{'N/A'}} */, :P39 /* {{$_POST.BenAcNo}} */, :P40 /* {{$_POST.SenderIdTrans}} */)",
                                             "params": [
                                               {
                                                 "name": ":P1",
@@ -2892,12 +2892,12 @@
                                               {
                                                 "name": ":P5",
                                                 "type": "expression",
-                                                "value": "{{$_POST.RecipientIdTrans}}"
+                                                "value": "{{$_POST.BenAcNo}}"
                                               },
                                               {
                                                 "name": ":P6",
                                                 "type": "expression",
-                                                "value": "{{$_POST.BenMobileNo}}"
+                                                "value": "{{$_POST.RecipientIdTrans}}"
                                               },
                                               {
                                                 "name": ":P7",
@@ -6341,13 +6341,13 @@
                                                         "table": "tt_recharge_trans",
                                                         "column": "user_number",
                                                         "type": "text",
-                                                        "value": "{{$_POST.RecipientIdTrans}}"
+                                                        "value": "{{$_POST.BenAcNo}}"
                                                       },
                                                       {
                                                         "table": "tt_recharge_trans",
                                                         "column": "details",
                                                         "type": "text",
-                                                        "value": "{{$_POST.BenMobileNo}}"
+                                                        "value": "{{$_POST.RecipientIdTrans}}"
                                                       },
                                                       {
                                                         "table": "tt_recharge_trans",
@@ -6562,7 +6562,7 @@
                                                     ],
                                                     "table": "tt_recharge_trans",
                                                     "returning": "id",
-                                                    "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed, bank_ac_no, remitter_id) VALUES (:P1 /* {{RepeatGetCommision.operator_id}} */, :P2 /* {{RepeatGetCommision.service_id}} */, :P3 /* {{RepeatGetOpAPICodeFwrd.api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_POST.RecipientIdTrans}} */, :P6 /* {{$_POST.BenMobileNo}} */, :P7 /* {{RepeatAmt}} */, :P8 /* {{'Web'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{RepeatTransactionId}} */, :P12 /* {{'Transfer of Rs. '+RepeatAmt+' by  '+UserWalletBalCheck.user_mobile+' | '+UserWalletBalCheck.user_fname+' to A/C '+$_POST.BenAcNo+' Mobile: '+$_POST.BenMobileNo+' | Benf. Id: '+$_POST.RecipientIdTrans}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2C'}} */, :P15 /* {{NOW}} */, :P16 /* {{identity}} */, :P17 /* {{RepeatUserWalletBal.balance_amt}} */, :P18 /* {{RepeatGetCommision.comm_per}} */, :P19 /* {{RepeatGetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{RepeatGetCommision.service_charge_val}} */, :P22 /* {{RepeatGetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{RepeatUserWalletBal.balance_amt}} */, :P26 /* {{DTCommPer}} */, :P27 /* {{DTCommVal}} */, :P28 /* {{DTCommAmt}} */, :P29 /* {{DTChargePer}} */, :P30 /* {{DTChargeVal}} */, :P31 /* {{DTChargeAmt}} */, :P32 /* {{MDTCommPer}} */, :P33 /* {{MDTCommVal}} */, :P34 /* {{MDTCommAmt}} */, :P35 /* {{MDTChargePer}} */, :P36 /* {{MDTChargeVal}} */, :P37 /* {{MDTChargeAmt}} */, :P38 /* {{'N/A'}} */, :P39 /* {{$_POST.BenAcNo}} */, :P40 /* {{$_POST.SenderIdTrans}} */)",
+                                                    "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, amount, tr_mode, tr_type, status, tr_id, reason, revert_trans, ip_address, process_mode, tr_date, transaction_by, opening_balance, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt, is_processed, bank_ac_no, remitter_id) VALUES (:P1 /* {{RepeatGetCommision.operator_id}} */, :P2 /* {{RepeatGetCommision.service_id}} */, :P3 /* {{RepeatGetOpAPICodeFwrd.api_id}} */, :P4 /* {{identity}} */, :P5 /* {{$_POST.BenAcNo}} */, :P6 /* {{$_POST.RecipientIdTrans}} */, :P7 /* {{RepeatAmt}} */, :P8 /* {{'Web'}} */, :P9 /* {{'Cash'}} */, :P10 /* {{'Pending'}} */, :P11 /* {{RepeatTransactionId}} */, :P12 /* {{'Transfer of Rs. '+RepeatAmt+' by  '+UserWalletBalCheck.user_mobile+' | '+UserWalletBalCheck.user_fname+' to A/C '+$_POST.BenAcNo+' Mobile: '+$_POST.BenMobileNo+' | Benf. Id: '+$_POST.RecipientIdTrans}} */, '0', :P13 /* {{$_SERVER.REMOTE_ADDR}} */, :P14 /* {{'A2C'}} */, :P15 /* {{NOW}} */, :P16 /* {{identity}} */, :P17 /* {{RepeatUserWalletBal.balance_amt}} */, :P18 /* {{RepeatGetCommision.comm_per}} */, :P19 /* {{RepeatGetCommision.comm_val}} */, :P20 /* {{RTCommAmt}} */, :P21 /* {{RepeatGetCommision.service_charge_val}} */, :P22 /* {{RepeatGetCommision.service_charge_per}} */, :P23 /* {{RTChargeAmt}} */, :P24 /* {{RTNetAmt}} */, :P25 /* {{RepeatUserWalletBal.balance_amt}} */, :P26 /* {{DTCommPer}} */, :P27 /* {{DTCommVal}} */, :P28 /* {{DTCommAmt}} */, :P29 /* {{DTChargePer}} */, :P30 /* {{DTChargeVal}} */, :P31 /* {{DTChargeAmt}} */, :P32 /* {{MDTCommPer}} */, :P33 /* {{MDTCommVal}} */, :P34 /* {{MDTCommAmt}} */, :P35 /* {{MDTChargePer}} */, :P36 /* {{MDTChargeVal}} */, :P37 /* {{MDTChargeAmt}} */, :P38 /* {{'N/A'}} */, :P39 /* {{$_POST.BenAcNo}} */, :P40 /* {{$_POST.SenderIdTrans}} */)",
                                                     "params": [
                                                       {
                                                         "name": ":P1",
@@ -6587,12 +6587,12 @@
                                                       {
                                                         "name": ":P5",
                                                         "type": "expression",
-                                                        "value": "{{$_POST.RecipientIdTrans}}"
+                                                        "value": "{{$_POST.BenAcNo}}"
                                                       },
                                                       {
                                                         "name": ":P6",
                                                         "type": "expression",
-                                                        "value": "{{$_POST.BenMobileNo}}"
+                                                        "value": "{{$_POST.RecipientIdTrans}}"
                                                       },
                                                       {
                                                         "name": ":P7",
