@@ -140,7 +140,7 @@
                                 "module": "core",
                                 "action": "setvalue",
                                 "options": {
-                                    "value": "{{stat==1 ? 'SUCCESS' : stat==101 ? 'FAILED' : ''}}"
+                                    "value": "{{stat==1 ? 'SUCCESS' : stat=='-101' ? 'FAILED' : ''}}"
                                 },
                                 "meta": [],
                                 "outputType": "text"
