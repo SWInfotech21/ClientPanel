@@ -678,11 +678,11 @@
                                                                     "module": "core",
                                                                     "action": "setvalue",
                                                                     "options": {
-                                                                      "value": "{{NOW.md5(123456).substr(1, 9)}}"
+                                                                      "value": "{{UUID.md5(123456).substr(1, 15)}}"
                                                                     },
                                                                     "meta": [],
                                                                     "outputType": "text",
-                                                                    "output": true
+                                                                    "output": false
                                                                   },
                                                                   {
                                                                     "name": "GetAdmin",
@@ -1050,7 +1050,7 @@
                                                                         "orders": []
                                                                       }
                                                                     },
-                                                                    "output": true,
+                                                                    "output": false,
                                                                     "meta": [
                                                                       {
                                                                         "type": "text",
@@ -3142,6 +3142,17 @@
                                                                                       "outputFields": [],
                                                                                       "exec": {
                                                                                         "steps": [
+                                                                                          {
+                                                                                            "name": "TransactionId",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                              "value": "{{UUID.md5(123456).substr(1, 15)}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text",
+                                                                                            "output": false
+                                                                                          },
                                                                                           {
                                                                                             "name": "",
                                                                                             "module": "core",

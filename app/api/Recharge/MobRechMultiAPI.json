@@ -459,7 +459,7 @@
             "primary": "id"
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "text",
@@ -639,10 +639,11 @@
                               "module": "core",
                               "action": "setvalue",
                               "options": {
-                                "value": "{{NOW.md5(123456).substr(1, 9)}}"
+                                "value": "{{UUID.md5(123456).substr(1, 15)}}"
                               },
                               "meta": [],
-                              "outputType": "text"
+                              "outputType": "text",
+                              "output": true
                             },
                             {
                               "name": "GetAdmin",
@@ -1011,7 +1012,7 @@
                                   "primary": "id"
                                 }
                               },
-                              "output": true,
+                              "output": false,
                               "meta": [
                                 {
                                   "type": "text",
@@ -3117,6 +3118,16 @@
                                                 "outputFields": [],
                                                 "exec": {
                                                   "steps": [
+                                                    {
+                                                      "name": "TransactionId",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{UUID.md5(123456).substr(1, 15)}}"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text"
+                                                    },
                                                     {
                                                       "name": "",
                                                       "module": "core",
