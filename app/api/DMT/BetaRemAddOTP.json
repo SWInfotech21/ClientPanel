@@ -1,236 +1,236 @@
 {
-  "meta": {
-    "options": {
-      "linkedFile": "/views/dmt-service-beta.ejs",
-      "linkedForm": "formRemOTP"
-    },
-    "$_POST": [
-      {
-        "type": "text",
-        "fieldName": "RemName",
-        "name": "RemName"
-      },
-      {
-        "type": "text",
-        "fieldName": "RemOTPRefNo",
-        "name": "RemOTPRefNo"
-      },
-      {
-        "type": "text",
-        "fieldName": "RemAddOTP",
-        "name": "RemAddOTP"
-      }
-    ]
-  },
-  "exec": {
-    "steps": [
-      {
-        "name": "",
-        "module": "auth",
-        "action": "restrict",
+    "meta": {
         "options": {
-          "provider": "security",
-          "permissions": [
-            "write"
-          ],
-          "loginUrl": "/login",
-          "forbiddenUrl": "/403-forbidden"
-        }
-      },
-      {
-        "name": "AuthCode",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "65c43ccd6a7b41c884"
+            "linkedFile": "/views/dmt-service-beta.ejs",
+            "linkedForm": "formRemOTP"
         },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "MessageCode",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "E06021"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "ReqId",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{NOW.md5(123456).substr(1, 9)}}"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "api",
-        "module": "api",
-        "action": "send",
-        "options": {
-          "method": "POST",
-          "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
-          "dataType": "x-www-form-urlencoded",
-          "data": {
-            "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.RemOTPRefNo+'~'+$_POST.RemAddOTP+'~0~0'}}"
-          }
-        },
-        "output": false
-      },
-      {
-        "name": "apiVerifyOTP",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{api.data}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "OTPMobile",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{apiVerifyOTP.split('~')[2]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "OTPStatusCode",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{apiVerifyOTP.split('~')[5]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "OTPMessageCode",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{apiVerifyOTP.split('~')[6]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{OTPStatusCode=='SUCCESS'}}",
-          "then": {
-            "steps": {
-              "name": "AddRemitter",
-              "module": "dbupdater",
-              "action": "insert",
-              "options": {
-                "connection": "postgres_gcpServer",
-                "sql": {
-                  "type": "insert",
-                  "values": [
-                    {
-                      "table": "dmt_remitter",
-                      "column": "remitter_id",
-                      "type": "text",
-                      "value": "{{$_POST.RemOTPRefNo}}"
-                    },
-                    {
-                      "table": "dmt_remitter",
-                      "column": "remit_name",
-                      "type": "text",
-                      "value": "{{$_POST.RemName}}"
-                    },
-                    {
-                      "table": "dmt_remitter",
-                      "column": "remit_mobile",
-                      "type": "text",
-                      "value": "{{OTPMobile}}"
-                    },
-                    {
-                      "table": "dmt_remitter",
-                      "column": "rem_verify",
-                      "type": "boolean",
-                      "value": "{{false}}"
-                    },
-                    {
-                      "table": "dmt_remitter",
-                      "column": "created_on",
-                      "type": "datetime",
-                      "value": "{{NOW}}"
-                    },
-                    {
-                      "table": "dmt_remitter",
-                      "column": "status",
-                      "type": "text",
-                      "value": "{{'Active'}}"
-                    }
-                  ],
-                  "table": "dmt_remitter",
-                  "returning": "id",
-                  "query": "INSERT INTO dmt_remitter\n(remitter_id, remit_name, remit_mobile, rem_verify, created_on, status) VALUES (:P1 /* {{$_POST.RemOTPRefNo}} */, :P2 /* {{$_POST.RemName}} */, :P3 /* {{OTPMobile}} */, :P4 /* {{false}} */, :P5 /* {{NOW}} */, :P6 /* {{'Active'}} */)",
-                  "params": [
-                    {
-                      "name": ":P1",
-                      "type": "expression",
-                      "value": "{{$_POST.RemOTPRefNo}}"
-                    },
-                    {
-                      "name": ":P2",
-                      "type": "expression",
-                      "value": "{{$_POST.RemName}}"
-                    },
-                    {
-                      "name": ":P3",
-                      "type": "expression",
-                      "value": "{{OTPMobile}}"
-                    },
-                    {
-                      "name": ":P4",
-                      "type": "expression",
-                      "value": "{{false}}"
-                    },
-                    {
-                      "name": ":P5",
-                      "type": "expression",
-                      "value": "{{NOW}}"
-                    },
-                    {
-                      "name": ":P6",
-                      "type": "expression",
-                      "value": "{{'Active'}}"
-                    }
-                  ]
-                }
-              },
-              "meta": [
-                {
-                  "name": "identity",
-                  "type": "text"
-                },
-                {
-                  "name": "affected",
-                  "type": "number"
-                }
-              ],
-              "output": true
+        "$_POST": [
+            {
+                "type": "text",
+                "fieldName": "RemName",
+                "name": "RemName"
+            },
+            {
+                "type": "text",
+                "fieldName": "RemOTPRefNo",
+                "name": "RemOTPRefNo"
+            },
+            {
+                "type": "text",
+                "fieldName": "RemAddOTP",
+                "name": "RemAddOTP"
             }
-          }
-        },
-        "outputType": "boolean"
-      }
-    ]
-  }
+        ]
+    },
+    "exec": {
+        "steps": [
+            {
+                "name": "",
+                "module": "auth",
+                "action": "restrict",
+                "options": {
+                    "provider": "security",
+                    "permissions": [
+                        "write"
+                    ],
+                    "loginUrl": "/login",
+                    "forbiddenUrl": "/403-forbidden"
+                }
+            },
+            {
+                "name": "AuthCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "65c43ccd6a7b41c884"
+                },
+                "meta": [],
+                "outputType": "text"
+            },
+            {
+                "name": "MessageCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "E06021"
+                },
+                "meta": [],
+                "outputType": "text"
+            },
+            {
+                "name": "ReqId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{UUID.md5(123456).substr(1, 15)}}"
+                },
+                "meta": [],
+                "outputType": "text"
+            },
+            {
+                "name": "api",
+                "module": "api",
+                "action": "send",
+                "options": {
+                    "method": "POST",
+                    "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
+                    "dataType": "x-www-form-urlencoded",
+                    "data": {
+                        "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.RemOTPRefNo+'~'+$_POST.RemAddOTP+'~0~0'}}"
+                    }
+                },
+                "output": false
+            },
+            {
+                "name": "apiVerifyOTP",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{api.data}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "OTPMobile",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{apiVerifyOTP.split('~')[2]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "OTPStatusCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{apiVerifyOTP.split('~')[5]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "OTPMessageCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{apiVerifyOTP.split('~')[6]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                    "if": "{{OTPStatusCode=='SUCCESS'}}",
+                    "then": {
+                        "steps": {
+                            "name": "AddRemitter",
+                            "module": "dbupdater",
+                            "action": "insert",
+                            "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                    "type": "insert",
+                                    "values": [
+                                        {
+                                            "table": "dmt_remitter",
+                                            "column": "remitter_id",
+                                            "type": "text",
+                                            "value": "{{$_POST.RemOTPRefNo}}"
+                                        },
+                                        {
+                                            "table": "dmt_remitter",
+                                            "column": "remit_name",
+                                            "type": "text",
+                                            "value": "{{$_POST.RemName}}"
+                                        },
+                                        {
+                                            "table": "dmt_remitter",
+                                            "column": "remit_mobile",
+                                            "type": "text",
+                                            "value": "{{OTPMobile}}"
+                                        },
+                                        {
+                                            "table": "dmt_remitter",
+                                            "column": "rem_verify",
+                                            "type": "boolean",
+                                            "value": "{{false}}"
+                                        },
+                                        {
+                                            "table": "dmt_remitter",
+                                            "column": "created_on",
+                                            "type": "datetime",
+                                            "value": "{{NOW}}"
+                                        },
+                                        {
+                                            "table": "dmt_remitter",
+                                            "column": "status",
+                                            "type": "text",
+                                            "value": "{{'Active'}}"
+                                        }
+                                    ],
+                                    "table": "dmt_remitter",
+                                    "returning": "id",
+                                    "query": "INSERT INTO dmt_remitter\n(remitter_id, remit_name, remit_mobile, rem_verify, created_on, status) VALUES (:P1 /* {{$_POST.RemOTPRefNo}} */, :P2 /* {{$_POST.RemName}} */, :P3 /* {{OTPMobile}} */, :P4 /* {{false}} */, :P5 /* {{NOW}} */, :P6 /* {{'Active'}} */)",
+                                    "params": [
+                                        {
+                                            "name": ":P1",
+                                            "type": "expression",
+                                            "value": "{{$_POST.RemOTPRefNo}}"
+                                        },
+                                        {
+                                            "name": ":P2",
+                                            "type": "expression",
+                                            "value": "{{$_POST.RemName}}"
+                                        },
+                                        {
+                                            "name": ":P3",
+                                            "type": "expression",
+                                            "value": "{{OTPMobile}}"
+                                        },
+                                        {
+                                            "name": ":P4",
+                                            "type": "expression",
+                                            "value": "{{false}}"
+                                        },
+                                        {
+                                            "name": ":P5",
+                                            "type": "expression",
+                                            "value": "{{NOW}}"
+                                        },
+                                        {
+                                            "name": ":P6",
+                                            "type": "expression",
+                                            "value": "{{'Active'}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "meta": [
+                                {
+                                    "name": "identity",
+                                    "type": "text"
+                                },
+                                {
+                                    "name": "affected",
+                                    "type": "number"
+                                }
+                            ],
+                            "output": true
+                        }
+                    }
+                },
+                "outputType": "boolean"
+            }
+        ]
+    }
 }

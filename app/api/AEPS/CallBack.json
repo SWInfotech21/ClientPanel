@@ -48,6 +48,74 @@
       {
         "type": "text",
         "name": "process_mode"
+      },
+      {
+        "type": "number",
+        "name": "id"
+      },
+      {
+        "type": "text",
+        "name": "user_id"
+      },
+      {
+        "type": "text",
+        "name": "recharge_mobile"
+      },
+      {
+        "type": "text",
+        "name": "operator"
+      },
+      {
+        "type": "text",
+        "name": "amount"
+      },
+      {
+        "type": "text",
+        "name": "status"
+      },
+      {
+        "type": "text",
+        "name": "order_id"
+      },
+      {
+        "type": "text",
+        "name": "balance"
+      },
+      {
+        "type": "text",
+        "name": "ec"
+      },
+      {
+        "type": "text",
+        "name": "apirefid"
+      },
+      {
+        "type": "text",
+        "name": "remarks"
+      },
+      {
+        "type": "text",
+        "name": "blank1"
+      },
+      {
+        "type": "text",
+        "name": "blank2"
+      },
+      {
+        "type": "text",
+        "name": "field1"
+      },
+      {
+        "type": "text",
+        "name": "field2"
+      },
+      {
+        "type": "datetime",
+        "name": "time"
+      },
+      {
+        "type": "text",
+        "name": "live_id"
       }
     ],
     "$_SERVER": [
@@ -69,6 +137,143 @@
         "output": true,
         "meta": [],
         "disabled": true
+      },
+      {
+        "name": "testInsertAEPS",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "api_response",
+                "column": "user_id",
+                "type": "text",
+                "value": "{{$_POST.Reatilerid}}"
+              },
+              {
+                "table": "api_response",
+                "column": "recharge_mobile",
+                "type": "text",
+                "value": "{{$_POST.MerchantID}}"
+              },
+              {
+                "table": "api_response",
+                "column": "operator",
+                "type": "text",
+                "value": "{{$_POST.Service}}"
+              },
+              {
+                "table": "api_response",
+                "column": "amount",
+                "type": "text",
+                "value": "{{$_POST.Amount}}"
+              },
+              {
+                "table": "api_response",
+                "column": "status",
+                "type": "text",
+                "value": "{{$_POST.Status}}"
+              },
+              {
+                "table": "api_response",
+                "column": "order_id",
+                "type": "text",
+                "value": "{{$_POST.TxnID}}"
+              },
+              {
+                "table": "api_response",
+                "column": "apirefid",
+                "type": "text",
+                "value": "{{$_POST.RRN}}"
+              },
+              {
+                "table": "api_response",
+                "column": "remarks",
+                "type": "text",
+                "value": "{{$_POST.Description}}"
+              },
+              {
+                "table": "api_response",
+                "column": "blank1",
+                "type": "text",
+                "value": "{{$_POST.BankName}}"
+              },
+              {
+                "table": "api_response",
+                "column": "blank2",
+                "type": "text",
+                "value": "{{$_POST.TxnDate}}"
+              }
+            ],
+            "table": "api_response",
+            "query": "INSERT INTO api_response\n(user_id, recharge_mobile, operator, amount, status, order_id, apirefid, remarks, blank1, blank2) VALUES (:P1 /* {{$_POST.Reatilerid}} */, :P2 /* {{$_POST.MerchantID}} */, :P3 /* {{$_POST.Service}} */, :P4 /* {{$_POST.Amount}} */, :P5 /* {{$_POST.Status}} */, :P6 /* {{$_POST.TxnID}} */, :P7 /* {{$_POST.RRN}} */, :P8 /* {{$_POST.Description}} */, :P9 /* {{$_POST.BankName}} */, :P10 /* {{$_POST.TxnDate}} */)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.Reatilerid}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.MerchantID}}"
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.Service}}"
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.Amount}}"
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.Status}}"
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_POST.TxnID}}"
+              },
+              {
+                "name": ":P7",
+                "type": "expression",
+                "value": "{{$_POST.RRN}}"
+              },
+              {
+                "name": ":P8",
+                "type": "expression",
+                "value": "{{$_POST.Description}}"
+              },
+              {
+                "name": ":P9",
+                "type": "expression",
+                "value": "{{$_POST.BankName}}"
+              },
+              {
+                "name": ":P10",
+                "type": "expression",
+                "value": "{{$_POST.TxnDate}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
       },
       {
         "name": "SubmitTime",
@@ -261,7 +466,7 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{NOW.md5(123456).substr(1, 9)}}"
+          "value": "{{UUID.md5(123456).substr(1, 15)}}"
         },
         "meta": [],
         "outputType": "text"

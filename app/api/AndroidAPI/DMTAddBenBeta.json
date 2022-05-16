@@ -1,740 +1,740 @@
 {
-  "meta": {
-    "options": {
-      "linkedFile": "/views/login.ejs",
-      "linkedForm": "formLogin"
-    },
-    "$_POST": [
-      {
-        "type": "text",
+    "meta": {
         "options": {
-          "rules": {
-            "core:required": {}
-          }
+            "linkedFile": "/views/login.ejs",
+            "linkedForm": "formLogin"
         },
-        "name": "BenMobileAdd"
-      },
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:required": {}
-          }
-        },
-        "name": "BenNameAdd"
-      },
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:required": {}
-          }
-        },
-        "name": "BenACAdd"
-      },
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:required": {}
-          }
-        },
-        "name": "BenAddIFSC"
-      },
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:required": {}
-          }
-        },
-        "name": "BenAddBank"
-      },
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:required": {}
-          }
-        },
-        "name": "username"
-      },
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:required": {}
-          }
-        },
-        "name": "password"
-      }
-    ],
-    "$_SERVER": [
-      {
-        "type": "text",
-        "name": "REMOTE_ADDR"
-      }
-    ]
-  },
-  "exec": {
-    "steps": {
-      "name": "",
-      "module": "core",
-      "action": "trycatch",
-      "options": {
-        "try": {
-          "steps": [
+        "$_POST": [
             {
-              "name": "getSalt",
-              "module": "dbconnector",
-              "action": "single",
-              "options": {
-                "connection": "postgres_gcpServer",
-                "sql": {
-                  "type": "SELECT",
-                  "columns": [
-                    {
-                      "table": "m_users",
-                      "column": "salt",
-                      "alias": "saltvalue"
-                    },
-                    {
-                      "table": "m_users",
-                      "column": "user_tpin"
-                    },
-                    {
-                      "table": "m_users",
-                      "column": "id"
-                    },
-                    {
-                      "table": "m_users",
-                      "column": "md_id"
-                    },
-                    {
-                      "table": "m_users",
-                      "column": "ds_id"
+                "type": "text",
+                "options": {
+                    "rules": {
+                        "core:required": {}
                     }
-                  ],
-                  "table": {
-                    "name": "m_users"
-                  },
-                  "joins": [],
-                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_POST.username}} */",
-                  "params": [
-                    {
-                      "operator": "equal",
-                      "type": "expression",
-                      "name": ":P1",
-                      "value": "{{$_POST.username}}"
-                    }
-                  ],
-                  "wheres": {
-                    "condition": "AND",
-                    "rules": [
-                      {
-                        "id": "m_users.user_type",
-                        "field": "m_users.user_type",
-                        "type": "double",
-                        "operator": "between",
-                        "value": [
-                          1,
-                          3
-                        ],
-                        "data": {
-                          "table": "m_users",
-                          "column": "user_type",
-                          "type": "number"
-                        },
-                        "operation": "BETWEEN"
-                      },
-                      {
-                        "id": "m_users.u_status",
-                        "field": "m_users.u_status",
-                        "type": "string",
-                        "operator": "equal",
-                        "value": "1",
-                        "data": {
-                          "table": "m_users",
-                          "column": "u_status",
-                          "type": "text"
-                        },
-                        "operation": "="
-                      },
-                      {
-                        "id": "m_users.blank2",
-                        "field": "m_users.blank2",
-                        "type": "string",
-                        "operator": "equal",
-                        "value": "{{$_POST.username}}",
-                        "data": {
-                          "table": "m_users",
-                          "column": "blank2",
-                          "type": "text"
-                        },
-                        "operation": "="
-                      }
-                    ],
-                    "conditional": null,
-                    "valid": true
-                  },
-                  "primary": "id"
-                }
-              },
-              "output": false,
-              "meta": [
-                {
-                  "type": "text",
-                  "name": "saltvalue"
                 },
-                {
-                  "type": "text",
-                  "name": "user_tpin"
-                },
-                {
-                  "type": "number",
-                  "name": "id"
-                },
-                {
-                  "type": "text",
-                  "name": "md_id"
-                },
-                {
-                  "type": "text",
-                  "name": "ds_id"
-                }
-              ],
-              "outputType": "object"
+                "name": "BenMobileAdd"
             },
             {
-              "name": "",
-              "module": "core",
-              "action": "condition",
-              "options": {
-                "if": "{{getSalt.saltvalue}}",
-                "then": {
-                  "steps": [
-                    {
-                      "name": "GetMdt",
-                      "module": "dbconnector",
-                      "action": "single",
-                      "options": {
-                        "connection": "postgres_gcpServer",
-                        "sql": {
-                          "type": "SELECT",
-                          "columns": [
-                            {
-                              "table": "m_users",
-                              "column": "id",
-                              "alias": "countmdt",
-                              "aggregate": "COUNT"
-                            }
-                          ],
-                          "table": {
-                            "name": "m_users"
-                          },
-                          "joins": [],
-                          "groupBy": [],
-                          "wheres": {
-                            "condition": "AND",
-                            "rules": [
-                              {
-                                "id": "m_users.id",
-                                "field": "m_users.id",
-                                "type": "double",
-                                "operator": "equal",
-                                "value": "{{getSalt.md_id.toNumber()}}",
-                                "data": {
-                                  "table": "m_users",
-                                  "column": "id",
-                                  "type": "number"
-                                },
-                                "operation": "="
-                              },
-                              {
-                                "id": "m_users.u_status",
-                                "field": "m_users.u_status",
-                                "type": "string",
-                                "operator": "equal",
-                                "value": "1",
-                                "data": {
-                                  "table": "m_users",
-                                  "column": "u_status",
-                                  "type": "text"
-                                },
-                                "operation": "="
-                              }
-                            ],
-                            "conditional": null,
-                            "valid": true
-                          },
-                          "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
-                          "params": [
-                            {
-                              "operator": "equal",
-                              "type": "expression",
-                              "name": ":P1",
-                              "value": "{{getSalt.md_id.toNumber()}}"
-                            }
-                          ]
-                        }
-                      },
-                      "output": false,
-                      "meta": [
+                "type": "text",
+                "options": {
+                    "rules": {
+                        "core:required": {}
+                    }
+                },
+                "name": "BenNameAdd"
+            },
+            {
+                "type": "text",
+                "options": {
+                    "rules": {
+                        "core:required": {}
+                    }
+                },
+                "name": "BenACAdd"
+            },
+            {
+                "type": "text",
+                "options": {
+                    "rules": {
+                        "core:required": {}
+                    }
+                },
+                "name": "BenAddIFSC"
+            },
+            {
+                "type": "text",
+                "options": {
+                    "rules": {
+                        "core:required": {}
+                    }
+                },
+                "name": "BenAddBank"
+            },
+            {
+                "type": "text",
+                "options": {
+                    "rules": {
+                        "core:required": {}
+                    }
+                },
+                "name": "username"
+            },
+            {
+                "type": "text",
+                "options": {
+                    "rules": {
+                        "core:required": {}
+                    }
+                },
+                "name": "password"
+            }
+        ],
+        "$_SERVER": [
+            {
+                "type": "text",
+                "name": "REMOTE_ADDR"
+            }
+        ]
+    },
+    "exec": {
+        "steps": {
+            "name": "",
+            "module": "core",
+            "action": "trycatch",
+            "options": {
+                "try": {
+                    "steps": [
                         {
-                          "type": "number",
-                          "name": "countmdt"
-                        }
-                      ],
-                      "outputType": "object"
-                    },
-                    {
-                      "name": "",
-                      "module": "core",
-                      "action": "condition",
-                      "options": {
-                        "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
-                        "then": {
-                          "steps": [
-                            {
-                              "name": "GetDt",
-                              "module": "dbconnector",
-                              "action": "single",
-                              "options": {
+                            "name": "getSalt",
+                            "module": "dbconnector",
+                            "action": "single",
+                            "options": {
                                 "connection": "postgres_gcpServer",
                                 "sql": {
-                                  "type": "SELECT",
-                                  "columns": [
-                                    {
-                                      "table": "m_users",
-                                      "column": "id",
-                                      "alias": "countdt",
-                                      "aggregate": "COUNT"
-                                    }
-                                  ],
-                                  "table": {
-                                    "name": "m_users"
-                                  },
-                                  "joins": [],
-                                  "groupBy": [],
-                                  "wheres": {
-                                    "condition": "AND",
-                                    "rules": [
-                                      {
-                                        "id": "m_users.id",
-                                        "field": "m_users.id",
-                                        "type": "double",
-                                        "operator": "equal",
-                                        "value": "{{getSalt.ds_id.toNumber()}}",
-                                        "data": {
-                                          "table": "m_users",
-                                          "column": "id",
-                                          "type": "number"
+                                    "type": "SELECT",
+                                    "columns": [
+                                        {
+                                            "table": "m_users",
+                                            "column": "salt",
+                                            "alias": "saltvalue"
                                         },
-                                        "operation": "="
-                                      },
-                                      {
-                                        "id": "m_users.u_status",
-                                        "field": "m_users.u_status",
-                                        "type": "string",
-                                        "operator": "equal",
-                                        "value": "1",
-                                        "data": {
-                                          "table": "m_users",
-                                          "column": "u_status",
-                                          "type": "text"
+                                        {
+                                            "table": "m_users",
+                                            "column": "user_tpin"
                                         },
-                                        "operation": "="
-                                      }
-                                    ],
-                                    "conditional": null,
-                                    "valid": true
-                                  },
-                                  "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
-                                  "params": [
-                                    {
-                                      "operator": "equal",
-                                      "type": "expression",
-                                      "name": ":P1",
-                                      "value": "{{getSalt.ds_id.toNumber()}}"
-                                    }
-                                  ]
-                                }
-                              },
-                              "output": false,
-                              "meta": [
-                                {
-                                  "type": "number",
-                                  "name": "countdt"
-                                }
-                              ],
-                              "outputType": "object"
-                            },
-                            {
-                              "name": "",
-                              "module": "core",
-                              "action": "condition",
-                              "options": {
-                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
-                                "then": {
-                                  "steps": [
-                                    {
-                                      "name": "identity",
-                                      "module": "auth",
-                                      "action": "login",
-                                      "options": {
-                                        "provider": "securityAndroid",
-                                        "password": "{{$_POST.password.sha256(getSalt.saltvalue)}}",
-                                        "username": "{{$_POST.username}}",
-                                        "remember": ""
-                                      },
-                                      "output": false,
-                                      "meta": []
-                                    },
-                                    {
-                                      "name": "",
-                                      "module": "core",
-                                      "action": "condition",
-                                      "options": {
-                                        "if": "{{identity}}",
-                                        "then": {
-                                          "steps": [
-                                            {
-                                              "name": "AuthCode",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "65c43ccd6a7b41c884"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text"
-                                            },
-                                            {
-                                              "name": "MessageCode",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "E06009"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text"
-                                            },
-                                            {
-                                              "name": "ReqId",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{NOW.md5(123456).substr(1, 9)}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text"
-                                            },
-                                            {
-                                              "name": "api",
-                                              "module": "api",
-                                              "action": "send",
-                                              "options": {
-                                                "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
-                                                "method": "POST",
-                                                "dataType": "x-www-form-urlencoded",
-                                                "data": {
-                                                  "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.BenMobileAdd+'~'+$_POST.BenNameAdd+'~'+$_POST.BenACAdd+'~'+$_POST.BenAddIFSC+'~'+$_POST.BenAddBank+'~0'}}"
-                                                }
-                                              },
-                                              "output": false
-                                            },
-                                            {
-                                              "name": "Mobile",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{api.data.split('~')[2]}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text",
-                                              "output": true
-                                            },
-                                            {
-                                              "name": "BenName",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{api.data.split('~')[3]}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text",
-                                              "output": true
-                                            },
-                                            {
-                                              "name": "StatusCode",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{api.data.split('~')[5]}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text",
-                                              "output": true
-                                            },
-                                            {
-                                              "name": "Message",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{api.data.split('~')[6]}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text",
-                                              "output": true
-                                            },
-                                            {
-                                              "name": "BenefId",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{api.data.split('~')[7]}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text",
-                                              "output": true
-                                            },
-                                            {
-                                              "name": "",
-                                              "module": "core",
-                                              "action": "condition",
-                                              "options": {
-                                                "if": "{{StatusCode=='SUCCESS'}}",
-                                                "then": {
-                                                  "steps": {
-                                                    "name": "AddBen",
-                                                    "module": "dbupdater",
-                                                    "action": "insert",
-                                                    "options": {
-                                                      "connection": "postgres_gcpServer",
-                                                      "sql": {
-                                                        "type": "insert",
-                                                        "values": [
-                                                          {
-                                                            "table": "dmt_beneficiary",
-                                                            "column": "ben_name",
-                                                            "type": "text",
-                                                            "value": "{{$_POST.BenNameAdd}}"
-                                                          },
-                                                          {
-                                                            "table": "dmt_beneficiary",
-                                                            "column": "ben_mobile",
-                                                            "type": "text",
-                                                            "value": "{{$_POST.BenMobileAdd}}"
-                                                          },
-                                                          {
-                                                            "table": "dmt_beneficiary",
-                                                            "column": "ben_ac_no",
-                                                            "type": "text",
-                                                            "value": "{{$_POST.BenACAdd}}"
-                                                          },
-                                                          {
-                                                            "table": "dmt_beneficiary",
-                                                            "column": "ben_ifsc",
-                                                            "type": "text",
-                                                            "value": "{{$_POST.BenAddIFSC}}"
-                                                          },
-                                                          {
-                                                            "table": "dmt_beneficiary",
-                                                            "column": "remitter_id",
-                                                            "type": "text",
-                                                            "value": "{{$_POST.BenMobileAdd}}"
-                                                          },
-                                                          {
-                                                            "table": "dmt_beneficiary",
-                                                            "column": "ben_verify",
-                                                            "type": "boolean",
-                                                            "value": "{{false}}"
-                                                          },
-                                                          {
-                                                            "table": "dmt_beneficiary",
-                                                            "column": "status",
-                                                            "type": "text",
-                                                            "value": "{{'Active'}}"
-                                                          },
-                                                          {
-                                                            "table": "dmt_beneficiary",
-                                                            "column": "created_by",
-                                                            "type": "text",
-                                                            "value": "{{identity}}"
-                                                          },
-                                                          {
-                                                            "table": "dmt_beneficiary",
-                                                            "column": "created_on",
-                                                            "type": "datetime",
-                                                            "value": "{{NOW}}"
-                                                          },
-                                                          {
-                                                            "table": "dmt_beneficiary",
-                                                            "column": "ben_id",
-                                                            "type": "text",
-                                                            "value": "{{BenefId}}"
-                                                          }
-                                                        ],
-                                                        "table": "dmt_beneficiary",
-                                                        "returning": "id",
-                                                        "query": "INSERT INTO dmt_beneficiary\n(ben_name, ben_mobile, ben_ac_no, ben_ifsc, remitter_id, ben_verify, status, created_by, created_on, ben_id) VALUES (:P1 /* {{$_POST.BenNameAdd}} */, :P2 /* {{$_POST.BenMobileAdd}} */, :P3 /* {{$_POST.BenACAdd}} */, :P4 /* {{$_POST.BenAddIFSC}} */, :P5 /* {{$_POST.BenMobileAdd}} */, :P6 /* {{false}} */, :P7 /* {{'Active'}} */, :P8 /* {{identity}} */, :P9 /* {{NOW}} */, :P10 /* {{BenefId}} */)",
-                                                        "params": [
-                                                          {
-                                                            "name": ":P1",
-                                                            "type": "expression",
-                                                            "value": "{{$_POST.BenNameAdd}}"
-                                                          },
-                                                          {
-                                                            "name": ":P2",
-                                                            "type": "expression",
-                                                            "value": "{{$_POST.BenMobileAdd}}"
-                                                          },
-                                                          {
-                                                            "name": ":P3",
-                                                            "type": "expression",
-                                                            "value": "{{$_POST.BenACAdd}}"
-                                                          },
-                                                          {
-                                                            "name": ":P4",
-                                                            "type": "expression",
-                                                            "value": "{{$_POST.BenAddIFSC}}"
-                                                          },
-                                                          {
-                                                            "name": ":P5",
-                                                            "type": "expression",
-                                                            "value": "{{$_POST.BenMobileAdd}}"
-                                                          },
-                                                          {
-                                                            "name": ":P6",
-                                                            "type": "expression",
-                                                            "value": "{{false}}"
-                                                          },
-                                                          {
-                                                            "name": ":P7",
-                                                            "type": "expression",
-                                                            "value": "{{'Active'}}"
-                                                          },
-                                                          {
-                                                            "name": ":P8",
-                                                            "type": "expression",
-                                                            "value": "{{identity}}"
-                                                          },
-                                                          {
-                                                            "name": ":P9",
-                                                            "type": "expression",
-                                                            "value": "{{NOW}}"
-                                                          },
-                                                          {
-                                                            "name": ":P10",
-                                                            "type": "expression",
-                                                            "value": "{{BenefId}}"
-                                                          }
-                                                        ]
-                                                      }
-                                                    },
-                                                    "meta": [
-                                                      {
-                                                        "name": "identity",
-                                                        "type": "text"
-                                                      },
-                                                      {
-                                                        "name": "affected",
-                                                        "type": "number"
-                                                      }
-                                                    ]
-                                                  }
-                                                }
-                                              },
-                                              "outputType": "boolean"
-                                            }
-                                          ]
+                                        {
+                                            "table": "m_users",
+                                            "column": "id"
                                         },
-                                        "else": {
-                                          "steps": {
-                                            "name": "Resp",
-                                            "module": "core",
-                                            "action": "setvalue",
-                                            "options": {
-                                              "value": "Password Mismatched"
-                                            },
-                                            "meta": [],
-                                            "output": true,
-                                            "outputType": "text"
-                                          }
+                                        {
+                                            "table": "m_users",
+                                            "column": "md_id"
+                                        },
+                                        {
+                                            "table": "m_users",
+                                            "column": "ds_id"
                                         }
-                                      },
-                                      "outputType": "boolean"
-                                    }
-                                  ]
+                                    ],
+                                    "table": {
+                                        "name": "m_users"
+                                    },
+                                    "joins": [],
+                                    "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_POST.username}} */",
+                                    "params": [
+                                        {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P1",
+                                            "value": "{{$_POST.username}}"
+                                        }
+                                    ],
+                                    "wheres": {
+                                        "condition": "AND",
+                                        "rules": [
+                                            {
+                                                "id": "m_users.user_type",
+                                                "field": "m_users.user_type",
+                                                "type": "double",
+                                                "operator": "between",
+                                                "value": [
+                                                    1,
+                                                    3
+                                                ],
+                                                "data": {
+                                                    "table": "m_users",
+                                                    "column": "user_type",
+                                                    "type": "number"
+                                                },
+                                                "operation": "BETWEEN"
+                                            },
+                                            {
+                                                "id": "m_users.u_status",
+                                                "field": "m_users.u_status",
+                                                "type": "string",
+                                                "operator": "equal",
+                                                "value": "1",
+                                                "data": {
+                                                    "table": "m_users",
+                                                    "column": "u_status",
+                                                    "type": "text"
+                                                },
+                                                "operation": "="
+                                            },
+                                            {
+                                                "id": "m_users.blank2",
+                                                "field": "m_users.blank2",
+                                                "type": "string",
+                                                "operator": "equal",
+                                                "value": "{{$_POST.username}}",
+                                                "data": {
+                                                    "table": "m_users",
+                                                    "column": "blank2",
+                                                    "type": "text"
+                                                },
+                                                "operation": "="
+                                            }
+                                        ],
+                                        "conditional": null,
+                                        "valid": true
+                                    },
+                                    "primary": "id"
+                                }
+                            },
+                            "output": false,
+                            "meta": [
+                                {
+                                    "type": "text",
+                                    "name": "saltvalue"
+                                },
+                                {
+                                    "type": "text",
+                                    "name": "user_tpin"
+                                },
+                                {
+                                    "type": "number",
+                                    "name": "id"
+                                },
+                                {
+                                    "type": "text",
+                                    "name": "md_id"
+                                },
+                                {
+                                    "type": "text",
+                                    "name": "ds_id"
+                                }
+                            ],
+                            "outputType": "object"
+                        },
+                        {
+                            "name": "",
+                            "module": "core",
+                            "action": "condition",
+                            "options": {
+                                "if": "{{getSalt.saltvalue}}",
+                                "then": {
+                                    "steps": [
+                                        {
+                                            "name": "GetMdt",
+                                            "module": "dbconnector",
+                                            "action": "single",
+                                            "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                    "type": "SELECT",
+                                                    "columns": [
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "id",
+                                                            "alias": "countmdt",
+                                                            "aggregate": "COUNT"
+                                                        }
+                                                    ],
+                                                    "table": {
+                                                        "name": "m_users"
+                                                    },
+                                                    "joins": [],
+                                                    "groupBy": [],
+                                                    "wheres": {
+                                                        "condition": "AND",
+                                                        "rules": [
+                                                            {
+                                                                "id": "m_users.id",
+                                                                "field": "m_users.id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{getSalt.md_id.toNumber()}}",
+                                                                "data": {
+                                                                    "table": "m_users",
+                                                                    "column": "id",
+                                                                    "type": "number"
+                                                                },
+                                                                "operation": "="
+                                                            },
+                                                            {
+                                                                "id": "m_users.u_status",
+                                                                "field": "m_users.u_status",
+                                                                "type": "string",
+                                                                "operator": "equal",
+                                                                "value": "1",
+                                                                "data": {
+                                                                    "table": "m_users",
+                                                                    "column": "u_status",
+                                                                    "type": "text"
+                                                                },
+                                                                "operation": "="
+                                                            }
+                                                        ],
+                                                        "conditional": null,
+                                                        "valid": true
+                                                    },
+                                                    "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
+                                                    "params": [
+                                                        {
+                                                            "operator": "equal",
+                                                            "type": "expression",
+                                                            "name": ":P1",
+                                                            "value": "{{getSalt.md_id.toNumber()}}"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "output": false,
+                                            "meta": [
+                                                {
+                                                    "type": "number",
+                                                    "name": "countmdt"
+                                                }
+                                            ],
+                                            "outputType": "object"
+                                        },
+                                        {
+                                            "name": "",
+                                            "module": "core",
+                                            "action": "condition",
+                                            "options": {
+                                                "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
+                                                "then": {
+                                                    "steps": [
+                                                        {
+                                                            "name": "GetDt",
+                                                            "module": "dbconnector",
+                                                            "action": "single",
+                                                            "options": {
+                                                                "connection": "postgres_gcpServer",
+                                                                "sql": {
+                                                                    "type": "SELECT",
+                                                                    "columns": [
+                                                                        {
+                                                                            "table": "m_users",
+                                                                            "column": "id",
+                                                                            "alias": "countdt",
+                                                                            "aggregate": "COUNT"
+                                                                        }
+                                                                    ],
+                                                                    "table": {
+                                                                        "name": "m_users"
+                                                                    },
+                                                                    "joins": [],
+                                                                    "groupBy": [],
+                                                                    "wheres": {
+                                                                        "condition": "AND",
+                                                                        "rules": [
+                                                                            {
+                                                                                "id": "m_users.id",
+                                                                                "field": "m_users.id",
+                                                                                "type": "double",
+                                                                                "operator": "equal",
+                                                                                "value": "{{getSalt.ds_id.toNumber()}}",
+                                                                                "data": {
+                                                                                    "table": "m_users",
+                                                                                    "column": "id",
+                                                                                    "type": "number"
+                                                                                },
+                                                                                "operation": "="
+                                                                            },
+                                                                            {
+                                                                                "id": "m_users.u_status",
+                                                                                "field": "m_users.u_status",
+                                                                                "type": "string",
+                                                                                "operator": "equal",
+                                                                                "value": "1",
+                                                                                "data": {
+                                                                                    "table": "m_users",
+                                                                                    "column": "u_status",
+                                                                                    "type": "text"
+                                                                                },
+                                                                                "operation": "="
+                                                                            }
+                                                                        ],
+                                                                        "conditional": null,
+                                                                        "valid": true
+                                                                    },
+                                                                    "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
+                                                                    "params": [
+                                                                        {
+                                                                            "operator": "equal",
+                                                                            "type": "expression",
+                                                                            "name": ":P1",
+                                                                            "value": "{{getSalt.ds_id.toNumber()}}"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            },
+                                                            "output": false,
+                                                            "meta": [
+                                                                {
+                                                                    "type": "number",
+                                                                    "name": "countdt"
+                                                                }
+                                                            ],
+                                                            "outputType": "object"
+                                                        },
+                                                        {
+                                                            "name": "",
+                                                            "module": "core",
+                                                            "action": "condition",
+                                                            "options": {
+                                                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
+                                                                "then": {
+                                                                    "steps": [
+                                                                        {
+                                                                            "name": "identity",
+                                                                            "module": "auth",
+                                                                            "action": "login",
+                                                                            "options": {
+                                                                                "provider": "securityAndroid",
+                                                                                "password": "{{$_POST.password.sha256(getSalt.saltvalue)}}",
+                                                                                "username": "{{$_POST.username}}",
+                                                                                "remember": ""
+                                                                            },
+                                                                            "output": false,
+                                                                            "meta": []
+                                                                        },
+                                                                        {
+                                                                            "name": "",
+                                                                            "module": "core",
+                                                                            "action": "condition",
+                                                                            "options": {
+                                                                                "if": "{{identity}}",
+                                                                                "then": {
+                                                                                    "steps": [
+                                                                                        {
+                                                                                            "name": "AuthCode",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                                "value": "65c43ccd6a7b41c884"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text"
+                                                                                        },
+                                                                                        {
+                                                                                            "name": "MessageCode",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                                "value": "E06009"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text"
+                                                                                        },
+                                                                                        {
+                                                                                            "name": "ReqId",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                                "value": "{{UUID.md5(123456).substr(1, 15)}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text"
+                                                                                        },
+                                                                                        {
+                                                                                            "name": "api",
+                                                                                            "module": "api",
+                                                                                            "action": "send",
+                                                                                            "options": {
+                                                                                                "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
+                                                                                                "method": "POST",
+                                                                                                "dataType": "x-www-form-urlencoded",
+                                                                                                "data": {
+                                                                                                    "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.BenMobileAdd+'~'+$_POST.BenNameAdd+'~'+$_POST.BenACAdd+'~'+$_POST.BenAddIFSC+'~'+$_POST.BenAddBank+'~0'}}"
+                                                                                                }
+                                                                                            },
+                                                                                            "output": false
+                                                                                        },
+                                                                                        {
+                                                                                            "name": "Mobile",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                                "value": "{{api.data.split('~')[2]}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text",
+                                                                                            "output": true
+                                                                                        },
+                                                                                        {
+                                                                                            "name": "BenName",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                                "value": "{{api.data.split('~')[3]}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text",
+                                                                                            "output": true
+                                                                                        },
+                                                                                        {
+                                                                                            "name": "StatusCode",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                                "value": "{{api.data.split('~')[5]}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text",
+                                                                                            "output": true
+                                                                                        },
+                                                                                        {
+                                                                                            "name": "Message",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                                "value": "{{api.data.split('~')[6]}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text",
+                                                                                            "output": true
+                                                                                        },
+                                                                                        {
+                                                                                            "name": "BenefId",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                                "value": "{{api.data.split('~')[7]}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text",
+                                                                                            "output": true
+                                                                                        },
+                                                                                        {
+                                                                                            "name": "",
+                                                                                            "module": "core",
+                                                                                            "action": "condition",
+                                                                                            "options": {
+                                                                                                "if": "{{StatusCode=='SUCCESS'}}",
+                                                                                                "then": {
+                                                                                                    "steps": {
+                                                                                                        "name": "AddBen",
+                                                                                                        "module": "dbupdater",
+                                                                                                        "action": "insert",
+                                                                                                        "options": {
+                                                                                                            "connection": "postgres_gcpServer",
+                                                                                                            "sql": {
+                                                                                                                "type": "insert",
+                                                                                                                "values": [
+                                                                                                                    {
+                                                                                                                        "table": "dmt_beneficiary",
+                                                                                                                        "column": "ben_name",
+                                                                                                                        "type": "text",
+                                                                                                                        "value": "{{$_POST.BenNameAdd}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "table": "dmt_beneficiary",
+                                                                                                                        "column": "ben_mobile",
+                                                                                                                        "type": "text",
+                                                                                                                        "value": "{{$_POST.BenMobileAdd}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "table": "dmt_beneficiary",
+                                                                                                                        "column": "ben_ac_no",
+                                                                                                                        "type": "text",
+                                                                                                                        "value": "{{$_POST.BenACAdd}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "table": "dmt_beneficiary",
+                                                                                                                        "column": "ben_ifsc",
+                                                                                                                        "type": "text",
+                                                                                                                        "value": "{{$_POST.BenAddIFSC}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "table": "dmt_beneficiary",
+                                                                                                                        "column": "remitter_id",
+                                                                                                                        "type": "text",
+                                                                                                                        "value": "{{$_POST.BenMobileAdd}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "table": "dmt_beneficiary",
+                                                                                                                        "column": "ben_verify",
+                                                                                                                        "type": "boolean",
+                                                                                                                        "value": "{{false}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "table": "dmt_beneficiary",
+                                                                                                                        "column": "status",
+                                                                                                                        "type": "text",
+                                                                                                                        "value": "{{'Active'}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "table": "dmt_beneficiary",
+                                                                                                                        "column": "created_by",
+                                                                                                                        "type": "text",
+                                                                                                                        "value": "{{identity}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "table": "dmt_beneficiary",
+                                                                                                                        "column": "created_on",
+                                                                                                                        "type": "datetime",
+                                                                                                                        "value": "{{NOW}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "table": "dmt_beneficiary",
+                                                                                                                        "column": "ben_id",
+                                                                                                                        "type": "text",
+                                                                                                                        "value": "{{BenefId}}"
+                                                                                                                    }
+                                                                                                                ],
+                                                                                                                "table": "dmt_beneficiary",
+                                                                                                                "returning": "id",
+                                                                                                                "query": "INSERT INTO dmt_beneficiary\n(ben_name, ben_mobile, ben_ac_no, ben_ifsc, remitter_id, ben_verify, status, created_by, created_on, ben_id) VALUES (:P1 /* {{$_POST.BenNameAdd}} */, :P2 /* {{$_POST.BenMobileAdd}} */, :P3 /* {{$_POST.BenACAdd}} */, :P4 /* {{$_POST.BenAddIFSC}} */, :P5 /* {{$_POST.BenMobileAdd}} */, :P6 /* {{false}} */, :P7 /* {{'Active'}} */, :P8 /* {{identity}} */, :P9 /* {{NOW}} */, :P10 /* {{BenefId}} */)",
+                                                                                                                "params": [
+                                                                                                                    {
+                                                                                                                        "name": ":P1",
+                                                                                                                        "type": "expression",
+                                                                                                                        "value": "{{$_POST.BenNameAdd}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "name": ":P2",
+                                                                                                                        "type": "expression",
+                                                                                                                        "value": "{{$_POST.BenMobileAdd}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "name": ":P3",
+                                                                                                                        "type": "expression",
+                                                                                                                        "value": "{{$_POST.BenACAdd}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "name": ":P4",
+                                                                                                                        "type": "expression",
+                                                                                                                        "value": "{{$_POST.BenAddIFSC}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "name": ":P5",
+                                                                                                                        "type": "expression",
+                                                                                                                        "value": "{{$_POST.BenMobileAdd}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "name": ":P6",
+                                                                                                                        "type": "expression",
+                                                                                                                        "value": "{{false}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "name": ":P7",
+                                                                                                                        "type": "expression",
+                                                                                                                        "value": "{{'Active'}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "name": ":P8",
+                                                                                                                        "type": "expression",
+                                                                                                                        "value": "{{identity}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "name": ":P9",
+                                                                                                                        "type": "expression",
+                                                                                                                        "value": "{{NOW}}"
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                        "name": ":P10",
+                                                                                                                        "type": "expression",
+                                                                                                                        "value": "{{BenefId}}"
+                                                                                                                    }
+                                                                                                                ]
+                                                                                                            }
+                                                                                                        },
+                                                                                                        "meta": [
+                                                                                                            {
+                                                                                                                "name": "identity",
+                                                                                                                "type": "text"
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "name": "affected",
+                                                                                                                "type": "number"
+                                                                                                            }
+                                                                                                        ]
+                                                                                                    }
+                                                                                                }
+                                                                                            },
+                                                                                            "outputType": "boolean"
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                "else": {
+                                                                                    "steps": {
+                                                                                        "name": "Resp",
+                                                                                        "module": "core",
+                                                                                        "action": "setvalue",
+                                                                                        "options": {
+                                                                                            "value": "Password Mismatched"
+                                                                                        },
+                                                                                        "meta": [],
+                                                                                        "output": true,
+                                                                                        "outputType": "text"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            "outputType": "boolean"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "else": {
+                                                                    "steps": {
+                                                                        "name": "Resp",
+                                                                        "module": "core",
+                                                                        "action": "setvalue",
+                                                                        "options": {
+                                                                            "value": "Your Distributor(DT) inactive, Please contact technical support team"
+                                                                        },
+                                                                        "meta": [],
+                                                                        "outputType": "text",
+                                                                        "output": true
+                                                                    }
+                                                                }
+                                                            },
+                                                            "outputType": "boolean"
+                                                        }
+                                                    ]
+                                                },
+                                                "else": {
+                                                    "steps": {
+                                                        "name": "Resp",
+                                                        "module": "core",
+                                                        "action": "setvalue",
+                                                        "options": {
+                                                            "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                                                        },
+                                                        "meta": [],
+                                                        "output": true,
+                                                        "outputType": "text"
+                                                    }
+                                                }
+                                            },
+                                            "outputType": "boolean"
+                                        }
+                                    ]
                                 },
                                 "else": {
-                                  "steps": {
-                                    "name": "Resp",
-                                    "module": "core",
-                                    "action": "setvalue",
-                                    "options": {
-                                      "value": "Your Distributor(DT) inactive, Please contact technical support team"
-                                    },
-                                    "meta": [],
-                                    "outputType": "text",
-                                    "output": true
-                                  }
+                                    "steps": {
+                                        "name": "Resp",
+                                        "module": "core",
+                                        "action": "setvalue",
+                                        "options": {
+                                            "value": "User does not exists or user inactive, Please contact technical support team"
+                                        },
+                                        "meta": [],
+                                        "outputType": "text",
+                                        "output": true
+                                    }
                                 }
-                              },
-                              "outputType": "boolean"
-                            }
-                          ]
-                        },
-                        "else": {
-                          "steps": {
-                            "name": "Resp",
-                            "module": "core",
-                            "action": "setvalue",
-                            "options": {
-                              "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
                             },
-                            "meta": [],
-                            "output": true,
-                            "outputType": "text"
-                          }
+                            "outputType": "boolean",
+                            "output": false
                         }
-                      },
-                      "outputType": "boolean"
-                    }
-                  ]
+                    ]
                 },
-                "else": {
-                  "steps": {
-                    "name": "Resp",
-                    "module": "core",
-                    "action": "setvalue",
-                    "options": {
-                      "value": "User does not exists or user inactive, Please contact technical support team"
-                    },
-                    "meta": [],
-                    "outputType": "text",
-                    "output": true
-                  }
+                "catch": {
+                    "steps": {
+                        "name": "Resp",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                            "value": "Do not even try to do this, we are watching & recording your wrong activity!"
+                        },
+                        "meta": [],
+                        "output": true,
+                        "outputType": "text"
+                    }
                 }
-              },
-              "outputType": "boolean",
-              "output": false
             }
-          ]
-        },
-        "catch": {
-          "steps": {
-            "name": "Resp",
-            "module": "core",
-            "action": "setvalue",
-            "options": {
-              "value": "Do not even try to do this, we are watching & recording your wrong activity!"
-            },
-            "meta": [],
-            "output": true,
-            "outputType": "text"
-          }
         }
-      }
     }
-  }
 }

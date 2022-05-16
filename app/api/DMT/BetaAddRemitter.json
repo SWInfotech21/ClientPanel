@@ -1,179 +1,179 @@
 {
-  "meta": {
-    "options": {
-      "linkedFile": "/views/dmt-service-beta.ejs",
-      "linkedForm": "formAddRem"
-    },
-    "$_POST": [
-      {
-        "type": "text",
-        "fieldName": "RemMobileAdd",
+    "meta": {
         "options": {
-          "rules": {
-            "core:required": {
-              "param": ""
+            "linkedFile": "/views/dmt-service-beta.ejs",
+            "linkedForm": "formAddRem"
+        },
+        "$_POST": [
+            {
+                "type": "text",
+                "fieldName": "RemMobileAdd",
+                "options": {
+                    "rules": {
+                        "core:required": {
+                            "param": ""
+                        },
+                        "core:number": {
+                            "param": ""
+                        }
+                    }
+                },
+                "name": "RemMobileAdd"
             },
-            "core:number": {
-              "param": ""
+            {
+                "type": "text",
+                "fieldName": "RemNameAdd",
+                "options": {
+                    "rules": {
+                        "core:required": {
+                            "param": ""
+                        }
+                    }
+                },
+                "name": "RemNameAdd"
+            },
+            {
+                "type": "text",
+                "name": "RemPINAdd"
             }
-          }
-        },
-        "name": "RemMobileAdd"
-      },
-      {
-        "type": "text",
-        "fieldName": "RemNameAdd",
-        "options": {
-          "rules": {
-            "core:required": {
-              "param": ""
+        ]
+    },
+    "exec": {
+        "steps": [
+            {
+                "name": "",
+                "module": "auth",
+                "action": "restrict",
+                "options": {
+                    "provider": "security",
+                    "permissions": [
+                        "write"
+                    ],
+                    "loginUrl": "/login",
+                    "forbiddenUrl": "/403-forbidden"
+                }
+            },
+            {
+                "name": "AuthCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "65c43ccd6a7b41c884"
+                },
+                "meta": [],
+                "outputType": "text"
+            },
+            {
+                "name": "MessageCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "E06003"
+                },
+                "meta": [],
+                "outputType": "text"
+            },
+            {
+                "name": "ReqId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{UUID.md5(123456).substr(1, 15)}}"
+                },
+                "meta": [],
+                "outputType": "text"
+            },
+            {
+                "name": "api",
+                "module": "api",
+                "action": "send",
+                "options": {
+                    "method": "POST",
+                    "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
+                    "dataType": "x-www-form-urlencoded",
+                    "data": {
+                        "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.RemMobileAdd+'~'+$_POST.RemNameAdd+'~0~0'}}"
+                    }
+                },
+                "output": false
+            },
+            {
+                "name": "RemitterAdd",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{api.data}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "RemMobile",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{RemitterAdd.split('~')[2]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "RemName",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{RemitterAdd.split('~')[3]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "RefNo",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{RemitterAdd.split('~')[4]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "RemAddMessage",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{'OTP Sent: '+RemitterAdd.split('~')[5]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "Status",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{RemitterAdd.split('~')[5]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": false
+            },
+            {
+                "name": "RemAddStatusCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{Status=='SUCCESS'?1:2}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
             }
-          }
-        },
-        "name": "RemNameAdd"
-      },
-      {
-        "type": "text",
-        "name": "RemPINAdd"
-      }
-    ]
-  },
-  "exec": {
-    "steps": [
-      {
-        "name": "",
-        "module": "auth",
-        "action": "restrict",
-        "options": {
-          "provider": "security",
-          "permissions": [
-            "write"
-          ],
-          "loginUrl": "/login",
-          "forbiddenUrl": "/403-forbidden"
-        }
-      },
-      {
-        "name": "AuthCode",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "65c43ccd6a7b41c884"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "MessageCode",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "E06003"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "ReqId",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{NOW.md5(123456).substr(1, 9)}}"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "api",
-        "module": "api",
-        "action": "send",
-        "options": {
-          "method": "POST",
-          "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
-          "dataType": "x-www-form-urlencoded",
-          "data": {
-            "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.RemMobileAdd+'~'+$_POST.RemNameAdd+'~0~0'}}"
-          }
-        },
-        "output": false
-      },
-      {
-        "name": "RemitterAdd",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{api.data}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "RemMobile",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{RemitterAdd.split('~')[2]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "RemName",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{RemitterAdd.split('~')[3]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "RefNo",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{RemitterAdd.split('~')[4]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "RemAddMessage",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{'OTP Sent: '+RemitterAdd.split('~')[5]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "Status",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{RemitterAdd.split('~')[5]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": false
-      },
-      {
-        "name": "RemAddStatusCode",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{Status=='SUCCESS'?1:2}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      }
-    ]
-  }
+        ]
+    }
 }

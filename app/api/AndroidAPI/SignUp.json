@@ -1,1023 +1,1023 @@
 {
-  "meta": {
-    "$_GET": [
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:required": {},
-            "core:number": {}
-          }
-        },
-        "name": "mobile"
-      },
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:required": {}
-          }
-        },
-        "name": "user_name"
-      },
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:required": {}
-          }
-        },
-        "name": "email"
-      },
-      {
-        "type": "text",
-        "name": "address"
-      },
-      {
-        "type": "text",
-        "options": {
-          "rules": {
-            "core:number": {}
-          }
-        },
-        "name": "pin"
-      }
-    ],
-    "$_SERVER": [
-      {
-        "type": "text",
-        "name": "REMOTE_ADDR"
-      }
-    ]
-  },
-  "exec": {
-    "steps": {
-      "name": "",
-      "module": "core",
-      "action": "trycatch",
-      "options": {
-        "try": {
-          "steps": [
+    "meta": {
+        "$_GET": [
             {
-              "name": "CheckUser",
-              "module": "dbconnector",
-              "action": "single",
-              "options": {
-                "connection": "postgres_gcpServer",
-                "sql": {
-                  "type": "SELECT",
-                  "columns": [
-                    {
-                      "table": "m_users",
-                      "column": "id",
-                      "alias": "CountUser",
-                      "aggregate": "COUNT"
+                "type": "text",
+                "options": {
+                    "rules": {
+                        "core:required": {},
+                        "core:number": {}
                     }
-                  ],
-                  "table": {
-                    "name": "m_users"
-                  },
-                  "joins": [],
-                  "groupBy": [],
-                  "wheres": {
-                    "condition": "AND",
-                    "rules": [
-                      {
-                        "id": "m_users.user_mobile",
-                        "field": "m_users.user_mobile",
-                        "type": "string",
-                        "operator": "equal",
-                        "value": "{{$_GET.mobile}}",
-                        "data": {
-                          "table": "m_users",
-                          "column": "user_mobile",
-                          "type": "text"
-                        },
-                        "operation": "="
-                      }
-                    ],
-                    "conditional": null,
-                    "valid": true
-                  },
-                  "query": "SELECT COUNT(id) AS CountUser\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_GET.mobile}} */",
-                  "params": [
-                    {
-                      "operator": "equal",
-                      "type": "expression",
-                      "name": ":P1",
-                      "value": "{{$_GET.mobile}}"
-                    }
-                  ],
-                  "primary": "id"
-                }
-              },
-              "output": false,
-              "meta": [
-                {
-                  "type": "number",
-                  "name": "CountUser"
-                }
-              ],
-              "outputType": "object"
-            },
-            {
-              "name": "",
-              "module": "core",
-              "action": "condition",
-              "options": {
-                "if": "{{CheckUser.CountUser < 1}}",
-                "then": {
-                  "steps": [
-                    {
-                      "name": "SequenceNo",
-                      "module": "dbconnector",
-                      "action": "single",
-                      "options": {
-                        "connection": "postgres_gcpServer",
-                        "sql": {
-                          "type": "SELECT",
-                          "columns": [
-                            {
-                              "table": "m_users",
-                              "column": "id",
-                              "alias": "CountId",
-                              "aggregate": "COUNT"
-                            }
-                          ],
-                          "table": {
-                            "name": "m_users"
-                          },
-                          "joins": [],
-                          "groupBy": [],
-                          "wheres": {
-                            "condition": "AND",
-                            "rules": [
-                              {
-                                "id": "m_users.user_type",
-                                "field": "m_users.user_type",
-                                "type": "double",
-                                "operator": "equal",
-                                "value": 3,
-                                "data": {
-                                  "table": "m_users",
-                                  "column": "user_type",
-                                  "type": "number"
-                                },
-                                "operation": "="
-                              }
-                            ],
-                            "conditional": null,
-                            "valid": true
-                          },
-                          "query": "SELECT COUNT(id) AS CountId\nFROM m_users\nWHERE user_type = 3",
-                          "params": []
-                        }
-                      },
-                      "output": false,
-                      "meta": [
-                        {
-                          "type": "number",
-                          "name": "CountId"
-                        }
-                      ],
-                      "outputType": "object"
-                    },
-                    {
-                      "name": "user",
-                      "module": "core",
-                      "action": "setvalue",
-                      "options": {
-                        "value": "RT30"
-                      },
-                      "meta": [],
-                      "outputType": "text"
-                    },
-                    {
-                      "name": "UniqueId",
-                      "module": "core",
-                      "action": "setvalue",
-                      "options": {
-                        "value": "{{user+SequenceNo.CountId.sum('1')}}"
-                      },
-                      "meta": [],
-                      "outputType": "text"
-                    },
-                    {
-                      "name": "password",
-                      "module": "core",
-                      "action": "setvalue",
-                      "options": {
-                        "value": "{{NOW.md5(123456).substr(1, 9)}}"
-                      },
-                      "meta": [],
-                      "outputType": "text"
-                    },
-                    {
-                      "name": "UserCreate",
-                      "module": "dbupdater",
-                      "action": "insert",
-                      "options": {
-                        "connection": "postgres_gcpServer",
-                        "sql": {
-                          "type": "insert",
-                          "values": [
-                            {
-                              "table": "m_users",
-                              "column": "user_id",
-                              "type": "text",
-                              "value": "{{UniqueId}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "user_fname",
-                              "type": "text",
-                              "value": "{{$_GET.user_name}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "user_lname",
-                              "type": "text",
-                              "value": "{{'https://github.com/cdo.png'}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "user_mobile",
-                              "type": "text",
-                              "value": "{{$_GET.mobile}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "user_email",
-                              "type": "text",
-                              "value": "{{$_GET.email}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "password",
-                              "type": "text",
-                              "value": "{{password.sha256(NOW)}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "salt",
-                              "type": "text",
-                              "value": "{{NOW}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "user_type",
-                              "type": "number",
-                              "value": "3"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "md_id",
-                              "type": "text",
-                              "value": "0"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "ds_id",
-                              "type": "text",
-                              "value": "0"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "u_status",
-                              "type": "text",
-                              "value": "{{1}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "scheme_id",
-                              "type": "number",
-                              "value": "7"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "ip",
-                              "type": "text",
-                              "value": "{{$_SERVER.REMOTE_ADDR}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "cap_amt",
-                              "type": "number",
-                              "value": "0"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "balance_amt",
-                              "type": "text",
-                              "value": "0"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "balance_outstanding",
-                              "type": "text",
-                              "value": "0"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "aeps_limit",
-                              "type": "text",
-                              "value": "0"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "aeps_balance",
-                              "type": "text",
-                              "value": "0"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "created_by",
-                              "type": "number",
-                              "value": "12"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "created_on",
-                              "type": "datetime",
-                              "value": "{{NOW}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "blank1",
-                              "type": "text",
-                              "value": "{{password}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "blank2",
-                              "type": "text",
-                              "value": "{{$_GET.mobile}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "address",
-                              "type": "text",
-                              "value": "{{$_GET.address}}"
-                            },
-                            {
-                              "table": "m_users",
-                              "column": "pin",
-                              "type": "text",
-                              "value": "{{$_GET.pin}}"
-                            }
-                          ],
-                          "table": "m_users",
-                          "returning": "id",
-                          "query": "INSERT INTO m_users\n(user_id, user_fname, user_lname, user_mobile, user_email, password, salt, user_type, md_id, ds_id, u_status, scheme_id, ip, cap_amt, balance_amt, balance_outstanding, aeps_limit, aeps_balance, created_by, created_on, blank1, blank2, address, pin) VALUES (:P1 /* {{UniqueId}} */, :P2 /* {{$_GET.user_name}} */, :P3 /* {{'https://github.com/cdo.png'}} */, :P4 /* {{$_GET.mobile}} */, :P5 /* {{$_GET.email}} */, :P6 /* {{password.sha256(NOW)}} */, :P7 /* {{NOW}} */, '3', '0', '0', :P8 /* {{1}} */, '7', :P9 /* {{$_SERVER.REMOTE_ADDR}} */, '0', '0', '0', '0', '0', '12', :P10 /* {{NOW}} */, :P11 /* {{password}} */, :P12 /* {{$_GET.mobile}} */, :P13 /* {{$_GET.address}} */, :P14 /* {{$_GET.pin}} */)",
-                          "params": [
-                            {
-                              "name": ":P1",
-                              "type": "expression",
-                              "value": "{{UniqueId}}"
-                            },
-                            {
-                              "name": ":P2",
-                              "type": "expression",
-                              "value": "{{$_GET.user_name}}"
-                            },
-                            {
-                              "name": ":P3",
-                              "type": "expression",
-                              "value": "{{'https://github.com/cdo.png'}}"
-                            },
-                            {
-                              "name": ":P4",
-                              "type": "expression",
-                              "value": "{{$_GET.mobile}}"
-                            },
-                            {
-                              "name": ":P5",
-                              "type": "expression",
-                              "value": "{{$_GET.email}}"
-                            },
-                            {
-                              "name": ":P6",
-                              "type": "expression",
-                              "value": "{{password.sha256(NOW)}}"
-                            },
-                            {
-                              "name": ":P7",
-                              "type": "expression",
-                              "value": "{{NOW}}"
-                            },
-                            {
-                              "name": ":P8",
-                              "type": "expression",
-                              "value": "{{1}}"
-                            },
-                            {
-                              "name": ":P9",
-                              "type": "expression",
-                              "value": "{{$_SERVER.REMOTE_ADDR}}"
-                            },
-                            {
-                              "name": ":P10",
-                              "type": "expression",
-                              "value": "{{NOW}}"
-                            },
-                            {
-                              "name": ":P11",
-                              "type": "expression",
-                              "value": "{{password}}"
-                            },
-                            {
-                              "name": ":P12",
-                              "type": "expression",
-                              "value": "{{$_GET.mobile}}"
-                            },
-                            {
-                              "name": ":P13",
-                              "type": "expression",
-                              "value": "{{$_GET.address}}"
-                            },
-                            {
-                              "name": ":P14",
-                              "type": "expression",
-                              "value": "{{$_GET.pin}}"
-                            }
-                          ]
-                        }
-                      },
-                      "meta": [
-                        {
-                          "name": "identity",
-                          "type": "text"
-                        },
-                        {
-                          "name": "affected",
-                          "type": "number"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "GetWhatsappAPI",
-                      "module": "dbconnector",
-                      "action": "single",
-                      "options": {
-                        "connection": "postgres_gcpServer",
-                        "sql": {
-                          "type": "SELECT",
-                          "columns": [
-                            {
-                              "table": "m_api",
-                              "column": "api_code"
-                            },
-                            {
-                              "table": "m_api",
-                              "column": "username"
-                            },
-                            {
-                              "table": "m_api",
-                              "column": "api_password"
-                            },
-                            {
-                              "table": "m_api",
-                              "column": "api_type"
-                            },
-                            {
-                              "table": "m_api",
-                              "column": "api_url"
-                            }
-                          ],
-                          "table": {
-                            "name": "m_api"
-                          },
-                          "primary": "id",
-                          "joins": [],
-                          "wheres": {
-                            "condition": "AND",
-                            "rules": [
-                              {
-                                "id": "m_api.api_type",
-                                "field": "m_api.api_type",
-                                "type": "string",
-                                "operator": "equal",
-                                "value": "{{'Whatsapp'}}",
-                                "data": {
-                                  "table": "m_api",
-                                  "column": "api_type",
-                                  "type": "text",
-                                  "columnObj": {
-                                    "type": "string",
-                                    "maxLength": -5,
-                                    "primary": false,
-                                    "unique": false,
-                                    "nullable": true,
-                                    "name": "api_type"
-                                  }
-                                },
-                                "operation": "="
-                              },
-                              {
-                                "id": "m_api.status",
-                                "field": "m_api.status",
-                                "type": "double",
-                                "operator": "equal",
-                                "value": 1,
-                                "data": {
-                                  "table": "m_api",
-                                  "column": "status",
-                                  "type": "number",
-                                  "columnObj": {
-                                    "type": "integer",
-                                    "primary": false,
-                                    "nullable": false,
-                                    "unique": false,
-                                    "name": "status"
-                                  }
-                                },
-                                "operation": "="
-                              }
-                            ],
-                            "conditional": null,
-                            "valid": true
-                          },
-                          "query": "SELECT api_code, username, api_password, api_type, api_url\nFROM m_api\nWHERE api_type = :P1 /* {{'Whatsapp'}} */ AND status = 1",
-                          "params": [
-                            {
-                              "operator": "equal",
-                              "type": "expression",
-                              "name": ":P1",
-                              "value": "{{'Whatsapp'}}"
-                            }
-                          ]
-                        }
-                      },
-                      "output": false,
-                      "meta": [
-                        {
-                          "type": "text",
-                          "name": "api_code"
-                        },
-                        {
-                          "type": "text",
-                          "name": "username"
-                        },
-                        {
-                          "type": "text",
-                          "name": "api_password"
-                        },
-                        {
-                          "type": "text",
-                          "name": "api_type"
-                        },
-                        {
-                          "type": "text",
-                          "name": "api_url"
-                        }
-                      ],
-                      "outputType": "object"
-                    },
-                    {
-                      "name": "apiWhatsapp",
-                      "module": "api",
-                      "action": "send",
-                      "options": {
-                        "url": "{{GetWhatsappAPI.api_url}}",
-                        "params": {
-                          "api_token": "{{GetWhatsappAPI.api_password}}",
-                          "mobile": "{{91+$_GET.mobile}}",
-                          "message": "{{'Dear '+$_GET.user_name+', Your Account has been created successfully. User Login Name  '+$_GET.mobile+', Password  '+password+' and generate TPIN after login to web portal or mobile app. Thanks for using our services. 😊\\nRegards \\nS W Pay Team\\n\\n\\n'}}"
-                        },
-                        "method": "POST"
-                      },
-                      "output": false
-                    },
-                    {
-                      "name": "GetAPI",
-                      "module": "dbconnector",
-                      "action": "single",
-                      "options": {
-                        "connection": "postgres_gcpServer",
-                        "sql": {
-                          "type": "SELECT",
-                          "columns": [
-                            {
-                              "table": "m_api",
-                              "column": "api_code"
-                            },
-                            {
-                              "table": "m_api",
-                              "column": "username"
-                            },
-                            {
-                              "table": "m_api",
-                              "column": "api_password"
-                            },
-                            {
-                              "table": "m_api",
-                              "column": "senderid"
-                            },
-                            {
-                              "table": "m_api",
-                              "column": "api_url"
-                            },
-                            {
-                              "table": "sms_api_details",
-                              "column": "entity_id"
-                            },
-                            {
-                              "table": "sms_api_details",
-                              "column": "template_id"
-                            }
-                          ],
-                          "table": {
-                            "name": "m_api"
-                          },
-                          "primary": "id",
-                          "joins": [
-                            {
-                              "table": "t_sms_api_details",
-                              "column": "*",
-                              "alias": "sms_api_details",
-                              "type": "LEFT",
-                              "clauses": {
-                                "condition": "AND",
-                                "rules": [
-                                  {
-                                    "table": "sms_api_details",
-                                    "column": "api_id",
-                                    "operator": "equal",
-                                    "value": {
-                                      "table": "m_api",
-                                      "column": "id"
-                                    },
-                                    "operation": "="
-                                  }
-                                ]
-                              },
-                              "primary": "id"
-                            }
-                          ],
-                          "wheres": {
-                            "condition": "AND",
-                            "rules": [
-                              {
-                                "id": "m_api.api_type",
-                                "field": "m_api.api_type",
-                                "type": "string",
-                                "operator": "equal",
-                                "value": "{{'SMS'}}",
-                                "data": {
-                                  "table": "m_api",
-                                  "column": "api_type",
-                                  "type": "text",
-                                  "columnObj": {
-                                    "type": "string",
-                                    "maxLength": -5,
-                                    "primary": false,
-                                    "unique": false,
-                                    "nullable": true,
-                                    "name": "api_type"
-                                  }
-                                },
-                                "operation": "="
-                              },
-                              {
-                                "id": "m_api.status",
-                                "field": "m_api.status",
-                                "type": "double",
-                                "operator": "equal",
-                                "value": 1,
-                                "data": {
-                                  "table": "m_api",
-                                  "column": "status",
-                                  "type": "number",
-                                  "columnObj": {
-                                    "type": "integer",
-                                    "primary": false,
-                                    "nullable": false,
-                                    "unique": false,
-                                    "name": "status"
-                                  }
-                                },
-                                "operation": "="
-                              },
-                              {
-                                "id": "sms_api_details.sms_code",
-                                "field": "sms_api_details.sms_code",
-                                "type": "string",
-                                "operator": "equal",
-                                "value": "{{'ADDU'}}",
-                                "data": {
-                                  "table": "sms_api_details",
-                                  "column": "sms_code",
-                                  "type": "text",
-                                  "columnObj": {
-                                    "type": "string",
-                                    "maxLength": -5,
-                                    "primary": false,
-                                    "unique": false,
-                                    "nullable": true,
-                                    "name": "sms_code"
-                                  }
-                                },
-                                "operation": "="
-                              },
-                              {
-                                "id": "sms_api_details.status",
-                                "field": "sms_api_details.status",
-                                "type": "string",
-                                "operator": "equal",
-                                "value": "1",
-                                "data": {
-                                  "table": "sms_api_details",
-                                  "column": "status",
-                                  "type": "text",
-                                  "columnObj": {
-                                    "type": "string",
-                                    "maxLength": -5,
-                                    "primary": false,
-                                    "unique": false,
-                                    "nullable": true,
-                                    "name": "status"
-                                  }
-                                },
-                                "operation": "="
-                              }
-                            ],
-                            "conditional": null,
-                            "valid": true
-                          },
-                          "query": "SELECT m_api.api_code, m_api.username, m_api.api_password, m_api.senderid, m_api.api_url, sms_api_details.entity_id, sms_api_details.template_id\nFROM m_api\nLEFT JOIN t_sms_api_details AS sms_api_details ON (sms_api_details.api_id = m_api.id)\nWHERE m_api.api_type = :P1 /* {{'SMS'}} */ AND m_api.status = 1 AND sms_api_details.sms_code = :P2 /* {{'ADDU'}} */ AND sms_api_details.status = '1'",
-                          "params": [
-                            {
-                              "operator": "equal",
-                              "type": "expression",
-                              "name": ":P1",
-                              "value": "{{'SMS'}}"
-                            },
-                            {
-                              "operator": "equal",
-                              "type": "expression",
-                              "name": ":P2",
-                              "value": "{{'ADDU'}}"
-                            }
-                          ]
-                        }
-                      },
-                      "output": false,
-                      "meta": [
-                        {
-                          "type": "text",
-                          "name": "api_code"
-                        },
-                        {
-                          "type": "text",
-                          "name": "username"
-                        },
-                        {
-                          "type": "text",
-                          "name": "api_password"
-                        },
-                        {
-                          "type": "text",
-                          "name": "senderid"
-                        },
-                        {
-                          "type": "text",
-                          "name": "api_url"
-                        },
-                        {
-                          "type": "text",
-                          "name": "entity_id"
-                        },
-                        {
-                          "type": "text",
-                          "name": "template_id"
-                        }
-                      ],
-                      "outputType": "object"
-                    },
-                    {
-                      "name": "apiSMS",
-                      "module": "api",
-                      "action": "send",
-                      "options": {
-                        "passErrors": false,
-                        "url": "{{GetAPI.api_url}}",
-                        "params": {
-                          "user": "{{GetAPI.username}}",
-                          "key": "{{GetAPI.api_password}}",
-                          "mobile": "{{$_GET.mobile}}",
-                          "message": "{{'Dear Partner, Your Account has been created successfully. User Name '+$_GET.mobile+' Password  '+password+' TPIN XXXX . Thanks for using our service.\\nRegards S W Pay Team'}}",
-                          "senderid": "{{GetAPI.senderid}}",
-                          "accusage": "1",
-                          "entityid": "{{GetAPI.entity_id}}",
-                          "tempid": "{{GetAPI.template_id}}"
-                        }
-                      }
-                    },
-                    {
-                      "name": "api_status",
-                      "module": "core",
-                      "action": "setvalue",
-                      "options": {
-                        "value": "{{apiSMS.status}}"
-                      },
-                      "meta": [],
-                      "outputType": "text"
-                    },
-                    {
-                      "name": "api_response",
-                      "module": "core",
-                      "action": "setvalue",
-                      "options": {
-                        "value": "{{apiSMS.data}}"
-                      },
-                      "meta": [],
-                      "outputType": "text"
-                    },
-                    {
-                      "name": "RecordingSMSLog",
-                      "module": "dbupdater",
-                      "action": "insert",
-                      "options": {
-                        "connection": "postgres_gcpServer",
-                        "sql": {
-                          "type": "insert",
-                          "values": [
-                            {
-                              "table": "t_sms_log",
-                              "column": "sms_message",
-                              "type": "text",
-                              "value": "{{'Dear Partner, Your Account has been created successfully. User Name '+$_GET.mobile+' Password  '+password+' TPIN XXXX . Thanks for using our service.\\nRegards S W Pay Team'}}"
-                            },
-                            {
-                              "table": "t_sms_log",
-                              "column": "sender_mobile",
-                              "type": "text",
-                              "value": "{{$_GET.mobile}}"
-                            },
-                            {
-                              "table": "t_sms_log",
-                              "column": "created_on",
-                              "type": "datetime",
-                              "value": "{{NOW}}"
-                            },
-                            {
-                              "table": "t_sms_log",
-                              "column": "sms_type",
-                              "type": "text",
-                              "value": "{{'Add New User SMS'}}"
-                            },
-                            {
-                              "table": "t_sms_log",
-                              "column": "ip_address",
-                              "type": "text",
-                              "value": "{{$_SERVER.REMOTE_ADDR}}"
-                            },
-                            {
-                              "table": "t_sms_log",
-                              "column": "status",
-                              "type": "boolean",
-                              "value": "{{api_status == 200 ? 1 : 0}}"
-                            },
-                            {
-                              "table": "t_sms_log",
-                              "column": "response",
-                              "type": "text",
-                              "value": "{{api_response}}"
-                            },
-                            {
-                              "table": "t_sms_log",
-                              "column": "user_id",
-                              "type": "number",
-                              "value": "{{UserCreate.identity}}"
-                            }
-                          ],
-                          "table": "t_sms_log",
-                          "returning": "id",
-                          "query": "INSERT INTO t_sms_log\n(sms_message, sender_mobile, created_on, sms_type, ip_address, status, response, user_id) VALUES (:P1 /* {{'Dear Partner, Your Account has been created successfully. User Name '+$_GET.mobile+' Password  '+password+' TPIN XXXX . Thanks for using our service.\\nRegards S W Pay Team'}} */, :P2 /* {{$_GET.mobile}} */, :P3 /* {{NOW}} */, :P4 /* {{'Add New User SMS'}} */, :P5 /* {{$_SERVER.REMOTE_ADDR}} */, :P6 /* {{api_status == 200 ? 1 : 0}} */, :P7 /* {{api_response}} */, :P8 /* {{UserCreate.identity}} */)",
-                          "params": [
-                            {
-                              "name": ":P1",
-                              "type": "expression",
-                              "value": "{{'Dear Partner, Your Account has been created successfully. User Name '+$_GET.mobile+' Password  '+password+' TPIN XXXX . Thanks for using our service.\\nRegards S W Pay Team'}}"
-                            },
-                            {
-                              "name": ":P2",
-                              "type": "expression",
-                              "value": "{{$_GET.mobile}}"
-                            },
-                            {
-                              "name": ":P3",
-                              "type": "expression",
-                              "value": "{{NOW}}"
-                            },
-                            {
-                              "name": ":P4",
-                              "type": "expression",
-                              "value": "{{'Add New User SMS'}}"
-                            },
-                            {
-                              "name": ":P5",
-                              "type": "expression",
-                              "value": "{{$_SERVER.REMOTE_ADDR}}"
-                            },
-                            {
-                              "name": ":P6",
-                              "type": "expression",
-                              "value": "{{api_status == 200 ? 1 : 0}}"
-                            },
-                            {
-                              "name": ":P7",
-                              "type": "expression",
-                              "value": "{{api_response}}"
-                            },
-                            {
-                              "name": ":P8",
-                              "type": "expression",
-                              "value": "{{UserCreate.identity}}"
-                            }
-                          ]
-                        }
-                      },
-                      "meta": [
-                        {
-                          "name": "identity",
-                          "type": "text"
-                        },
-                        {
-                          "name": "affected",
-                          "type": "number"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "Status",
-                      "module": "core",
-                      "action": "setvalue",
-                      "options": {
-                        "value": "true"
-                      },
-                      "meta": [],
-                      "outputType": "text",
-                      "output": true
-                    },
-                    {
-                      "name": "message",
-                      "module": "core",
-                      "action": "setvalue",
-                      "options": {
-                        "value": "Registered Successfully"
-                      },
-                      "meta": [],
-                      "outputType": "text",
-                      "output": true
-                    }
-                  ]
                 },
-                "else": {
-                  "steps": [
-                    {
-                      "name": "Status",
-                      "module": "core",
-                      "action": "setvalue",
-                      "options": {
-                        "value": "false"
-                      },
-                      "meta": [],
-                      "output": true,
-                      "outputType": "text"
-                    },
-                    {
-                      "name": "message",
-                      "module": "core",
-                      "action": "setvalue",
-                      "options": {
-                        "value": "This user already exists in database."
-                      },
-                      "meta": [],
-                      "outputType": "text",
-                      "output": true
-                    }
-                  ]
-                }
-              },
-              "outputType": "boolean"
-            }
-          ]
-        },
-        "catch": {
-          "steps": {
-            "name": "message",
-            "module": "core",
-            "action": "setvalue",
-            "options": {
-              "value": "Unusual Activity"
+                "name": "mobile"
             },
-            "meta": [],
-            "outputType": "text",
-            "output": true
-          }
+            {
+                "type": "text",
+                "options": {
+                    "rules": {
+                        "core:required": {}
+                    }
+                },
+                "name": "user_name"
+            },
+            {
+                "type": "text",
+                "options": {
+                    "rules": {
+                        "core:required": {}
+                    }
+                },
+                "name": "email"
+            },
+            {
+                "type": "text",
+                "name": "address"
+            },
+            {
+                "type": "text",
+                "options": {
+                    "rules": {
+                        "core:number": {}
+                    }
+                },
+                "name": "pin"
+            }
+        ],
+        "$_SERVER": [
+            {
+                "type": "text",
+                "name": "REMOTE_ADDR"
+            }
+        ]
+    },
+    "exec": {
+        "steps": {
+            "name": "",
+            "module": "core",
+            "action": "trycatch",
+            "options": {
+                "try": {
+                    "steps": [
+                        {
+                            "name": "CheckUser",
+                            "module": "dbconnector",
+                            "action": "single",
+                            "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                    "type": "SELECT",
+                                    "columns": [
+                                        {
+                                            "table": "m_users",
+                                            "column": "id",
+                                            "alias": "CountUser",
+                                            "aggregate": "COUNT"
+                                        }
+                                    ],
+                                    "table": {
+                                        "name": "m_users"
+                                    },
+                                    "joins": [],
+                                    "groupBy": [],
+                                    "wheres": {
+                                        "condition": "AND",
+                                        "rules": [
+                                            {
+                                                "id": "m_users.user_mobile",
+                                                "field": "m_users.user_mobile",
+                                                "type": "string",
+                                                "operator": "equal",
+                                                "value": "{{$_GET.mobile}}",
+                                                "data": {
+                                                    "table": "m_users",
+                                                    "column": "user_mobile",
+                                                    "type": "text"
+                                                },
+                                                "operation": "="
+                                            }
+                                        ],
+                                        "conditional": null,
+                                        "valid": true
+                                    },
+                                    "query": "SELECT COUNT(id) AS CountUser\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_GET.mobile}} */",
+                                    "params": [
+                                        {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P1",
+                                            "value": "{{$_GET.mobile}}"
+                                        }
+                                    ],
+                                    "primary": "id"
+                                }
+                            },
+                            "output": false,
+                            "meta": [
+                                {
+                                    "type": "number",
+                                    "name": "CountUser"
+                                }
+                            ],
+                            "outputType": "object"
+                        },
+                        {
+                            "name": "",
+                            "module": "core",
+                            "action": "condition",
+                            "options": {
+                                "if": "{{CheckUser.CountUser < 1}}",
+                                "then": {
+                                    "steps": [
+                                        {
+                                            "name": "SequenceNo",
+                                            "module": "dbconnector",
+                                            "action": "single",
+                                            "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                    "type": "SELECT",
+                                                    "columns": [
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "id",
+                                                            "alias": "CountId",
+                                                            "aggregate": "COUNT"
+                                                        }
+                                                    ],
+                                                    "table": {
+                                                        "name": "m_users"
+                                                    },
+                                                    "joins": [],
+                                                    "groupBy": [],
+                                                    "wheres": {
+                                                        "condition": "AND",
+                                                        "rules": [
+                                                            {
+                                                                "id": "m_users.user_type",
+                                                                "field": "m_users.user_type",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": 3,
+                                                                "data": {
+                                                                    "table": "m_users",
+                                                                    "column": "user_type",
+                                                                    "type": "number"
+                                                                },
+                                                                "operation": "="
+                                                            }
+                                                        ],
+                                                        "conditional": null,
+                                                        "valid": true
+                                                    },
+                                                    "query": "SELECT COUNT(id) AS CountId\nFROM m_users\nWHERE user_type = 3",
+                                                    "params": []
+                                                }
+                                            },
+                                            "output": false,
+                                            "meta": [
+                                                {
+                                                    "type": "number",
+                                                    "name": "CountId"
+                                                }
+                                            ],
+                                            "outputType": "object"
+                                        },
+                                        {
+                                            "name": "user",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                                "value": "RT30"
+                                            },
+                                            "meta": [],
+                                            "outputType": "text"
+                                        },
+                                        {
+                                            "name": "UniqueId",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                                "value": "{{user+SequenceNo.CountId.sum('1')}}"
+                                            },
+                                            "meta": [],
+                                            "outputType": "text"
+                                        },
+                                        {
+                                            "name": "password",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                                "value": "{{UUID.md5(123456).substr(1, 15)}}"
+                                            },
+                                            "meta": [],
+                                            "outputType": "text"
+                                        },
+                                        {
+                                            "name": "UserCreate",
+                                            "module": "dbupdater",
+                                            "action": "insert",
+                                            "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                    "type": "insert",
+                                                    "values": [
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "user_id",
+                                                            "type": "text",
+                                                            "value": "{{UniqueId}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "user_fname",
+                                                            "type": "text",
+                                                            "value": "{{$_GET.user_name}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "user_lname",
+                                                            "type": "text",
+                                                            "value": "{{'https://github.com/cdo.png'}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "user_mobile",
+                                                            "type": "text",
+                                                            "value": "{{$_GET.mobile}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "user_email",
+                                                            "type": "text",
+                                                            "value": "{{$_GET.email}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "password",
+                                                            "type": "text",
+                                                            "value": "{{password.sha256(NOW)}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "salt",
+                                                            "type": "text",
+                                                            "value": "{{NOW}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "user_type",
+                                                            "type": "number",
+                                                            "value": "3"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "md_id",
+                                                            "type": "text",
+                                                            "value": "0"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "ds_id",
+                                                            "type": "text",
+                                                            "value": "0"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "u_status",
+                                                            "type": "text",
+                                                            "value": "{{1}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "scheme_id",
+                                                            "type": "number",
+                                                            "value": "7"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "ip",
+                                                            "type": "text",
+                                                            "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "cap_amt",
+                                                            "type": "number",
+                                                            "value": "0"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "balance_amt",
+                                                            "type": "text",
+                                                            "value": "0"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "balance_outstanding",
+                                                            "type": "text",
+                                                            "value": "0"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "aeps_limit",
+                                                            "type": "text",
+                                                            "value": "0"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "aeps_balance",
+                                                            "type": "text",
+                                                            "value": "0"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "created_by",
+                                                            "type": "number",
+                                                            "value": "12"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "created_on",
+                                                            "type": "datetime",
+                                                            "value": "{{NOW}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "blank1",
+                                                            "type": "text",
+                                                            "value": "{{password}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "blank2",
+                                                            "type": "text",
+                                                            "value": "{{$_GET.mobile}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "address",
+                                                            "type": "text",
+                                                            "value": "{{$_GET.address}}"
+                                                        },
+                                                        {
+                                                            "table": "m_users",
+                                                            "column": "pin",
+                                                            "type": "text",
+                                                            "value": "{{$_GET.pin}}"
+                                                        }
+                                                    ],
+                                                    "table": "m_users",
+                                                    "returning": "id",
+                                                    "query": "INSERT INTO m_users\n(user_id, user_fname, user_lname, user_mobile, user_email, password, salt, user_type, md_id, ds_id, u_status, scheme_id, ip, cap_amt, balance_amt, balance_outstanding, aeps_limit, aeps_balance, created_by, created_on, blank1, blank2, address, pin) VALUES (:P1 /* {{UniqueId}} */, :P2 /* {{$_GET.user_name}} */, :P3 /* {{'https://github.com/cdo.png'}} */, :P4 /* {{$_GET.mobile}} */, :P5 /* {{$_GET.email}} */, :P6 /* {{password.sha256(NOW)}} */, :P7 /* {{NOW}} */, '3', '0', '0', :P8 /* {{1}} */, '7', :P9 /* {{$_SERVER.REMOTE_ADDR}} */, '0', '0', '0', '0', '0', '12', :P10 /* {{NOW}} */, :P11 /* {{password}} */, :P12 /* {{$_GET.mobile}} */, :P13 /* {{$_GET.address}} */, :P14 /* {{$_GET.pin}} */)",
+                                                    "params": [
+                                                        {
+                                                            "name": ":P1",
+                                                            "type": "expression",
+                                                            "value": "{{UniqueId}}"
+                                                        },
+                                                        {
+                                                            "name": ":P2",
+                                                            "type": "expression",
+                                                            "value": "{{$_GET.user_name}}"
+                                                        },
+                                                        {
+                                                            "name": ":P3",
+                                                            "type": "expression",
+                                                            "value": "{{'https://github.com/cdo.png'}}"
+                                                        },
+                                                        {
+                                                            "name": ":P4",
+                                                            "type": "expression",
+                                                            "value": "{{$_GET.mobile}}"
+                                                        },
+                                                        {
+                                                            "name": ":P5",
+                                                            "type": "expression",
+                                                            "value": "{{$_GET.email}}"
+                                                        },
+                                                        {
+                                                            "name": ":P6",
+                                                            "type": "expression",
+                                                            "value": "{{password.sha256(NOW)}}"
+                                                        },
+                                                        {
+                                                            "name": ":P7",
+                                                            "type": "expression",
+                                                            "value": "{{NOW}}"
+                                                        },
+                                                        {
+                                                            "name": ":P8",
+                                                            "type": "expression",
+                                                            "value": "{{1}}"
+                                                        },
+                                                        {
+                                                            "name": ":P9",
+                                                            "type": "expression",
+                                                            "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                        },
+                                                        {
+                                                            "name": ":P10",
+                                                            "type": "expression",
+                                                            "value": "{{NOW}}"
+                                                        },
+                                                        {
+                                                            "name": ":P11",
+                                                            "type": "expression",
+                                                            "value": "{{password}}"
+                                                        },
+                                                        {
+                                                            "name": ":P12",
+                                                            "type": "expression",
+                                                            "value": "{{$_GET.mobile}}"
+                                                        },
+                                                        {
+                                                            "name": ":P13",
+                                                            "type": "expression",
+                                                            "value": "{{$_GET.address}}"
+                                                        },
+                                                        {
+                                                            "name": ":P14",
+                                                            "type": "expression",
+                                                            "value": "{{$_GET.pin}}"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "meta": [
+                                                {
+                                                    "name": "identity",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "affected",
+                                                    "type": "number"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "GetWhatsappAPI",
+                                            "module": "dbconnector",
+                                            "action": "single",
+                                            "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                    "type": "SELECT",
+                                                    "columns": [
+                                                        {
+                                                            "table": "m_api",
+                                                            "column": "api_code"
+                                                        },
+                                                        {
+                                                            "table": "m_api",
+                                                            "column": "username"
+                                                        },
+                                                        {
+                                                            "table": "m_api",
+                                                            "column": "api_password"
+                                                        },
+                                                        {
+                                                            "table": "m_api",
+                                                            "column": "api_type"
+                                                        },
+                                                        {
+                                                            "table": "m_api",
+                                                            "column": "api_url"
+                                                        }
+                                                    ],
+                                                    "table": {
+                                                        "name": "m_api"
+                                                    },
+                                                    "primary": "id",
+                                                    "joins": [],
+                                                    "wheres": {
+                                                        "condition": "AND",
+                                                        "rules": [
+                                                            {
+                                                                "id": "m_api.api_type",
+                                                                "field": "m_api.api_type",
+                                                                "type": "string",
+                                                                "operator": "equal",
+                                                                "value": "{{'Whatsapp'}}",
+                                                                "data": {
+                                                                    "table": "m_api",
+                                                                    "column": "api_type",
+                                                                    "type": "text",
+                                                                    "columnObj": {
+                                                                        "type": "string",
+                                                                        "maxLength": -5,
+                                                                        "primary": false,
+                                                                        "unique": false,
+                                                                        "nullable": true,
+                                                                        "name": "api_type"
+                                                                    }
+                                                                },
+                                                                "operation": "="
+                                                            },
+                                                            {
+                                                                "id": "m_api.status",
+                                                                "field": "m_api.status",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": 1,
+                                                                "data": {
+                                                                    "table": "m_api",
+                                                                    "column": "status",
+                                                                    "type": "number",
+                                                                    "columnObj": {
+                                                                        "type": "integer",
+                                                                        "primary": false,
+                                                                        "nullable": false,
+                                                                        "unique": false,
+                                                                        "name": "status"
+                                                                    }
+                                                                },
+                                                                "operation": "="
+                                                            }
+                                                        ],
+                                                        "conditional": null,
+                                                        "valid": true
+                                                    },
+                                                    "query": "SELECT api_code, username, api_password, api_type, api_url\nFROM m_api\nWHERE api_type = :P1 /* {{'Whatsapp'}} */ AND status = 1",
+                                                    "params": [
+                                                        {
+                                                            "operator": "equal",
+                                                            "type": "expression",
+                                                            "name": ":P1",
+                                                            "value": "{{'Whatsapp'}}"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "output": false,
+                                            "meta": [
+                                                {
+                                                    "type": "text",
+                                                    "name": "api_code"
+                                                },
+                                                {
+                                                    "type": "text",
+                                                    "name": "username"
+                                                },
+                                                {
+                                                    "type": "text",
+                                                    "name": "api_password"
+                                                },
+                                                {
+                                                    "type": "text",
+                                                    "name": "api_type"
+                                                },
+                                                {
+                                                    "type": "text",
+                                                    "name": "api_url"
+                                                }
+                                            ],
+                                            "outputType": "object"
+                                        },
+                                        {
+                                            "name": "apiWhatsapp",
+                                            "module": "api",
+                                            "action": "send",
+                                            "options": {
+                                                "url": "{{GetWhatsappAPI.api_url}}",
+                                                "params": {
+                                                    "api_token": "{{GetWhatsappAPI.api_password}}",
+                                                    "mobile": "{{91+$_GET.mobile}}",
+                                                    "message": "{{'Dear '+$_GET.user_name+', Your Account has been created successfully. User Login Name  '+$_GET.mobile+', Password  '+password+' and generate TPIN after login to web portal or mobile app. Thanks for using our services. 😊\\nRegards \\nS W Pay Team\\n\\n\\n'}}"
+                                                },
+                                                "method": "POST"
+                                            },
+                                            "output": false
+                                        },
+                                        {
+                                            "name": "GetAPI",
+                                            "module": "dbconnector",
+                                            "action": "single",
+                                            "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                    "type": "SELECT",
+                                                    "columns": [
+                                                        {
+                                                            "table": "m_api",
+                                                            "column": "api_code"
+                                                        },
+                                                        {
+                                                            "table": "m_api",
+                                                            "column": "username"
+                                                        },
+                                                        {
+                                                            "table": "m_api",
+                                                            "column": "api_password"
+                                                        },
+                                                        {
+                                                            "table": "m_api",
+                                                            "column": "senderid"
+                                                        },
+                                                        {
+                                                            "table": "m_api",
+                                                            "column": "api_url"
+                                                        },
+                                                        {
+                                                            "table": "sms_api_details",
+                                                            "column": "entity_id"
+                                                        },
+                                                        {
+                                                            "table": "sms_api_details",
+                                                            "column": "template_id"
+                                                        }
+                                                    ],
+                                                    "table": {
+                                                        "name": "m_api"
+                                                    },
+                                                    "primary": "id",
+                                                    "joins": [
+                                                        {
+                                                            "table": "t_sms_api_details",
+                                                            "column": "*",
+                                                            "alias": "sms_api_details",
+                                                            "type": "LEFT",
+                                                            "clauses": {
+                                                                "condition": "AND",
+                                                                "rules": [
+                                                                    {
+                                                                        "table": "sms_api_details",
+                                                                        "column": "api_id",
+                                                                        "operator": "equal",
+                                                                        "value": {
+                                                                            "table": "m_api",
+                                                                            "column": "id"
+                                                                        },
+                                                                        "operation": "="
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "primary": "id"
+                                                        }
+                                                    ],
+                                                    "wheres": {
+                                                        "condition": "AND",
+                                                        "rules": [
+                                                            {
+                                                                "id": "m_api.api_type",
+                                                                "field": "m_api.api_type",
+                                                                "type": "string",
+                                                                "operator": "equal",
+                                                                "value": "{{'SMS'}}",
+                                                                "data": {
+                                                                    "table": "m_api",
+                                                                    "column": "api_type",
+                                                                    "type": "text",
+                                                                    "columnObj": {
+                                                                        "type": "string",
+                                                                        "maxLength": -5,
+                                                                        "primary": false,
+                                                                        "unique": false,
+                                                                        "nullable": true,
+                                                                        "name": "api_type"
+                                                                    }
+                                                                },
+                                                                "operation": "="
+                                                            },
+                                                            {
+                                                                "id": "m_api.status",
+                                                                "field": "m_api.status",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": 1,
+                                                                "data": {
+                                                                    "table": "m_api",
+                                                                    "column": "status",
+                                                                    "type": "number",
+                                                                    "columnObj": {
+                                                                        "type": "integer",
+                                                                        "primary": false,
+                                                                        "nullable": false,
+                                                                        "unique": false,
+                                                                        "name": "status"
+                                                                    }
+                                                                },
+                                                                "operation": "="
+                                                            },
+                                                            {
+                                                                "id": "sms_api_details.sms_code",
+                                                                "field": "sms_api_details.sms_code",
+                                                                "type": "string",
+                                                                "operator": "equal",
+                                                                "value": "{{'ADDU'}}",
+                                                                "data": {
+                                                                    "table": "sms_api_details",
+                                                                    "column": "sms_code",
+                                                                    "type": "text",
+                                                                    "columnObj": {
+                                                                        "type": "string",
+                                                                        "maxLength": -5,
+                                                                        "primary": false,
+                                                                        "unique": false,
+                                                                        "nullable": true,
+                                                                        "name": "sms_code"
+                                                                    }
+                                                                },
+                                                                "operation": "="
+                                                            },
+                                                            {
+                                                                "id": "sms_api_details.status",
+                                                                "field": "sms_api_details.status",
+                                                                "type": "string",
+                                                                "operator": "equal",
+                                                                "value": "1",
+                                                                "data": {
+                                                                    "table": "sms_api_details",
+                                                                    "column": "status",
+                                                                    "type": "text",
+                                                                    "columnObj": {
+                                                                        "type": "string",
+                                                                        "maxLength": -5,
+                                                                        "primary": false,
+                                                                        "unique": false,
+                                                                        "nullable": true,
+                                                                        "name": "status"
+                                                                    }
+                                                                },
+                                                                "operation": "="
+                                                            }
+                                                        ],
+                                                        "conditional": null,
+                                                        "valid": true
+                                                    },
+                                                    "query": "SELECT m_api.api_code, m_api.username, m_api.api_password, m_api.senderid, m_api.api_url, sms_api_details.entity_id, sms_api_details.template_id\nFROM m_api\nLEFT JOIN t_sms_api_details AS sms_api_details ON (sms_api_details.api_id = m_api.id)\nWHERE m_api.api_type = :P1 /* {{'SMS'}} */ AND m_api.status = 1 AND sms_api_details.sms_code = :P2 /* {{'ADDU'}} */ AND sms_api_details.status = '1'",
+                                                    "params": [
+                                                        {
+                                                            "operator": "equal",
+                                                            "type": "expression",
+                                                            "name": ":P1",
+                                                            "value": "{{'SMS'}}"
+                                                        },
+                                                        {
+                                                            "operator": "equal",
+                                                            "type": "expression",
+                                                            "name": ":P2",
+                                                            "value": "{{'ADDU'}}"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "output": false,
+                                            "meta": [
+                                                {
+                                                    "type": "text",
+                                                    "name": "api_code"
+                                                },
+                                                {
+                                                    "type": "text",
+                                                    "name": "username"
+                                                },
+                                                {
+                                                    "type": "text",
+                                                    "name": "api_password"
+                                                },
+                                                {
+                                                    "type": "text",
+                                                    "name": "senderid"
+                                                },
+                                                {
+                                                    "type": "text",
+                                                    "name": "api_url"
+                                                },
+                                                {
+                                                    "type": "text",
+                                                    "name": "entity_id"
+                                                },
+                                                {
+                                                    "type": "text",
+                                                    "name": "template_id"
+                                                }
+                                            ],
+                                            "outputType": "object"
+                                        },
+                                        {
+                                            "name": "apiSMS",
+                                            "module": "api",
+                                            "action": "send",
+                                            "options": {
+                                                "passErrors": false,
+                                                "url": "{{GetAPI.api_url}}",
+                                                "params": {
+                                                    "user": "{{GetAPI.username}}",
+                                                    "key": "{{GetAPI.api_password}}",
+                                                    "mobile": "{{$_GET.mobile}}",
+                                                    "message": "{{'Dear Partner, Your Account has been created successfully. User Name '+$_GET.mobile+' Password  '+password+' TPIN XXXX . Thanks for using our service.\\nRegards S W Pay Team'}}",
+                                                    "senderid": "{{GetAPI.senderid}}",
+                                                    "accusage": "1",
+                                                    "entityid": "{{GetAPI.entity_id}}",
+                                                    "tempid": "{{GetAPI.template_id}}"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "name": "api_status",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                                "value": "{{apiSMS.status}}"
+                                            },
+                                            "meta": [],
+                                            "outputType": "text"
+                                        },
+                                        {
+                                            "name": "api_response",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                                "value": "{{apiSMS.data}}"
+                                            },
+                                            "meta": [],
+                                            "outputType": "text"
+                                        },
+                                        {
+                                            "name": "RecordingSMSLog",
+                                            "module": "dbupdater",
+                                            "action": "insert",
+                                            "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                    "type": "insert",
+                                                    "values": [
+                                                        {
+                                                            "table": "t_sms_log",
+                                                            "column": "sms_message",
+                                                            "type": "text",
+                                                            "value": "{{'Dear Partner, Your Account has been created successfully. User Name '+$_GET.mobile+' Password  '+password+' TPIN XXXX . Thanks for using our service.\\nRegards S W Pay Team'}}"
+                                                        },
+                                                        {
+                                                            "table": "t_sms_log",
+                                                            "column": "sender_mobile",
+                                                            "type": "text",
+                                                            "value": "{{$_GET.mobile}}"
+                                                        },
+                                                        {
+                                                            "table": "t_sms_log",
+                                                            "column": "created_on",
+                                                            "type": "datetime",
+                                                            "value": "{{NOW}}"
+                                                        },
+                                                        {
+                                                            "table": "t_sms_log",
+                                                            "column": "sms_type",
+                                                            "type": "text",
+                                                            "value": "{{'Add New User SMS'}}"
+                                                        },
+                                                        {
+                                                            "table": "t_sms_log",
+                                                            "column": "ip_address",
+                                                            "type": "text",
+                                                            "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                        },
+                                                        {
+                                                            "table": "t_sms_log",
+                                                            "column": "status",
+                                                            "type": "boolean",
+                                                            "value": "{{api_status == 200 ? 1 : 0}}"
+                                                        },
+                                                        {
+                                                            "table": "t_sms_log",
+                                                            "column": "response",
+                                                            "type": "text",
+                                                            "value": "{{api_response}}"
+                                                        },
+                                                        {
+                                                            "table": "t_sms_log",
+                                                            "column": "user_id",
+                                                            "type": "number",
+                                                            "value": "{{UserCreate.identity}}"
+                                                        }
+                                                    ],
+                                                    "table": "t_sms_log",
+                                                    "returning": "id",
+                                                    "query": "INSERT INTO t_sms_log\n(sms_message, sender_mobile, created_on, sms_type, ip_address, status, response, user_id) VALUES (:P1 /* {{'Dear Partner, Your Account has been created successfully. User Name '+$_GET.mobile+' Password  '+password+' TPIN XXXX . Thanks for using our service.\\nRegards S W Pay Team'}} */, :P2 /* {{$_GET.mobile}} */, :P3 /* {{NOW}} */, :P4 /* {{'Add New User SMS'}} */, :P5 /* {{$_SERVER.REMOTE_ADDR}} */, :P6 /* {{api_status == 200 ? 1 : 0}} */, :P7 /* {{api_response}} */, :P8 /* {{UserCreate.identity}} */)",
+                                                    "params": [
+                                                        {
+                                                            "name": ":P1",
+                                                            "type": "expression",
+                                                            "value": "{{'Dear Partner, Your Account has been created successfully. User Name '+$_GET.mobile+' Password  '+password+' TPIN XXXX . Thanks for using our service.\\nRegards S W Pay Team'}}"
+                                                        },
+                                                        {
+                                                            "name": ":P2",
+                                                            "type": "expression",
+                                                            "value": "{{$_GET.mobile}}"
+                                                        },
+                                                        {
+                                                            "name": ":P3",
+                                                            "type": "expression",
+                                                            "value": "{{NOW}}"
+                                                        },
+                                                        {
+                                                            "name": ":P4",
+                                                            "type": "expression",
+                                                            "value": "{{'Add New User SMS'}}"
+                                                        },
+                                                        {
+                                                            "name": ":P5",
+                                                            "type": "expression",
+                                                            "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                        },
+                                                        {
+                                                            "name": ":P6",
+                                                            "type": "expression",
+                                                            "value": "{{api_status == 200 ? 1 : 0}}"
+                                                        },
+                                                        {
+                                                            "name": ":P7",
+                                                            "type": "expression",
+                                                            "value": "{{api_response}}"
+                                                        },
+                                                        {
+                                                            "name": ":P8",
+                                                            "type": "expression",
+                                                            "value": "{{UserCreate.identity}}"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "meta": [
+                                                {
+                                                    "name": "identity",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "affected",
+                                                    "type": "number"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "Status",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                                "value": "true"
+                                            },
+                                            "meta": [],
+                                            "outputType": "text",
+                                            "output": true
+                                        },
+                                        {
+                                            "name": "message",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                                "value": "Registered Successfully"
+                                            },
+                                            "meta": [],
+                                            "outputType": "text",
+                                            "output": true
+                                        }
+                                    ]
+                                },
+                                "else": {
+                                    "steps": [
+                                        {
+                                            "name": "Status",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                                "value": "false"
+                                            },
+                                            "meta": [],
+                                            "output": true,
+                                            "outputType": "text"
+                                        },
+                                        {
+                                            "name": "message",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                                "value": "This user already exists in database."
+                                            },
+                                            "meta": [],
+                                            "outputType": "text",
+                                            "output": true
+                                        }
+                                    ]
+                                }
+                            },
+                            "outputType": "boolean"
+                        }
+                    ]
+                },
+                "catch": {
+                    "steps": {
+                        "name": "message",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                            "value": "Unusual Activity"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": true
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }

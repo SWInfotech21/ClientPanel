@@ -1,237 +1,237 @@
 {
-  "meta": {
-    "options": {
-      "linkedFile": "/views/dmt-service-beta.ejs",
-      "linkedForm": "formDelBen"
+    "meta": {
+        "options": {
+            "linkedFile": "/views/dmt-service-beta.ejs",
+            "linkedForm": "formDelBen"
+        },
+        "$_POST": [
+            {
+                "type": "text",
+                "fieldName": "RemMobileDel",
+                "options": {
+                    "rules": {
+                        "core:required": {
+                            "param": ""
+                        }
+                    }
+                },
+                "name": "RemMobileDel"
+            },
+            {
+                "type": "text",
+                "fieldName": "BenIdDel",
+                "options": {
+                    "rules": {
+                        "core:required": {
+                            "param": ""
+                        }
+                    }
+                },
+                "name": "BenIdDel"
+            }
+        ]
     },
-    "$_POST": [
-      {
-        "type": "text",
-        "fieldName": "RemMobileDel",
-        "options": {
-          "rules": {
-            "core:required": {
-              "param": ""
-            }
-          }
-        },
-        "name": "RemMobileDel"
-      },
-      {
-        "type": "text",
-        "fieldName": "BenIdDel",
-        "options": {
-          "rules": {
-            "core:required": {
-              "param": ""
-            }
-          }
-        },
-        "name": "BenIdDel"
-      }
-    ]
-  },
-  "exec": {
-    "steps": [
-      {
-        "name": "",
-        "module": "auth",
-        "action": "restrict",
-        "options": {
-          "provider": "security",
-          "permissions": [
-            "write"
-          ],
-          "loginUrl": "/login",
-          "forbiddenUrl": "/403-forbidden"
-        }
-      },
-      {
-        "name": "AuthCode",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "65c43ccd6a7b41c884"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "MessageCode",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "E06013"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "ReqId",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{NOW.md5(123456).substr(1, 9)}}"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "apiDelBen",
-        "module": "api",
-        "action": "send",
-        "options": {
-          "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
-          "method": "POST",
-          "data": {
-            "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.RemMobileDel+'~'+$_POST.BenIdDel+'~0~0'}}"
-          },
-          "dataType": "x-www-form-urlencoded"
-        },
-        "output": false
-      },
-      {
-        "name": "DelBenMobile",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{apiDelBen.data.split('~')[2]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "DelBenName",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{apiDelBen.data.split('~')[3]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "VerifyRefNo",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{apiDelBen.data.split('~')[4]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "DelStatusCode",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{apiDelBen.data.split('~')[5]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "DelMessage",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{apiDelBen.data.split('~')[6]}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{DelStatusCode=='SUCCESS'}}",
-          "then": {
-            "steps": {
-              "name": "update",
-              "module": "dbupdater",
-              "action": "update",
-              "options": {
-                "connection": "postgres_gcpServer",
-                "sql": {
-                  "type": "update",
-                  "values": [
-                    {
-                      "table": "dmt_beneficiary",
-                      "column": "deleted_on",
-                      "type": "datetime",
-                      "value": "{{NOW}}"
-                    }
-                  ],
-                  "table": "dmt_beneficiary",
-                  "wheres": {
-                    "condition": "AND",
-                    "rules": [
-                      {
-                        "id": "remitter_id",
-                        "field": "remitter_id",
-                        "type": "string",
-                        "operator": "equal",
-                        "value": "{{$_POST.RemMobileDel}}",
-                        "data": {
-                          "column": "remitter_id"
-                        },
-                        "operation": "="
-                      },
-                      {
-                        "id": "ben_id",
-                        "field": "ben_id",
-                        "type": "string",
-                        "operator": "equal",
-                        "value": "{{$_POST.BenIdDel}}",
-                        "data": {
-                          "column": "ben_id"
-                        },
-                        "operation": "="
-                      }
+    "exec": {
+        "steps": [
+            {
+                "name": "",
+                "module": "auth",
+                "action": "restrict",
+                "options": {
+                    "provider": "security",
+                    "permissions": [
+                        "write"
                     ],
-                    "conditional": null,
-                    "valid": true
-                  },
-                  "returning": "id",
-                  "query": "UPDATE dmt_beneficiary\nSET deleted_on = :P1 /* {{NOW}} */\nWHERE remitter_id = :P2 /* {{$_POST.RemMobileDel}} */ AND ben_id = :P3 /* {{$_POST.BenIdDel}} */",
-                  "params": [
-                    {
-                      "name": ":P1",
-                      "type": "expression",
-                      "value": "{{NOW}}"
+                    "loginUrl": "/login",
+                    "forbiddenUrl": "/403-forbidden"
+                }
+            },
+            {
+                "name": "AuthCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "65c43ccd6a7b41c884"
+                },
+                "meta": [],
+                "outputType": "text"
+            },
+            {
+                "name": "MessageCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "E06013"
+                },
+                "meta": [],
+                "outputType": "text"
+            },
+            {
+                "name": "ReqId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{UUID.md5(123456).substr(1, 15)}}"
+                },
+                "meta": [],
+                "outputType": "text"
+            },
+            {
+                "name": "apiDelBen",
+                "module": "api",
+                "action": "send",
+                "options": {
+                    "url": "https://ezymoney.myezypay.in/RemitMoney/mtransfer",
+                    "method": "POST",
+                    "data": {
+                        "msg": "{{MessageCode+'~'+AuthCode+'~'+ReqId+'~'+$_POST.RemMobileDel+'~'+$_POST.BenIdDel+'~0~0'}}"
                     },
-                    {
-                      "operator": "equal",
-                      "type": "expression",
-                      "name": ":P2",
-                      "value": "{{$_POST.RemMobileDel}}"
-                    },
-                    {
-                      "operator": "equal",
-                      "type": "expression",
-                      "name": ":P3",
-                      "value": "{{$_POST.BenIdDel}}"
+                    "dataType": "x-www-form-urlencoded"
+                },
+                "output": false
+            },
+            {
+                "name": "DelBenMobile",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{apiDelBen.data.split('~')[2]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "DelBenName",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{apiDelBen.data.split('~')[3]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "VerifyRefNo",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{apiDelBen.data.split('~')[4]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "DelStatusCode",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{apiDelBen.data.split('~')[5]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "DelMessage",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                    "value": "{{apiDelBen.data.split('~')[6]}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+            },
+            {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                    "if": "{{DelStatusCode=='SUCCESS'}}",
+                    "then": {
+                        "steps": {
+                            "name": "update",
+                            "module": "dbupdater",
+                            "action": "update",
+                            "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                    "type": "update",
+                                    "values": [
+                                        {
+                                            "table": "dmt_beneficiary",
+                                            "column": "deleted_on",
+                                            "type": "datetime",
+                                            "value": "{{NOW}}"
+                                        }
+                                    ],
+                                    "table": "dmt_beneficiary",
+                                    "wheres": {
+                                        "condition": "AND",
+                                        "rules": [
+                                            {
+                                                "id": "remitter_id",
+                                                "field": "remitter_id",
+                                                "type": "string",
+                                                "operator": "equal",
+                                                "value": "{{$_POST.RemMobileDel}}",
+                                                "data": {
+                                                    "column": "remitter_id"
+                                                },
+                                                "operation": "="
+                                            },
+                                            {
+                                                "id": "ben_id",
+                                                "field": "ben_id",
+                                                "type": "string",
+                                                "operator": "equal",
+                                                "value": "{{$_POST.BenIdDel}}",
+                                                "data": {
+                                                    "column": "ben_id"
+                                                },
+                                                "operation": "="
+                                            }
+                                        ],
+                                        "conditional": null,
+                                        "valid": true
+                                    },
+                                    "returning": "id",
+                                    "query": "UPDATE dmt_beneficiary\nSET deleted_on = :P1 /* {{NOW}} */\nWHERE remitter_id = :P2 /* {{$_POST.RemMobileDel}} */ AND ben_id = :P3 /* {{$_POST.BenIdDel}} */",
+                                    "params": [
+                                        {
+                                            "name": ":P1",
+                                            "type": "expression",
+                                            "value": "{{NOW}}"
+                                        },
+                                        {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P2",
+                                            "value": "{{$_POST.RemMobileDel}}"
+                                        },
+                                        {
+                                            "operator": "equal",
+                                            "type": "expression",
+                                            "name": ":P3",
+                                            "value": "{{$_POST.BenIdDel}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "meta": [
+                                {
+                                    "name": "affected",
+                                    "type": "number"
+                                }
+                            ]
+                        }
                     }
-                  ]
-                }
-              },
-              "meta": [
-                {
-                  "name": "affected",
-                  "type": "number"
-                }
-              ]
+                },
+                "outputType": "boolean"
             }
-          }
-        },
-        "outputType": "boolean"
-      }
-    ]
-  }
+        ]
+    }
 }
