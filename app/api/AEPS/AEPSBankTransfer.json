@@ -1997,11 +1997,17 @@
                         "column": "mdt_charge_amt",
                         "type": "text",
                         "value": "{{MDTChargeAmt}}"
+                      },
+                      {
+                        "table": "tt_aeps_trans",
+                        "column": "aeps_number",
+                        "type": "text",
+                        "value": "{{UserWalletBalCheck.aeps_merchant_id}}"
                       }
                     ],
                     "table": "tt_aeps_trans",
                     "returning": "id",
-                    "query": "INSERT INTO tt_aeps_trans\n(service_id, op_id, api_id, user_id, user_rt_id, merchant_id, amount, op_bal, comm_per, comm_val, comm_amt, charge_per, charge_val, charge_amt, net_amt, closing_bal, tr_mode, tr_type, status, tr_id, reason, api_logs, revert_trans, ip_address, process_mode, live, tr_date, trans_by, dt_comm_per, dt_comm_val, dt_comm_amt, dt_charge_per, dt_charge_val, dt_charge_amount, mdt_comm_per, mdt_comm_val, mdt_comm_amt, mdt_charge_per, mdt_charge_val, mdt_charge_amt) VALUES (:P1 /* {{GetOpComm.service_id}} */, :P2 /* {{GetOpComm.operator_id}} */, :P3 /* {{0}} */, :P4 /* {{UserWalletBalCheck.id}} */, :P5 /* {{UserWalletBalCheck.RT_id}} */, :P6 /* {{UserWalletBalCheck.aeps_merchant_id}} */, :P7 /* {{$_POST.WithdrawAmtBank}} */, :P8 /* {{UserWalletBalCheck.aeps_balance}} */, :P9 /* {{GetOpComm.comm_per}} */, :P10 /* {{GetOpComm.comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetOpComm.service_charge_per}} */, :P13 /* {{GetOpComm.service_charge_val}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTNetAmt}} */, :P16 /* {{RTClosingBalance}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{TransactionId}} */, :P21 /* {{'Withdrawal of Rs. '+$_POST.WithdrawAmtBank+' from AEPS Wallet to Bank | Comm. Amt. '+RTCommAmt+' | Charge Amt. '+RTChargeAmt+' | Net Amt. '+RTNetAmt+' | AEPS Wallet Remaining '+RTClosingBalance}} */, :P22 /* {{GetAPIForward.api_code}} */, '0', :P23 /* {{$_SERVER.REMOTE_ADDR}} */, :P24 /* {{'A2C'}} */, :P25 /* {{'Live'}} */, :P26 /* {{NOW}} */, :P27 /* {{UserWalletBalCheck.id}} */, :P28 /* {{DTCommPer}} */, :P29 /* {{DTCommVal}} */, :P30 /* {{DTCommAmt}} */, :P31 /* {{DTChargePer}} */, :P32 /* {{DTChargeVal}} */, :P33 /* {{DTChargeAmt}} */, :P34 /* {{MDTCommPer}} */, :P35 /* {{MDTCommVal}} */, :P36 /* {{MDTCommAmt}} */, :P37 /* {{MDTChargePer}} */, :P38 /* {{MDTChargeVal}} */, :P39 /* {{MDTChargeAmt}} */)",
+                    "query": "INSERT INTO tt_aeps_trans\n(service_id, op_id, api_id, user_id, user_rt_id, merchant_id, amount, op_bal, comm_per, comm_val, comm_amt, charge_per, charge_val, charge_amt, net_amt, closing_bal, tr_mode, tr_type, status, tr_id, reason, api_logs, revert_trans, ip_address, process_mode, live, tr_date, trans_by, dt_comm_per, dt_comm_val, dt_comm_amt, dt_charge_per, dt_charge_val, dt_charge_amount, mdt_comm_per, mdt_comm_val, mdt_comm_amt, mdt_charge_per, mdt_charge_val, mdt_charge_amt, aeps_number) VALUES (:P1 /* {{GetOpComm.service_id}} */, :P2 /* {{GetOpComm.operator_id}} */, :P3 /* {{0}} */, :P4 /* {{UserWalletBalCheck.id}} */, :P5 /* {{UserWalletBalCheck.RT_id}} */, :P6 /* {{UserWalletBalCheck.aeps_merchant_id}} */, :P7 /* {{$_POST.WithdrawAmtBank}} */, :P8 /* {{UserWalletBalCheck.aeps_balance}} */, :P9 /* {{GetOpComm.comm_per}} */, :P10 /* {{GetOpComm.comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetOpComm.service_charge_per}} */, :P13 /* {{GetOpComm.service_charge_val}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTNetAmt}} */, :P16 /* {{RTClosingBalance}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{TransactionId}} */, :P21 /* {{'Withdrawal of Rs. '+$_POST.WithdrawAmtBank+' from AEPS Wallet to Bank | Comm. Amt. '+RTCommAmt+' | Charge Amt. '+RTChargeAmt+' | Net Amt. '+RTNetAmt+' | AEPS Wallet Remaining '+RTClosingBalance}} */, :P22 /* {{GetAPIForward.api_code}} */, '0', :P23 /* {{$_SERVER.REMOTE_ADDR}} */, :P24 /* {{'A2C'}} */, :P25 /* {{'Live'}} */, :P26 /* {{NOW}} */, :P27 /* {{UserWalletBalCheck.id}} */, :P28 /* {{DTCommPer}} */, :P29 /* {{DTCommVal}} */, :P30 /* {{DTCommAmt}} */, :P31 /* {{DTChargePer}} */, :P32 /* {{DTChargeVal}} */, :P33 /* {{DTChargeAmt}} */, :P34 /* {{MDTCommPer}} */, :P35 /* {{MDTCommVal}} */, :P36 /* {{MDTCommAmt}} */, :P37 /* {{MDTChargePer}} */, :P38 /* {{MDTChargeVal}} */, :P39 /* {{MDTChargeAmt}} */, :P40 /* {{UserWalletBalCheck.aeps_merchant_id}} */)",
                     "params": [
                       {
                         "name": ":P1",
@@ -2197,6 +2203,11 @@
                         "name": ":P39",
                         "type": "expression",
                         "value": "{{MDTChargeAmt}}"
+                      },
+                      {
+                        "name": ":P40",
+                        "type": "expression",
+                        "value": "{{UserWalletBalCheck.aeps_merchant_id}}"
                       }
                     ]
                   }
@@ -2383,6 +2394,15 @@
                     "type": "number"
                   }
                 ],
+                "output": false
+              },
+              {
+                "name": "LiveApi",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "url": "https://portal.swpay.in/api/RefreshTrans"
+                },
                 "output": false
               },
               {
@@ -2586,6 +2606,12 @@
                                 "column": "benef_id",
                                 "type": "text",
                                 "value": "{{$_POST.BenefIdBank}}"
+                              },
+                              {
+                                "table": "tt_aeps_trans",
+                                "column": "aeps_number",
+                                "type": "text",
+                                "value": "{{ac_no}}"
                               }
                             ],
                             "table": "tt_aeps_trans",
@@ -2608,7 +2634,7 @@
                               "valid": true
                             },
                             "returning": "id",
-                            "query": "UPDATE tt_aeps_trans\nSET status = :P1 /* {{Status}} */, api_logs = :P2 /* {{api_log}} */, api_ref = :P3 /* {{api_ref}} */, reason = :P4 /* {{Remarks}} */, api_response_time = :P5 /* {{apiResponseTime}} */, bank_name = :P6 /* {{bank_name}} */, bank_acno = :P7 /* {{ac_no}} */, benef_name = :P8 /* {{benef_name}} */, benef_id = :P9 /* {{$_POST.BenefIdBank}} */\nWHERE id = :P10 /* {{AEPSRechTrans.identity}} */",
+                            "query": "UPDATE tt_aeps_trans\nSET status = :P1 /* {{Status}} */, api_logs = :P2 /* {{api_log}} */, api_ref = :P3 /* {{api_ref}} */, reason = :P4 /* {{Remarks}} */, api_response_time = :P5 /* {{apiResponseTime}} */, bank_name = :P6 /* {{bank_name}} */, bank_acno = :P7 /* {{ac_no}} */, benef_name = :P8 /* {{benef_name}} */, benef_id = :P9 /* {{$_POST.BenefIdBank}} */, aeps_number = :P10 /* {{ac_no}} */\nWHERE id = :P11 /* {{AEPSRechTrans.identity}} */",
                             "params": [
                               {
                                 "name": ":P1",
@@ -2656,9 +2682,14 @@
                                 "value": "{{$_POST.BenefIdBank}}"
                               },
                               {
+                                "name": ":P10",
+                                "type": "expression",
+                                "value": "{{ac_no}}"
+                              },
+                              {
                                 "operator": "equal",
                                 "type": "expression",
-                                "name": ":P10",
+                                "name": ":P11",
                                 "value": "{{AEPSRechTrans.identity}}"
                               }
                             ]
@@ -2948,6 +2979,15 @@
                             "type": "number"
                           }
                         ]
+                      },
+                      {
+                        "name": "LiveApi",
+                        "module": "api",
+                        "action": "send",
+                        "options": {
+                          "url": "https://portal.swpay.in/api/RefreshTrans"
+                        },
+                        "output": false
                       },
                       {
                         "name": "Resp",
@@ -3740,6 +3780,15 @@
                         "meta": [],
                         "outputType": "text",
                         "output": true
+                      },
+                      {
+                        "name": "LiveApi",
+                        "module": "api",
+                        "action": "send",
+                        "options": {
+                          "url": "https://portal.swpay.in/api/RefreshTrans"
+                        },
+                        "output": false
                       }
                     ]
                   }

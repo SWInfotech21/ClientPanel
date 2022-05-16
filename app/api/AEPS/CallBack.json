@@ -1697,6 +1697,12 @@
               },
               {
                 "table": "tt_aeps_trans",
+                "column": "is_processed",
+                "type": "text",
+                "value": "{{$_POST.TxnID}}"
+              },
+              {
+                "table": "tt_aeps_trans",
                 "column": "operator_ref",
                 "type": "text",
                 "value": "{{$_POST.Description}}"
@@ -1854,7 +1860,7 @@
             ],
             "table": "tt_aeps_trans",
             "returning": "id",
-            "query": "INSERT INTO tt_aeps_trans\n(service_id, op_id, api_id, user_id, user_rt_id, merchant_id, amount, op_bal, comm_per, comm_val, comm_amt, charge_per, charge_val, charge_amt, net_amt, closing_bal, tr_mode, tr_type, status, tr_id, reason, api_logs, operator_ref, api_ref, revert_trans, ip_address, api_response_time, process_mode, live, tr_date, trans_by, ec, dt_comm_per, dt_comm_val, dt_comm_amt, dt_charge_per, dt_charge_val, dt_charge_amount, mdt_comm_per, mdt_comm_val, mdt_comm_amt, mdt_charge_per, mdt_charge_val, mdt_charge_amt, bank_name, service_api, api_tnx_date, aeps_number) VALUES (:P1 /* {{GetCommision[0].service_id}} */, :P2 /* {{GetCommision[0].operator_id}} */, :P3 /* {{0}} */, :P4 /* {{UserWalletBalCheck.id}} */, :P5 /* {{$_POST.Reatilerid}} */, :P6 /* {{$_POST.MerchantID}} */, :P7 /* {{$_POST.Amount}} */, :P8 /* {{UserWalletBalCheck.aeps_balance}} */, :P9 /* {{GetCommision[0].comm_per}} */, :P10 /* {{GetCommision[0].comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetCommision[0].service_charge_per}} */, :P13 /* {{GetCommision[0].service_charge_val}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTNetAmt}} */, :P16 /* {{RTClosingBalance}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{$_POST.TxnID}} */, :P21 /* {{$_POST.Service+' of Rs. '+$_POST.Amount+' by RT Id:'+$_POST.RRN+' | Merchant Id: '+$_POST.MerchantID+' | Txn. Id:'+$_POST.TxnID}} */, :P22 /* {{'EP'}} */, :P23 /* {{$_POST.Description}} */, :P24 /* {{$_POST.RRN}} */, '0', :P25 /* {{$_SERVER.REMOTE_ADDR}} */, :P26 /* {{apiResponseTime}} */, :P27 /* {{'A2C'}} */, :P28 /* {{'Live'}} */, :P29 /* {{NOW}} */, :P30 /* {{UserWalletBalCheck.id}} */, :P31 /* {{$_POST.Status}} */, :P32 /* {{DTCommPer}} */, :P33 /* {{DTCommVal}} */, :P34 /* {{DTCommAmt}} */, :P35 /* {{DTChargePer}} */, :P36 /* {{DTChargeVal}} */, :P37 /* {{DTChargeAmt}} */, :P38 /* {{MDTCommPer}} */, :P39 /* {{MDTCommVal}} */, :P40 /* {{MDTCommAmt}} */, :P41 /* {{MDTChargePer}} */, :P42 /* {{MDTChargeVal}} */, :P43 /* {{MDTChargeAmt}} */, :P44 /* {{$_POST.BankName}} */, :P45 /* {{$_POST.Service}} */, :P46 /* {{$_POST.TxnDate}} */, :P47 /* {{$_POST.MerchantID}} */)",
+            "query": "INSERT INTO tt_aeps_trans\n(service_id, op_id, api_id, user_id, user_rt_id, merchant_id, amount, op_bal, comm_per, comm_val, comm_amt, charge_per, charge_val, charge_amt, net_amt, closing_bal, tr_mode, tr_type, status, tr_id, reason, api_logs, is_processed, operator_ref, api_ref, revert_trans, ip_address, api_response_time, process_mode, live, tr_date, trans_by, ec, dt_comm_per, dt_comm_val, dt_comm_amt, dt_charge_per, dt_charge_val, dt_charge_amount, mdt_comm_per, mdt_comm_val, mdt_comm_amt, mdt_charge_per, mdt_charge_val, mdt_charge_amt, bank_name, service_api, api_tnx_date, aeps_number) VALUES (:P1 /* {{GetCommision[0].service_id}} */, :P2 /* {{GetCommision[0].operator_id}} */, :P3 /* {{0}} */, :P4 /* {{UserWalletBalCheck.id}} */, :P5 /* {{$_POST.Reatilerid}} */, :P6 /* {{$_POST.MerchantID}} */, :P7 /* {{$_POST.Amount}} */, :P8 /* {{UserWalletBalCheck.aeps_balance}} */, :P9 /* {{GetCommision[0].comm_per}} */, :P10 /* {{GetCommision[0].comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetCommision[0].service_charge_per}} */, :P13 /* {{GetCommision[0].service_charge_val}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTNetAmt}} */, :P16 /* {{RTClosingBalance}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{$_POST.TxnID}} */, :P21 /* {{$_POST.Service+' of Rs. '+$_POST.Amount+' by RT Id:'+$_POST.RRN+' | Merchant Id: '+$_POST.MerchantID+' | Txn. Id:'+$_POST.TxnID}} */, :P22 /* {{'EP'}} */, :P23 /* {{$_POST.TxnID}} */, :P24 /* {{$_POST.Description}} */, :P25 /* {{$_POST.RRN}} */, '0', :P26 /* {{$_SERVER.REMOTE_ADDR}} */, :P27 /* {{apiResponseTime}} */, :P28 /* {{'A2C'}} */, :P29 /* {{'Live'}} */, :P30 /* {{NOW}} */, :P31 /* {{UserWalletBalCheck.id}} */, :P32 /* {{$_POST.Status}} */, :P33 /* {{DTCommPer}} */, :P34 /* {{DTCommVal}} */, :P35 /* {{DTCommAmt}} */, :P36 /* {{DTChargePer}} */, :P37 /* {{DTChargeVal}} */, :P38 /* {{DTChargeAmt}} */, :P39 /* {{MDTCommPer}} */, :P40 /* {{MDTCommVal}} */, :P41 /* {{MDTCommAmt}} */, :P42 /* {{MDTChargePer}} */, :P43 /* {{MDTChargeVal}} */, :P44 /* {{MDTChargeAmt}} */, :P45 /* {{$_POST.BankName}} */, :P46 /* {{$_POST.Service}} */, :P47 /* {{$_POST.TxnDate}} */, :P48 /* {{$_POST.MerchantID}} */)",
             "params": [
               {
                 "name": ":P1",
@@ -1969,125 +1975,130 @@
               {
                 "name": ":P23",
                 "type": "expression",
-                "value": "{{$_POST.Description}}"
+                "value": "{{$_POST.TxnID}}"
               },
               {
                 "name": ":P24",
                 "type": "expression",
-                "value": "{{$_POST.RRN}}"
+                "value": "{{$_POST.Description}}"
               },
               {
                 "name": ":P25",
                 "type": "expression",
-                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                "value": "{{$_POST.RRN}}"
               },
               {
                 "name": ":P26",
                 "type": "expression",
-                "value": "{{apiResponseTime}}"
+                "value": "{{$_SERVER.REMOTE_ADDR}}"
               },
               {
                 "name": ":P27",
                 "type": "expression",
-                "value": "{{'A2C'}}"
+                "value": "{{apiResponseTime}}"
               },
               {
                 "name": ":P28",
                 "type": "expression",
-                "value": "{{'Live'}}"
+                "value": "{{'A2C'}}"
               },
               {
                 "name": ":P29",
                 "type": "expression",
-                "value": "{{NOW}}"
+                "value": "{{'Live'}}"
               },
               {
                 "name": ":P30",
                 "type": "expression",
-                "value": "{{UserWalletBalCheck.id}}"
+                "value": "{{NOW}}"
               },
               {
                 "name": ":P31",
                 "type": "expression",
-                "value": "{{$_POST.Status}}"
+                "value": "{{UserWalletBalCheck.id}}"
               },
               {
                 "name": ":P32",
                 "type": "expression",
-                "value": "{{DTCommPer}}"
+                "value": "{{$_POST.Status}}"
               },
               {
                 "name": ":P33",
                 "type": "expression",
-                "value": "{{DTCommVal}}"
+                "value": "{{DTCommPer}}"
               },
               {
                 "name": ":P34",
                 "type": "expression",
-                "value": "{{DTCommAmt}}"
+                "value": "{{DTCommVal}}"
               },
               {
                 "name": ":P35",
                 "type": "expression",
-                "value": "{{DTChargePer}}"
+                "value": "{{DTCommAmt}}"
               },
               {
                 "name": ":P36",
                 "type": "expression",
-                "value": "{{DTChargeVal}}"
+                "value": "{{DTChargePer}}"
               },
               {
                 "name": ":P37",
                 "type": "expression",
-                "value": "{{DTChargeAmt}}"
+                "value": "{{DTChargeVal}}"
               },
               {
                 "name": ":P38",
                 "type": "expression",
-                "value": "{{MDTCommPer}}"
+                "value": "{{DTChargeAmt}}"
               },
               {
                 "name": ":P39",
                 "type": "expression",
-                "value": "{{MDTCommVal}}"
+                "value": "{{MDTCommPer}}"
               },
               {
                 "name": ":P40",
                 "type": "expression",
-                "value": "{{MDTCommAmt}}"
+                "value": "{{MDTCommVal}}"
               },
               {
                 "name": ":P41",
                 "type": "expression",
-                "value": "{{MDTChargePer}}"
+                "value": "{{MDTCommAmt}}"
               },
               {
                 "name": ":P42",
                 "type": "expression",
-                "value": "{{MDTChargeVal}}"
+                "value": "{{MDTChargePer}}"
               },
               {
                 "name": ":P43",
                 "type": "expression",
-                "value": "{{MDTChargeAmt}}"
+                "value": "{{MDTChargeVal}}"
               },
               {
                 "name": ":P44",
                 "type": "expression",
-                "value": "{{$_POST.BankName}}"
+                "value": "{{MDTChargeAmt}}"
               },
               {
                 "name": ":P45",
                 "type": "expression",
-                "value": "{{$_POST.Service}}"
+                "value": "{{$_POST.BankName}}"
               },
               {
                 "name": ":P46",
                 "type": "expression",
-                "value": "{{$_POST.TxnDate}}"
+                "value": "{{$_POST.Service}}"
               },
               {
                 "name": ":P47",
+                "type": "expression",
+                "value": "{{$_POST.TxnDate}}"
+              },
+              {
+                "name": ":P48",
                 "type": "expression",
                 "value": "{{$_POST.MerchantID}}"
               }
@@ -2276,6 +2287,15 @@
             "type": "number"
           }
         ],
+        "output": false
+      },
+      {
+        "name": "LiveApi",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://portal.swpay.in/api/RefreshTrans"
+        },
         "output": false
       },
       {
@@ -2632,6 +2652,15 @@
                     "type": "number"
                   }
                 ]
+              },
+              {
+                "name": "LiveApi",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "url": "https://portal.swpay.in/api/RefreshTrans"
+                },
+                "output": false
               },
               {
                 "name": "",
@@ -3401,6 +3430,15 @@
                     "type": "number"
                   }
                 ],
+                "output": false
+              },
+              {
+                "name": "LiveApi",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "url": "https://portal.swpay.in/api/RefreshTrans"
+                },
                 "output": false
               }
             ]
