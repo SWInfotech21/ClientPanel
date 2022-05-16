@@ -212,7 +212,12 @@
           }
         },
         "output": false,
-        "meta": [],
+        "meta": [
+          {
+            "name": "aeps_minus_amount",
+            "type": "text"
+          }
+        ],
         "outputType": "array"
       },
       {
@@ -246,7 +251,7 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{GetAEPSLimit[0].aeps_minus_amount==null}}",
+          "if": "{{GetAEPSLimit[0].aeps_minus_amount==null||GetAEPSLimit[0].aeps_minus_amount==' '}}",
           "then": {
             "steps": [
               {
@@ -254,7 +259,7 @@
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{GetAEPSLimit[0].aeps_minus_amount==null?0:GetAEPSLimit[0].aeps_minus_amount}}"
+                  "value": 0
                 },
                 "meta": [],
                 "outputType": "text",
