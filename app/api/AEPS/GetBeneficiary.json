@@ -130,7 +130,7 @@
           },
           "connection": "postgres_gcpServer"
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
             "type": "number",

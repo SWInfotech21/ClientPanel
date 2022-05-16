@@ -200,7 +200,7 @@
                 <div class="tab-pane fade px-2" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <h4 class="mb-4">PostPaid Recharge</h4>
                     <div class="row">
-                        <form id="formPostPaid" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load();scRechargeLive.load();" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
+                        <form id="formPostPaid" method="post" action="api/Recharge/MobRechMultiAPI" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMobileRecharge.lastError.response); formMobileRecharge.reset(); scLoginUser.load();scRechargeLive.load();modalRecharge.show();" dmx-on:error="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:forbidden="scNotif.warning(formMobileRecharge.lastError.response)" dmx-on:invalid="scNotif.warning(formMobileRecharge.lastError.response)">
                             <div class="form-group row">
                                 <label class="text-monospace col-3 pe-0">PostPaid Number</label>
                                 <div class="input-group mb-2 col-9 ps-0">
@@ -265,6 +265,9 @@
             </div>
         </div>
         <div class="col-md-6 col-12">
+            <audio class="d-none" id="SuccessAlert">
+                <source src="assets/images/success-sound-effect.mp3" type="audio/mp3">
+            </audio>
             <h4 class="text-center">Live Transactions <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scRechargeLive.state.executing"></span></h4>
             <h6 class="text-center">(Mobile/DTH/PostPaid)</h6>
             <div class="table-responsive">
@@ -312,8 +315,7 @@
             </div>
             <div class="modal-body">
                 <div class="col-12 text-center">
-                    <img src="assets/images/mark-success.gif" width="200" height="200" class="img-fluid" dmx-show="content.formMobileRecharge.data.apistatus == 'SUCCESS' || content.formMobileRecharge.data.apistatus == 'PENDING' || content.formMobileRecharge.data.repeat[0].apistatus == 'SUCCESS'  || content.formMobileRecharge.data.repeat[0].apistatus == 'PENDING' || content.formDTHRecharge.data.apistatus == 'SUCCESS' || content.formDTHRecharge.data.apistatus == 'PENDING' || content.formDTHRecharge.data.repeat[0].apistatus == 'SUCCESS' || content.formDTHRecharge.data.repeat[0].apistatus == 'PENDING' || content.formPostPaid.data.apistatus == 'SUCCESS' || content.formPostPaid.data.apistatus == 'PENDING' || content.formPostPaid.data.repeat[0].apistatus == 'SUCCESS'  || content.formPostPaid.data.repeat[0].apistatus == 'PENDING'
-                    ">
+                    <img src="assets/images/mark-success.gif" width="200" height="200" class="img-fluid" dmx-show="content.formMobileRecharge.data.apistatus == 'SUCCESS' || content.formMobileRecharge.data.apistatus == 'PENDING' || content.formMobileRecharge.data.repeat[0].apistatus == 'SUCCESS'  || content.formMobileRecharge.data.repeat[0].apistatus == 'PENDING' || content.formDTHRecharge.data.apistatus == 'SUCCESS' || content.formDTHRecharge.data.apistatus == 'PENDING' || content.formDTHRecharge.data.repeat[0].apistatus == 'SUCCESS' || content.formDTHRecharge.data.repeat[0].apistatus == 'PENDING' || content.formPostPaid.data.apistatus == 'SUCCESS' || content.formPostPaid.data.apistatus == 'PENDING' || content.formPostPaid.data.repeat[0].apistatus == 'SUCCESS'  || content.formPostPaid.data.repeat[0].apistatus == 'PENDING'">
                     <img src="assets/images/mark-failure.gif" width="200" height="200" class="img-fluid" dmx-show="content.formMobileRecharge.data.apistatus == 'FAILED' || content.formMobileRecharge.data.repeat[0].apistatus == 'FAILED' || content.formDTHRecharge.data.apistatus == 'FAILED' || content.formDTHRecharge.data.repeat[0].apistatus == 'FAILED' ||
                     content.formPostPaid.data.apistatus == 'FAILED' || content.formPostPaid.data.repeat[0].apistatus == 'FAILED' ">
                 </div>
@@ -517,3 +519,9 @@
         </div>
     </div>
 </div>
+<script>
+    var x = document.getElementById("SuccessAlert"); 
+    function playSuccess() { 
+    x.play(); 
+    } 
+</script>
