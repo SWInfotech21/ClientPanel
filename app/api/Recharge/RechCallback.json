@@ -3716,13 +3716,13 @@
                               "condition": "AND",
                               "rules": [
                                 {
-                                  "id": "id",
-                                  "field": "id",
-                                  "type": "double",
+                                  "id": "tr_id",
+                                  "field": "tr_id",
+                                  "type": "string",
                                   "operator": "equal",
-                                  "value": "{{GetRechTrans.id}}",
+                                  "value": "{{tr_id}}",
                                   "data": {
-                                    "column": "id"
+                                    "column": "tr_id"
                                   },
                                   "operation": "="
                                 }
@@ -3731,7 +3731,7 @@
                               "valid": true
                             },
                             "returning": "id",
-                            "query": "UPDATE tt_aeps_trans\nSET closing_bal = :P1 /* {{RTClosingBalOld}} */, status = :P2 /* {{'FAILED'}} */, operator_ref = :P3 /* {{remark}} */, api_ref = :P4 /* {{api_ref}} */, live = :P5 /* {{'Push'}} */, updated_on = :P6 /* {{NOW}} */, ec = :P7 /* {{ec}} */, api_bal = :P8 /* {{apibalance}} */, is_processed = :P9 /* {{apifiredid?apifiredid:GetRechTrans.is_processed}} */\nWHERE id = :P10 /* {{GetRechTrans.id}} */",
+                            "query": "UPDATE tt_aeps_trans\nSET closing_bal = :P1 /* {{RTClosingBalOld}} */, status = :P2 /* {{'FAILED'}} */, operator_ref = :P3 /* {{remark}} */, api_ref = :P4 /* {{api_ref}} */, live = :P5 /* {{'Push'}} */, updated_on = :P6 /* {{NOW}} */, ec = :P7 /* {{ec}} */, api_bal = :P8 /* {{apibalance}} */, is_processed = :P9 /* {{apifiredid?apifiredid:GetRechTrans.is_processed}} */\nWHERE tr_id = :P10 /* {{tr_id}} */",
                             "params": [
                               {
                                 "name": ":P1",
@@ -3782,7 +3782,7 @@
                                 "operator": "equal",
                                 "type": "expression",
                                 "name": ":P10",
-                                "value": "{{GetRechTrans.id}}"
+                                "value": "{{tr_id}}"
                               }
                             ]
                           }
