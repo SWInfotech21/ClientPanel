@@ -70,6 +70,10 @@
       {
         "type": "text",
         "name": "ec"
+      },
+      {
+        "type": "text",
+        "name": "Msg"
       }
     ],
     "$_SERVER": [
@@ -86,7 +90,7 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{$_GET.Msg}}",
+          "if": "{{$_POST.Msg}}",
           "then": {
             "steps": [
               {
@@ -94,7 +98,7 @@
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{$_GET.Msg}}"
+                  "value": "{{$_POST.Msg}}"
                 },
                 "meta": [],
                 "outputType": "text"
