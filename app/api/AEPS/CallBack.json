@@ -1693,7 +1693,7 @@
                 "table": "tt_aeps_trans",
                 "column": "api_logs",
                 "type": "text",
-                "value": "{{'EP'}}"
+                "value": "{{'AEEP'}}"
               },
               {
                 "table": "tt_aeps_trans",
@@ -1860,7 +1860,7 @@
             ],
             "table": "tt_aeps_trans",
             "returning": "id",
-            "query": "INSERT INTO tt_aeps_trans\n(service_id, op_id, api_id, user_id, user_rt_id, merchant_id, amount, op_bal, comm_per, comm_val, comm_amt, charge_per, charge_val, charge_amt, net_amt, closing_bal, tr_mode, tr_type, status, tr_id, reason, api_logs, is_processed, operator_ref, api_ref, revert_trans, ip_address, api_response_time, process_mode, live, tr_date, trans_by, ec, dt_comm_per, dt_comm_val, dt_comm_amt, dt_charge_per, dt_charge_val, dt_charge_amount, mdt_comm_per, mdt_comm_val, mdt_comm_amt, mdt_charge_per, mdt_charge_val, mdt_charge_amt, bank_name, service_api, api_tnx_date, aeps_number) VALUES (:P1 /* {{GetCommision[0].service_id}} */, :P2 /* {{GetCommision[0].operator_id}} */, :P3 /* {{0}} */, :P4 /* {{UserWalletBalCheck.id}} */, :P5 /* {{$_POST.Reatilerid}} */, :P6 /* {{$_POST.MerchantID}} */, :P7 /* {{$_POST.Amount}} */, :P8 /* {{UserWalletBalCheck.aeps_balance}} */, :P9 /* {{GetCommision[0].comm_per}} */, :P10 /* {{GetCommision[0].comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetCommision[0].service_charge_per}} */, :P13 /* {{GetCommision[0].service_charge_val}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTNetAmt}} */, :P16 /* {{RTClosingBalance}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{$_POST.TxnID}} */, :P21 /* {{$_POST.Service+' of Rs. '+$_POST.Amount+' by RT Id:'+$_POST.RRN+' | Merchant Id: '+$_POST.MerchantID+' | Txn. Id:'+$_POST.TxnID}} */, :P22 /* {{'EP'}} */, :P23 /* {{$_POST.TxnID}} */, :P24 /* {{$_POST.Description}} */, :P25 /* {{$_POST.RRN}} */, '0', :P26 /* {{$_SERVER.REMOTE_ADDR}} */, :P27 /* {{apiResponseTime}} */, :P28 /* {{'A2C'}} */, :P29 /* {{'Live'}} */, :P30 /* {{NOW}} */, :P31 /* {{UserWalletBalCheck.id}} */, :P32 /* {{$_POST.Status}} */, :P33 /* {{DTCommPer}} */, :P34 /* {{DTCommVal}} */, :P35 /* {{DTCommAmt}} */, :P36 /* {{DTChargePer}} */, :P37 /* {{DTChargeVal}} */, :P38 /* {{DTChargeAmt}} */, :P39 /* {{MDTCommPer}} */, :P40 /* {{MDTCommVal}} */, :P41 /* {{MDTCommAmt}} */, :P42 /* {{MDTChargePer}} */, :P43 /* {{MDTChargeVal}} */, :P44 /* {{MDTChargeAmt}} */, :P45 /* {{$_POST.BankName}} */, :P46 /* {{$_POST.Service}} */, :P47 /* {{$_POST.TxnDate}} */, :P48 /* {{$_POST.MerchantID}} */)",
+            "query": "INSERT INTO tt_aeps_trans\n(service_id, op_id, api_id, user_id, user_rt_id, merchant_id, amount, op_bal, comm_per, comm_val, comm_amt, charge_per, charge_val, charge_amt, net_amt, closing_bal, tr_mode, tr_type, status, tr_id, reason, api_logs, is_processed, operator_ref, api_ref, revert_trans, ip_address, api_response_time, process_mode, live, tr_date, trans_by, ec, dt_comm_per, dt_comm_val, dt_comm_amt, dt_charge_per, dt_charge_val, dt_charge_amount, mdt_comm_per, mdt_comm_val, mdt_comm_amt, mdt_charge_per, mdt_charge_val, mdt_charge_amt, bank_name, service_api, api_tnx_date, aeps_number) VALUES (:P1 /* {{GetCommision[0].service_id}} */, :P2 /* {{GetCommision[0].operator_id}} */, :P3 /* {{0}} */, :P4 /* {{UserWalletBalCheck.id}} */, :P5 /* {{$_POST.Reatilerid}} */, :P6 /* {{$_POST.MerchantID}} */, :P7 /* {{$_POST.Amount}} */, :P8 /* {{UserWalletBalCheck.aeps_balance}} */, :P9 /* {{GetCommision[0].comm_per}} */, :P10 /* {{GetCommision[0].comm_val}} */, :P11 /* {{RTCommAmt}} */, :P12 /* {{GetCommision[0].service_charge_per}} */, :P13 /* {{GetCommision[0].service_charge_val}} */, :P14 /* {{RTChargeAmt}} */, :P15 /* {{RTNetAmt}} */, :P16 /* {{RTClosingBalance}} */, :P17 /* {{'Web'}} */, :P18 /* {{'Cash'}} */, :P19 /* {{'Pending'}} */, :P20 /* {{$_POST.TxnID}} */, :P21 /* {{$_POST.Service+' of Rs. '+$_POST.Amount+' by RT Id:'+$_POST.RRN+' | Merchant Id: '+$_POST.MerchantID+' | Txn. Id:'+$_POST.TxnID}} */, :P22 /* {{'AEEP'}} */, :P23 /* {{$_POST.TxnID}} */, :P24 /* {{$_POST.Description}} */, :P25 /* {{$_POST.RRN}} */, '0', :P26 /* {{$_SERVER.REMOTE_ADDR}} */, :P27 /* {{apiResponseTime}} */, :P28 /* {{'A2C'}} */, :P29 /* {{'Live'}} */, :P30 /* {{NOW}} */, :P31 /* {{UserWalletBalCheck.id}} */, :P32 /* {{$_POST.Status}} */, :P33 /* {{DTCommPer}} */, :P34 /* {{DTCommVal}} */, :P35 /* {{DTCommAmt}} */, :P36 /* {{DTChargePer}} */, :P37 /* {{DTChargeVal}} */, :P38 /* {{DTChargeAmt}} */, :P39 /* {{MDTCommPer}} */, :P40 /* {{MDTCommVal}} */, :P41 /* {{MDTCommAmt}} */, :P42 /* {{MDTChargePer}} */, :P43 /* {{MDTChargeVal}} */, :P44 /* {{MDTChargeAmt}} */, :P45 /* {{$_POST.BankName}} */, :P46 /* {{$_POST.Service}} */, :P47 /* {{$_POST.TxnDate}} */, :P48 /* {{$_POST.MerchantID}} */)",
             "params": [
               {
                 "name": ":P1",
@@ -1970,7 +1970,7 @@
               {
                 "name": ":P22",
                 "type": "expression",
-                "value": "{{'EP'}}"
+                "value": "{{'AEEP'}}"
               },
               {
                 "name": ":P23",
