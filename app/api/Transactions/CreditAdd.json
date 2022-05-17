@@ -1617,7 +1617,7 @@
                                 "params": {
                                   "api_token": "{{GetWhatsappAPI.api_password}}",
                                   "mobile": "{{91+GetDebitUser.user_mobile}}",
-                                  "message": "{{'Dear '+GetDebitUser.user_fname+', Your S W Pay Wallet Account has been Debited with Amount ₹ '+$_POST.credit_amount+' successfully and Credited to the user '+GetSchToUser.user_fname+' with Mobile Number'+GetSchToUser.user_mobile+'\\nThanks for connected with us. 😊\\nRegards \\nS W Pay Team'}}"
+                                  "message": "{{'Dear '+GetDebitUser.user_fname+', Your S W Pay Wallet Account has been Debited with Amount ₹ '+$_POST.credit_amount+' successfully and Credited to the user '+GetSchToUser.user_fname+' with Mobile Number  '+GetSchToUser.user_mobile+'\\nThanks for connected with us. 😊\\nRegards \\nS W Pay Team'}}"
                                 },
                                 "method": "POST"
                               },

@@ -333,24 +333,6 @@
         ],
         "outputType": "text",
         "output": true
-      },
-      {
-        "name": "api",
-        "module": "api",
-        "action": "send",
-        "options": {
-          "url": "https://180.179.23.1:444/Aeps/AepsSettlement",
-          "method": "POST",
-          "dataType": "json",
-          "data": {
-            "Code": "A00055",
-            "Authcode": "65c43ccd6a7b41c884",
-            "Mpin": "7170",
-            "Contact": "{{ViewBenef[0].contacts}}"
-          }
-        },
-        "output": true,
-        "disabled": true
       }
     ]
   }
