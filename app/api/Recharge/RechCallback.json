@@ -3796,7 +3796,7 @@
                             "type": "number"
                           }
                         ],
-                        "output": true
+                        "output": false
                       },
                       {
                         "name": "ttBalUP",
@@ -4086,7 +4086,7 @@
                             "type": "number"
                           }
                         ],
-                        "output": true
+                        "output": false
                       }
                     ]
                   }
