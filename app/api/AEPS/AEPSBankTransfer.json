@@ -247,13 +247,13 @@
         "outputType": "object"
       },
       {
-        "name": "GetAEPSLimit",
+        "name": "AEPSPlusAmt",
         "module": "dbupdater",
         "action": "custom",
         "options": {
           "connection": "postgres_gcpServer",
           "sql": {
-            "query": "SELECT SUM(tab.amount::int) as aeps_minus_amount from tt_aeps_trans tab \nleft join m_operator mo on (mo.id=tab.op_id and mo.service_id=tab.service_id)\nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date AND tab.status=@status and (mo.operator_name = @op1 \nor mo.operator_name = @op2);",
+            "query": "SELECT SUM(tab.amount::int) as aeps_plaus_amount from tt_aeps_trans tab \nleft join m_operator mo on (mo.id=tab.op_id and mo.service_id=tab.service_id)\nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date AND (tab.status=@status or tab.status=@status1) and (tab.op_id = @op1\nor tab.op_id = @op2 or tab.op_id = @op3)",
             "params": [
               {
                 "name": "@user_id",
@@ -266,40 +266,24 @@
                 "test": "SUCCESS"
               },
               {
+                "name": "@status1",
+                "value": "{{'PENDING'}}",
+                "test": "PENDING"
+              },
+              {
                 "name": "@op1",
-                "value": "{{'AEPS Wallet Settlement'}}",
-                "test": "AEPS Wallet Settlement"
+                "value": "198",
+                "test": "198"
               },
               {
                 "name": "@op2",
-                "value": "{{'AEPS Bank Transfer'}}",
-                "test": "AEPS Bank Transfer"
-              }
-            ]
-          }
-        },
-        "output": false,
-        "meta": [
-          {
-            "name": "aeps_minus_amount",
-            "type": "text"
-          }
-        ],
-        "outputType": "array"
-      },
-      {
-        "name": "GetOpeningBal",
-        "module": "dbupdater",
-        "action": "custom",
-        "options": {
-          "connection": "postgres_gcpServer",
-          "sql": {
-            "query": "SELECT tab.op_bal from tt_aeps_trans tab \nWHERE tab.user_id=@user_id AND tab.tr_date::date=now()::date ORDER by id asc limit 1;",
-            "params": [
+                "value": "202",
+                "test": "202"
+              },
               {
-                "name": "@user_id",
-                "value": "{{identity}}",
-                "test": "63"
+                "name": "@op3",
+                "value": "203",
+                "test": "203"
               }
             ]
           }
@@ -307,124 +291,131 @@
         "output": false,
         "meta": [
           {
-            "name": "op_bal",
+            "name": "aeps_plaus_amount",
             "type": "text"
           }
         ],
         "outputType": "array"
       },
       {
-        "name": "",
+        "name": "AEPSBal",
         "module": "core",
-        "action": "condition",
+        "action": "setvalue",
         "options": {
-          "if": "{{GetAEPSLimit[0].aeps_minus_amount==null}}",
-          "then": {
-            "steps": [
-              {
-                "name": "GetAEPSLimit2Number",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{GetAEPSLimit[0].aeps_minus_amount==null?0:GetAEPSLimit[0].aeps_minus_amount}}"
-                },
-                "meta": [
-                  {
-                    "name": "aeps_minus_amount",
-                    "type": "text"
-                  }
-                ],
-                "outputType": "text",
-                "output": false
-              },
-              {
-                "name": "AEPSBal",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{GetOpeningBal[0].op_bal==null?0:GetOpeningBal[0].op_bal}}"
-                },
-                "meta": [
-                  {
-                    "name": "op_bal",
-                    "type": "text"
-                  }
-                ],
-                "outputType": "text",
-                "output": false
-              },
-              {
-                "name": "AEPSLimit",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{AEPSBal.toNumber()-GetAEPSLimit2Number.toNumber()}}"
-                },
-                "meta": [
-                  {
-                    "name": "op_bal",
-                    "type": "text"
-                  }
-                ],
-                "output": false,
-                "outputType": "text"
-              }
-            ]
-          },
-          "else": {
-            "steps": [
-              {
-                "name": "GetAEPSLimit2Number",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{GetAEPSLimit[0].aeps_minus_amount==null?0:GetAEPSLimit[0].aeps_minus_amount}}"
-                },
-                "meta": [
-                  {
-                    "name": "aeps_minus_amount",
-                    "type": "text"
-                  }
-                ],
-                "outputType": "text",
-                "output": false
-              },
-              {
-                "name": "AEPSBal",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{GetOpeningBal[0].op_bal==null?0:GetOpeningBal[0].op_bal}}"
-                },
-                "meta": [
-                  {
-                    "name": "op_bal",
-                    "type": "text"
-                  }
-                ],
-                "outputType": "text",
-                "output": false
-              },
-              {
-                "name": "AEPSLimit",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{AEPSBal.toNumber()-GetAEPSLimit2Number.toNumber()}}"
-                },
-                "meta": [
-                  {
-                    "name": "op_bal",
-                    "type": "text"
-                  }
-                ],
-                "output": false,
-                "outputType": "text"
-              }
-            ]
-          }
+          "value": "{{UserWalletBalCheck.aeps_balance==null?0:UserWalletBalCheck.aeps_balance==' '?0:UserWalletBalCheck.aeps_balance}}"
         },
-        "outputType": "boolean"
+        "meta": [
+          {
+            "name": "id",
+            "type": "number"
+          },
+          {
+            "name": "RT_id",
+            "type": "text"
+          },
+          {
+            "name": "user_fname",
+            "type": "text"
+          },
+          {
+            "name": "user_mobile",
+            "type": "text"
+          },
+          {
+            "name": "user_type",
+            "type": "number"
+          },
+          {
+            "name": "md_id",
+            "type": "text"
+          },
+          {
+            "name": "ds_id",
+            "type": "text"
+          },
+          {
+            "name": "scheme_id",
+            "type": "number"
+          },
+          {
+            "name": "aeps_balance",
+            "type": "text"
+          },
+          {
+            "name": "aeps_merchant_id",
+            "type": "text"
+          }
+        ],
+        "outputType": "text",
+        "output": false
+      },
+      {
+        "name": "AEPSPlusBal",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{AEPSPlusAmt[0].aeps_plaus_amount==null?0:AEPSPlusAmt[0].aeps_plaus_amount==' '?0:AEPSPlusAmt[0].aeps_plaus_amount}}"
+        },
+        "meta": [
+          {
+            "name": "aeps_plaus_amount",
+            "type": "text"
+          }
+        ],
+        "outputType": "text",
+        "output": false
+      },
+      {
+        "name": "AEPSLimit",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{AEPSBal.toNumber()-AEPSPlusBal.toNumber()}}"
+        },
+        "meta": [
+          {
+            "name": "id",
+            "type": "number"
+          },
+          {
+            "name": "RT_id",
+            "type": "text"
+          },
+          {
+            "name": "user_fname",
+            "type": "text"
+          },
+          {
+            "name": "user_mobile",
+            "type": "text"
+          },
+          {
+            "name": "user_type",
+            "type": "number"
+          },
+          {
+            "name": "md_id",
+            "type": "text"
+          },
+          {
+            "name": "ds_id",
+            "type": "text"
+          },
+          {
+            "name": "scheme_id",
+            "type": "number"
+          },
+          {
+            "name": "aeps_balance",
+            "type": "text"
+          },
+          {
+            "name": "aeps_merchant_id",
+            "type": "text"
+          }
+        ],
+        "outputType": "text",
+        "output": false
       },
       {
         "name": "",
