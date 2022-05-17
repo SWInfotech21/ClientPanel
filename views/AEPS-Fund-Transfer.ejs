@@ -95,11 +95,11 @@
                         <form id="formMainWallet" method="post" action="api/AEPS/WalletTransfer" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formMainWallet.data); formMainWallet.reset(); scLoginUser.load(); scBeneficiary.load();" dmx-on:error="scNotif.warning(formMainWallet.lastError.response)" dmx-on:unauthorized="scNotif.warning(formMainWallet.lastError.response)" dmx-on:forbidden="scNotif.warning(formMainWallet.lastError.response)" dmx-on:invalid="scNotif.warning(formMainWallet.lastError.response)">
                             <div class="form-group mb-0">
                                 <label for="inputCurrent" class="col-form-label">Current Aeps Balance</label>
-                                <input type="text" class="form-control" id="inputCurrentBal" aria-describedby="inputName_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance.toNumber().toFixed(2)">
+                                <input type="text" class="form-control" id="inputCurrentBal" aria-describedby="inputName_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance">
                             </div>
                             <div class="form-group mb-0">
                                 <label for="inputCurrentLimit" class="col-form-label">Current Aeps Limit</label>
-                                <input type="text" class="form-control" id="inputCurrentLimit" aria-describedby="inputCurrentLimit_help" required="" readonly="true" disabled="true" dmx-bind:value="content.scBeneficiary.data.AEPSLimit.toNumber().toFixed(2)">
+                                <input type="text" class="form-control" id="inputCurrentLimit" aria-describedby="inputCurrentLimit_help" required="" readonly="true" disabled="true" dmx-bind:value="content.scBeneficiary.data.AEPSLimit.toFixed(2)">
                             </div>
                             <div class="form-group mb-0">
                                 <label for="inputWithdrawLimit" class="col-form-label">Withdrawal Amount</label>
@@ -116,11 +116,11 @@
                         <form id="formBankTransfer" method="post" action="api/AEPS/AEPSBankTransfer" is="dmx-serverconnect-form" dmx-on:success="scNotif.success(content.formBankTransfer.data.Resp); formBankTransfer.reset(); scLoginUser.load();scBeneficiary.load(); modalResponse.show();" dmx-on:error="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:unauthorized="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:forbidden="scNotif.warning(formBankTransfer.lastError.response)" dmx-on:invalid="scNotif.warning(formBankTransfer.lastError.response)">
                             <div class="form-group mb-0">
                                 <label for="inputCurrentBank" class="col-form-label">Current Aeps Balance</label>
-                                <input type="text" class="form-control" id="inputCurrentBalBank" aria-describedby="inputNamebank_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance.toNumber().toFixed(2)">
+                                <input type="text" class="form-control" id="inputCurrentBalBank" aria-describedby="inputNamebank_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance">
                             </div>
                             <div class="form-group mb-0">
                                 <label for="inputCurrentLimitBank" class="col-form-label">Current Aeps Limit</label>
-                                <input type="text" class="form-control" id="inputCurrentLimitBank" aria-describedby="inputCurrentLimitbank_help" required="" readonly="true" disabled="true" dmx-bind:value="content.scBeneficiary.data.AEPSLimit.toNumber().toFixed(2)">
+                                <input type="text" class="form-control" id="inputCurrentLimitBank" aria-describedby="inputCurrentLimitbank_help" required="" readonly="true" disabled="true" dmx-bind:value="content.scBeneficiary.data.AEPSLimit.toFixed(2)">
                             </div>
                             <div class="form-group mb-0">
                                 <label for="inputSelectBank" class="col-form-label">Select Beneficiary</label>
