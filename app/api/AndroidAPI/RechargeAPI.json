@@ -2541,6 +2541,66 @@
                                                                             "output": false
                                                                           },
                                                                           {
+                                                                            "name": "TrUserUpdateRT",
+                                                                            "module": "dbupdater",
+                                                                            "action": "update",
+                                                                            "options": {
+                                                                              "connection": "postgres_gcpServer",
+                                                                              "sql": {
+                                                                                "type": "update",
+                                                                                "values": [
+                                                                                  {
+                                                                                    "table": "m_users",
+                                                                                    "column": "balance_amt",
+                                                                                    "type": "text",
+                                                                                    "value": "{{RTClosingBalance}}"
+                                                                                  }
+                                                                                ],
+                                                                                "table": "m_users",
+                                                                                "wheres": {
+                                                                                  "condition": "AND",
+                                                                                  "rules": [
+                                                                                    {
+                                                                                      "id": "id",
+                                                                                      "field": "id",
+                                                                                      "type": "double",
+                                                                                      "operator": "equal",
+                                                                                      "value": "{{identity}}",
+                                                                                      "data": {
+                                                                                        "column": "id"
+                                                                                      },
+                                                                                      "operation": "="
+                                                                                    }
+                                                                                  ],
+                                                                                  "conditional": null,
+                                                                                  "valid": true
+                                                                                },
+                                                                                "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{RTClosingBalance}} */\nWHERE id = :P2 /* {{identity}} */",
+                                                                                "params": [
+                                                                                  {
+                                                                                    "name": ":P1",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{RTClosingBalance}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "operator": "equal",
+                                                                                    "type": "expression",
+                                                                                    "name": ":P2",
+                                                                                    "value": "{{identity}}"
+                                                                                  }
+                                                                                ],
+                                                                                "returning": "id"
+                                                                              }
+                                                                            },
+                                                                            "meta": [
+                                                                              {
+                                                                                "name": "affected",
+                                                                                "type": "number"
+                                                                              }
+                                                                            ],
+                                                                            "output": false
+                                                                          },
+                                                                          {
                                                                             "name": "LiveApi",
                                                                             "module": "api",
                                                                             "action": "send",
@@ -4370,66 +4430,6 @@
                                                                                     "output": false
                                                                                   },
                                                                                   {
-                                                                                    "name": "TrUserUpdateRT",
-                                                                                    "module": "dbupdater",
-                                                                                    "action": "update",
-                                                                                    "options": {
-                                                                                      "connection": "postgres_gcpServer",
-                                                                                      "sql": {
-                                                                                        "type": "update",
-                                                                                        "values": [
-                                                                                          {
-                                                                                            "table": "m_users",
-                                                                                            "column": "balance_amt",
-                                                                                            "type": "text",
-                                                                                            "value": "{{RTClosingBalance}}"
-                                                                                          }
-                                                                                        ],
-                                                                                        "table": "m_users",
-                                                                                        "wheres": {
-                                                                                          "condition": "AND",
-                                                                                          "rules": [
-                                                                                            {
-                                                                                              "id": "id",
-                                                                                              "field": "id",
-                                                                                              "type": "double",
-                                                                                              "operator": "equal",
-                                                                                              "value": "{{identity}}",
-                                                                                              "data": {
-                                                                                                "column": "id"
-                                                                                              },
-                                                                                              "operation": "="
-                                                                                            }
-                                                                                          ],
-                                                                                          "conditional": null,
-                                                                                          "valid": true
-                                                                                        },
-                                                                                        "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{RTClosingBalance}} */\nWHERE id = :P2 /* {{identity}} */",
-                                                                                        "params": [
-                                                                                          {
-                                                                                            "name": ":P1",
-                                                                                            "type": "expression",
-                                                                                            "value": "{{RTClosingBalance}}"
-                                                                                          },
-                                                                                          {
-                                                                                            "operator": "equal",
-                                                                                            "type": "expression",
-                                                                                            "name": ":P2",
-                                                                                            "value": "{{identity}}"
-                                                                                          }
-                                                                                        ],
-                                                                                        "returning": "id"
-                                                                                      }
-                                                                                    },
-                                                                                    "meta": [
-                                                                                      {
-                                                                                        "name": "affected",
-                                                                                        "type": "number"
-                                                                                      }
-                                                                                    ],
-                                                                                    "output": false
-                                                                                  },
-                                                                                  {
                                                                                     "name": "AdminCharAmt",
                                                                                     "module": "dbupdater",
                                                                                     "action": "insert",
@@ -5184,6 +5184,66 @@
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text"
+                                                                                  },
+                                                                                  {
+                                                                                    "name": "TrUserUpdateRT",
+                                                                                    "module": "dbupdater",
+                                                                                    "action": "update",
+                                                                                    "options": {
+                                                                                      "connection": "postgres_gcpServer",
+                                                                                      "sql": {
+                                                                                        "type": "update",
+                                                                                        "values": [
+                                                                                          {
+                                                                                            "table": "m_users",
+                                                                                            "column": "balance_amt",
+                                                                                            "type": "text",
+                                                                                            "value": "{{balance}}"
+                                                                                          }
+                                                                                        ],
+                                                                                        "table": "m_users",
+                                                                                        "wheres": {
+                                                                                          "condition": "AND",
+                                                                                          "rules": [
+                                                                                            {
+                                                                                              "id": "id",
+                                                                                              "field": "id",
+                                                                                              "type": "double",
+                                                                                              "operator": "equal",
+                                                                                              "value": "{{identity}}",
+                                                                                              "data": {
+                                                                                                "column": "id"
+                                                                                              },
+                                                                                              "operation": "="
+                                                                                            }
+                                                                                          ],
+                                                                                          "conditional": null,
+                                                                                          "valid": true
+                                                                                        },
+                                                                                        "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{balance}} */\nWHERE id = :P2 /* {{identity}} */",
+                                                                                        "params": [
+                                                                                          {
+                                                                                            "name": ":P1",
+                                                                                            "type": "expression",
+                                                                                            "value": "{{balance}}"
+                                                                                          },
+                                                                                          {
+                                                                                            "operator": "equal",
+                                                                                            "type": "expression",
+                                                                                            "name": ":P2",
+                                                                                            "value": "{{identity}}"
+                                                                                          }
+                                                                                        ],
+                                                                                        "returning": "id"
+                                                                                      }
+                                                                                    },
+                                                                                    "meta": [
+                                                                                      {
+                                                                                        "name": "affected",
+                                                                                        "type": "number"
+                                                                                      }
+                                                                                    ],
+                                                                                    "output": false
                                                                                   },
                                                                                   {
                                                                                     "name": "RechTransUP_Failed",

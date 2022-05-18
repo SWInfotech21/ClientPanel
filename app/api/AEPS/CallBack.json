@@ -273,7 +273,8 @@
             "name": "affected",
             "type": "number"
           }
-        ]
+        ],
+        "disabled": true
       },
       {
         "name": "SubmitTime",

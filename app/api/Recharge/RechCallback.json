@@ -7598,7 +7598,7 @@
         "options": {
           "url": "https://portal.swpay.in/api/RefreshTrans"
         },
-        "output": true
+        "output": false
       }
     ]
   }
