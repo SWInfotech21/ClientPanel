@@ -2548,6 +2548,46 @@
                                                                                                                                                             "outputType": "text"
                                                                                                                                                         },
                                                                                                                                                         {
+                                                                                                                                                            "name": "DTClosingBalance",
+                                                                                                                                                            "module": "core",
+                                                                                                                                                            "action": "setvalue",
+                                                                                                                                                            "options": {
+                                                                                                                                                                "value": "{{GetRTCreator.rt_creator_balance_amt?GetRTCreator.rt_creator_balance_amt.toNumber():0}}"
+                                                                                                                                                            },
+                                                                                                                                                            "meta": [
+                                                                                                                                                                {
+                                                                                                                                                                    "name": "rt_creator_user_name",
+                                                                                                                                                                    "type": "text"
+                                                                                                                                                                },
+                                                                                                                                                                {
+                                                                                                                                                                    "name": "rt_creator_user_mobile",
+                                                                                                                                                                    "type": "text"
+                                                                                                                                                                },
+                                                                                                                                                                {
+                                                                                                                                                                    "name": "rt_creator_user_email",
+                                                                                                                                                                    "type": "text"
+                                                                                                                                                                },
+                                                                                                                                                                {
+                                                                                                                                                                    "name": "rt_creator_user_type",
+                                                                                                                                                                    "type": "number"
+                                                                                                                                                                },
+                                                                                                                                                                {
+                                                                                                                                                                    "name": "rt_creator_balance_amt",
+                                                                                                                                                                    "type": "text"
+                                                                                                                                                                },
+                                                                                                                                                                {
+                                                                                                                                                                    "name": "rt_creator_scheme_id",
+                                                                                                                                                                    "type": "number"
+                                                                                                                                                                },
+                                                                                                                                                                {
+                                                                                                                                                                    "name": "dt_creator_id",
+                                                                                                                                                                    "type": "number"
+                                                                                                                                                                }
+                                                                                                                                                            ],
+                                                                                                                                                            "outputType": "text",
+                                                                                                                                                            "output": false
+                                                                                                                                                        },
+                                                                                                                                                        {
                                                                                                                                                             "name": "AdminClosingBalance",
                                                                                                                                                             "module": "core",
                                                                                                                                                             "action": "setvalue",
@@ -2872,10 +2912,11 @@
                                                                                                                                                             "module": "core",
                                                                                                                                                             "action": "setvalue",
                                                                                                                                                             "options": {
-                                                                                                                                                                "value": 0
+                                                                                                                                                                "value": "{{GetDTCreator.dt_balance_amt?GetDTCreator.dt_balance_amt.toNumber():0}}"
                                                                                                                                                             },
                                                                                                                                                             "meta": [],
-                                                                                                                                                            "outputType": "text"
+                                                                                                                                                            "outputType": "text",
+                                                                                                                                                            "output": false
                                                                                                                                                         },
                                                                                                                                                         {
                                                                                                                                                             "name": "AdminClosingBalance",
@@ -8821,7 +8862,7 @@
                                                                                                                                                 },
                                                                                                                                                 "else": {
                                                                                                                                                     "steps": {
-                                                                                                                                                        "name": "Resp_copy",
+                                                                                                                                                        "name": "Resp",
                                                                                                                                                         "module": "core",
                                                                                                                                                         "action": "setvalue",
                                                                                                                                                         "options": {
@@ -8881,7 +8922,7 @@
                                                                                                                     "sub": []
                                                                                                                 },
                                                                                                                 {
-                                                                                                                    "name": "Resp_copy",
+                                                                                                                    "name": "Resp",
                                                                                                                     "type": "text",
                                                                                                                     "sub": []
                                                                                                                 },

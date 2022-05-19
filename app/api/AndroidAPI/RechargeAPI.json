@@ -1572,6 +1572,45 @@
                                                                                     "outputType": "text"
                                                                                   },
                                                                                   {
+                                                                                    "name": "DTClosingBalance",
+                                                                                    "module": "core",
+                                                                                    "action": "setvalue",
+                                                                                    "options": {
+                                                                                      "value": "{{GetRTCreator.rt_coeator_balance_amt?GetRTCreator.rt_coeator_balance_amt.toNumber():0}}"
+                                                                                    },
+                                                                                    "meta": [
+                                                                                      {
+                                                                                        "name": "rt_coeator_user_name",
+                                                                                        "type": "text"
+                                                                                      },
+                                                                                      {
+                                                                                        "name": "rt_coeator_user_mobile",
+                                                                                        "type": "text"
+                                                                                      },
+                                                                                      {
+                                                                                        "name": "rt_coeator_user_email",
+                                                                                        "type": "text"
+                                                                                      },
+                                                                                      {
+                                                                                        "name": "rt_coeator_user_type",
+                                                                                        "type": "number"
+                                                                                      },
+                                                                                      {
+                                                                                        "name": "rt_coeator_balance_amt",
+                                                                                        "type": "text"
+                                                                                      },
+                                                                                      {
+                                                                                        "name": "rt_coeator_scheme_id",
+                                                                                        "type": "number"
+                                                                                      },
+                                                                                      {
+                                                                                        "name": "dt_coeator_id",
+                                                                                        "type": "number"
+                                                                                      }
+                                                                                    ],
+                                                                                    "outputType": "text"
+                                                                                  },
+                                                                                  {
                                                                                     "name": "AdminClosingBalance",
                                                                                     "module": "core",
                                                                                     "action": "setvalue",
@@ -1884,7 +1923,7 @@
                                                                                     "module": "core",
                                                                                     "action": "setvalue",
                                                                                     "options": {
-                                                                                      "value": 0
+                                                                                      "value": "{{GetDTCreator.dt_balance_amt?GetDTCreator.dt_balance_amt.toNumber():0}}"
                                                                                     },
                                                                                     "meta": [],
                                                                                     "outputType": "text"

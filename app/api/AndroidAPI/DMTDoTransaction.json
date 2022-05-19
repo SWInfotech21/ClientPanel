@@ -6238,7 +6238,7 @@
                                                                                                                                                                             "else": {
                                                                                                                                                                                 "steps": [
                                                                                                                                                                                     {
-                                                                                                                                                                                        "name": "MDTCommPer_copy",
+                                                                                                                                                                                        "name": "MDTCommPer",
                                                                                                                                                                                         "module": "core",
                                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                                         "options": {
@@ -6248,7 +6248,7 @@
                                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                                     },
                                                                                                                                                                                     {
-                                                                                                                                                                                        "name": "MDTCommVal_copy",
+                                                                                                                                                                                        "name": "MDTCommVal",
                                                                                                                                                                                         "module": "core",
                                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                                         "options": {
@@ -6258,7 +6258,7 @@
                                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                                     },
                                                                                                                                                                                     {
-                                                                                                                                                                                        "name": "MDTCommAmt_copy",
+                                                                                                                                                                                        "name": "MDTCommAmt",
                                                                                                                                                                                         "module": "core",
                                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                                         "options": {
@@ -6268,7 +6268,7 @@
                                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                                     },
                                                                                                                                                                                     {
-                                                                                                                                                                                        "name": "MDTChargePer_copy",
+                                                                                                                                                                                        "name": "MDTChargePer",
                                                                                                                                                                                         "module": "core",
                                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                                         "options": {
@@ -6278,7 +6278,7 @@
                                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                                     },
                                                                                                                                                                                     {
-                                                                                                                                                                                        "name": "MDTChargeVal_copy",
+                                                                                                                                                                                        "name": "MDTChargeVal",
                                                                                                                                                                                         "module": "core",
                                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                                         "options": {
@@ -6288,7 +6288,7 @@
                                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                                     },
                                                                                                                                                                                     {
-                                                                                                                                                                                        "name": "MDTChargeAmt_copy",
+                                                                                                                                                                                        "name": "MDTChargeAmt",
                                                                                                                                                                                         "module": "core",
                                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                                         "options": {
@@ -6298,7 +6298,7 @@
                                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                                     },
                                                                                                                                                                                     {
-                                                                                                                                                                                        "name": "MDTNetAmt_copy",
+                                                                                                                                                                                        "name": "MDTNetAmt",
                                                                                                                                                                                         "module": "core",
                                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                                         "options": {
@@ -6308,7 +6308,7 @@
                                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                                     },
                                                                                                                                                                                     {
-                                                                                                                                                                                        "name": "MDTClosingBalance_copy",
+                                                                                                                                                                                        "name": "MDTClosingBalance",
                                                                                                                                                                                         "module": "core",
                                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                                         "options": {
@@ -6318,7 +6318,7 @@
                                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                                     },
                                                                                                                                                                                     {
-                                                                                                                                                                                        "name": "AdminClosingBalance_copy",
+                                                                                                                                                                                        "name": "AdminClosingBalance",
                                                                                                                                                                                         "module": "core",
                                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                                         "options": {
@@ -6337,7 +6337,7 @@
                                                                                                                                                             "else": {
                                                                                                                                                                 "steps": [
                                                                                                                                                                     {
-                                                                                                                                                                        "name": "DTCommPer_copy",
+                                                                                                                                                                        "name": "DTCommPer",
                                                                                                                                                                         "module": "core",
                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                         "options": {
@@ -6347,7 +6347,7 @@
                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                     },
                                                                                                                                                                     {
-                                                                                                                                                                        "name": "DTCommVal_copy",
+                                                                                                                                                                        "name": "DTCommVal",
                                                                                                                                                                         "module": "core",
                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                         "options": {
@@ -6357,7 +6357,7 @@
                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                     },
                                                                                                                                                                     {
-                                                                                                                                                                        "name": "DTCommAmt_copy",
+                                                                                                                                                                        "name": "DTCommAmt",
                                                                                                                                                                         "module": "core",
                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                         "options": {
@@ -6367,7 +6367,7 @@
                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                     },
                                                                                                                                                                     {
-                                                                                                                                                                        "name": "DTChargePer_copy",
+                                                                                                                                                                        "name": "DTChargePer",
                                                                                                                                                                         "module": "core",
                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                         "options": {
@@ -6377,7 +6377,7 @@
                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                     },
                                                                                                                                                                     {
-                                                                                                                                                                        "name": "DTChargeVal_copy",
+                                                                                                                                                                        "name": "DTChargeVal",
                                                                                                                                                                         "module": "core",
                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                         "options": {
@@ -6387,7 +6387,7 @@
                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                     },
                                                                                                                                                                     {
-                                                                                                                                                                        "name": "DTChargeAmt_copy",
+                                                                                                                                                                        "name": "DTChargeAmt",
                                                                                                                                                                         "module": "core",
                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                         "options": {
@@ -6397,7 +6397,7 @@
                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                     },
                                                                                                                                                                     {
-                                                                                                                                                                        "name": "DTNetAmt_copy",
+                                                                                                                                                                        "name": "DTNetAmt",
                                                                                                                                                                         "module": "core",
                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                         "options": {
@@ -6407,7 +6407,7 @@
                                                                                                                                                                         "outputType": "text"
                                                                                                                                                                     },
                                                                                                                                                                     {
-                                                                                                                                                                        "name": "AdminClosingBalance_copy",
+                                                                                                                                                                        "name": "AdminClosingBalance",
                                                                                                                                                                         "module": "core",
                                                                                                                                                                         "action": "setvalue",
                                                                                                                                                                         "options": {
@@ -7741,7 +7741,7 @@
                                                                                                                                                                         "output": false
                                                                                                                                                                     },
                                                                                                                                                                     {
-                                                                                                                                                                        "name": "AdminClosingBalUserUp_copy",
+                                                                                                                                                                        "name": "AdminClosingBalUserUp",
                                                                                                                                                                         "module": "dbupdater",
                                                                                                                                                                         "action": "update",
                                                                                                                                                                         "options": {
@@ -7809,7 +7809,7 @@
                                                                                                                                                                             "then": {
                                                                                                                                                                                 "steps": [
                                                                                                                                                                                     {
-                                                                                                                                                                                        "name": "DtBalance_copy",
+                                                                                                                                                                                        "name": "DtBalance",
                                                                                                                                                                                         "module": "dbupdater",
                                                                                                                                                                                         "action": "insert",
                                                                                                                                                                                         "options": {
@@ -7981,7 +7981,7 @@
                                                                                                                                                                                         "output": false
                                                                                                                                                                                     },
                                                                                                                                                                                     {
-                                                                                                                                                                                        "name": "DtUserBal_copy",
+                                                                                                                                                                                        "name": "DtUserBal",
                                                                                                                                                                                         "module": "dbupdater",
                                                                                                                                                                                         "action": "update",
                                                                                                                                                                                         "options": {
@@ -8048,7 +8048,7 @@
                                                                                                                                                                                             "then": {
                                                                                                                                                                                                 "steps": [
                                                                                                                                                                                                     {
-                                                                                                                                                                                                        "name": "MdtBalance_copy",
+                                                                                                                                                                                                        "name": "MdtBalance",
                                                                                                                                                                                                         "module": "dbupdater",
                                                                                                                                                                                                         "action": "insert",
                                                                                                                                                                                                         "options": {
@@ -8220,7 +8220,7 @@
                                                                                                                                                                                                         "output": false
                                                                                                                                                                                                     },
                                                                                                                                                                                                     {
-                                                                                                                                                                                                        "name": "MdtUserAmtUp_copy",
+                                                                                                                                                                                                        "name": "MdtUserAmtUp",
                                                                                                                                                                                                         "module": "dbupdater",
                                                                                                                                                                                                         "action": "update",
                                                                                                                                                                                                         "options": {
@@ -8657,7 +8657,7 @@
                                                                                                                                             },
                                                                                                                                             "else": {
                                                                                                                                                 "steps": {
-                                                                                                                                                    "name": "RespAPI_copy",
+                                                                                                                                                    "name": "RespAPI",
                                                                                                                                                     "module": "core",
                                                                                                                                                     "action": "response",
                                                                                                                                                     "options": {
@@ -8731,7 +8731,7 @@
                                                                                                                                 "sub": []
                                                                                                                             },
                                                                                                                             {
-                                                                                                                                "name": "AdminClosingBalUserUp_copy",
+                                                                                                                                "name": "AdminClosingBalUserUp",
                                                                                                                                 "type": "text",
                                                                                                                                 "sub": [
                                                                                                                                     {
