@@ -2274,5 +2274,72 @@ dmx.config({
       ],
       "outputType": "array"
     }
+  },
+  "transactioncommision": {
+    "dvRechTrans": {
+      "meta": [
+        {
+          "name": "pay_ref_id",
+          "type": "number"
+        },
+        {
+          "name": "amount",
+          "type": "text"
+        },
+        {
+          "name": "tr_date",
+          "type": "text"
+        },
+        {
+          "name": "crdr_type",
+          "type": "text"
+        },
+        {
+          "name": "remarks",
+          "type": "text"
+        },
+        {
+          "name": "status",
+          "type": "text"
+        },
+        {
+          "name": "recharge_number",
+          "type": "text"
+        },
+        {
+          "name": "rt_id",
+          "type": "text"
+        },
+        {
+          "name": "rt_name",
+          "type": "text"
+        },
+        {
+          "name": "dtcommamt",
+          "type": "text"
+        },
+        {
+          "name": "dtchargeamt",
+          "type": "text"
+        },
+        {
+          "name": "mdtcommamt",
+          "type": "text"
+        },
+        {
+          "name": "mdtchargeamt",
+          "type": "text"
+        },
+        {
+          "name": "bank_ac_no",
+          "type": "text"
+        },
+        {
+          "name": "operator_ref",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    }
   }
 });

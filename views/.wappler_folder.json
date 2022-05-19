@@ -186,5 +186,9 @@
   "terms-and-conditions.ejs": {
     "layoutPage": "web-main",
     "description": ""
+  },
+  "transaction-commision.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

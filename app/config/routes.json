@@ -204,6 +204,11 @@
       "layout": "web-main"
     },
     {
+      "path": "/transaction-commision",
+      "page": "transaction-commision",
+      "layout": "main"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }

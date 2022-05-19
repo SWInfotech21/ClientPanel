@@ -1,0 +1,283 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "fromdate"
+      },
+      {
+        "type": "text",
+        "name": "todate"
+      },
+      {
+        "type": "text",
+        "name": "statustype"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{$_GET.statustype==0}}",
+          "then": {
+            "steps": {
+              "name": "DTMDTCommCharge",
+              "module": "dbupdater",
+              "action": "custom",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "query": "select tb.id, tb.pay_ref_id, tb.amount, tb.tr_date, tb.crdr_type, tb.remarks, tb.status, tb.transaction_type, trt.user_number as recharge_number,\nmu.user_id as rt_id, mu.user_fname as rt_name,trt.dtcommamt, trt.api_ref, trt.dtchargeamt, trt.mdtcommamt, trt.mdtchargeamt, trt.bank_ac_no, trt.operator_ref, mo.operator_name, ms.service_name\nFROM tt_balance tb\nleft join tt_recharge_trans trt on (trt.id = tb.pay_ref_id)\nleft join m_users mu ON (mu.id = trt.user_id)\nleft join m_operator mo ON (mo.id = trt.op_id)\nleft join m_service ms ON (ms.id = trt.service_id)\nwhere mu.created_by = @identity and tb.tr_date between @fromdate and @todate order by tb.id desc;",
+                  "params": [
+                    {
+                      "name": "@identity",
+                      "value": "{{identity}}",
+                      "test": "109"
+                    },
+                    {
+                      "name": "@fromdate",
+                      "value": "{{$_GET.fromdate}}",
+                      "test": "2022-05-01 00:00:00"
+                    },
+                    {
+                      "name": "@todate",
+                      "value": "{{$_GET.todate}}",
+                      "test": "2022-05-13 23:59:59"
+                    }
+                  ]
+                }
+              },
+              "output": true,
+              "meta": [
+                {
+                  "name": "id",
+                  "type": "number"
+                },
+                {
+                  "name": "pay_ref_id",
+                  "type": "number"
+                },
+                {
+                  "name": "amount",
+                  "type": "text"
+                },
+                {
+                  "name": "tr_date",
+                  "type": "text"
+                },
+                {
+                  "name": "crdr_type",
+                  "type": "text"
+                },
+                {
+                  "name": "remarks",
+                  "type": "text"
+                },
+                {
+                  "name": "status",
+                  "type": "text"
+                },
+                {
+                  "name": "recharge_number",
+                  "type": "text"
+                },
+                {
+                  "name": "rt_id",
+                  "type": "text"
+                },
+                {
+                  "name": "rt_name",
+                  "type": "text"
+                },
+                {
+                  "name": "dtcommamt",
+                  "type": "text"
+                },
+                {
+                  "name": "api_ref",
+                  "type": "text"
+                },
+                {
+                  "name": "dtchargeamt",
+                  "type": "text"
+                },
+                {
+                  "name": "mdtcommamt",
+                  "type": "text"
+                },
+                {
+                  "name": "mdtchargeamt",
+                  "type": "text"
+                },
+                {
+                  "name": "bank_ac_no",
+                  "type": "text"
+                },
+                {
+                  "name": "operator_ref",
+                  "type": "text"
+                },
+                {
+                  "name": "operator_name",
+                  "type": "text"
+                },
+                {
+                  "name": "service_name",
+                  "type": "text"
+                }
+              ],
+              "outputType": "array"
+            }
+          },
+          "else": {
+            "steps": {
+              "name": "DTMDTCommCharge",
+              "module": "dbupdater",
+              "action": "custom",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "query": "select tb.id, tb.pay_ref_id, tb.amount, tb.tr_date, tb.crdr_type, tb.remarks, tb.status, tb.transaction_type, trt.user_number as recharge_number,\nmu.user_id as rt_id, mu.user_fname as rt_name,trt.dtcommamt, trt.api_ref, trt.dtchargeamt, trt.mdtcommamt, trt.mdtchargeamt, trt.bank_ac_no, trt.operator_ref, mo.operator_name, ms.service_name\nFROM tt_balance tb\nleft join tt_recharge_trans trt on (trt.id = tb.pay_ref_id)\nleft join m_users mu ON (mu.id = trt.user_id)\nleft join m_operator mo ON (mo.id = trt.op_id)\nleft join m_service ms ON (ms.id = trt.service_id)\nwhere mu.created_by = @identity and tb.tr_date between @fromdate and @todate and tb.status=@status order by tb.id desc;",
+                  "params": [
+                    {
+                      "name": "@identity",
+                      "value": "{{identity}}",
+                      "test": "109"
+                    },
+                    {
+                      "name": "@fromdate",
+                      "value": "{{$_GET.fromdate}}",
+                      "test": "2022-05-01 00:00:00"
+                    },
+                    {
+                      "name": "@todate",
+                      "value": "{{$_GET.todate}}",
+                      "test": "2022-05-13 23:59:59"
+                    },
+                    {
+                      "name": "@status",
+                      "value": "{{$_GET.statustype}}",
+                      "test": "SUCCESS"
+                    }
+                  ]
+                }
+              },
+              "output": true,
+              "meta": [
+                {
+                  "name": "id",
+                  "type": "number"
+                },
+                {
+                  "name": "pay_ref_id",
+                  "type": "number"
+                },
+                {
+                  "name": "amount",
+                  "type": "text"
+                },
+                {
+                  "name": "tr_date",
+                  "type": "text"
+                },
+                {
+                  "name": "crdr_type",
+                  "type": "text"
+                },
+                {
+                  "name": "remarks",
+                  "type": "text"
+                },
+                {
+                  "name": "status",
+                  "type": "text"
+                },
+                {
+                  "name": "transaction_type",
+                  "type": "text"
+                },
+                {
+                  "name": "recharge_number",
+                  "type": "text"
+                },
+                {
+                  "name": "rt_id",
+                  "type": "text"
+                },
+                {
+                  "name": "rt_name",
+                  "type": "text"
+                },
+                {
+                  "name": "dtcommamt",
+                  "type": "text"
+                },
+                {
+                  "name": "api_ref",
+                  "type": "text"
+                },
+                {
+                  "name": "dtchargeamt",
+                  "type": "text"
+                },
+                {
+                  "name": "mdtcommamt",
+                  "type": "text"
+                },
+                {
+                  "name": "mdtchargeamt",
+                  "type": "text"
+                },
+                {
+                  "name": "bank_ac_no",
+                  "type": "text"
+                },
+                {
+                  "name": "operator_ref",
+                  "type": "text"
+                },
+                {
+                  "name": "operator_name",
+                  "type": "text"
+                },
+                {
+                  "name": "service_name",
+                  "type": "text"
+                }
+              ],
+              "outputType": "array"
+            }
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
+}
