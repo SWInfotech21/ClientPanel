@@ -376,7 +376,7 @@
                                             "options": {
                                               "connection": "postgres_gcpServer",
                                               "sql": {
-                                                "query": "select tb.pay_ref_id, tb.amount, tb.tr_date, tb.crdr_type, tb.remarks, tb.status, trt.user_number as recharge_number,\nmu.user_id as rt_id, mu.user_fname as rt_name,trt.dtcommamt, trt.dtchargeamt, trt.mdtcommamt, trt.mdtchargeamt, trt.bank_ac_no, trt.operator_ref\nFROM tt_balance tb\nleft join tt_recharge_trans trt on (trt.id = tb.pay_ref_id)\nleft join m_users mu ON (mu.id = trt.user_id)\nwhere mu.created_by = @identity and tb.tr_date between @fromdate and @todate ;",
+                                                "query": "select tb.pay_ref_id, tb.amount, tb.tr_date, tb.crdr_type, tb.remarks, tb.status, trt.user_number as recharge_number,\nmu.user_id as rt_id, mu.user_fname as rt_name,trt.dtcommamt, trt.dtchargeamt, trt.mdtcommamt, trt.mdtchargeamt, trt.bank_ac_no, trt.operator_ref, ms.service_name, mo.operator_name\nFROM tt_balance tb\nleft join tt_recharge_trans trt on (trt.id = tb.pay_ref_id)\nleft join m_users mu ON (mu.id = trt.user_id)\nleft join m_operator mo ON (mo.id = trt.op_id)\nleft join m_service ms ON (ms.id = trt.service_id)\nwhere mu.created_by = @identity and tb.tr_date between @fromdate and @todate ;",
                                                 "params": [
                                                   {
                                                     "name": "@identity",
@@ -456,6 +456,14 @@
                                               },
                                               {
                                                 "name": "operator_ref",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "service_name",
+                                                "type": "text"
+                                              },
+                                              {
+                                                "name": "operator_name",
                                                 "type": "text"
                                               }
                                             ],
