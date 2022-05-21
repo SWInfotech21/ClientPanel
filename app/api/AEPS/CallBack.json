@@ -414,7 +414,7 @@
         "options": {
           "connection": "postgres_gcpServer",
           "sql": {
-            "query": "select mo.service_id, mc.operator_id, mc.comm_per, mc.comm_val, mc.service_charge_per, mc.service_charge_val, mo.operator_name \nfrom m_commission mc\nleft join m_operator mo on (mo.id=mc.operator_id)\nleft join m_service ms on (ms.id=mo.service_id)\nwhere mc.scheme_id = @scheme_id and mo.min_amount::int <= @amount and mo.max_amount::int >=@amount and \n(mo.operator_name='AEPS<500' or mo.operator_name='AEPS >(501-3000)' or mo.operator_name='AEPS >(3k-10k)')and ms.service_name ='AEPS';",
+            "query": "select mo.service_id, mc.operator_id, mc.comm_per, mc.comm_val, mc.service_charge_per, mc.service_charge_val, mo.operator_name \nfrom m_commission mc\nleft join m_operator mo on (mo.id=mc.operator_id)\nleft join m_service ms on (ms.id=mo.service_id)\nwhere mc.scheme_id = @scheme_id and mo.min_amount::int <= @amount and mo.max_amount::int >=@amount and \n(mo.id=203 or mo.id=202 or mo.id=198)and ms.service_name ='AEPS';",
             "params": [
               {
                 "name": "@scheme_id",
