@@ -419,7 +419,8 @@
                                                             "name": ":P2",
                                                             "value": "{{getSalt.id}}"
                                                           }
-                                                        ]
+                                                        ],
+                                                        "returning": "id"
                                                       }
                                                     },
                                                     "meta": [

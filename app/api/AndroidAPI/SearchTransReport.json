@@ -449,7 +449,8 @@
                                                                 "operation": "="
                                                               }
                                                             ]
-                                                          }
+                                                          },
+                                                          "primary": "id"
                                                         },
                                                         {
                                                           "table": "m_service",
@@ -470,7 +471,8 @@
                                                                 "operation": "="
                                                               }
                                                             ]
-                                                          }
+                                                          },
+                                                          "primary": "id"
                                                         }
                                                       ],
                                                       "query": "SELECT tt_recharge_trans.user_number, tt_recharge_trans.opening_balance, tt_recharge_trans.amount, tt_recharge_trans.net_amt, tt_recharge_trans.closing_balance, tt_recharge_trans.status, tt_recharge_trans.id, tt_recharge_trans.tr_date, tt_recharge_trans.comm_amt, tt_recharge_trans.charge_amt, tt_recharge_trans.tr_type, tt_recharge_trans.reason, tt_recharge_trans.tr_id, tt_recharge_trans.api_ref, m_op.operator_name, m_service.service_name, m_op.image\nFROM tt_recharge_trans\nLEFT JOIN m_operator AS m_op ON (m_op.id = tt_recharge_trans.op_id) LEFT JOIN m_service AS m_service ON (m_service.id = tt_recharge_trans.service_id)\nWHERE tt_recharge_trans.user_id = :P1 /* {{identity}} */ AND tt_recharge_trans.user_number = :P2 /* {{$_GET.inpsearch}} */\nORDER BY tt_recharge_trans.id DESC",
@@ -528,7 +530,8 @@
                                                           "direction": "DESC",
                                                           "recid": 1
                                                         }
-                                                      ]
+                                                      ],
+                                                      "primary": "id"
                                                     }
                                                   },
                                                   "output": true,
@@ -757,7 +760,8 @@
                                                                 "operation": "="
                                                               }
                                                             ]
-                                                          }
+                                                          },
+                                                          "primary": "id"
                                                         },
                                                         {
                                                           "table": "m_service",
@@ -778,7 +782,8 @@
                                                                 "operation": "="
                                                               }
                                                             ]
-                                                          }
+                                                          },
+                                                          "primary": "id"
                                                         }
                                                       ],
                                                       "query": "SELECT tt_recharge_trans.user_number, tt_recharge_trans.opening_balance, tt_recharge_trans.amount, tt_recharge_trans.net_amt, tt_recharge_trans.closing_balance, tt_recharge_trans.status, tt_recharge_trans.id, tt_recharge_trans.tr_date, tt_recharge_trans.comm_amt, tt_recharge_trans.charge_amt, tt_recharge_trans.tr_type, tt_recharge_trans.reason, m_op.operator_name, m_service.service_name, tt_recharge_trans.tr_id, m_op.image\nFROM tt_recharge_trans\nLEFT JOIN m_operator AS m_op ON (m_op.id = tt_recharge_trans.op_id) LEFT JOIN m_service AS m_service ON (m_service.id = tt_recharge_trans.service_id)\nWHERE tt_recharge_trans.user_id = :P1 /* {{identity}} */ AND tt_recharge_trans.id = :P2 /* {{$_GET.inpsearch}} */\nORDER BY tt_recharge_trans.id DESC",
@@ -836,7 +841,8 @@
                                                           "direction": "DESC",
                                                           "recid": 1
                                                         }
-                                                      ]
+                                                      ],
+                                                      "primary": "id"
                                                     }
                                                   },
                                                   "output": true,
