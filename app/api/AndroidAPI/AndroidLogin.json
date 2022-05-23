@@ -440,6 +440,17 @@
                                               "output": true
                                             },
                                             {
+                                              "name": "ip",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                              },
+                                              "meta": [],
+                                              "output": true,
+                                              "outputType": "text"
+                                            },
+                                            {
                                               "name": "",
                                               "module": "core",
                                               "action": "condition",
@@ -515,17 +526,6 @@
                                                       "action": "setvalue",
                                                       "options": {
                                                         "value": 200
-                                                      },
-                                                      "meta": [],
-                                                      "output": true,
-                                                      "outputType": "text"
-                                                    },
-                                                    {
-                                                      "name": "ip",
-                                                      "module": "core",
-                                                      "action": "setvalue",
-                                                      "options": {
-                                                        "value": "{{$_SERVER.REMOTE_ADDR}}"
                                                       },
                                                       "meta": [],
                                                       "output": true,
