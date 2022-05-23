@@ -1,0 +1,637 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/login.ejs",
+      "linkedForm": "formLogin"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "MobileNo"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "Password"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "EnterOTP"
+      }
+    ],
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "REMOTE_ADDR"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "trycatch",
+      "options": {
+        "try": {
+          "steps": [
+            {
+              "name": "getSalt",
+              "module": "dbconnector",
+              "action": "single",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "m_users",
+                      "column": "salt",
+                      "alias": "saltvalue"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_tpin"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "md_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "ds_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_type"
+                    }
+                  ],
+                  "table": {
+                    "name": "m_users"
+                  },
+                  "joins": [],
+                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id, user_type\nFROM m_users\nWHERE user_mobile = :P1 /* {{$_POST.MobileNo}} */",
+                  "params": [
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P1",
+                      "value": "{{$_POST.MobileNo}}"
+                    }
+                  ],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "m_users.user_mobile",
+                        "field": "m_users.user_mobile",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "{{$_POST.MobileNo}}",
+                        "data": {
+                          "table": "m_users",
+                          "column": "user_mobile",
+                          "type": "text",
+                          "columnObj": {
+                            "type": "string",
+                            "primary": false,
+                            "nullable": false,
+                            "maxLength": -5,
+                            "unique": false,
+                            "name": "user_mobile"
+                          }
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  },
+                  "primary": "id"
+                }
+              },
+              "output": false,
+              "meta": [
+                {
+                  "type": "text",
+                  "name": "saltvalue"
+                },
+                {
+                  "type": "text",
+                  "name": "user_tpin"
+                },
+                {
+                  "type": "number",
+                  "name": "id"
+                },
+                {
+                  "type": "text",
+                  "name": "md_id"
+                },
+                {
+                  "type": "text",
+                  "name": "ds_id"
+                },
+                {
+                  "type": "number",
+                  "name": "user_type"
+                }
+              ],
+              "outputType": "object"
+            },
+            {
+              "name": "",
+              "module": "core",
+              "action": "condition",
+              "options": {
+                "if": "{{getSalt.saltvalue}}",
+                "then": {
+                  "steps": [
+                    {
+                      "name": "GetMdt",
+                      "module": "dbconnector",
+                      "action": "single",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "m_users",
+                              "column": "id",
+                              "alias": "countmdt",
+                              "aggregate": "COUNT"
+                            }
+                          ],
+                          "table": {
+                            "name": "m_users"
+                          },
+                          "joins": [],
+                          "groupBy": [],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "m_users.id",
+                                "field": "m_users.id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{getSalt.md_id.toNumber()}}",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "id",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "m_users.u_status",
+                                "field": "m_users.u_status",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "1",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "u_status",
+                                  "type": "text"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{getSalt.md_id.toNumber()}}"
+                            }
+                          ],
+                          "primary": "id"
+                        }
+                      },
+                      "output": false,
+                      "meta": [
+                        {
+                          "type": "number",
+                          "name": "countmdt"
+                        }
+                      ],
+                      "outputType": "object"
+                    },
+                    {
+                      "name": "",
+                      "module": "core",
+                      "action": "condition",
+                      "options": {
+                        "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
+                        "then": {
+                          "steps": [
+                            {
+                              "name": "GetDt",
+                              "module": "dbconnector",
+                              "action": "single",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "SELECT",
+                                  "columns": [
+                                    {
+                                      "table": "m_users",
+                                      "column": "id",
+                                      "alias": "countdt",
+                                      "aggregate": "COUNT"
+                                    }
+                                  ],
+                                  "table": {
+                                    "name": "m_users"
+                                  },
+                                  "joins": [],
+                                  "groupBy": [],
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "m_users.id",
+                                        "field": "m_users.id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{getSalt.ds_id.toNumber()}}",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      },
+                                      {
+                                        "id": "m_users.u_status",
+                                        "field": "m_users.u_status",
+                                        "type": "string",
+                                        "operator": "equal",
+                                        "value": "1",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "u_status",
+                                          "type": "text"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
+                                  "params": [
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P1",
+                                      "value": "{{getSalt.ds_id.toNumber()}}"
+                                    }
+                                  ],
+                                  "primary": "id"
+                                }
+                              },
+                              "output": false,
+                              "meta": [
+                                {
+                                  "type": "number",
+                                  "name": "countdt"
+                                }
+                              ],
+                              "outputType": "object"
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
+                                "then": {
+                                  "steps": [
+                                    {
+                                      "name": "identity",
+                                      "module": "auth",
+                                      "action": "login",
+                                      "options": {
+                                        "provider": "securityAndroid",
+                                        "password": "{{$_POST.Password.sha256(getSalt.saltvalue)}}",
+                                        "username": "{{$_POST.MobileNo}}"
+                                      },
+                                      "output": false,
+                                      "meta": []
+                                    },
+                                    {
+                                      "name": "",
+                                      "module": "core",
+                                      "action": "condition",
+                                      "options": {
+                                        "if": "{{identity}}",
+                                        "then": {
+                                          "steps": [
+                                            {
+                                              "name": "user_type",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{getSalt.user_type}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "number",
+                                              "output": true
+                                            },
+                                            {
+                                              "name": "ip",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                              },
+                                              "meta": [],
+                                              "output": true,
+                                              "outputType": "text"
+                                            },
+                                            {
+                                              "name": "GetOTP",
+                                              "module": "dbconnector",
+                                              "action": "single",
+                                              "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "type": "SELECT",
+                                                  "columns": [
+                                                    {
+                                                      "table": "forgot_otp",
+                                                      "column": "otp"
+                                                    }
+                                                  ],
+                                                  "table": {
+                                                    "name": "forgot_otp"
+                                                  },
+                                                  "primary": "id",
+                                                  "joins": [],
+                                                  "wheres": {
+                                                    "condition": "AND",
+                                                    "rules": [
+                                                      {
+                                                        "id": "forgot_otp.mobile",
+                                                        "field": "forgot_otp.mobile",
+                                                        "type": "string",
+                                                        "operator": "equal",
+                                                        "value": "{{$_POST.MobileNo}}",
+                                                        "data": {
+                                                          "table": "forgot_otp",
+                                                          "column": "mobile",
+                                                          "type": "text",
+                                                          "columnObj": {
+                                                            "type": "string",
+                                                            "maxLength": -5,
+                                                            "primary": false,
+                                                            "unique": false,
+                                                            "nullable": false,
+                                                            "name": "mobile"
+                                                          }
+                                                        },
+                                                        "operation": "="
+                                                      }
+                                                    ],
+                                                    "conditional": null,
+                                                    "valid": true
+                                                  },
+                                                  "query": "SELECT otp\nFROM forgot_otp\nWHERE mobile = :P1 /* {{$_POST.MobileNo}} */\nORDER BY id DESC",
+                                                  "params": [
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P1",
+                                                      "value": "{{$_POST.MobileNo}}"
+                                                    }
+                                                  ],
+                                                  "orders": [
+                                                    {
+                                                      "table": "forgot_otp",
+                                                      "column": "id",
+                                                      "direction": "DESC",
+                                                      "recid": 1
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "output": false,
+                                              "meta": [
+                                                {
+                                                  "type": "text",
+                                                  "name": "otp"
+                                                }
+                                              ],
+                                              "outputType": "object"
+                                            },
+                                            {
+                                              "name": "",
+                                              "module": "core",
+                                              "action": "condition",
+                                              "options": {
+                                                "if": "{{GetOTP.otp==$_POST.EnterOTP}}",
+                                                "then": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "Stat",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": 200
+                                                      },
+                                                      "meta": [],
+                                                      "output": true,
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "DelOTP",
+                                                      "module": "dbupdater",
+                                                      "action": "delete",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "delete",
+                                                          "table": "forgot_otp",
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "mobile",
+                                                                "field": "mobile",
+                                                                "type": "string",
+                                                                "operator": "equal",
+                                                                "value": "{{$_POST.MobileNo}}",
+                                                                "data": {
+                                                                  "column": "mobile"
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "returning": "id",
+                                                          "query": "DELETE\nFROM forgot_otp\nWHERE mobile = :P1 /* {{$_POST.MobileNo}} */",
+                                                          "params": [
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P1",
+                                                              "value": "{{$_POST.MobileNo}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                "else": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "Stat",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": 403
+                                                      },
+                                                      "meta": [],
+                                                      "output": true,
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "Status",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "OTP Mismatched, Please enter a correct OTP"
+                                                      },
+                                                      "meta": [],
+                                                      "outputType": "text",
+                                                      "output": true
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "outputType": "boolean"
+                                            }
+                                          ]
+                                        },
+                                        "else": {
+                                          "steps": {
+                                            "name": "Status",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                              "value": "Incorrect Login Id or Password"
+                                            },
+                                            "meta": [],
+                                            "outputType": "text",
+                                            "output": true
+                                          }
+                                        }
+                                      },
+                                      "outputType": "boolean"
+                                    }
+                                  ]
+                                },
+                                "else": {
+                                  "steps": {
+                                    "name": "Status",
+                                    "module": "core",
+                                    "action": "setvalue",
+                                    "options": {
+                                      "value": "Your Distributor(DT) inactive, Please contact technical support team"
+                                    },
+                                    "meta": [],
+                                    "outputType": "text",
+                                    "output": true
+                                  }
+                                }
+                              },
+                              "outputType": "boolean"
+                            }
+                          ]
+                        },
+                        "else": {
+                          "steps": {
+                            "name": "Status",
+                            "module": "core",
+                            "action": "setvalue",
+                            "options": {
+                              "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                            },
+                            "meta": [],
+                            "outputType": "text",
+                            "output": true
+                          }
+                        }
+                      },
+                      "outputType": "boolean"
+                    }
+                  ]
+                },
+                "else": {
+                  "steps": {
+                    "name": "Status",
+                    "module": "core",
+                    "action": "setvalue",
+                    "options": {
+                      "value": "User does not exists or user inactive, Please contact technical support team"
+                    },
+                    "meta": [],
+                    "outputType": "text",
+                    "output": true
+                  }
+                }
+              },
+              "outputType": "boolean",
+              "output": false
+            }
+          ]
+        },
+        "catch": {
+          "steps": {
+            "name": "Status",
+            "module": "core",
+            "action": "setvalue",
+            "options": {
+              "value": "Unauthorized Access"
+            },
+            "meta": [],
+            "outputType": "text",
+            "output": true
+          }
+        }
+      }
+    }
+  }
+}
