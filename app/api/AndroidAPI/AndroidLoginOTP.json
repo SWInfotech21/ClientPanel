@@ -351,28 +351,6 @@
                                         "then": {
                                           "steps": [
                                             {
-                                              "name": "user_type",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{getSalt.user_type}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "number",
-                                              "output": true
-                                            },
-                                            {
-                                              "name": "ip",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{$_SERVER.REMOTE_ADDR}}"
-                                              },
-                                              "meta": [],
-                                              "output": true,
-                                              "outputType": "text"
-                                            },
-                                            {
                                               "name": "GetOTP",
                                               "module": "dbconnector",
                                               "action": "single",
