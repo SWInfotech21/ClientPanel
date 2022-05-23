@@ -1,0 +1,165 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/otp-verify.ejs",
+      "linkedForm": "formOTPVerify"
+    },
+    "$_POST": [
+      {
+        "type": "number",
+        "fieldName": "otp",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            },
+            "core:number": {}
+          }
+        },
+        "name": "otp"
+      },
+      {
+        "type": "text",
+        "name": "user_id"
+      }
+    ],
+    "$_SESSION": [
+      {
+        "type": "text",
+        "name": "otp_session"
+      },
+      {
+        "type": "text",
+        "name": "identity"
+      }
+    ],
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "REMOTE_ADDR"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "condition",
+      "options": {
+        "if": "{{$_POST.otp==$_SESSION.otp_session}}",
+        "then": {
+          "steps": [
+            {
+              "name": "insert",
+              "module": "dbupdater",
+              "action": "insert",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "insert",
+                  "values": [
+                    {
+                      "table": "t_login_history",
+                      "column": "user_id",
+                      "type": "text",
+                      "value": "{{$_SESSION.identity}}"
+                    },
+                    {
+                      "table": "t_login_history",
+                      "column": "ip_address",
+                      "type": "text",
+                      "value": "{{$_SERVER.REMOTE_ADDR}}"
+                    },
+                    {
+                      "table": "t_login_history",
+                      "column": "login_time",
+                      "type": "datetime",
+                      "value": "{{NOW}}"
+                    }
+                  ],
+                  "table": "t_login_history",
+                  "returning": "id",
+                  "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time) VALUES (:P1 /* {{$_SESSION.identity}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */)",
+                  "params": [
+                    {
+                      "name": ":P1",
+                      "type": "expression",
+                      "value": "{{$_SESSION.identity}}"
+                    },
+                    {
+                      "name": ":P2",
+                      "type": "expression",
+                      "value": "{{$_SERVER.REMOTE_ADDR}}"
+                    },
+                    {
+                      "name": ":P3",
+                      "type": "expression",
+                      "value": "{{NOW}}"
+                    }
+                  ]
+                }
+              },
+              "meta": [
+                {
+                  "name": "identity",
+                  "type": "text"
+                },
+                {
+                  "name": "affected",
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "name": "Resp",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 200
+              },
+              "output": true
+            },
+            {
+              "name": "Status",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": 200
+              },
+              "meta": [],
+              "output": true,
+              "outputType": "text",
+              "disabled": true
+            }
+          ]
+        },
+        "else": {
+          "steps": [
+            {
+              "name": "Resp",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 403
+              },
+              "output": true
+            },
+            {
+              "name": "Statuss",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": 403
+              },
+              "meta": [],
+              "output": true,
+              "outputType": "text",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "outputType": "boolean"
+    }
+  }
+}

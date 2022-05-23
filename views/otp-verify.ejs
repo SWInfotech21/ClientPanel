@@ -1,0 +1,42 @@
+<!-- Wappler include head-page="layouts/web-main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="otpverify" appConnect="local" components="{dmxNotifications:{},dmxStateManagement:{},dmxBrowser:{}}" -->
+<meta name="ac:route" content="/otp-verify">
+<dmx-notifications id="notifies1">
+</dmx-notifications>
+<dmx-session-manager id="sessionLoginOTP"></dmx-session-manager>
+<div is="dmx-browser" id="browser1"></div>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="dmxAppConnect/dmxAppConnect.js"></script>
+    <title>OTP Verification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="assets/images/swpay.png" type="image/ico" />
+    <link rel="stylesheet" href="css/forgot-pass-style.css" />
+    <script src="dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer=""></script>
+    <script src="dmxAppConnect/dmxBrowser/dmxBrowser.js" defer=""></script>
+
+    <link rel="stylesheet" href="dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+    <script src="dmxAppConnect/dmxNotifications/dmxNotifications.js" defer=""></script>
+</head>
+
+<body is="dmx-app" id="OtpVerify">
+    <div class="center">
+        <h1>Verify OTP</h1>
+        <h6 style="text-align-last: center; color: #008000; font-weight: bold;">Unknown Device Login! OTP Send to the registered mobile</h6>
+        <p style="text-align-last: center; color: #f44336; font-weight: bold;" dmx-show="formOTPVerify.status==403">OTP Missmatched, Please enter a correct OTP</p>
+        <form id="formOTPVerify" is="dmx-serverconnect-form" method="post" action="api/Users/LoginOTP" dmx-on:success="formOTPVerify.status==200?browser1.goto('dashboard'):browser1.goto('login')" dmx-on:unauthorized="notifies1.danger(lastError.response)" dmx-on:forbidden="notifies1.danger(lastError.response)">
+            <div class="txt_field">
+                <input type="number" name="otp" id="otp" required>
+                <span></span>
+                <label>Enter OTP</label>
+            </div>
+            <div class="col-12">
+                <input value="SUBMIT" id="submitOTP" type="submit" dmx-class:disabled="state.executing">
+            </div>
+            <div class="col-12">
+                <input class="backButton" value="Back" id="BackForgot">
+            </div>
+        </form>
+    </div>
+
+</body>

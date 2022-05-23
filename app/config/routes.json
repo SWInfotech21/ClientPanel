@@ -209,6 +209,11 @@
       "layout": "main"
     },
     {
+      "path": "/otp-verify",
+      "page": "otp-verify",
+      "layout": ""
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }

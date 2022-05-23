@@ -147,7 +147,8 @@
               ],
               "conditional": null,
               "valid": true
-            }
+            },
+            "primary": "id"
           }
         },
         "output": false,
@@ -360,66 +361,844 @@
                                 "meta": []
                               },
                               {
-                                "name": "insert",
-                                "module": "dbupdater",
-                                "action": "insert",
+                                "name": "GetIpRecord",
+                                "module": "dbconnector",
+                                "action": "single",
                                 "options": {
                                   "connection": "postgres_gcpServer",
                                   "sql": {
-                                    "type": "insert",
-                                    "values": [
+                                    "type": "SELECT",
+                                    "columns": [
                                       {
                                         "table": "t_login_history",
-                                        "column": "user_id",
-                                        "type": "text",
-                                        "value": "{{getSalt.id}}"
-                                      },
-                                      {
-                                        "table": "t_login_history",
-                                        "column": "ip_address",
-                                        "type": "text",
-                                        "value": "{{$_SERVER.REMOTE_ADDR}}"
-                                      },
-                                      {
-                                        "table": "t_login_history",
-                                        "column": "login_time",
-                                        "type": "datetime",
-                                        "value": "{{NOW}}"
+                                        "column": "id",
+                                        "alias": "CountIp",
+                                        "aggregate": "COUNT"
                                       }
                                     ],
-                                    "table": "t_login_history",
-                                    "returning": "id",
-                                    "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */)",
+                                    "table": {
+                                      "name": "t_login_history"
+                                    },
+                                    "primary": "id",
+                                    "joins": [],
+                                    "groupBy": [],
+                                    "wheres": {
+                                      "condition": "AND",
+                                      "rules": [
+                                        {
+                                          "id": "t_login_history.user_id",
+                                          "field": "t_login_history.user_id",
+                                          "type": "string",
+                                          "operator": "equal",
+                                          "value": "{{getSalt.id}}",
+                                          "data": {
+                                            "table": "t_login_history",
+                                            "column": "user_id",
+                                            "type": "text",
+                                            "columnObj": {
+                                              "type": "string",
+                                              "primary": false,
+                                              "nullable": true,
+                                              "name": "user_id"
+                                            }
+                                          },
+                                          "operation": "="
+                                        },
+                                        {
+                                          "id": "t_login_history.ip_address",
+                                          "field": "t_login_history.ip_address",
+                                          "type": "string",
+                                          "operator": "equal",
+                                          "value": "{{$_SERVER.REMOTE_ADDR}}",
+                                          "data": {
+                                            "table": "t_login_history",
+                                            "column": "ip_address",
+                                            "type": "text",
+                                            "columnObj": {
+                                              "type": "string",
+                                              "primary": false,
+                                              "nullable": true,
+                                              "name": "ip_address"
+                                            }
+                                          },
+                                          "operation": "="
+                                        }
+                                      ],
+                                      "conditional": null,
+                                      "valid": true
+                                    },
+                                    "query": "SELECT COUNT(id) AS CountIp\nFROM t_login_history\nWHERE user_id = :P1 /* {{getSalt.id}} */ AND ip_address = :P2 /* {{$_SERVER.REMOTE_ADDR}} */",
                                     "params": [
                                       {
-                                        "name": ":P1",
+                                        "operator": "equal",
                                         "type": "expression",
+                                        "name": ":P1",
                                         "value": "{{getSalt.id}}"
                                       },
                                       {
+                                        "operator": "equal",
+                                        "type": "expression",
                                         "name": ":P2",
-                                        "type": "expression",
                                         "value": "{{$_SERVER.REMOTE_ADDR}}"
-                                      },
-                                      {
-                                        "name": ":P3",
-                                        "type": "expression",
-                                        "value": "{{NOW}}"
                                       }
                                     ]
                                   }
                                 },
+                                "output": false,
                                 "meta": [
                                   {
-                                    "name": "identity",
-                                    "type": "text"
-                                  },
-                                  {
-                                    "name": "affected",
-                                    "type": "number"
+                                    "type": "number",
+                                    "name": "CountIp"
                                   }
                                 ],
-                                "output": false
+                                "outputType": "object"
+                              },
+                              {
+                                "name": "",
+                                "module": "core",
+                                "action": "condition",
+                                "options": {
+                                  "if": "{{GetIpRecord.CountIp>0}}",
+                                  "then": {
+                                    "steps": [
+                                      {
+                                        "name": "Status",
+                                        "module": "core",
+                                        "action": "setvalue",
+                                        "options": {
+                                          "value": 200
+                                        },
+                                        "meta": [],
+                                        "outputType": "text",
+                                        "output": true
+                                      },
+                                      {
+                                        "name": "insert",
+                                        "module": "dbupdater",
+                                        "action": "insert",
+                                        "options": {
+                                          "connection": "postgres_gcpServer",
+                                          "sql": {
+                                            "type": "insert",
+                                            "values": [
+                                              {
+                                                "table": "t_login_history",
+                                                "column": "user_id",
+                                                "type": "text",
+                                                "value": "{{getSalt.id}}"
+                                              },
+                                              {
+                                                "table": "t_login_history",
+                                                "column": "ip_address",
+                                                "type": "text",
+                                                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                              },
+                                              {
+                                                "table": "t_login_history",
+                                                "column": "login_time",
+                                                "type": "datetime",
+                                                "value": "{{NOW}}"
+                                              }
+                                            ],
+                                            "table": "t_login_history",
+                                            "returning": "id",
+                                            "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */)",
+                                            "params": [
+                                              {
+                                                "name": ":P1",
+                                                "type": "expression",
+                                                "value": "{{getSalt.id}}"
+                                              },
+                                              {
+                                                "name": ":P2",
+                                                "type": "expression",
+                                                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                              },
+                                              {
+                                                "name": ":P3",
+                                                "type": "expression",
+                                                "value": "{{NOW}}"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "meta": [
+                                          {
+                                            "name": "identity",
+                                            "type": "text"
+                                          },
+                                          {
+                                            "name": "affected",
+                                            "type": "number"
+                                          }
+                                        ],
+                                        "output": false
+                                      }
+                                    ]
+                                  },
+                                  "else": {
+                                    "steps": [
+                                      {
+                                        "name": "OTP",
+                                        "module": "core",
+                                        "action": "setvalue",
+                                        "options": {
+                                          "value": "{{NOW.formatDate(\"sshhmm\")}}"
+                                        },
+                                        "meta": [],
+                                        "outputType": "text",
+                                        "output": true
+                                      },
+                                      {
+                                        "name": "otp_session",
+                                        "module": "core",
+                                        "action": "setsession",
+                                        "options": {
+                                          "value": "{{OTP}}"
+                                        },
+                                        "output": false
+                                      },
+                                      {
+                                        "name": "identity",
+                                        "module": "core",
+                                        "action": "setsession",
+                                        "options": {
+                                          "value": "{{identity}}"
+                                        },
+                                        "output": false
+                                      },
+                                      {
+                                        "name": "GetAPI",
+                                        "module": "dbconnector",
+                                        "action": "single",
+                                        "options": {
+                                          "connection": "postgres_gcpServer",
+                                          "sql": {
+                                            "type": "SELECT",
+                                            "columns": [
+                                              {
+                                                "table": "m_api",
+                                                "column": "api_code"
+                                              },
+                                              {
+                                                "table": "m_api",
+                                                "column": "username"
+                                              },
+                                              {
+                                                "table": "m_api",
+                                                "column": "api_password"
+                                              },
+                                              {
+                                                "table": "m_api",
+                                                "column": "api_type"
+                                              },
+                                              {
+                                                "table": "m_api",
+                                                "column": "senderid"
+                                              },
+                                              {
+                                                "table": "m_api",
+                                                "column": "api_url"
+                                              },
+                                              {
+                                                "table": "sms_api",
+                                                "column": "sms_code"
+                                              },
+                                              {
+                                                "table": "sms_api",
+                                                "column": "entity_id"
+                                              },
+                                              {
+                                                "table": "sms_api",
+                                                "column": "template_id"
+                                              }
+                                            ],
+                                            "table": {
+                                              "name": "m_api",
+                                              "alias": "m_api"
+                                            },
+                                            "primary": "id",
+                                            "joins": [
+                                              {
+                                                "table": "t_sms_api_details",
+                                                "column": "*",
+                                                "alias": "sms_api",
+                                                "type": "LEFT",
+                                                "clauses": {
+                                                  "condition": "AND",
+                                                  "rules": [
+                                                    {
+                                                      "table": "sms_api",
+                                                      "column": "api_id",
+                                                      "operator": "equal",
+                                                      "value": {
+                                                        "table": "m_api",
+                                                        "column": "id"
+                                                      },
+                                                      "operation": "="
+                                                    }
+                                                  ]
+                                                },
+                                                "primary": "id"
+                                              }
+                                            ],
+                                            "wheres": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "id": "m_api.api_type",
+                                                  "field": "m_api.api_type",
+                                                  "type": "string",
+                                                  "operator": "equal",
+                                                  "value": "{{'SMS'}}",
+                                                  "data": {
+                                                    "table": "m_api",
+                                                    "column": "api_type",
+                                                    "type": "text",
+                                                    "columnObj": {
+                                                      "type": "string",
+                                                      "maxLength": -5,
+                                                      "primary": false,
+                                                      "unique": false,
+                                                      "nullable": true,
+                                                      "name": "api_type"
+                                                    }
+                                                  },
+                                                  "operation": "="
+                                                },
+                                                {
+                                                  "id": "m_api.status",
+                                                  "field": "m_api.status",
+                                                  "type": "double",
+                                                  "operator": "equal",
+                                                  "value": 1,
+                                                  "data": {
+                                                    "table": "m_api",
+                                                    "column": "status",
+                                                    "type": "number",
+                                                    "columnObj": {
+                                                      "type": "integer",
+                                                      "primary": false,
+                                                      "nullable": false,
+                                                      "unique": false,
+                                                      "name": "status"
+                                                    }
+                                                  },
+                                                  "operation": "="
+                                                },
+                                                {
+                                                  "id": "sms_api.sms_code",
+                                                  "field": "sms_api.sms_code",
+                                                  "type": "string",
+                                                  "operator": "equal",
+                                                  "value": "{{'OTP'}}",
+                                                  "data": {
+                                                    "table": "sms_api",
+                                                    "column": "sms_code",
+                                                    "type": "text",
+                                                    "columnObj": {
+                                                      "type": "string",
+                                                      "maxLength": -5,
+                                                      "primary": false,
+                                                      "unique": false,
+                                                      "nullable": true,
+                                                      "name": "sms_code"
+                                                    }
+                                                  },
+                                                  "operation": "="
+                                                },
+                                                {
+                                                  "id": "sms_api.status",
+                                                  "field": "sms_api.status",
+                                                  "type": "string",
+                                                  "operator": "equal",
+                                                  "value": "1",
+                                                  "data": {
+                                                    "table": "sms_api",
+                                                    "column": "status",
+                                                    "type": "text",
+                                                    "columnObj": {
+                                                      "type": "string",
+                                                      "maxLength": -5,
+                                                      "primary": false,
+                                                      "unique": false,
+                                                      "nullable": true,
+                                                      "name": "status"
+                                                    }
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ],
+                                              "conditional": null,
+                                              "valid": true
+                                            },
+                                            "query": "SELECT m_api.api_code, m_api.username, m_api.api_password, m_api.api_type, m_api.senderid, m_api.api_url, sms_api.sms_code, sms_api.entity_id, sms_api.template_id\nFROM m_api AS m_api\nLEFT JOIN t_sms_api_details AS sms_api ON (sms_api.api_id = m_api.id)\nWHERE m_api.api_type = :P1 /* {{'SMS'}} */ AND m_api.status = 1 AND sms_api.sms_code = :P2 /* {{'OTP'}} */ AND sms_api.status = '1'",
+                                            "params": [
+                                              {
+                                                "operator": "equal",
+                                                "type": "expression",
+                                                "name": ":P1",
+                                                "value": "{{'SMS'}}"
+                                              },
+                                              {
+                                                "operator": "equal",
+                                                "type": "expression",
+                                                "name": ":P2",
+                                                "value": "{{'OTP'}}"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "output": false,
+                                        "type": "dbconnector_single",
+                                        "meta": [
+                                          {
+                                            "type": "text",
+                                            "name": "api_code"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "username"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "api_password"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "api_type"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "senderid"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "api_url"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "sms_code"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "entity_id"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "template_id"
+                                          }
+                                        ],
+                                        "outputType": "object"
+                                      },
+                                      {
+                                        "name": "apiOTP",
+                                        "module": "api",
+                                        "action": "send",
+                                        "options": {
+                                          "url": "{{GetAPI.api_url}}",
+                                          "params": {
+                                            "user": "{{GetAPI.username}}",
+                                            "key": "{{GetAPI.api_password}}",
+                                            "mobile": "{{$_POST.Mobile}}",
+                                            "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}",
+                                            "senderid": "{{GetAPI.senderid}}",
+                                            "accusage": "1",
+                                            "entityid": "{{GetAPI.entityid}}",
+                                            "tempid": "{{GetAPI.templateid}}"
+                                          }
+                                        },
+                                        "output": false
+                                      },
+                                      {
+                                        "name": "api_status",
+                                        "module": "core",
+                                        "action": "setvalue",
+                                        "options": {
+                                          "value": "{{apiOTP.status}}"
+                                        },
+                                        "meta": [],
+                                        "outputType": "text"
+                                      },
+                                      {
+                                        "name": "api_response",
+                                        "module": "core",
+                                        "action": "setvalue",
+                                        "options": {
+                                          "value": "{{apiOTP.data}}"
+                                        },
+                                        "meta": [],
+                                        "outputType": "text"
+                                      },
+                                      {
+                                        "name": "RecordSmsLog",
+                                        "module": "dbupdater",
+                                        "action": "insert",
+                                        "options": {
+                                          "connection": "postgres_gcpServer",
+                                          "sql": {
+                                            "type": "insert",
+                                            "values": [
+                                              {
+                                                "table": "t_sms_log",
+                                                "column": "sms_message",
+                                                "type": "text",
+                                                "value": "{{'Your one time password is '+OTP+' \\\\nRegards S W Pays'}}"
+                                              },
+                                              {
+                                                "table": "t_sms_log",
+                                                "column": "sender_mobile",
+                                                "type": "text",
+                                                "value": "{{$_POST.Mobile}}"
+                                              },
+                                              {
+                                                "table": "t_sms_log",
+                                                "column": "created_on",
+                                                "type": "datetime",
+                                                "value": "{{NOW}}"
+                                              },
+                                              {
+                                                "table": "t_sms_log",
+                                                "column": "sms_type",
+                                                "type": "text",
+                                                "value": "{{'Login OTP'}}"
+                                              },
+                                              {
+                                                "table": "t_sms_log",
+                                                "column": "ip_address",
+                                                "type": "text",
+                                                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                              },
+                                              {
+                                                "table": "t_sms_log",
+                                                "column": "status",
+                                                "type": "boolean",
+                                                "value": "{{api_status == 200 ? 1 : 0}}"
+                                              },
+                                              {
+                                                "table": "t_sms_log",
+                                                "column": "response",
+                                                "type": "text",
+                                                "value": "{{api_response}}"
+                                              },
+                                              {
+                                                "table": "t_sms_log",
+                                                "column": "user_id",
+                                                "type": "number",
+                                                "value": "{{getSalt.id}}"
+                                              },
+                                              {
+                                                "table": "t_sms_log",
+                                                "column": "extra1",
+                                                "type": "text",
+                                                "value": "{{'Web'}}"
+                                              }
+                                            ],
+                                            "table": "t_sms_log",
+                                            "returning": "id",
+                                            "query": "INSERT INTO t_sms_log\n(sms_message, sender_mobile, created_on, sms_type, ip_address, status, response, user_id, extra1) VALUES (:P1 /* {{'Your one time password is '+OTP+' \\\\nRegards S W Pays'}} */, :P2 /* {{$_POST.Mobile}} */, :P3 /* {{NOW}} */, :P4 /* {{'Login OTP'}} */, :P5 /* {{$_SERVER.REMOTE_ADDR}} */, :P6 /* {{api_status == 200 ? 1 : 0}} */, :P7 /* {{api_response}} */, :P8 /* {{getSalt.id}} */, :P9 /* {{'Web'}} */)",
+                                            "params": [
+                                              {
+                                                "name": ":P1",
+                                                "type": "expression",
+                                                "value": "{{'Your one time password is '+OTP+' \\\\nRegards S W Pays'}}"
+                                              },
+                                              {
+                                                "name": ":P2",
+                                                "type": "expression",
+                                                "value": "{{$_POST.Mobile}}"
+                                              },
+                                              {
+                                                "name": ":P3",
+                                                "type": "expression",
+                                                "value": "{{NOW}}"
+                                              },
+                                              {
+                                                "name": ":P4",
+                                                "type": "expression",
+                                                "value": "{{'Login OTP'}}"
+                                              },
+                                              {
+                                                "name": ":P5",
+                                                "type": "expression",
+                                                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                              },
+                                              {
+                                                "name": ":P6",
+                                                "type": "expression",
+                                                "value": "{{api_status == 200 ? 1 : 0}}"
+                                              },
+                                              {
+                                                "name": ":P7",
+                                                "type": "expression",
+                                                "value": "{{api_response}}"
+                                              },
+                                              {
+                                                "name": ":P8",
+                                                "type": "expression",
+                                                "value": "{{getSalt.id}}"
+                                              },
+                                              {
+                                                "name": ":P9",
+                                                "type": "expression",
+                                                "value": "{{'Web'}}"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "meta": [
+                                          {
+                                            "name": "identity",
+                                            "type": "text"
+                                          },
+                                          {
+                                            "name": "affected",
+                                            "type": "number"
+                                          }
+                                        ],
+                                        "output": false
+                                      },
+                                      {
+                                        "name": "insertOTP",
+                                        "module": "dbupdater",
+                                        "action": "insert",
+                                        "options": {
+                                          "connection": "postgres_gcpServer",
+                                          "sql": {
+                                            "type": "insert",
+                                            "values": [
+                                              {
+                                                "table": "forgot_otp",
+                                                "column": "mobile",
+                                                "type": "text",
+                                                "value": "{{$_POST.Mobile}}"
+                                              },
+                                              {
+                                                "table": "forgot_otp",
+                                                "column": "otp",
+                                                "type": "text",
+                                                "value": "{{OTP}}"
+                                              },
+                                              {
+                                                "table": "forgot_otp",
+                                                "column": "entytime",
+                                                "type": "datetime",
+                                                "value": "{{NOW}}"
+                                              },
+                                              {
+                                                "table": "forgot_otp",
+                                                "column": "status",
+                                                "type": "number",
+                                                "value": "{{1}}"
+                                              }
+                                            ],
+                                            "table": "forgot_otp",
+                                            "returning": "id",
+                                            "query": "INSERT INTO forgot_otp\n(mobile, otp, entytime, status) VALUES (:P1 /* {{$_POST.Mobile}} */, :P2 /* {{OTP}} */, :P3 /* {{NOW}} */, :P4 /* {{1}} */)",
+                                            "params": [
+                                              {
+                                                "name": ":P1",
+                                                "type": "expression",
+                                                "value": "{{$_POST.Mobile}}"
+                                              },
+                                              {
+                                                "name": ":P2",
+                                                "type": "expression",
+                                                "value": "{{OTP}}"
+                                              },
+                                              {
+                                                "name": ":P3",
+                                                "type": "expression",
+                                                "value": "{{NOW}}"
+                                              },
+                                              {
+                                                "name": ":P4",
+                                                "type": "expression",
+                                                "value": "{{1}}"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "meta": [
+                                          {
+                                            "name": "identity",
+                                            "type": "text"
+                                          },
+                                          {
+                                            "name": "affected",
+                                            "type": "number"
+                                          }
+                                        ],
+                                        "output": false
+                                      },
+                                      {
+                                        "name": "GetWhatsappAPI",
+                                        "module": "dbconnector",
+                                        "action": "single",
+                                        "options": {
+                                          "connection": "postgres_gcpServer",
+                                          "sql": {
+                                            "type": "SELECT",
+                                            "columns": [
+                                              {
+                                                "table": "m_api",
+                                                "column": "api_code"
+                                              },
+                                              {
+                                                "table": "m_api",
+                                                "column": "username"
+                                              },
+                                              {
+                                                "table": "m_api",
+                                                "column": "api_password"
+                                              },
+                                              {
+                                                "table": "m_api",
+                                                "column": "api_type"
+                                              },
+                                              {
+                                                "table": "m_api",
+                                                "column": "senderid"
+                                              },
+                                              {
+                                                "table": "m_api",
+                                                "column": "api_url"
+                                              }
+                                            ],
+                                            "table": {
+                                              "name": "m_api"
+                                            },
+                                            "primary": "id",
+                                            "joins": [],
+                                            "wheres": {
+                                              "condition": "AND",
+                                              "rules": [
+                                                {
+                                                  "id": "m_api.api_type",
+                                                  "field": "m_api.api_type",
+                                                  "type": "string",
+                                                  "operator": "equal",
+                                                  "value": "{{'Whatsapp'}}",
+                                                  "data": {
+                                                    "table": "m_api",
+                                                    "column": "api_type",
+                                                    "type": "text",
+                                                    "columnObj": {
+                                                      "type": "string",
+                                                      "maxLength": -5,
+                                                      "primary": false,
+                                                      "unique": false,
+                                                      "nullable": true,
+                                                      "name": "api_type"
+                                                    }
+                                                  },
+                                                  "operation": "="
+                                                },
+                                                {
+                                                  "id": "m_api.status",
+                                                  "field": "m_api.status",
+                                                  "type": "double",
+                                                  "operator": "equal",
+                                                  "value": 1,
+                                                  "data": {
+                                                    "table": "m_api",
+                                                    "column": "status",
+                                                    "type": "number",
+                                                    "columnObj": {
+                                                      "type": "integer",
+                                                      "primary": false,
+                                                      "nullable": false,
+                                                      "unique": false,
+                                                      "name": "status"
+                                                    }
+                                                  },
+                                                  "operation": "="
+                                                }
+                                              ],
+                                              "conditional": null,
+                                              "valid": true
+                                            },
+                                            "query": "SELECT api_code, username, api_password, api_type, senderid, api_url\nFROM m_api\nWHERE api_type = :P1 /* {{'Whatsapp'}} */ AND status = 1",
+                                            "params": [
+                                              {
+                                                "operator": "equal",
+                                                "type": "expression",
+                                                "name": ":P1",
+                                                "value": "{{'Whatsapp'}}"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "output": false,
+                                        "meta": [
+                                          {
+                                            "type": "text",
+                                            "name": "api_code"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "username"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "api_password"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "api_type"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "senderid"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "api_url"
+                                          }
+                                        ],
+                                        "outputType": "object"
+                                      },
+                                      {
+                                        "name": "apiWhatsapp",
+                                        "module": "api",
+                                        "action": "send",
+                                        "options": {
+                                          "url": "{{GetWhatsappAPI.api_url}}",
+                                          "params": {
+                                            "api_token": "{{GetWhatsappAPI.api_password}}",
+                                            "mobile": "{{91+$_POST.Mobile}}",
+                                            "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}"
+                                          },
+                                          "method": "POST"
+                                        },
+                                        "output": false
+                                      },
+                                      {
+                                        "name": "Status",
+                                        "module": "core",
+                                        "action": "setvalue",
+                                        "options": {
+                                          "value": 202
+                                        },
+                                        "meta": [],
+                                        "output": true,
+                                        "outputType": "text"
+                                      },
+                                      {
+                                        "name": "Message",
+                                        "module": "core",
+                                        "action": "setvalue",
+                                        "options": {
+                                          "value": "OTP send via SMS and WhatsApp to the registered mobile"
+                                        },
+                                        "meta": [],
+                                        "output": true,
+                                        "outputType": "text"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "outputType": "boolean"
                               }
                             ]
                           },

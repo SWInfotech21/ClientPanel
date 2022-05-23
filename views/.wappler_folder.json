@@ -190,5 +190,9 @@
   "transaction-commision.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "otp-verify.ejs": {
+    "layoutPage": "",
+    "description": ""
   }
 }

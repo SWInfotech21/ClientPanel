@@ -2341,5 +2341,17 @@ dmx.config({
       ],
       "outputType": "array"
     }
+  },
+  "otpverify": {
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "otp_session"
+      },
+      {
+        "type": "text",
+        "name": "identity"
+      }
+    ]
   }
 });
