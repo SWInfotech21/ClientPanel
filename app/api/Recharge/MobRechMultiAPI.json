@@ -543,7 +543,7 @@
                           ]
                         }
                       },
-                      "output": true,
+                      "output": false,
                       "meta": [
                         {
                           "name": "tr_date",
@@ -560,8 +560,7 @@
                         "value": "{{NOW.dateDiff('seconds', GetRepeatRecharge[0].tr_date)}}"
                       },
                       "meta": [],
-                      "outputType": "text",
-                      "output": true
+                      "outputType": "text"
                     },
                     {
                       "name": "",
