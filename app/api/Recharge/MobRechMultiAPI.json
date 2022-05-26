@@ -5191,6 +5191,12 @@
                                                               "column": "closing_balance",
                                                               "type": "text",
                                                               "value": "{{UserWalletBalCheck.balance_amt}}"
+                                                            },
+                                                            {
+                                                              "table": "tt_recharge_trans",
+                                                              "column": "blank1",
+                                                              "type": "text",
+                                                              "value": "{{Response||repeat[0].Response}}"
                                                             }
                                                           ],
                                                           "table": "tt_recharge_trans",
@@ -5212,7 +5218,7 @@
                                                             "conditional": null,
                                                             "valid": true
                                                           },
-                                                          "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{'FAILED'}} */, api_logs = :P2 /* {{api_log||repeat[0].api_log}} */, is_processed = :P3 /* {{apifiredid||repeat[0].apifiredid}} */, operator_ref = :P4 /* {{remarks||repeat[0].remarks}} */, api_ref = :P5 /* {{api_ref||repeat[0].api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance||repeat[0].apibalance}} */, closing_balance = :P11 /* {{UserWalletBalCheck.balance_amt}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
+                                                          "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{'FAILED'}} */, api_logs = :P2 /* {{api_log||repeat[0].api_log}} */, is_processed = :P3 /* {{apifiredid||repeat[0].apifiredid}} */, operator_ref = :P4 /* {{remarks||repeat[0].remarks}} */, api_ref = :P5 /* {{api_ref||repeat[0].api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec}} */, extra3 = :P10 /* {{apibalance||repeat[0].apibalance}} */, closing_balance = :P11 /* {{UserWalletBalCheck.balance_amt}} */, blank1 = :P12 /* {{Response||repeat[0].Response}} */\nWHERE id = :P13 /* {{RechTrans.identity}} */",
                                                           "params": [
                                                             {
                                                               "name": ":P1",
@@ -5270,9 +5276,14 @@
                                                               "value": "{{UserWalletBalCheck.balance_amt}}"
                                                             },
                                                             {
+                                                              "name": ":P12",
+                                                              "type": "expression",
+                                                              "value": "{{Response||repeat[0].Response}}"
+                                                            },
+                                                            {
                                                               "operator": "equal",
                                                               "type": "expression",
-                                                              "name": ":P12",
+                                                              "name": ":P13",
                                                               "value": "{{RechTrans.identity}}"
                                                             }
                                                           ],
