@@ -568,7 +568,7 @@
                                                                   {
                                                                     "name": "@amt",
                                                                     "value": "{{$_GET.amount}}",
-                                                                    "test": "11"
+                                                                    "test": "10"
                                                                   },
                                                                   {
                                                                     "name": "@stat1",

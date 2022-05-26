@@ -553,14 +553,26 @@
                       "outputType": "array"
                     },
                     {
+                      "name": "TrDate",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{(GetRepeatRecharge[0].tr_date==null)?'2022-05-01 14:52:51':GetRepeatRecharge[0].tr_date}}"
+                      },
+                      "meta": [],
+                      "outputType": "text",
+                      "output": true
+                    },
+                    {
                       "name": "TimeDiff",
                       "module": "core",
                       "action": "setvalue",
                       "options": {
-                        "value": "{{NOW.dateDiff('seconds', GetRepeatRecharge[0].tr_date)}}"
+                        "value": "{{NOW.dateDiff('seconds', TrDate)}}"
                       },
                       "meta": [],
-                      "outputType": "text"
+                      "outputType": "text",
+                      "output": true
                     },
                     {
                       "name": "",
