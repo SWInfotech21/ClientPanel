@@ -31,6 +31,10 @@
       {
         "type": "text",
         "name": "REMOTE_ADDR"
+      },
+      {
+        "type": "text",
+        "name": "SERVER_NAME"
       }
     ]
   },
@@ -498,11 +502,23 @@
                                                 "column": "login_time",
                                                 "type": "datetime",
                                                 "value": "{{NOW}}"
+                                              },
+                                              {
+                                                "table": "t_login_history",
+                                                "column": "remote_ip",
+                                                "type": "text",
+                                                "value": "{{$_SERVER.SERVER_NAME}}"
+                                              },
+                                              {
+                                                "table": "t_login_history",
+                                                "column": "login_from",
+                                                "type": "text",
+                                                "value": "{{'Web'}}"
                                               }
                                             ],
                                             "table": "t_login_history",
                                             "returning": "id",
-                                            "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */)",
+                                            "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time, remote_ip, login_from) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */, :P4 /* {{$_SERVER.SERVER_NAME}} */, :P5 /* {{'Web'}} */)",
                                             "params": [
                                               {
                                                 "name": ":P1",
@@ -518,6 +534,16 @@
                                                 "name": ":P3",
                                                 "type": "expression",
                                                 "value": "{{NOW}}"
+                                              },
+                                              {
+                                                "name": ":P4",
+                                                "type": "expression",
+                                                "value": "{{$_SERVER.SERVER_NAME}}"
+                                              },
+                                              {
+                                                "name": ":P5",
+                                                "type": "expression",
+                                                "value": "{{'Web'}}"
                                               }
                                             ]
                                           }
@@ -547,7 +573,7 @@
                                         },
                                         "meta": [],
                                         "outputType": "text",
-                                        "output": true
+                                        "output": false
                                       },
                                       {
                                         "name": "otp_session",
@@ -892,11 +918,17 @@
                                                 "column": "extra1",
                                                 "type": "text",
                                                 "value": "{{'Web'}}"
+                                              },
+                                              {
+                                                "table": "t_sms_log",
+                                                "column": "extra2",
+                                                "type": "text",
+                                                "value": "{{$_SERVER.SERVER_NAME}}"
                                               }
                                             ],
                                             "table": "t_sms_log",
                                             "returning": "id",
-                                            "query": "INSERT INTO t_sms_log\n(sms_message, sender_mobile, created_on, sms_type, ip_address, status, response, user_id, extra1) VALUES (:P1 /* {{'Your one time password is '+OTP+' \\\\nRegards S W Pays'}} */, :P2 /* {{$_POST.Mobile}} */, :P3 /* {{NOW}} */, :P4 /* {{'Login OTP'}} */, :P5 /* {{$_SERVER.REMOTE_ADDR}} */, :P6 /* {{api_status == 200 ? 1 : 0}} */, :P7 /* {{api_response}} */, :P8 /* {{getSalt.id}} */, :P9 /* {{'Web'}} */)",
+                                            "query": "INSERT INTO t_sms_log\n(sms_message, sender_mobile, created_on, sms_type, ip_address, status, response, user_id, extra1, extra2) VALUES (:P1 /* {{'Your one time password is '+OTP+' \\\\nRegards S W Pays'}} */, :P2 /* {{$_POST.Mobile}} */, :P3 /* {{NOW}} */, :P4 /* {{'Login OTP'}} */, :P5 /* {{$_SERVER.REMOTE_ADDR}} */, :P6 /* {{api_status == 200 ? 1 : 0}} */, :P7 /* {{api_response}} */, :P8 /* {{getSalt.id}} */, :P9 /* {{'Web'}} */, :P10 /* {{$_SERVER.SERVER_NAME}} */)",
                                             "params": [
                                               {
                                                 "name": ":P1",
@@ -942,6 +974,11 @@
                                                 "name": ":P9",
                                                 "type": "expression",
                                                 "value": "{{'Web'}}"
+                                              },
+                                              {
+                                                "name": ":P10",
+                                                "type": "expression",
+                                                "value": "{{$_SERVER.SERVER_NAME}}"
                                               }
                                             ]
                                           }
@@ -990,11 +1027,17 @@
                                                 "column": "status",
                                                 "type": "number",
                                                 "value": "{{1}}"
+                                              },
+                                              {
+                                                "table": "forgot_otp",
+                                                "column": "request_from",
+                                                "type": "text",
+                                                "value": "{{'Web'}}"
                                               }
                                             ],
                                             "table": "forgot_otp",
                                             "returning": "id",
-                                            "query": "INSERT INTO forgot_otp\n(mobile, otp, entytime, status) VALUES (:P1 /* {{$_POST.Mobile}} */, :P2 /* {{OTP}} */, :P3 /* {{NOW}} */, :P4 /* {{1}} */)",
+                                            "query": "INSERT INTO forgot_otp\n(mobile, otp, entytime, status, request_from) VALUES (:P1 /* {{$_POST.Mobile}} */, :P2 /* {{OTP}} */, :P3 /* {{NOW}} */, :P4 /* {{1}} */, :P5 /* {{'Web'}} */)",
                                             "params": [
                                               {
                                                 "name": ":P1",
@@ -1015,6 +1058,11 @@
                                                 "name": ":P4",
                                                 "type": "expression",
                                                 "value": "{{1}}"
+                                              },
+                                              {
+                                                "name": ":P5",
+                                                "type": "expression",
+                                                "value": "{{'Web'}}"
                                               }
                                             ]
                                           }

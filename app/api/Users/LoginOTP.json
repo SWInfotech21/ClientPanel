@@ -37,6 +37,10 @@
       {
         "type": "text",
         "name": "REMOTE_ADDR"
+      },
+      {
+        "type": "text",
+        "name": "SERVER_NAME"
       }
     ]
   },
@@ -75,11 +79,23 @@
                       "column": "login_time",
                       "type": "datetime",
                       "value": "{{NOW}}"
+                    },
+                    {
+                      "table": "t_login_history",
+                      "column": "login_from",
+                      "type": "text",
+                      "value": "{{'Web'}}"
+                    },
+                    {
+                      "table": "t_login_history",
+                      "column": "remote_ip",
+                      "type": "text",
+                      "value": "{{$_SERVER.SERVER_NAME}}"
                     }
                   ],
                   "table": "t_login_history",
                   "returning": "id",
-                  "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time) VALUES (:P1 /* {{$_SESSION.identity}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */)",
+                  "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time, login_from, remote_ip) VALUES (:P1 /* {{$_SESSION.identity}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */, :P4 /* {{'Web'}} */, :P5 /* {{$_SERVER.SERVER_NAME}} */)",
                   "params": [
                     {
                       "name": ":P1",
@@ -95,6 +111,16 @@
                       "name": ":P3",
                       "type": "expression",
                       "value": "{{NOW}}"
+                    },
+                    {
+                      "name": ":P4",
+                      "type": "expression",
+                      "value": "{{'Web'}}"
+                    },
+                    {
+                      "name": ":P5",
+                      "type": "expression",
+                      "value": "{{$_SERVER.SERVER_NAME}}"
                     }
                   ]
                 }

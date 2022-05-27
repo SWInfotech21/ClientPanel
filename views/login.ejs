@@ -38,17 +38,11 @@
         <div class="signin-signup">
             <!--Sign in form-->
             <form id="formLogin" class="sign-in-form" is="dmx-serverconnect-form" method="post" action="api/Users/login" dmx-on:success="formLogin.data.Status==202?browser1.goto('otp-verify'):browser1.goto('dashboard')" dmx-on:unauthorized="varInvalidLogin.setValue(1);formLogin.reset;" dmx-on:forbidden="Notification.danger(lastError.response)">
-                <!-- browser1.goto('dashboard') -->
                 <h2 class="title">Log In</h2>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
                     <input type="number" class="form-control" id="Mobile" name="Mobile" placeholder="6666666666">
                 </div>
-                <!-- <div class="input-field">
-                    <i class="fas fa-mobile"></i>
-                    <input type="text" placeholder="Mobile">
-                </div> -->
-
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
                     <input type="password" class="form-control" id="" name="Password" placeholder="Password" required="" data-msg-required="Please enter your password">
