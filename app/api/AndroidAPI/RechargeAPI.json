@@ -67,6 +67,10 @@
       {
         "type": "number",
         "name": "id"
+      },
+      {
+        "type": "text",
+        "name": "blank1"
       }
     ],
     "$_SERVER": [
@@ -2778,6 +2782,16 @@
                                                                                             "output": false
                                                                                           },
                                                                                           {
+                                                                                            "name": "response",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                              "value": "{{xml.Result}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text"
+                                                                                          },
+                                                                                          {
                                                                                             "name": "stat",
                                                                                             "module": "core",
                                                                                             "action": "setvalue",
@@ -2892,6 +2906,16 @@
                                                                                               }
                                                                                             },
                                                                                             "output": false
+                                                                                          },
+                                                                                          {
+                                                                                            "name": "response",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                              "value": "{{apiambi.data}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text"
                                                                                           },
                                                                                           {
                                                                                             "name": "stat",
@@ -3013,6 +3037,16 @@
                                                                                             "output": false
                                                                                           },
                                                                                           {
+                                                                                            "name": "response",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                              "value": "{{apiMoneyArt.data}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text"
+                                                                                          },
+                                                                                          {
                                                                                             "name": "stat",
                                                                                             "module": "core",
                                                                                             "action": "setvalue",
@@ -3129,6 +3163,16 @@
                                                                                               }
                                                                                             },
                                                                                             "output": false
+                                                                                          },
+                                                                                          {
+                                                                                            "name": "response",
+                                                                                            "module": "core",
+                                                                                            "action": "setvalue",
+                                                                                            "options": {
+                                                                                              "value": "{{apimrobotic.data}}"
+                                                                                            },
+                                                                                            "meta": [],
+                                                                                            "outputType": "text"
                                                                                           },
                                                                                           {
                                                                                             "name": "stat",
@@ -3372,6 +3416,16 @@
                                                                                                             "output": false
                                                                                                           },
                                                                                                           {
+                                                                                                            "name": "response",
+                                                                                                            "module": "core",
+                                                                                                            "action": "setvalue",
+                                                                                                            "options": {
+                                                                                                              "value": "{{xml.Result}}"
+                                                                                                            },
+                                                                                                            "meta": [],
+                                                                                                            "outputType": "text"
+                                                                                                          },
+                                                                                                          {
                                                                                                             "name": "stat",
                                                                                                             "module": "core",
                                                                                                             "action": "setvalue",
@@ -3590,6 +3644,16 @@
                                                                                                               "method": "POST"
                                                                                                             },
                                                                                                             "output": false
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "name": "response",
+                                                                                                            "module": "core",
+                                                                                                            "action": "setvalue",
+                                                                                                            "options": {
+                                                                                                              "value": "{{apiMoneyArt.data}}"
+                                                                                                            },
+                                                                                                            "meta": [],
+                                                                                                            "outputType": "text"
                                                                                                           },
                                                                                                           {
                                                                                                             "name": "stat",
@@ -3812,6 +3876,16 @@
                                                                                                             "output": false
                                                                                                           },
                                                                                                           {
+                                                                                                            "name": "response",
+                                                                                                            "module": "core",
+                                                                                                            "action": "setvalue",
+                                                                                                            "options": {
+                                                                                                              "value": "{{apiambi.data}}"
+                                                                                                            },
+                                                                                                            "meta": [],
+                                                                                                            "outputType": "text"
+                                                                                                          },
+                                                                                                          {
                                                                                                             "name": "stat",
                                                                                                             "module": "core",
                                                                                                             "action": "setvalue",
@@ -4030,6 +4104,16 @@
                                                                                                               }
                                                                                                             },
                                                                                                             "output": false
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "name": "response",
+                                                                                                            "module": "core",
+                                                                                                            "action": "setvalue",
+                                                                                                            "options": {
+                                                                                                              "value": "{{apimrobotic.data}}"
+                                                                                                            },
+                                                                                                            "meta": [],
+                                                                                                            "outputType": "text"
                                                                                                           },
                                                                                                           {
                                                                                                             "name": "stat",
@@ -4383,6 +4467,13 @@
                                                                                                     "column": "closing_balance",
                                                                                                     "type": "text",
                                                                                                     "value": "{{RTClosingBalance}}"
+                                                                                                  },
+                                                                                                  {
+                                                                                                    "table": "tt_recharge_trans",
+                                                                                                    "column": "blank1",
+                                                                                                    "type": "text",
+                                                                                                    "value": "{{response||repeat[0].response}}",
+                                                                                                    "condition": "{{response||repeat[0].response}}"
                                                                                                   }
                                                                                                 ],
                                                                                                 "table": "tt_recharge_trans",
@@ -4404,7 +4495,7 @@
                                                                                                   "conditional": null,
                                                                                                   "valid": true
                                                                                                 },
-                                                                                                "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus||repeat[0].apistatus}} */, api_logs = :P2 /* {{api_log||repeat[0].api_log}} */, is_processed = :P3 /* {{apifiredid||repeat[0].apifiredid}} */, operator_ref = :P4 /* {{remarks||repeat[0].remarks}} */, api_ref = :P5 /* {{api_ref||repeat[0].api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec||repeat[0].ec}} */, extra3 = :P10 /* {{apibalance||repeat[0].apibalance}} */, closing_balance = :P11 /* {{RTClosingBalance}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
+                                                                                                "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{apistatus||repeat[0].apistatus}} */, api_logs = :P2 /* {{api_log||repeat[0].api_log}} */, is_processed = :P3 /* {{apifiredid||repeat[0].apifiredid}} */, operator_ref = :P4 /* {{remarks||repeat[0].remarks}} */, api_ref = :P5 /* {{api_ref||repeat[0].api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec||repeat[0].ec}} */, extra3 = :P10 /* {{apibalance||repeat[0].apibalance}} */, closing_balance = :P11 /* {{RTClosingBalance}} */, blank1 = :P12 /* {{response||repeat[0].response}} */\nWHERE id = :P13 /* {{RechTrans.identity}} */",
                                                                                                 "params": [
                                                                                                   {
                                                                                                     "name": ":P1",
@@ -4462,9 +4553,14 @@
                                                                                                     "value": "{{RTClosingBalance}}"
                                                                                                   },
                                                                                                   {
+                                                                                                    "name": ":P12",
+                                                                                                    "type": "expression",
+                                                                                                    "value": "{{response||repeat[0].response}}"
+                                                                                                  },
+                                                                                                  {
                                                                                                     "operator": "equal",
                                                                                                     "type": "expression",
-                                                                                                    "name": ":P12",
+                                                                                                    "name": ":P13",
                                                                                                     "value": "{{RechTrans.identity}}"
                                                                                                   }
                                                                                                 ],
@@ -5440,6 +5536,13 @@
                                                                                                     "column": "extra3",
                                                                                                     "type": "text",
                                                                                                     "value": "{{apibalance||repeat[0].apibalance}}"
+                                                                                                  },
+                                                                                                  {
+                                                                                                    "table": "tt_recharge_trans",
+                                                                                                    "column": "blank1",
+                                                                                                    "type": "text",
+                                                                                                    "value": "{{response||repeat[0].response}}",
+                                                                                                    "condition": "{{response||repeat[0].response}}"
                                                                                                   }
                                                                                                 ],
                                                                                                 "table": "tt_recharge_trans",
@@ -5461,7 +5564,7 @@
                                                                                                   "conditional": null,
                                                                                                   "valid": true
                                                                                                 },
-                                                                                                "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{'FAILED'}} */, api_logs = :P2 /* {{api_log||repeat[0].api_log}} */, is_processed = :P3 /* {{apifiredid||repeat[0].apifiredid}} */, operator_ref = :P4 /* {{remarks||repeat[0].remarks}} */, api_ref = :P5 /* {{api_ref||repeat[0].api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec||repeat[0].ec}} */, extra3 = :P10 /* {{apibalance||repeat[0].apibalance}} */\nWHERE id = :P11 /* {{RechTrans.identity}} */",
+                                                                                                "query": "UPDATE tt_recharge_trans\nSET status = :P1 /* {{'FAILED'}} */, api_logs = :P2 /* {{api_log||repeat[0].api_log}} */, is_processed = :P3 /* {{apifiredid||repeat[0].apifiredid}} */, operator_ref = :P4 /* {{remarks||repeat[0].remarks}} */, api_ref = :P5 /* {{api_ref||repeat[0].api_ref}} */, revert_trans = '0', ip_address = :P6 /* {{$_SERVER.REMOTE_ADDR}} */, api_response_id = :P7 /* {{apiResponseTime}} */, live = :P8 /* {{apiResponseTime > 10 ? 'Push' : 'Live'}} */, extra1 = :P9 /* {{ec||repeat[0].ec}} */, extra3 = :P10 /* {{apibalance||repeat[0].apibalance}} */, blank1 = :P11 /* {{response||repeat[0].response}} */\nWHERE id = :P12 /* {{RechTrans.identity}} */",
                                                                                                 "params": [
                                                                                                   {
                                                                                                     "name": ":P1",
@@ -5514,9 +5617,14 @@
                                                                                                     "value": "{{apibalance||repeat[0].apibalance}}"
                                                                                                   },
                                                                                                   {
+                                                                                                    "name": ":P11",
+                                                                                                    "type": "expression",
+                                                                                                    "value": "{{response||repeat[0].response}}"
+                                                                                                  },
+                                                                                                  {
                                                                                                     "operator": "equal",
                                                                                                     "type": "expression",
-                                                                                                    "name": ":P11",
+                                                                                                    "name": ":P12",
                                                                                                     "value": "{{RechTrans.identity}}"
                                                                                                   }
                                                                                                 ],
