@@ -355,18 +355,29 @@
                         "options": {
                           "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
                           "then": {
-                            "steps": {
-                              "name": "identity",
-                              "module": "auth",
-                              "action": "login",
-                              "options": {
-                                "provider": "security",
-                                "password": "{{$_POST.Password.sha256(getSalt.saltvalue)}}",
-                                "username": "{{$_POST.Mobile}}"
+                            "steps": [
+                              {
+                                "name": "identity",
+                                "module": "auth",
+                                "action": "login",
+                                "options": {
+                                  "provider": "security",
+                                  "password": "{{$_POST.Password.sha256(getSalt.saltvalue)}}",
+                                  "username": "{{$_POST.Mobile}}"
+                                },
+                                "output": false,
+                                "meta": []
                               },
-                              "output": false,
-                              "meta": []
-                            }
+                              {
+                                "name": "redirect",
+                                "module": "core",
+                                "action": "redirect",
+                                "options": {
+                                  "url": "https://swpay.in/dashboard"
+                                },
+                                "output": true
+                              }
+                            ]
                           },
                           "else": {
                             "steps": {
