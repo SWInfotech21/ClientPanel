@@ -946,10 +946,16 @@
                         "column": "user_tpin",
                         "type": "text",
                         "value": "{{1234}}"
+                      },
+                      {
+                        "table": "m_users",
+                        "column": "kyc_status",
+                        "type": "text",
+                        "value": "{{3}}"
                       }
                     ],
                     "table": "m_users",
-                    "query": "INSERT INTO m_users\n(user_id, user_fname, user_mobile, user_email, password, salt, user_type, u_status, created_by, created_on, user_lname, cap_amt, balance_amt, balance_outstanding, aeps_balance, scheme_id, aadhar_no, pan_no, address, pin, state, district, blank1, md_id, ds_id, blank2, blank3, user_tpin) VALUES (:P1 /* {{UniqueID}} */, :P2 /* {{$_POST.name}} */, :P3 /* {{$_POST.mobile}} */, :P4 /* {{$_POST.email.lowercase()}} */, :P5 /* {{password.sha256(NOW)}} */, :P6 /* {{NOW}} */, :P7 /* {{$_POST.user_type}} */, '1', :P8 /* {{identity}} */, :P9 /* {{NOW}} */, :P10 /* {{'https://github.com/ado.png'}} */, '0', '0', '0', '0', :P11 /* {{$_POST.scheme_id}} */, :P12 /* {{$_POST.aadhar}} */, :P13 /* {{$_POST.pan}} */, :P14 /* {{$_POST.address}} */, :P15 /* {{$_POST.pin}} */, :P16 /* {{$_POST.state}} */, :P17 /* {{$_POST.district}} */, :P18 /* {{password}} */, :P19 /* {{$_POST.user_type == 2 ? identity : GetMdtDt.md_id}} */, :P20 /* {{$_POST.user_type == 2 ? 0 : identity}} */, :P21 /* {{$_POST.mobile}} */, :P22 /* {{$_POST.firm_name}} */, :P23 /* {{1234}} */)",
+                    "query": "INSERT INTO m_users\n(user_id, user_fname, user_mobile, user_email, password, salt, user_type, u_status, created_by, created_on, user_lname, cap_amt, balance_amt, balance_outstanding, aeps_balance, scheme_id, aadhar_no, pan_no, address, pin, state, district, blank1, md_id, ds_id, blank2, blank3, user_tpin, kyc_status) VALUES (:P1 /* {{UniqueID}} */, :P2 /* {{$_POST.name}} */, :P3 /* {{$_POST.mobile}} */, :P4 /* {{$_POST.email.lowercase()}} */, :P5 /* {{password.sha256(NOW)}} */, :P6 /* {{NOW}} */, :P7 /* {{$_POST.user_type}} */, '1', :P8 /* {{identity}} */, :P9 /* {{NOW}} */, :P10 /* {{'https://github.com/ado.png'}} */, '0', '0', '0', '0', :P11 /* {{$_POST.scheme_id}} */, :P12 /* {{$_POST.aadhar}} */, :P13 /* {{$_POST.pan}} */, :P14 /* {{$_POST.address}} */, :P15 /* {{$_POST.pin}} */, :P16 /* {{$_POST.state}} */, :P17 /* {{$_POST.district}} */, :P18 /* {{password}} */, :P19 /* {{$_POST.user_type == 2 ? identity : GetMdtDt.md_id}} */, :P20 /* {{$_POST.user_type == 2 ? 0 : identity}} */, :P21 /* {{$_POST.mobile}} */, :P22 /* {{$_POST.firm_name}} */, :P23 /* {{1234}} */, :P24 /* {{3}} */)",
                     "params": [
                       {
                         "name": ":P1",
@@ -1065,6 +1071,11 @@
                         "name": ":P23",
                         "type": "expression",
                         "value": "{{1234}}"
+                      },
+                      {
+                        "name": ":P24",
+                        "type": "expression",
+                        "value": "{{3}}"
                       }
                     ],
                     "returning": "id"

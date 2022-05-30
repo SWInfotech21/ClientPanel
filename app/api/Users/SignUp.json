@@ -405,11 +405,17 @@
                               "column": "user_tpin",
                               "type": "text",
                               "value": "{{1234}}"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "kyc_status",
+                              "type": "text",
+                              "value": "{{3}}"
                             }
                           ],
                           "table": "m_users",
                           "returning": "id",
-                          "query": "INSERT INTO m_users\n(user_id, user_fname, user_lname, user_mobile, user_email, password, salt, user_type, md_id, ds_id, u_status, scheme_id, ip, cap_amt, balance_amt, balance_outstanding, aeps_limit, aeps_balance, created_by, created_on, blank1, blank2, user_tpin) VALUES (:P1 /* {{UniqueId}} */, :P2 /* {{$_POST.fname}} */, :P3 /* {{'https://github.com/cdo.png'}} */, :P4 /* {{$_POST.mobile}} */, :P5 /* {{$_POST.email}} */, :P6 /* {{password.sha256(NOW)}} */, :P7 /* {{NOW}} */, '3', '0', '0', :P8 /* {{1}} */, '7', :P9 /* {{$_SERVER.REMOTE_ADDR}} */, '0', '0', '0', '0', '0', '12', :P10 /* {{NOW}} */, :P11 /* {{password}} */, :P12 /* {{$_POST.mobile}} */, :P13 /* {{1234}} */)",
+                          "query": "INSERT INTO m_users\n(user_id, user_fname, user_lname, user_mobile, user_email, password, salt, user_type, md_id, ds_id, u_status, scheme_id, ip, cap_amt, balance_amt, balance_outstanding, aeps_limit, aeps_balance, created_by, created_on, blank1, blank2, user_tpin, kyc_status) VALUES (:P1 /* {{UniqueId}} */, :P2 /* {{$_POST.fname}} */, :P3 /* {{'https://github.com/cdo.png'}} */, :P4 /* {{$_POST.mobile}} */, :P5 /* {{$_POST.email}} */, :P6 /* {{password.sha256(NOW)}} */, :P7 /* {{NOW}} */, '3', '0', '0', :P8 /* {{1}} */, '7', :P9 /* {{$_SERVER.REMOTE_ADDR}} */, '0', '0', '0', '0', '0', '12', :P10 /* {{NOW}} */, :P11 /* {{password}} */, :P12 /* {{$_POST.mobile}} */, :P13 /* {{1234}} */, :P14 /* {{3}} */)",
                           "params": [
                             {
                               "name": ":P1",
@@ -475,6 +481,11 @@
                               "name": ":P13",
                               "type": "expression",
                               "value": "{{1234}}"
+                            },
+                            {
+                              "name": ":P14",
+                              "type": "expression",
+                              "value": "{{3}}"
                             }
                           ]
                         }
