@@ -1,7 +1,7 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appconnect="local"  components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" -->
 <meta name="ac:route" content="/dashboard">
 <dmx-serverconnect id="scKYCFetch" url="api/Users/UserKycFetch"></dmx-serverconnect>
-<dmx-value id="varKYC" dmx-bind:value="!scLoginUser.data.LoginUserInfo.kyc_status||scLoginUser.data.LoginUserInfo.kyc_status==2?0:1"></dmx-value>
+<dmx-value id="varKYC" dmx-bind:value="scLoginUser.data.LoginUserInfo.kyc_status==3?0:1||scLoginUser.data.LoginUserInfo.kyc_status==2?0:1"></dmx-value>
 <main>
     <div class="container-fluid">
         <h1 class="mt-4">Dashboard
