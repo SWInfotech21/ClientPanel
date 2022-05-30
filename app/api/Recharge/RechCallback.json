@@ -2731,6 +2731,247 @@
         "outputType": "boolean"
       },
       {
+        "name": "GetComplain",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_ticket",
+                "column": "id",
+                "alias": "CountTicket",
+                "aggregate": "COUNT"
+              }
+            ],
+            "table": {
+              "name": "t_ticket"
+            },
+            "primary": "id",
+            "joins": [],
+            "groupBy": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "t_ticket.user_id",
+                  "field": "t_ticket.user_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{GetRechTrans.user_id}}",
+                  "data": {
+                    "table": "t_ticket",
+                    "column": "user_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": false,
+                      "name": "user_id"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "t_ticket.tran_id",
+                  "field": "t_ticket.tran_id",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{GetRechTrans.id}}",
+                  "data": {
+                    "table": "t_ticket",
+                    "column": "tran_id",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "tran_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT COUNT(id) AS CountTicket\nFROM t_ticket\nWHERE user_id = :P1 /* {{GetRechTrans.user_id}} */ AND tran_id = :P2 /* {{GetRechTrans.id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{GetRechTrans.user_id}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{GetRechTrans.id}}"
+              }
+            ]
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "number",
+            "name": "CountTicket"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{GetComplain.CountTicket>0&&Transaction_Type=='All'}}",
+          "then": {
+            "steps": [
+              {
+                "name": "UPComplainT_Ticket",
+                "module": "dbupdater",
+                "action": "update",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "update",
+                    "values": [
+                      {
+                        "table": "t_ticket",
+                        "column": "status",
+                        "type": "text",
+                        "value": "{{3}}"
+                      }
+                    ],
+                    "table": "t_ticket",
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "user_id",
+                          "field": "user_id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{GetRechTrans.user_id}}",
+                          "data": {
+                            "column": "user_id"
+                          },
+                          "operation": "="
+                        },
+                        {
+                          "id": "tran_id",
+                          "field": "tran_id",
+                          "type": "string",
+                          "operator": "equal",
+                          "value": "{{GetRechTrans.id}}",
+                          "data": {
+                            "column": "tran_id"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "returning": "id",
+                    "query": "UPDATE t_ticket\nSET status = :P1 /* {{3}} */\nWHERE user_id = :P2 /* {{GetRechTrans.user_id}} */ AND tran_id = :P3 /* {{GetRechTrans.id}} */",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{3}}"
+                      },
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P2",
+                        "value": "{{GetRechTrans.user_id}}"
+                      },
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P3",
+                        "value": "{{GetRechTrans.id}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "UpRechargeTrans",
+                "module": "dbupdater",
+                "action": "update",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "update",
+                    "values": [
+                      {
+                        "table": "tt_recharge_trans",
+                        "column": "extra2",
+                        "type": "text",
+                        "value": "{{3}}"
+                      }
+                    ],
+                    "table": "tt_recharge_trans",
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "id",
+                          "field": "id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{GetRechTrans.id}}",
+                          "data": {
+                            "column": "id"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "returning": "id",
+                    "query": "UPDATE tt_recharge_trans\nSET extra2 = :P1 /* {{3}} */\nWHERE id = :P2 /* {{GetRechTrans.id}} */",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{3}}"
+                      },
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P2",
+                        "value": "{{GetRechTrans.id}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
         "name": "",
         "module": "core",
         "action": "condition",
