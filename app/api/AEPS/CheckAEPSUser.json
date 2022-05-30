@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/AEPS_User.ejs",
+      "linkedForm": "formAEPSUserCheck"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "MerchantId",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            },
+            "core:maxlength": {
+              "param": "20"
+            }
+          }
+        },
+        "name": "MerchantId"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "apiUserStatus",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://180.179.23.1:444/Aeps/Getstatus",
+          "method": "POST",
+          "dataType": "json",
+          "data": {
+            "Authcode": "65c43ccd6a7b41c884",
+            "Mpin": "7170",
+            "MerchantID": "{{$_POST.MerchantId}}"
+          }
+        },
+        "output": true
+      }
+    ]
+  }
+}

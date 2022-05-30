@@ -194,5 +194,9 @@
   "otp-verify.ejs": {
     "layoutPage": "",
     "description": ""
+  },
+  "AEPS_User.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

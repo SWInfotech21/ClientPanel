@@ -1,0 +1,135 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="AEPS_User" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" -->
+<meta name="ac:route" content="/AEPS_User">
+<!-- New Wappler Page -->
+<dmx-serverconnect id="scAEPSUserInfo" url="api/AEPS/AEPSUserInfoByAdmin" dmx-param:mobile="content.modalAEPSRegByAdmin.formAddEditMerchant.inputMerchantID.value" noload></dmx-serverconnect>
+<script is="dmx-flow" id="flowAEPSUser" type="text/dmx-flow">{
+  condition: {
+    if: "{{content.modalAEPSRegByAdmin.formAddEditMerchant.inputMerchantID.value}}",
+    then: {
+      steps: {
+        run: {action: "{{scAEPSUserInfo.load({})}}"}
+      }
+    }
+  }
+}</script>
+<div class="container-fluid">
+    <h1 class="mt-4">AEPS Admin Access
+        <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scLoginUser.state.executing"></span>
+    </h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">ARPS / Retailer Id: {{scLoginUser.data.LoginUserInfo.user_id}} </li>
+    </ol>
+    <div class="row mx-0">
+        <div class="col-12" dmx-show="scLoginUser.data.LoginUserInfo.user_mobile == '6396090835'">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Check User<button class="btn btn-primary float-right" dmx-on:click="modalAEPSRegByAdmin.show();">AEPS Merchant Reg.</button>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="formAEPSUserCheck" method="post" action="api/AEPS/CheckAEPSUser" is="dmx-serverconnect-form" dmx-on:success="scNotif.success('Success');" dmx-on:error="scNotif.warning('An Error Occured')" dmx-on:unauthorized="scNotif.warning(formAEPSUserCheck.lastError.response)" dmx-on:forbidden="scNotif.warning(formAEPSUserCheck.lastError.response)" dmx-on:invalid="scNotif.warning(formAEPSUserCheck.lastError.response)">
+                        <div class="row mx-0">
+                            <div class="col-12">
+                                <label for="inputAEPSNumber" class="col-form-label">AEPS Number</label>
+                                <input type="text" class="form-control" id="inputAEPSNumber" name="MerchantId" aria-describedby="inputAEPSNumber_help" required="" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row mx-0 mt-2">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <h5>{{content.formAEPSUserCheck.data.apiUserStatus.data.Merchantid}}</h5>
+            <h5>{{content.formAEPSUserCheck.data.apiUserStatus.data.Description}}</h5>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalAEPSRegByAdmin" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">AEPS Merchant Reg. By Admin</h5>
+                <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form is="dmx-serverconnect-form" id="formAddEditMerchant" method="post" action="api/AEPS/AddMerchantByAdmin" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('AEPS Merchant Reg. Submitted, Please Wait for Approval'); formAddEditMerchant.reset(); scOperator.load()" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(lastError.response)" dmx-on:unauthorized="scNotif.warning(lastError.response)" dmx-on:invalid="scNotif.warning(lastError.message)">
+                    <div class="row mx-0">
+                        <h6 class="tect-center text-primary fw-bold">API Response: {{scGenerateId.data.Desc}}</h6>
+                        <h6 class="tect-center text-success fw-bold">To Activate AEPS Merchant, Complete the SWPAY KYC(if not done yet) & Submit the AEPS Merchant Reg. Form</h6>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputMerchantID" class="col-form-label">Merchant Id</label>
+                            <input type="number" class="form-control" id="inputMerchantID" name="MerchantID" aria-describedby="inputMerchantID_help" dmx-on:keyup="flowAEPSUser.run();">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputName" class="col-form-label">Name</label>
+                            <input type="text" class="form-control" id="inputName" name="Name" aria-describedby="inputName_help" dmx-bind:value="content.scAEPSUserInfo.data.AEPSUser.user_fname">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputShop" class="col-form-label">Firm/Shop Name</label>
+                            <input type="text" class="form-control" id="inputShop" name="ShopName" aria-describedby="inputShopName_help" dmx-bind:value="content.scAEPSUserInfo.data.AEPSUser.blank3">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputPan" class="col-form-label">PAN No.</label>
+                            <input type="text" class="form-control" id="inputPan" name="Pan" aria-describedby="inputPan_help" dmx-bind:value="content.scAEPSUserInfo.data.AEPSUser.pan_no">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputAdharNo" class="col-form-label">Aadhar No.</label>
+                            <input type="number" class="form-control" id="inputAdharNo" name="AdharNo" aria-describedby="inputAdharNo_help" dmx-bind:value="content.scAEPSUserInfo.data.AEPSUser.aadhar_no">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputpincode" class="col-form-label">Area PIN</label>
+                            <input type="number" class="form-control" id="inputpincode" name="pincode" aria-describedby="inputpincode_help" dmx-bind:value="content.scAEPSUserInfo.data.AEPSUser.pin">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputPan" class="col-form-label">Dist./City</label>
+                            <input type="text" class="form-control" id="inputCity" name="City" aria-describedby="inputCity_help" dmx-bind:value="content.scAEPSUserInfo.data.AEPSUser.district">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputState" class="col-form-label">State</label>
+                            <input type="text" class="form-control" id="inputState" name="State" aria-describedby="inputState_help" dmx-bind:value="content.scAEPSUserInfo.data.AEPSUser.state">
+                        </div>
+                        <div class="col-12 col-md-6 mb-2">
+                            <label for="inputPan" class="col-form-label">Address</label>
+                            <input type="text" class="form-control" id="inputAddress" name="Address" aria-describedby="inputAddress_help" dmx-bind:value="content.scAEPSUserInfo.data.AEPSUser.address">
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3 row">
+                                <label for="input2" class="col-sm-3 col-form-label">PAN Card</label>
+                                <div class="col-9 px-0 text-center">
+                                    <img id="imgPAN" width="100" dmx-bind:src="'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.pan_card" height="80">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3 row">
+                                <label for="input3" class="col-3 col-form-label">AADHAR Card(Front)</label>
+                                <div class="col-9 px-0 text-center">
+                                    <img id="ImageAADHAR" width="100" dmx-bind:src="'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.aadhar_front" height="80">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3 row">
+                                <label for="input4" class="col-3 col-form-label">AADHAR Card(Back)</label>
+                                <div class="col-9 px-0 text-center">
+                                    <img id="ImageBack" width="100" dmx-bind:src="'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.aadhar_back" height="80">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

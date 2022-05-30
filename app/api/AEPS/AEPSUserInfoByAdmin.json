@@ -1,0 +1,205 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "mobile"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "AEPSUser",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_users",
+                "column": "user_fname"
+              },
+              {
+                "table": "m_users",
+                "column": "blank3"
+              },
+              {
+                "table": "m_users",
+                "column": "pan_no"
+              },
+              {
+                "table": "m_users",
+                "column": "aadhar_no"
+              },
+              {
+                "table": "m_users",
+                "column": "pin"
+              },
+              {
+                "table": "m_users",
+                "column": "address"
+              },
+              {
+                "table": "m_users",
+                "column": "state"
+              },
+              {
+                "table": "m_users",
+                "column": "district"
+              },
+              {
+                "table": "t_kyc",
+                "column": "profile_pic"
+              },
+              {
+                "table": "t_kyc",
+                "column": "pan_card"
+              },
+              {
+                "table": "t_kyc",
+                "column": "aadhar_front"
+              },
+              {
+                "table": "t_kyc",
+                "column": "aadhar_back"
+              }
+            ],
+            "table": {
+              "name": "m_users"
+            },
+            "primary": "id",
+            "joins": [
+              {
+                "table": "t_user_kyc",
+                "column": "*",
+                "alias": "t_kyc",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "t_kyc",
+                      "column": "user_id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "m_users",
+                        "column": "id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_users.user_mobile",
+                  "field": "m_users.user_mobile",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.mobile}}",
+                  "data": {
+                    "table": "m_users",
+                    "column": "user_mobile",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "primary": false,
+                      "nullable": false,
+                      "maxLength": -5,
+                      "unique": false,
+                      "name": "user_mobile"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT m_users.user_fname, m_users.blank3, m_users.pan_no, m_users.aadhar_no, m_users.pin, m_users.address, m_users.state, m_users.district, t_kyc.profile_pic, t_kyc.pan_card, t_kyc.aadhar_front, t_kyc.aadhar_back\nFROM m_users\nLEFT JOIN t_user_kyc AS t_kyc ON (t_kyc.user_id = m_users.id)\nWHERE m_users.user_mobile = :P1 /* {{$_GET.mobile}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.mobile}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "user_fname"
+          },
+          {
+            "type": "text",
+            "name": "blank3"
+          },
+          {
+            "type": "text",
+            "name": "pan_no"
+          },
+          {
+            "type": "text",
+            "name": "aadhar_no"
+          },
+          {
+            "type": "text",
+            "name": "pin"
+          },
+          {
+            "type": "text",
+            "name": "address"
+          },
+          {
+            "type": "text",
+            "name": "state"
+          },
+          {
+            "type": "text",
+            "name": "district"
+          },
+          {
+            "type": "text",
+            "name": "profile_pic"
+          },
+          {
+            "type": "text",
+            "name": "pan_card"
+          },
+          {
+            "type": "text",
+            "name": "aadhar_front"
+          },
+          {
+            "type": "text",
+            "name": "aadhar_back"
+          }
+        ],
+        "outputType": "object"
+      }
+    ]
+  }
+}
