@@ -1,6 +1,6 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="AEPS_User" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" -->
 <meta name="ac:route" content="/AEPS_User">
-<!-- New Wappler Page -->
+
 <dmx-serverconnect id="scAEPSUserInfo" url="api/AEPS/AEPSUserInfoByAdmin" dmx-param:mobile="content.modalAEPSRegByAdmin.formAddEditMerchant.inputMerchantID.value" noload></dmx-serverconnect>
 <script is="dmx-flow" id="flowAEPSUser" type="text/dmx-flow">{
   condition: {
@@ -97,30 +97,56 @@
                             <label for="inputPan" class="col-form-label">Address</label>
                             <input type="text" class="form-control" id="inputAddress" name="Address" aria-describedby="inputAddress_help" dmx-bind:value="content.scAEPSUserInfo.data.AEPSUser.address">
                         </div>
-                        <div class="col-12 col-md-6">
+
+                        <div class="col-12">
+                            <div class="mb-3 row">
+                                <label for="input1" class="col-sm-3 col-form-label">Image Upload</label>
+                                <div class="col-sm-6">
+                                    <input type="file" class="form-control" id="input1" name="profile" aria-describedby="input1_help">
+                                    <small id="input1_help" class="form-text text-muted">Upload recent pasport size photograph</small>
+                                </div>
+                                <div class="col-3 px-0 text-center">
+                                    <img id="ImagePic" width="80" dmx-bind:src="input1.file.dataUrl ? input1.file.dataUrl : 'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.profile_pic" dmx-show="input1.value ? input1.value : 'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.profile_pic" height="80">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
                             <div class="mb-3 row">
                                 <label for="input2" class="col-sm-3 col-form-label">PAN Card</label>
-                                <div class="col-9 px-0 text-center">
-                                    <img id="imgPAN" width="100" dmx-bind:src="'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.pan_card" height="80">
+                                <div class="col-sm-6">
+                                    <input type="file" class="form-control" id="input2" name="pan_card" aria-describedby="input2_help">
+                                    <small id="input2_help" class="form-text text-muted">Upload registered PAN card</small>
+                                </div>
+                                <div class="col-3 px-0 text-center">
+                                    <img id="imgPAN" width="100" dmx-bind:src="input2.file.dataUrl ? input2.file.dataUrl : 'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.pan_card" dmx-show="input2.value ? input2.value : 'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.pan_card" height="80">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12">
                             <div class="mb-3 row">
-                                <label for="input3" class="col-3 col-form-label">AADHAR Card(Front)</label>
-                                <div class="col-9 px-0 text-center">
-                                    <img id="ImageAADHAR" width="100" dmx-bind:src="'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.aadhar_front" height="80">
+                                <label for="input3" class="col-sm-3 col-form-label">AADHAR Card(Front)</label>
+                                <div class="col-sm-6">
+                                    <input type="file" class="form-control" id="input3" name="front_aadhar" aria-describedby="input3_help">
+                                    <small id="input3_help" class="form-text text-muted">Upload Front side of AADHAR card</small>
+                                </div>
+                                <div class="col-3 px-0 text-center">
+                                    <img id="ImageAADHAR" width="100" dmx-bind:src="input3.file.dataUrl ? input3.file.dataUrl : 'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.aadhar_front" dmx-show="input3.value ? input3.value : 'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.aadhar_front" height="80">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12">
                             <div class="mb-3 row">
-                                <label for="input4" class="col-3 col-form-label">AADHAR Card(Back)</label>
-                                <div class="col-9 px-0 text-center">
-                                    <img id="ImageBack" width="100" dmx-bind:src="'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.aadhar_back" height="80">
+                                <label for="input4" class="col-sm-3 col-form-label">AADHAR Card(Back)</label>
+                                <div class="col-sm-6">
+                                    <input type="file" class="form-control" id="input4" name="back_aadhar" aria-describedby="input4_help">
+                                    <small id="input4_help" class="form-text text-muted">Upload Back side of AADHAR card</small>
+                                </div>
+                                <div class="col-3 px-0 text-center">
+                                    <img id="ImageLogo" width="100" dmx-bind:src="input4.file.dataUrl ? input4.file.dataUrl : 'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.aadhar_back" dmx-show="input4.value ? input4.value : 'https://swpay.in/'+content.scAEPSUserInfo.data.AEPSUser.aadhar_back" height="80">
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-12 text-center">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>

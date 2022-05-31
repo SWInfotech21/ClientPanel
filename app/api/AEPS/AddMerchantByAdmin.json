@@ -1,20 +1,10 @@
 {
   "meta": {
     "options": {
-      "linkedFile": "/views/AEPS.ejs",
+      "linkedFile": "/views/AEPS_User.ejs",
       "linkedForm": "formAddEditMerchant"
     },
     "$_POST": [
-      {
-        "type": "text",
-        "fieldName": "Name",
-        "name": "Name"
-      },
-      {
-        "type": "text",
-        "fieldName": "ShopName",
-        "name": "ShopName"
-      },
       {
         "type": "number",
         "fieldName": "MerchantID",
@@ -24,6 +14,16 @@
           }
         },
         "name": "MerchantID"
+      },
+      {
+        "type": "text",
+        "fieldName": "Name",
+        "name": "Name"
+      },
+      {
+        "type": "text",
+        "fieldName": "ShopName",
+        "name": "ShopName"
       },
       {
         "type": "text",
@@ -64,6 +64,102 @@
         "type": "text",
         "fieldName": "Address",
         "name": "Address"
+      },
+      {
+        "type": "file",
+        "fieldName": "profile",
+        "name": "profile",
+        "sub": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "number"
+          },
+          {
+            "name": "error",
+            "type": "text"
+          }
+        ],
+        "outputType": "file"
+      },
+      {
+        "type": "file",
+        "fieldName": "pan_card",
+        "name": "pan_card",
+        "sub": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "number"
+          },
+          {
+            "name": "error",
+            "type": "text"
+          }
+        ],
+        "outputType": "file"
+      },
+      {
+        "type": "file",
+        "fieldName": "front_aadhar",
+        "name": "front_aadhar",
+        "sub": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "number"
+          },
+          {
+            "name": "error",
+            "type": "text"
+          }
+        ],
+        "outputType": "file"
+      },
+      {
+        "type": "file",
+        "fieldName": "back_aadhar",
+        "name": "back_aadhar",
+        "sub": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "number"
+          },
+          {
+            "name": "error",
+            "type": "text"
+          }
+        ],
+        "outputType": "file"
       }
     ]
   },
@@ -83,6 +179,112 @@
         }
       },
       {
+        "name": "GetUser",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_user_kyc",
+                "column": "id",
+                "alias": "CountId",
+                "aggregate": "COUNT"
+              },
+              {
+                "table": "mu",
+                "column": "id"
+              }
+            ],
+            "table": {
+              "name": "t_user_kyc"
+            },
+            "primary": "id",
+            "joins": [
+              {
+                "table": "m_users",
+                "column": "*",
+                "alias": "mu",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "mu",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "t_user_kyc",
+                        "column": "user_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              }
+            ],
+            "groupBy": [
+              {
+                "table": "mu",
+                "column": "id"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "mu.user_mobile",
+                  "field": "mu.user_mobile",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{6396090835}}",
+                  "data": {
+                    "table": "mu",
+                    "column": "user_mobile",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "primary": false,
+                      "nullable": false,
+                      "maxLength": -5,
+                      "unique": false,
+                      "name": "user_mobile"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT COUNT(t_user_kyc.id) AS CountId, mu.id\nFROM t_user_kyc\nLEFT JOIN m_users AS mu ON (mu.id = t_user_kyc.user_id)\nWHERE mu.user_mobile = :P1 /* {{6396090835}} */\nGROUP BY mu.id",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{6396090835}}"
+              }
+            ]
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "number",
+            "name": "CountId"
+          },
+          {
+            "type": "number",
+            "name": "id"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
         "name": "GetImage",
         "module": "dbconnector",
         "action": "single",
@@ -91,6 +293,10 @@
           "sql": {
             "type": "SELECT",
             "columns": [
+              {
+                "table": "t_user_kyc",
+                "column": "profile_pic"
+              },
               {
                 "table": "t_user_kyc",
                 "column": "pan_card"
@@ -107,10 +313,6 @@
                 "table": "mu",
                 "column": "user_id",
                 "alias": "RT_ID"
-              },
-              {
-                "table": "mu",
-                "column": "id"
               }
             ],
             "table": {
@@ -169,7 +371,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT t_user_kyc.pan_card, t_user_kyc.aadhar_front, t_user_kyc.aadhar_back, mu.user_id AS RT_ID, mu.id\nFROM t_user_kyc\nLEFT JOIN m_users AS mu ON (mu.id = t_user_kyc.user_id)\nWHERE mu.user_mobile = :P1 /* {{$_POST.MerchantID}} */",
+            "query": "SELECT t_user_kyc.profile_pic, t_user_kyc.pan_card, t_user_kyc.aadhar_front, t_user_kyc.aadhar_back, mu.user_id AS RT_ID\nFROM t_user_kyc\nLEFT JOIN m_users AS mu ON (mu.id = t_user_kyc.user_id)\nWHERE mu.user_mobile = :P1 /* {{$_POST.MerchantID}} */",
             "params": [
               {
                 "operator": "equal",
@@ -182,6 +384,10 @@
         },
         "output": false,
         "meta": [
+          {
+            "type": "text",
+            "name": "profile_pic"
+          },
           {
             "type": "text",
             "name": "pan_card"
@@ -197,13 +403,665 @@
           {
             "type": "text",
             "name": "RT_ID"
-          },
-          {
-            "type": "number",
-            "name": "id"
           }
         ],
         "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{$_POST.profile&&$_POST.profile!=null&&$_POST.profile!=' '}}",
+          "then": {
+            "steps": [
+              {
+                "name": "ProfileAdd",
+                "module": "upload",
+                "action": "upload",
+                "options": {
+                  "fields": "{{$_POST.profile}}",
+                  "path": "/public/assets/images/profile",
+                  "template": "{guid}{ext}",
+                  "replaceSpace": true,
+                  "replaceDiacritics": true,
+                  "asciiOnly": true,
+                  "overwrite": true,
+                  "throwErrors": true
+                },
+                "meta": [
+                  {
+                    "name": "name",
+                    "type": "text"
+                  },
+                  {
+                    "name": "path",
+                    "type": "text"
+                  },
+                  {
+                    "name": "url",
+                    "type": "text"
+                  },
+                  {
+                    "name": "type",
+                    "type": "text"
+                  },
+                  {
+                    "name": "size",
+                    "type": "text"
+                  },
+                  {
+                    "name": "error",
+                    "type": "number"
+                  }
+                ],
+                "outputType": "file",
+                "output": true
+              },
+              {
+                "name": "ProfilePic",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{ProfileAdd.name}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              }
+            ]
+          },
+          "else": {
+            "steps": {
+              "name": "ProfilePic",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{GetImage.profile_pic}}"
+              },
+              "meta": [],
+              "outputType": "text"
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{$_POST.pan_card&&$_POST.pan_card!=null&&$_POST.pan_card!=' '}}",
+          "then": {
+            "steps": [
+              {
+                "name": "PANAdd",
+                "module": "upload",
+                "action": "upload",
+                "options": {
+                  "fields": "{{$_POST.pan_card}}",
+                  "path": "/public/assets/images/pan",
+                  "template": "{guid}{ext}",
+                  "replaceSpace": true,
+                  "replaceDiacritics": true,
+                  "asciiOnly": true,
+                  "overwrite": true,
+                  "throwErrors": true
+                },
+                "meta": [
+                  {
+                    "name": "name",
+                    "type": "text"
+                  },
+                  {
+                    "name": "path",
+                    "type": "text"
+                  },
+                  {
+                    "name": "url",
+                    "type": "text"
+                  },
+                  {
+                    "name": "type",
+                    "type": "text"
+                  },
+                  {
+                    "name": "size",
+                    "type": "text"
+                  },
+                  {
+                    "name": "error",
+                    "type": "number"
+                  }
+                ],
+                "outputType": "file",
+                "output": true
+              },
+              {
+                "name": "PanCard",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{PANAdd.name}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              }
+            ]
+          },
+          "else": {
+            "steps": {
+              "name": "PanCard",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{GetImage.pan_card}}"
+              },
+              "meta": [],
+              "outputType": "text"
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{$_POST.front_aadhar&&$_POST.front_aadhar!=null&&$_POST.front_aadhar!=' '}}",
+          "then": {
+            "steps": [
+              {
+                "name": "AADHARAdd",
+                "module": "upload",
+                "action": "upload",
+                "options": {
+                  "fields": "{{$_POST.front_aadhar}}",
+                  "path": "/public/assets/images/aadhar",
+                  "template": "{guid}{ext}",
+                  "replaceSpace": true,
+                  "replaceDiacritics": true,
+                  "asciiOnly": true,
+                  "overwrite": true,
+                  "throwErrors": true
+                },
+                "meta": [
+                  {
+                    "name": "name",
+                    "type": "text"
+                  },
+                  {
+                    "name": "path",
+                    "type": "text"
+                  },
+                  {
+                    "name": "url",
+                    "type": "text"
+                  },
+                  {
+                    "name": "type",
+                    "type": "text"
+                  },
+                  {
+                    "name": "size",
+                    "type": "text"
+                  },
+                  {
+                    "name": "error",
+                    "type": "number"
+                  }
+                ],
+                "outputType": "file",
+                "output": true
+              },
+              {
+                "name": "AadharFront",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{AADHARAdd.name}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              }
+            ]
+          },
+          "else": {
+            "steps": {
+              "name": "AadharFront",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{GetImage.aadhar_front}}"
+              },
+              "meta": [],
+              "outputType": "text"
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{$_POST.back_aadhar&&$_POST.back_aadhar!=null&&$_POST.back_aadhar!=' '}}",
+          "then": {
+            "steps": [
+              {
+                "name": "AADHARBackAdd",
+                "module": "upload",
+                "action": "upload",
+                "options": {
+                  "fields": "{{$_POST.back_aadhar}}",
+                  "path": "/public/assets/images/aadhar",
+                  "template": "{guid}{ext}",
+                  "replaceSpace": true,
+                  "replaceDiacritics": true,
+                  "asciiOnly": true,
+                  "overwrite": true,
+                  "throwErrors": true
+                },
+                "meta": [
+                  {
+                    "name": "name",
+                    "type": "text"
+                  },
+                  {
+                    "name": "path",
+                    "type": "text"
+                  },
+                  {
+                    "name": "url",
+                    "type": "text"
+                  },
+                  {
+                    "name": "type",
+                    "type": "text"
+                  },
+                  {
+                    "name": "size",
+                    "type": "text"
+                  },
+                  {
+                    "name": "error",
+                    "type": "number"
+                  }
+                ],
+                "outputType": "file",
+                "output": true
+              },
+              {
+                "name": "AadharBack",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{AADHARBackAdd.name}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              }
+            ]
+          },
+          "else": {
+            "steps": {
+              "name": "AadharBack",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{GetImage.aadhar_back}}"
+              },
+              "meta": [],
+              "outputType": "text"
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{GetUser.CountId>0}}",
+          "then": {
+            "steps": [
+              {
+                "name": "KycEditUp",
+                "module": "dbupdater",
+                "action": "update",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "update",
+                    "values": [
+                      {
+                        "table": "t_user_kyc",
+                        "column": "profile_pic",
+                        "type": "text",
+                        "value": "{{'/assets/images/profile/'+ProfilePic}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "pan_card",
+                        "type": "text",
+                        "value": "{{'/assets/images/pan/'+PanCard}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "aadhar_front",
+                        "type": "text",
+                        "value": "{{'/assets/images/aadhar/'+AadharFront}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "aadhar_back",
+                        "type": "text",
+                        "value": "{{'/assets/images/aadhar/'+AadharBack}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "updated_by",
+                        "type": "number",
+                        "value": "12"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "updated_on",
+                        "type": "datetime",
+                        "value": "{{NOW}}"
+                      }
+                    ],
+                    "table": "t_user_kyc",
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "user_id",
+                          "field": "user_id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{identity}}",
+                          "data": {
+                            "column": "user_id"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "returning": "id",
+                    "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{'/assets/images/profile/'+ProfilePic}} */, pan_card = :P2 /* {{'/assets/images/pan/'+PanCard}} */, aadhar_front = :P3 /* {{'/assets/images/aadhar/'+AadharFront}} */, aadhar_back = :P4 /* {{'/assets/images/aadhar/'+AadharBack}} */, updated_by = '12', updated_on = :P5 /* {{NOW}} */\nWHERE user_id = :P6 /* {{identity}} */",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{'/assets/images/profile/'+ProfilePic}}"
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{'/assets/images/pan/'+PanCard}}"
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{'/assets/images/aadhar/'+AadharFront}}"
+                      },
+                      {
+                        "name": ":P4",
+                        "type": "expression",
+                        "value": "{{'/assets/images/aadhar/'+AadharBack}}"
+                      },
+                      {
+                        "name": ":P5",
+                        "type": "expression",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P6",
+                        "value": "{{identity}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "UpUserEdit",
+                "module": "dbupdater",
+                "action": "update",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "update",
+                    "values": [
+                      {
+                        "table": "m_users",
+                        "column": "kyc_status",
+                        "type": "text",
+                        "value": "{{1}}"
+                      }
+                    ],
+                    "table": "m_users",
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "id",
+                          "field": "id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{GetUser.id}}",
+                          "data": {
+                            "column": "id"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "returning": "id",
+                    "query": "UPDATE m_users\nSET kyc_status = :P1 /* {{1}} */\nWHERE id = :P2 /* {{GetUser.id}} */",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{1}}"
+                      },
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P2",
+                        "value": "{{GetUser.id}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              }
+            ]
+          },
+          "else": {
+            "steps": [
+              {
+                "name": "AddKyc",
+                "module": "dbupdater",
+                "action": "insert",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "insert",
+                    "values": [
+                      {
+                        "table": "t_user_kyc",
+                        "column": "user_id",
+                        "type": "number",
+                        "value": "{{GetUser.id}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "profile_pic",
+                        "type": "text",
+                        "value": "{{'/assets/images/profile/'+ProfilePic}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "pan_card",
+                        "type": "text",
+                        "value": "{{'/assets/images/pan/'+PanCard}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "aadhar_front",
+                        "type": "text",
+                        "value": "{{'/assets/images/aadhar/'+AadharFront}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "aadhar_back",
+                        "type": "text",
+                        "value": "{{'/assets/images/aadhar/'+AadharBack}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "created_by",
+                        "type": "number",
+                        "value": "12"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "created_on",
+                        "type": "datetime",
+                        "value": "{{NOW}}"
+                      }
+                    ],
+                    "table": "t_user_kyc",
+                    "returning": "id",
+                    "query": "INSERT INTO t_user_kyc\n(user_id, profile_pic, pan_card, aadhar_front, aadhar_back, created_by, created_on) VALUES (:P1 /* {{GetUser.id}} */, :P2 /* {{'/assets/images/profile/'+ProfilePic}} */, :P3 /* {{'/assets/images/pan/'+PanCard}} */, :P4 /* {{'/assets/images/aadhar/'+AadharFront}} */, :P5 /* {{'/assets/images/aadhar/'+AadharBack}} */, '12', :P6 /* {{NOW}} */)",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{GetUser.id}}"
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{'/assets/images/profile/'+ProfilePic}}"
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{'/assets/images/pan/'+PanCard}}"
+                      },
+                      {
+                        "name": ":P4",
+                        "type": "expression",
+                        "value": "{{'/assets/images/aadhar/'+AadharFront}}"
+                      },
+                      {
+                        "name": ":P5",
+                        "type": "expression",
+                        "value": "{{'/assets/images/aadhar/'+AadharBack}}"
+                      },
+                      {
+                        "name": ":P6",
+                        "type": "expression",
+                        "value": "{{NOW}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "identity",
+                    "type": "text"
+                  },
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "UpUser",
+                "module": "dbupdater",
+                "action": "update",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "update",
+                    "values": [
+                      {
+                        "table": "m_users",
+                        "column": "kyc_status",
+                        "type": "text",
+                        "value": "{{1}}"
+                      }
+                    ],
+                    "table": "m_users",
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "id",
+                          "field": "id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{GetUser.id}}",
+                          "data": {
+                            "column": "id"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "returning": "id",
+                    "query": "UPDATE m_users\nSET kyc_status = :P1 /* {{1}} */\nWHERE id = :P2 /* {{GetUser.id}} */",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{1}}"
+                      },
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P2",
+                        "value": "{{GetUser.id}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
       },
       {
         "name": "apiMerchantAddByAdmin",
@@ -226,12 +1084,12 @@
             "City": "{{$_POST.City}}",
             "State": "{{$_POST.State}}",
             "Address": "{{$_POST.Address}}",
-            "PanImage": "{{'https://swpay.in/'+GetImage.pan_card}}",
-            "AdharImageFront": "{{'https://swpay.in/'+GetImage.aadhar_front}}",
-            "AdharImageBack": "{{'https://swpay.in/'+GetImage.aadhar_back}}"
+            "PanImage": "{{'https://swpay.in/'+PanCard}}",
+            "AdharImageFront": "{{'https://swpay.in/'+AadharFront}}",
+            "AdharImageBack": "{{'https://swpay.in/'+AadharBack}}"
           }
         },
-        "output": true
+        "output": false
       },
       {
         "name": "UpUser",
@@ -276,7 +1134,7 @@
                   "field": "id",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{GetImage.id}}",
+                  "value": "{{GetUser.id}}",
                   "data": {
                     "column": "id"
                   },
@@ -287,7 +1145,7 @@
               "valid": true
             },
             "returning": "id",
-            "query": "UPDATE m_users\nSET aeps_merchant_id = :P1 /* {{$_POST.MerchantID}} */, blank3 = :P2 /* {{$_POST.ShopName}} */, pan_no = :P3 /* {{$_POST.Pan}} */, aadhar_no = :P4 /* {{$_POST.AdharNo}} */\nWHERE id = :P5 /* {{GetImage.id}} */",
+            "query": "UPDATE m_users\nSET aeps_merchant_id = :P1 /* {{$_POST.MerchantID}} */, blank3 = :P2 /* {{$_POST.ShopName}} */, pan_no = :P3 /* {{$_POST.Pan}} */, aadhar_no = :P4 /* {{$_POST.AdharNo}} */\nWHERE id = :P5 /* {{GetUser.id}} */",
             "params": [
               {
                 "name": ":P1",
@@ -313,7 +1171,7 @@
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P5",
-                "value": "{{GetImage.id}}"
+                "value": "{{GetUser.id}}"
               }
             ]
           }
