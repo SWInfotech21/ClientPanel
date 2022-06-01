@@ -1064,6 +1064,130 @@
         "outputType": "boolean"
       },
       {
+        "name": "GetUpdatedImage",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_user_kyc",
+                "column": "profile_pic"
+              },
+              {
+                "table": "t_user_kyc",
+                "column": "pan_card"
+              },
+              {
+                "table": "t_user_kyc",
+                "column": "aadhar_front"
+              },
+              {
+                "table": "t_user_kyc",
+                "column": "aadhar_back"
+              },
+              {
+                "table": "mu",
+                "column": "user_id",
+                "alias": "RT_ID"
+              }
+            ],
+            "table": {
+              "name": "t_user_kyc"
+            },
+            "primary": "id",
+            "joins": [
+              {
+                "table": "m_users",
+                "column": "*",
+                "alias": "mu",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "mu",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "t_user_kyc",
+                        "column": "user_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "mu.user_mobile",
+                  "field": "mu.user_mobile",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.MerchantID}}",
+                  "data": {
+                    "table": "mu",
+                    "column": "user_mobile",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "primary": false,
+                      "nullable": false,
+                      "maxLength": -5,
+                      "unique": false,
+                      "name": "user_mobile"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT t_user_kyc.profile_pic, t_user_kyc.pan_card, t_user_kyc.aadhar_front, t_user_kyc.aadhar_back, mu.user_id AS RT_ID\nFROM t_user_kyc\nLEFT JOIN m_users AS mu ON (mu.id = t_user_kyc.user_id)\nWHERE mu.user_mobile = :P1 /* {{$_POST.MerchantID}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.MerchantID}}"
+              }
+            ],
+            "orders": []
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "text",
+            "name": "profile_pic"
+          },
+          {
+            "type": "text",
+            "name": "pan_card"
+          },
+          {
+            "type": "text",
+            "name": "aadhar_front"
+          },
+          {
+            "type": "text",
+            "name": "aadhar_back"
+          },
+          {
+            "type": "text",
+            "name": "RT_ID"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
         "name": "apiMerchantAddByAdmin",
         "module": "api",
         "action": "send",
@@ -1084,9 +1208,9 @@
             "City": "{{$_POST.City}}",
             "State": "{{$_POST.State}}",
             "Address": "{{$_POST.Address}}",
-            "PanImage": "{{'https://swpay.in/'+PanCard}}",
-            "AdharImageFront": "{{'https://swpay.in/'+AadharFront}}",
-            "AdharImageBack": "{{'https://swpay.in/'+AadharBack}}"
+            "PanImage": "{{'https://swpay.in'+GetUpdatedImage.pan_card}}",
+            "AdharImageFront": "{{'https://swpay.in'+GetUpdatedImage.aadhar_front}}",
+            "AdharImageBack": "{{'https://swpay.in'+GetUpdatedImage.aadhar_back}}"
           }
         },
         "output": false
