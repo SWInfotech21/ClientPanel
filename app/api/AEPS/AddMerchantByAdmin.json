@@ -456,7 +456,7 @@
                   }
                 ],
                 "outputType": "file",
-                "output": true
+                "output": false
               },
               {
                 "name": "ProfilePic",
@@ -534,7 +534,7 @@
                   }
                 ],
                 "outputType": "file",
-                "output": true
+                "output": false
               },
               {
                 "name": "PanCard",
@@ -612,7 +612,7 @@
                   }
                 ],
                 "outputType": "file",
-                "output": true
+                "output": false
               },
               {
                 "name": "AadharFront",
@@ -690,7 +690,7 @@
                   }
                 ],
                 "outputType": "file",
-                "output": true
+                "output": false
               },
               {
                 "name": "AadharBack",
@@ -1162,7 +1162,7 @@
             "orders": []
           }
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
             "type": "text",
@@ -1213,7 +1213,7 @@
             "AdharImageBack": "{{'https://swpay.in'+GetUpdatedImage.aadhar_back}}"
           }
         },
-        "output": false
+        "output": true
       },
       {
         "name": "UpUser",
@@ -1305,7 +1305,8 @@
             "name": "affected",
             "type": "number"
           }
-        ]
+        ],
+        "output": true
       }
     ]
   }
