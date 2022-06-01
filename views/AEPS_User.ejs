@@ -57,7 +57,7 @@
                 <button type="button" class="close btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form is="dmx-serverconnect-form" id="formAddEditMerchant" method="post" action="api/AEPS/AddMerchantByAdmin" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('AEPS Merchant Reg. Submitted, Please Wait for Approval'); formAddEditMerchant.reset(); scOperator.load()" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(lastError.response)" dmx-on:unauthorized="scNotif.warning(lastError.response)" dmx-on:invalid="scNotif.warning(lastError.message)">
+                <form is="dmx-serverconnect-form" id="formAddEditMerchant" method="post" action="api/AEPS/AddMerchantByAdmin" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="scNotif.success('AEPS Merchant Reg. Submitted, Please Wait for Approval'); flowAEPSUser.run();" dmx-on:error="scNotif.warning('An error occurred');" dmx-on:forbidden="scNotif.warning(lastError.response)" dmx-on:unauthorized="scNotif.warning(lastError.response)" dmx-on:invalid="scNotif.warning(lastError.message)">
                     <div class="row mx-0">
                         <h6 class="tect-center text-primary fw-bold">API Response: {{scGenerateId.data.Desc}}</h6>
                         <h6 class="tect-center text-success fw-bold">To Activate AEPS Merchant, Complete the SWPAY KYC(if not done yet) & Submit the AEPS Merchant Reg. Form</h6>
