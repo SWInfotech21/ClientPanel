@@ -71,20 +71,20 @@
         "name": "profile",
         "sub": [
           {
-            "name": "name",
-            "type": "text"
+            "type": "text",
+            "name": "name"
           },
           {
-            "name": "type",
-            "type": "text"
+            "type": "text",
+            "name": "type"
           },
           {
-            "name": "size",
-            "type": "number"
+            "type": "number",
+            "name": "size"
           },
           {
-            "name": "error",
-            "type": "text"
+            "type": "text",
+            "name": "error"
           }
         ],
         "outputType": "file"
@@ -95,20 +95,20 @@
         "name": "pan_card",
         "sub": [
           {
-            "name": "name",
-            "type": "text"
+            "type": "text",
+            "name": "name"
           },
           {
-            "name": "type",
-            "type": "text"
+            "type": "text",
+            "name": "type"
           },
           {
-            "name": "size",
-            "type": "number"
+            "type": "number",
+            "name": "size"
           },
           {
-            "name": "error",
-            "type": "text"
+            "type": "text",
+            "name": "error"
           }
         ],
         "outputType": "file"
@@ -119,20 +119,20 @@
         "name": "front_aadhar",
         "sub": [
           {
-            "name": "name",
-            "type": "text"
+            "type": "text",
+            "name": "name"
           },
           {
-            "name": "type",
-            "type": "text"
+            "type": "text",
+            "name": "type"
           },
           {
-            "name": "size",
-            "type": "number"
+            "type": "number",
+            "name": "size"
           },
           {
-            "name": "error",
-            "type": "text"
+            "type": "text",
+            "name": "error"
           }
         ],
         "outputType": "file"
@@ -143,20 +143,20 @@
         "name": "back_aadhar",
         "sub": [
           {
-            "name": "name",
-            "type": "text"
+            "type": "text",
+            "name": "name"
           },
           {
-            "name": "type",
-            "type": "text"
+            "type": "text",
+            "name": "type"
           },
           {
-            "name": "size",
-            "type": "number"
+            "type": "number",
+            "name": "size"
           },
           {
-            "name": "error",
-            "type": "text"
+            "type": "text",
+            "name": "error"
           }
         ],
         "outputType": "file"
@@ -240,7 +240,7 @@
                   "field": "mu.user_mobile",
                   "type": "string",
                   "operator": "equal",
-                  "value": "{{6396090835}}",
+                  "value": "{{$_POST.MerchantID}}",
                   "data": {
                     "table": "mu",
                     "column": "user_mobile",
@@ -260,13 +260,13 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT COUNT(t_user_kyc.id) AS CountId, mu.id\nFROM t_user_kyc\nLEFT JOIN m_users AS mu ON (mu.id = t_user_kyc.user_id)\nWHERE mu.user_mobile = :P1 /* {{6396090835}} */\nGROUP BY mu.id",
+            "query": "SELECT COUNT(t_user_kyc.id) AS CountId, mu.id\nFROM t_user_kyc\nLEFT JOIN m_users AS mu ON (mu.id = t_user_kyc.user_id)\nWHERE mu.user_mobile = :P1 /* {{$_POST.MerchantID}} */\nGROUP BY mu.id",
             "params": [
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P1",
-                "value": "{{6396090835}}"
+                "value": "{{$_POST.MerchantID}}"
               }
             ]
           }
