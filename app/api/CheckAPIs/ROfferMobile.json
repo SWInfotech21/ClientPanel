@@ -52,7 +52,7 @@
             "apikey": "{{'e9a86475efe3e85a90eba68c740c1c73'}}",
             "offer": "{{'roffer'}}",
             "tel": "{{$_GET.tel}}",
-            "operator": "{{($_GET.op=='Vodafone-Idea')?'Vodafone':$_GET.op}}"
+            "operator": "{{($_GET.op=='Vodafone-Idea')?'Vodafone':($_GET.op=='Bsnl Recharge'||$_GET.op=='Bsnl Special')?'BSNL':$_GET.op}}"
           }
         },
         "output": false
