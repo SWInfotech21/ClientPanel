@@ -456,17 +456,18 @@
                   }
                 ],
                 "outputType": "file",
-                "output": false
+                "output": true
               },
               {
                 "name": "ProfilePic",
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{ProfileAdd.name}}"
+                  "value": "{{'/assets/images/profile/'+ProfileAdd.name}}"
                 },
                 "meta": [],
-                "outputType": "text"
+                "outputType": "text",
+                "output": true
               }
             ]
           },
@@ -541,7 +542,7 @@
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{PANAdd.name}}"
+                  "value": "{{'/assets/images/pan/'+PANAdd.name}}"
                 },
                 "meta": [],
                 "outputType": "text"
@@ -619,7 +620,7 @@
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{AADHARAdd.name}}"
+                  "value": "{{'/assets/images/aadhar/'+AADHARAdd.name}}"
                 },
                 "meta": [],
                 "outputType": "text"
@@ -690,17 +691,18 @@
                   }
                 ],
                 "outputType": "file",
-                "output": false
+                "output": true
               },
               {
                 "name": "AadharBack",
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{AADHARBackAdd.name}}"
+                  "value": "{{'/assets/images/aadhar/'+AADHARBackAdd.name}}"
                 },
                 "meta": [],
-                "outputType": "text"
+                "outputType": "text",
+                "output": true
               }
             ]
           },
@@ -740,25 +742,25 @@
                         "table": "t_user_kyc",
                         "column": "profile_pic",
                         "type": "text",
-                        "value": "{{'/assets/images/profile/'+ProfilePic}}"
+                        "value": "{{ProfilePic}}"
                       },
                       {
                         "table": "t_user_kyc",
                         "column": "pan_card",
                         "type": "text",
-                        "value": "{{'/assets/images/pan/'+PanCard}}"
+                        "value": "{{PanCard}}"
                       },
                       {
                         "table": "t_user_kyc",
                         "column": "aadhar_front",
                         "type": "text",
-                        "value": "{{'/assets/images/aadhar/'+AadharFront}}"
+                        "value": "{{AadharFront}}"
                       },
                       {
                         "table": "t_user_kyc",
                         "column": "aadhar_back",
                         "type": "text",
-                        "value": "{{'/assets/images/aadhar/'+AadharBack}}"
+                        "value": "{{AadharBack}}"
                       },
                       {
                         "table": "t_user_kyc",
@@ -782,7 +784,7 @@
                           "field": "user_id",
                           "type": "double",
                           "operator": "equal",
-                          "value": "{{identity}}",
+                          "value": "{{GetUser.id}}",
                           "data": {
                             "column": "user_id"
                           },
@@ -793,27 +795,27 @@
                       "valid": true
                     },
                     "returning": "id",
-                    "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{'/assets/images/profile/'+ProfilePic}} */, pan_card = :P2 /* {{'/assets/images/pan/'+PanCard}} */, aadhar_front = :P3 /* {{'/assets/images/aadhar/'+AadharFront}} */, aadhar_back = :P4 /* {{'/assets/images/aadhar/'+AadharBack}} */, updated_by = '12', updated_on = :P5 /* {{NOW}} */\nWHERE user_id = :P6 /* {{identity}} */",
+                    "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{ProfilePic}} */, pan_card = :P2 /* {{PanCard}} */, aadhar_front = :P3 /* {{AadharFront}} */, aadhar_back = :P4 /* {{AadharBack}} */, updated_by = '12', updated_on = :P5 /* {{NOW}} */\nWHERE user_id = :P6 /* {{GetUser.id}} */",
                     "params": [
                       {
                         "name": ":P1",
                         "type": "expression",
-                        "value": "{{'/assets/images/profile/'+ProfilePic}}"
+                        "value": "{{ProfilePic}}"
                       },
                       {
                         "name": ":P2",
                         "type": "expression",
-                        "value": "{{'/assets/images/pan/'+PanCard}}"
+                        "value": "{{PanCard}}"
                       },
                       {
                         "name": ":P3",
                         "type": "expression",
-                        "value": "{{'/assets/images/aadhar/'+AadharFront}}"
+                        "value": "{{AadharFront}}"
                       },
                       {
                         "name": ":P4",
                         "type": "expression",
-                        "value": "{{'/assets/images/aadhar/'+AadharBack}}"
+                        "value": "{{AadharBack}}"
                       },
                       {
                         "name": ":P5",
@@ -824,7 +826,7 @@
                         "operator": "equal",
                         "type": "expression",
                         "name": ":P6",
-                        "value": "{{identity}}"
+                        "value": "{{GetUser.id}}"
                       }
                     ]
                   }
@@ -834,7 +836,8 @@
                     "name": "affected",
                     "type": "number"
                   }
-                ]
+                ],
+                "output": true
               },
               {
                 "name": "UpUserEdit",
@@ -918,25 +921,25 @@
                         "table": "t_user_kyc",
                         "column": "profile_pic",
                         "type": "text",
-                        "value": "{{'/assets/images/profile/'+ProfilePic}}"
+                        "value": "{{ProfilePic}}"
                       },
                       {
                         "table": "t_user_kyc",
                         "column": "pan_card",
                         "type": "text",
-                        "value": "{{'/assets/images/pan/'+PanCard}}"
+                        "value": "{{PanCard}}"
                       },
                       {
                         "table": "t_user_kyc",
                         "column": "aadhar_front",
                         "type": "text",
-                        "value": "{{'/assets/images/aadhar/'+AadharFront}}"
+                        "value": "{{AadharFront}}"
                       },
                       {
                         "table": "t_user_kyc",
                         "column": "aadhar_back",
                         "type": "text",
-                        "value": "{{'/assets/images/aadhar/'+AadharBack}}"
+                        "value": "{{AadharBack}}"
                       },
                       {
                         "table": "t_user_kyc",
@@ -953,7 +956,7 @@
                     ],
                     "table": "t_user_kyc",
                     "returning": "id",
-                    "query": "INSERT INTO t_user_kyc\n(user_id, profile_pic, pan_card, aadhar_front, aadhar_back, created_by, created_on) VALUES (:P1 /* {{GetUser.id}} */, :P2 /* {{'/assets/images/profile/'+ProfilePic}} */, :P3 /* {{'/assets/images/pan/'+PanCard}} */, :P4 /* {{'/assets/images/aadhar/'+AadharFront}} */, :P5 /* {{'/assets/images/aadhar/'+AadharBack}} */, '12', :P6 /* {{NOW}} */)",
+                    "query": "INSERT INTO t_user_kyc\n(user_id, profile_pic, pan_card, aadhar_front, aadhar_back, created_by, created_on) VALUES (:P1 /* {{GetUser.id}} */, :P2 /* {{ProfilePic}} */, :P3 /* {{PanCard}} */, :P4 /* {{AadharFront}} */, :P5 /* {{AadharBack}} */, '12', :P6 /* {{NOW}} */)",
                     "params": [
                       {
                         "name": ":P1",
@@ -963,22 +966,22 @@
                       {
                         "name": ":P2",
                         "type": "expression",
-                        "value": "{{'/assets/images/profile/'+ProfilePic}}"
+                        "value": "{{ProfilePic}}"
                       },
                       {
                         "name": ":P3",
                         "type": "expression",
-                        "value": "{{'/assets/images/pan/'+PanCard}}"
+                        "value": "{{PanCard}}"
                       },
                       {
                         "name": ":P4",
                         "type": "expression",
-                        "value": "{{'/assets/images/aadhar/'+AadharFront}}"
+                        "value": "{{AadharFront}}"
                       },
                       {
                         "name": ":P5",
                         "type": "expression",
-                        "value": "{{'/assets/images/aadhar/'+AadharBack}}"
+                        "value": "{{AadharBack}}"
                       },
                       {
                         "name": ":P6",
@@ -997,7 +1000,8 @@
                     "name": "affected",
                     "type": "number"
                   }
-                ]
+                ],
+                "output": true
               },
               {
                 "name": "UpUser",
@@ -1064,130 +1068,6 @@
         "outputType": "boolean"
       },
       {
-        "name": "GetUpdatedImage",
-        "module": "dbconnector",
-        "action": "single",
-        "options": {
-          "connection": "postgres_gcpServer",
-          "sql": {
-            "type": "SELECT",
-            "columns": [
-              {
-                "table": "t_user_kyc",
-                "column": "profile_pic"
-              },
-              {
-                "table": "t_user_kyc",
-                "column": "pan_card"
-              },
-              {
-                "table": "t_user_kyc",
-                "column": "aadhar_front"
-              },
-              {
-                "table": "t_user_kyc",
-                "column": "aadhar_back"
-              },
-              {
-                "table": "mu",
-                "column": "user_id",
-                "alias": "RT_ID"
-              }
-            ],
-            "table": {
-              "name": "t_user_kyc"
-            },
-            "primary": "id",
-            "joins": [
-              {
-                "table": "m_users",
-                "column": "*",
-                "alias": "mu",
-                "type": "LEFT",
-                "clauses": {
-                  "condition": "AND",
-                  "rules": [
-                    {
-                      "table": "mu",
-                      "column": "id",
-                      "operator": "equal",
-                      "value": {
-                        "table": "t_user_kyc",
-                        "column": "user_id"
-                      },
-                      "operation": "="
-                    }
-                  ]
-                },
-                "primary": "id"
-              }
-            ],
-            "wheres": {
-              "condition": "AND",
-              "rules": [
-                {
-                  "id": "mu.user_mobile",
-                  "field": "mu.user_mobile",
-                  "type": "string",
-                  "operator": "equal",
-                  "value": "{{$_POST.MerchantID}}",
-                  "data": {
-                    "table": "mu",
-                    "column": "user_mobile",
-                    "type": "text",
-                    "columnObj": {
-                      "type": "string",
-                      "primary": false,
-                      "nullable": false,
-                      "maxLength": -5,
-                      "unique": false,
-                      "name": "user_mobile"
-                    }
-                  },
-                  "operation": "="
-                }
-              ],
-              "conditional": null,
-              "valid": true
-            },
-            "query": "SELECT t_user_kyc.profile_pic, t_user_kyc.pan_card, t_user_kyc.aadhar_front, t_user_kyc.aadhar_back, mu.user_id AS RT_ID\nFROM t_user_kyc\nLEFT JOIN m_users AS mu ON (mu.id = t_user_kyc.user_id)\nWHERE mu.user_mobile = :P1 /* {{$_POST.MerchantID}} */",
-            "params": [
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P1",
-                "value": "{{$_POST.MerchantID}}"
-              }
-            ],
-            "orders": []
-          }
-        },
-        "output": true,
-        "meta": [
-          {
-            "type": "text",
-            "name": "profile_pic"
-          },
-          {
-            "type": "text",
-            "name": "pan_card"
-          },
-          {
-            "type": "text",
-            "name": "aadhar_front"
-          },
-          {
-            "type": "text",
-            "name": "aadhar_back"
-          },
-          {
-            "type": "text",
-            "name": "RT_ID"
-          }
-        ],
-        "outputType": "object"
-      },
-      {
         "name": "apiMerchantAddByAdmin",
         "module": "api",
         "action": "send",
@@ -1208,9 +1088,9 @@
             "City": "{{$_POST.City}}",
             "State": "{{$_POST.State}}",
             "Address": "{{$_POST.Address}}",
-            "PanImage": "{{'https://swpay.in'+GetUpdatedImage.pan_card}}",
-            "AdharImageFront": "{{'https://swpay.in'+GetUpdatedImage.aadhar_front}}",
-            "AdharImageBack": "{{'https://swpay.in'+GetUpdatedImage.aadhar_back}}"
+            "PanImage": "{{'https://swpay.in'+PanCard}}",
+            "AdharImageFront": "{{'https://swpay.in'+AadharFront}}",
+            "AdharImageBack": "{{'https://swpay.in'+AadharBack}}"
           }
         },
         "output": true
