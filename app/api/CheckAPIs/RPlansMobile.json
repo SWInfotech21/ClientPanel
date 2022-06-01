@@ -36,7 +36,7 @@
           "params": {
             "apikey": "{{'e9a86475efe3e85a90eba68c740c1c73'}}",
             "cricle": "{{'UP West'}}",
-            "operator": "{{$_GET.op}}"
+            "operator": "{{($_GET.op=='Vodafone-Idea')?'Vodafone':$_GET.op}}"
           }
         },
         "output": false
