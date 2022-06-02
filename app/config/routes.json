@@ -220,6 +220,12 @@
       "exec": "/api/PageAccess/UserAccessAdmin"
     },
     {
+      "path": "/sales-report",
+      "page": "sales-report",
+      "layout": "main",
+      "exec": "/api/PageAccess/PagesFrDTMDT"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }

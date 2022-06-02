@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "fromdate"
+      },
+      {
+        "type": "text",
+        "name": "todate"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "GetChildSales",
+        "module": "dbupdater",
+        "action": "custom",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "query": "select sum(trt.amount::float) as success_amt, mu.user_fname, mu.user_id, mu.user_mobile, mu.balance_amt from m_users mu \nleft join tt_recharge_trans trt on (trt.user_id=mu.id)\nleft join m_users mu2 on (mu2.id=mu.created_by) \nleft join m_service ms on (ms.id = trt.service_id) \nwhere trt.status ='SUCCESS' and ms.service_name !='Wallet' and ms.service_name !='AEPS'\nand mu2.id = @identity and trt.tr_date between @fromdate and @todate \ngroup by mu.user_id, mu.user_fname, mu.user_mobile, mu.balance_amt;",
+            "params": [
+              {
+                "name": "@identity",
+                "value": "{{identity}}",
+                "test": "109"
+              },
+              {
+                "name": "@fromdate",
+                "value": "{{$_GET.fromdate}}",
+                "test": "2022-06-02 00:00:00"
+              },
+              {
+                "name": "@todate",
+                "value": "{{$_GET.todate}}",
+                "test": "2022-06-02 23:59:59"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "success_amt",
+            "type": "number"
+          },
+          {
+            "name": "user_fname",
+            "type": "text"
+          },
+          {
+            "name": "user_id",
+            "type": "text"
+          },
+          {
+            "name": "user_mobile",
+            "type": "text"
+          },
+          {
+            "name": "balance_amt",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

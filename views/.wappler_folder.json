@@ -198,5 +198,9 @@
   "AEPS_User.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "sales-report.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

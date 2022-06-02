@@ -2353,5 +2353,53 @@ dmx.config({
         "name": "identity"
       }
     ]
+  },
+  "salesreport": {
+    "dvChildSales": {
+      "meta": [
+        {
+          "name": "success_amt",
+          "type": "number"
+        },
+        {
+          "name": "user_fname",
+          "type": "text"
+        },
+        {
+          "name": "user_id",
+          "type": "text"
+        },
+        {
+          "name": "user_mobile",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    },
+    "tableRepeat1": {
+      "meta": [
+        {
+          "name": "success_amt",
+          "type": "number"
+        },
+        {
+          "name": "user_fname",
+          "type": "text"
+        },
+        {
+          "name": "user_id",
+          "type": "text"
+        },
+        {
+          "name": "user_mobile",
+          "type": "text"
+        },
+        {
+          "name": "balance_amt",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    }
   }
 });
