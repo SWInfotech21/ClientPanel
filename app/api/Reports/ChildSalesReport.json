@@ -53,7 +53,7 @@
               {
                 "name": "@fromdate",
                 "value": "{{$_GET.fromdate}}",
-                "test": "2022-06-02 00:00:00"
+                "test": "2022-05-22 00:00:00"
               },
               {
                 "name": "@todate",

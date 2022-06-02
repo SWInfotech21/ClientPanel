@@ -44,16 +44,16 @@
                         <th>Remaining Balance</th>
                     </tr>
                 </thead>
-                <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="content.dvChildSales.data" id="tableRepeat1" dmx-state="qm" dmx-sort="sort" dmx-order="dir" key="user_id">
+                <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="content.dvChildSales.data" id="tableRepeat1" key="user_id">
                     <tr>
                         <td>{{$index+1}}</td>
                         <td dmx-text="user_id"></td>
                         <td dmx-text="user_fname"></td>
                         <td dmx-text="user_mobile"></td>
-                        <td dmx-text="success_amt.toNumber().toFixed(2)"></td>
+                        <td dmx-text="success_amt.toFixed(2)"></td>
                         <td dmx-text="balance_amt.toNumber().toFixed(2)"></td>
                     </tr>
-                    <tr dmx-show="content.dvChildSales.data.length=0" class="fs-3 fw-bold text-danger text-center">No Transaction Record Found, on this Date</tr>
+                    <tr dmx-show="content.dvChildSales.data.length==0?true:false" class="fs-3 fw-bold text-danger text-center">No Transaction Record Found, on this Date</tr>
                 </tbody>
             </table>
         </div>

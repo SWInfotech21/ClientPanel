@@ -2372,6 +2372,10 @@ dmx.config({
         {
           "name": "user_mobile",
           "type": "text"
+        },
+        {
+          "name": "balance_amt",
+          "type": "text"
         }
       ],
       "outputType": "array"
