@@ -288,7 +288,7 @@
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{GetDebitUser.balance_amt.toNumber()+GetDistributedAmt.sum_total.toNumber()}}"
+                  "value": "{{GetDebitUser.balance_amt.toNumber()+GetDistributedAmt[0].sum_total.toNumber()}}"
                 },
                 "meta": [],
                 "outputType": "text",
