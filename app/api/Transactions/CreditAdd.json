@@ -244,7 +244,7 @@
                           ]
                         }
                       },
-                      "output": false,
+                      "output": true,
                       "meta": [],
                       "outputType": "array"
                     }
@@ -275,7 +275,7 @@
                           ]
                         }
                       },
-                      "output": false,
+                      "output": true,
                       "meta": [],
                       "outputType": "array"
                     }
@@ -291,7 +291,8 @@
                   "value": "{{GetDebitUser.balance_amt.toNumber()+GetDistributedAmt.sum_total.toNumber()}}"
                 },
                 "meta": [],
-                "outputType": "text"
+                "outputType": "text",
+                "output": true
               },
               {
                 "name": "TransactionId",
@@ -614,7 +615,7 @@
                         "options": {
                           "value": "{{$_POST.credit_amount.toNumber() +GetCommAmt.toNumber() - GetChargeAmt.toNumber()}}"
                         },
-                        "output": false,
+                        "output": true,
                         "meta": [],
                         "outputType": "text"
                       },
@@ -646,7 +647,8 @@
                           "value": "{{(TotalAmount.toNumber()*5)/100}}"
                         },
                         "meta": [],
-                        "outputType": "text"
+                        "outputType": "text",
+                        "output": true
                       },
                       {
                         "name": "",
