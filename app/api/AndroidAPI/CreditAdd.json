@@ -967,6 +967,126 @@
                                                                       "then": {
                                                                         "steps": [
                                                                           {
+                                                                            "name": "BalUpDebitUser",
+                                                                            "module": "dbupdater",
+                                                                            "action": "update",
+                                                                            "options": {
+                                                                              "connection": "postgres_gcpServer",
+                                                                              "sql": {
+                                                                                "type": "update",
+                                                                                "values": [
+                                                                                  {
+                                                                                    "table": "m_users",
+                                                                                    "column": "balance_amt",
+                                                                                    "type": "number",
+                                                                                    "value": "{{DrClosingBal}}"
+                                                                                  }
+                                                                                ],
+                                                                                "table": "m_users",
+                                                                                "wheres": {
+                                                                                  "condition": "AND",
+                                                                                  "rules": [
+                                                                                    {
+                                                                                      "id": "id",
+                                                                                      "field": "id",
+                                                                                      "type": "double",
+                                                                                      "operator": "equal",
+                                                                                      "value": "{{identity}}",
+                                                                                      "data": {
+                                                                                        "column": "id"
+                                                                                      },
+                                                                                      "operation": "="
+                                                                                    }
+                                                                                  ],
+                                                                                  "conditional": null,
+                                                                                  "valid": true
+                                                                                },
+                                                                                "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{DrClosingBal}} */\nWHERE id = :P2 /* {{identity}} */",
+                                                                                "params": [
+                                                                                  {
+                                                                                    "name": ":P1",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{DrClosingBal}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "operator": "equal",
+                                                                                    "type": "expression",
+                                                                                    "name": ":P2",
+                                                                                    "value": "{{identity}}"
+                                                                                  }
+                                                                                ],
+                                                                                "returning": "id"
+                                                                              }
+                                                                            },
+                                                                            "meta": [
+                                                                              {
+                                                                                "name": "affected",
+                                                                                "type": "number"
+                                                                              }
+                                                                            ],
+                                                                            "output": false
+                                                                          },
+                                                                          {
+                                                                            "name": "BalUpCreditUser",
+                                                                            "module": "dbupdater",
+                                                                            "action": "update",
+                                                                            "options": {
+                                                                              "connection": "postgres_gcpServer",
+                                                                              "sql": {
+                                                                                "type": "update",
+                                                                                "values": [
+                                                                                  {
+                                                                                    "table": "m_users",
+                                                                                    "column": "balance_amt",
+                                                                                    "type": "number",
+                                                                                    "value": "{{CrClosingBal}}"
+                                                                                  }
+                                                                                ],
+                                                                                "table": "m_users",
+                                                                                "wheres": {
+                                                                                  "condition": "AND",
+                                                                                  "rules": [
+                                                                                    {
+                                                                                      "id": "id",
+                                                                                      "field": "id",
+                                                                                      "type": "double",
+                                                                                      "operator": "equal",
+                                                                                      "value": "{{GetSchToUser.to_user_id}}",
+                                                                                      "data": {
+                                                                                        "column": "id"
+                                                                                      },
+                                                                                      "operation": "="
+                                                                                    }
+                                                                                  ],
+                                                                                  "conditional": null,
+                                                                                  "valid": true
+                                                                                },
+                                                                                "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{CrClosingBal}} */\nWHERE id = :P2 /* {{GetSchToUser.to_user_id}} */",
+                                                                                "params": [
+                                                                                  {
+                                                                                    "name": ":P1",
+                                                                                    "type": "expression",
+                                                                                    "value": "{{CrClosingBal}}"
+                                                                                  },
+                                                                                  {
+                                                                                    "operator": "equal",
+                                                                                    "type": "expression",
+                                                                                    "name": ":P2",
+                                                                                    "value": "{{GetSchToUser.to_user_id}}"
+                                                                                  }
+                                                                                ],
+                                                                                "returning": "id"
+                                                                              }
+                                                                            },
+                                                                            "meta": [
+                                                                              {
+                                                                                "name": "affected",
+                                                                                "type": "number"
+                                                                              }
+                                                                            ],
+                                                                            "output": false
+                                                                          },
+                                                                          {
                                                                             "name": "CrBalRechTrans",
                                                                             "module": "dbupdater",
                                                                             "action": "insert",
@@ -1763,124 +1883,6 @@
                                                                                 "type": "number"
                                                                               }
                                                                             ]
-                                                                          },
-                                                                          {
-                                                                            "name": "BalUpCreditUser",
-                                                                            "module": "dbupdater",
-                                                                            "action": "update",
-                                                                            "options": {
-                                                                              "connection": "postgres_gcpServer",
-                                                                              "sql": {
-                                                                                "type": "update",
-                                                                                "values": [
-                                                                                  {
-                                                                                    "table": "m_users",
-                                                                                    "column": "balance_amt",
-                                                                                    "type": "number",
-                                                                                    "value": "{{CrClosingBal}}"
-                                                                                  }
-                                                                                ],
-                                                                                "table": "m_users",
-                                                                                "wheres": {
-                                                                                  "condition": "AND",
-                                                                                  "rules": [
-                                                                                    {
-                                                                                      "id": "id",
-                                                                                      "field": "id",
-                                                                                      "type": "double",
-                                                                                      "operator": "equal",
-                                                                                      "value": "{{GetSchToUser.to_user_id}}",
-                                                                                      "data": {
-                                                                                        "column": "id"
-                                                                                      },
-                                                                                      "operation": "="
-                                                                                    }
-                                                                                  ],
-                                                                                  "conditional": null,
-                                                                                  "valid": true
-                                                                                },
-                                                                                "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{CrClosingBal}} */\nWHERE id = :P2 /* {{GetSchToUser.to_user_id}} */",
-                                                                                "params": [
-                                                                                  {
-                                                                                    "name": ":P1",
-                                                                                    "type": "expression",
-                                                                                    "value": "{{CrClosingBal}}"
-                                                                                  },
-                                                                                  {
-                                                                                    "operator": "equal",
-                                                                                    "type": "expression",
-                                                                                    "name": ":P2",
-                                                                                    "value": "{{GetSchToUser.to_user_id}}"
-                                                                                  }
-                                                                                ]
-                                                                              }
-                                                                            },
-                                                                            "meta": [
-                                                                              {
-                                                                                "name": "affected",
-                                                                                "type": "number"
-                                                                              }
-                                                                            ],
-                                                                            "output": false
-                                                                          },
-                                                                          {
-                                                                            "name": "BalUpDebitUser",
-                                                                            "module": "dbupdater",
-                                                                            "action": "update",
-                                                                            "options": {
-                                                                              "connection": "postgres_gcpServer",
-                                                                              "sql": {
-                                                                                "type": "update",
-                                                                                "values": [
-                                                                                  {
-                                                                                    "table": "m_users",
-                                                                                    "column": "balance_amt",
-                                                                                    "type": "number",
-                                                                                    "value": "{{DrClosingBal}}"
-                                                                                  }
-                                                                                ],
-                                                                                "table": "m_users",
-                                                                                "wheres": {
-                                                                                  "condition": "AND",
-                                                                                  "rules": [
-                                                                                    {
-                                                                                      "id": "id",
-                                                                                      "field": "id",
-                                                                                      "type": "double",
-                                                                                      "operator": "equal",
-                                                                                      "value": "{{identity}}",
-                                                                                      "data": {
-                                                                                        "column": "id"
-                                                                                      },
-                                                                                      "operation": "="
-                                                                                    }
-                                                                                  ],
-                                                                                  "conditional": null,
-                                                                                  "valid": true
-                                                                                },
-                                                                                "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{DrClosingBal}} */\nWHERE id = :P2 /* {{identity}} */",
-                                                                                "params": [
-                                                                                  {
-                                                                                    "name": ":P1",
-                                                                                    "type": "expression",
-                                                                                    "value": "{{DrClosingBal}}"
-                                                                                  },
-                                                                                  {
-                                                                                    "operator": "equal",
-                                                                                    "type": "expression",
-                                                                                    "name": ":P2",
-                                                                                    "value": "{{identity}}"
-                                                                                  }
-                                                                                ]
-                                                                              }
-                                                                            },
-                                                                            "meta": [
-                                                                              {
-                                                                                "name": "affected",
-                                                                                "type": "number"
-                                                                              }
-                                                                            ],
-                                                                            "output": false
                                                                           },
                                                                           {
                                                                             "name": "GetWhatsappAPI",
