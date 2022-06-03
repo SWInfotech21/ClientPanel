@@ -5560,7 +5560,7 @@
                             "action": "response",
                             "options": {
                               "status": 401,
-                              "data": "Frequent Recharge with same Amount and same Number is not allowed! Please Try after 1 hr."
+                              "data": "Frequent Recharge with same Amount and same Number is not allowed! Please Try after 3 hr."
                             },
                             "output": true
                           }

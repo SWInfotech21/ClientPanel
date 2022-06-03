@@ -5889,7 +5889,7 @@
                                                                   "module": "core",
                                                                   "action": "setvalue",
                                                                   "options": {
-                                                                    "value": "Frequent Recharge with same Amount and same Number is not allowed! Please Try after 1 hr."
+                                                                    "value": "Frequent Recharge with same Amount and same Number is not allowed! Please Try after 3 hr."
                                                                   },
                                                                   "meta": [],
                                                                   "output": true,
