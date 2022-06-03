@@ -623,7 +623,7 @@
                                                             "module": "core",
                                                             "action": "condition",
                                                             "options": {
-                                                              "if": "{{TimeDiff>3600}}",
+                                                              "if": "{{TimeDiff>10800}}",
                                                               "then": {
                                                                 "steps": [
                                                                   {
