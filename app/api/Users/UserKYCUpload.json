@@ -358,6 +358,15 @@
                         },
                         "meta": [],
                         "outputType": "text"
+                      },
+                      {
+                        "name": "fileRemove",
+                        "module": "fs",
+                        "action": "remove",
+                        "options": {
+                          "path": "{{GetImage.profile_pic}}"
+                        },
+                        "outputType": "boolean"
                       }
                     ]
                   },
@@ -436,6 +445,15 @@
                         },
                         "meta": [],
                         "outputType": "text"
+                      },
+                      {
+                        "name": "fileRemove",
+                        "module": "fs",
+                        "action": "remove",
+                        "options": {
+                          "path": "{{GetImage.pan_card}}"
+                        },
+                        "outputType": "boolean"
                       }
                     ]
                   },
@@ -514,6 +532,15 @@
                         },
                         "meta": [],
                         "outputType": "text"
+                      },
+                      {
+                        "name": "fileRemove",
+                        "module": "fs",
+                        "action": "remove",
+                        "options": {
+                          "path": "{{GetImage.aadhar_front}}"
+                        },
+                        "outputType": "boolean"
                       }
                     ]
                   },
@@ -592,6 +619,15 @@
                         },
                         "meta": [],
                         "outputType": "text"
+                      },
+                      {
+                        "name": "fileRemove",
+                        "module": "fs",
+                        "action": "remove",
+                        "options": {
+                          "path": "{{GetImage.aadhar_back}}"
+                        },
+                        "outputType": "boolean"
                       }
                     ]
                   },
@@ -844,7 +880,7 @@
                         }
                       ],
                       "outputType": "file",
-                      "output": true
+                      "output": false
                     }
                   }
                 },
@@ -898,7 +934,7 @@
                         }
                       ],
                       "outputType": "file",
-                      "output": true
+                      "output": false
                     }
                   }
                 },
@@ -952,7 +988,7 @@
                         }
                       ],
                       "outputType": "file",
-                      "output": true
+                      "output": false
                     }
                   }
                 },
@@ -1006,7 +1042,7 @@
                         }
                       ],
                       "outputType": "file",
-                      "output": true
+                      "output": false
                     }
                   }
                 },
