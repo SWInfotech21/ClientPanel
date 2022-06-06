@@ -457,6 +457,27 @@
                         },
                         "meta": [],
                         "outputType": "text"
+                      },
+                      {
+                        "name": "fileExists",
+                        "module": "fs",
+                        "action": "exists",
+                        "options": {
+                          "path": "{{'/public'+GetImage.pan_card}}",
+                          "then": {
+                            "steps": {
+                              "name": "fileRemove",
+                              "module": "fs",
+                              "action": "remove",
+                              "options": {
+                                "path": "{{'/public'+GetImage.pan_card}}"
+                              },
+                              "outputType": "boolean",
+                              "output": true
+                            }
+                          }
+                        },
+                        "outputType": "boolean"
                       }
                     ]
                   },
@@ -535,6 +556,27 @@
                         },
                         "meta": [],
                         "outputType": "text"
+                      },
+                      {
+                        "name": "fileExists",
+                        "module": "fs",
+                        "action": "exists",
+                        "options": {
+                          "path": "{{'/public'+GetImage.aadhar_front}}",
+                          "then": {
+                            "steps": {
+                              "name": "fileRemove",
+                              "module": "fs",
+                              "action": "remove",
+                              "options": {
+                                "path": "{{'/public'+GetImage.aadhar_front}}"
+                              },
+                              "outputType": "boolean",
+                              "output": false
+                            }
+                          }
+                        },
+                        "outputType": "boolean"
                       }
                     ]
                   },
@@ -613,6 +655,27 @@
                         },
                         "meta": [],
                         "outputType": "text"
+                      },
+                      {
+                        "name": "fileExists",
+                        "module": "fs",
+                        "action": "exists",
+                        "options": {
+                          "path": "{{'/public'+GetImage.aadhar_back}}",
+                          "then": {
+                            "steps": {
+                              "name": "fileRemove_copy",
+                              "module": "fs",
+                              "action": "remove",
+                              "options": {
+                                "path": "{{'/public'+GetImage.aadhar_back}}"
+                              },
+                              "outputType": "boolean",
+                              "output": false
+                            }
+                          }
+                        },
+                        "outputType": "boolean"
                       }
                     ]
                   },
