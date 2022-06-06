@@ -364,7 +364,7 @@
                         "module": "fs",
                         "action": "exists",
                         "options": {
-                          "path": "{{GetImage.profile_pic}}",
+                          "path": "{{'/public'+GetImage.profile_pic}}",
                           "then": {
                             "steps": {
                               "name": "fileRemove",
