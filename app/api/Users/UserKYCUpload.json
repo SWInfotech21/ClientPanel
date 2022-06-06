@@ -364,9 +364,10 @@
                         "module": "fs",
                         "action": "remove",
                         "options": {
-                          "path": "{{GetImage.profile_pic}}"
+                          "path": "{{'https://swpay.in'+GetImage.profile_pic}}"
                         },
-                        "outputType": "boolean"
+                        "outputType": "boolean",
+                        "output": true
                       }
                     ]
                   },
