@@ -1,1039 +1,1186 @@
 {
-    "meta": {
-        "options": {
-            "linkedFile": "/views/dashboard.ejs",
-            "linkedForm": "formAddEditKyc"
-        },
-        "$_POST": [
-            {
-                "type": "file",
-                "fieldName": "profile",
-                "options": {
-                    "rules": {}
-                },
-                "name": "profile",
-                "sub": [
-                    {
-                        "type": "text",
-                        "name": "name"
-                    },
-                    {
-                        "type": "text",
-                        "name": "type"
-                    },
-                    {
-                        "type": "number",
-                        "name": "size"
-                    },
-                    {
-                        "type": "text",
-                        "name": "error"
-                    }
-                ],
-                "outputType": "file"
-            },
-            {
-                "type": "file",
-                "fieldName": "pan_card",
-                "name": "pan_card",
-                "sub": [
-                    {
-                        "type": "text",
-                        "name": "name"
-                    },
-                    {
-                        "type": "text",
-                        "name": "type"
-                    },
-                    {
-                        "type": "number",
-                        "name": "size"
-                    },
-                    {
-                        "type": "text",
-                        "name": "error"
-                    }
-                ],
-                "outputType": "file"
-            },
-            {
-                "type": "file",
-                "fieldName": "front_aadhar",
-                "name": "front_aadhar",
-                "sub": [
-                    {
-                        "type": "text",
-                        "name": "name"
-                    },
-                    {
-                        "type": "text",
-                        "name": "type"
-                    },
-                    {
-                        "type": "number",
-                        "name": "size"
-                    },
-                    {
-                        "type": "text",
-                        "name": "error"
-                    }
-                ],
-                "outputType": "file"
-            },
-            {
-                "type": "file",
-                "fieldName": "back_aadhar",
-                "name": "back_aadhar",
-                "sub": [
-                    {
-                        "type": "text",
-                        "name": "name"
-                    },
-                    {
-                        "type": "text",
-                        "name": "type"
-                    },
-                    {
-                        "type": "number",
-                        "name": "size"
-                    },
-                    {
-                        "type": "text",
-                        "name": "error"
-                    }
-                ],
-                "outputType": "file"
-            }
-        ]
+  "meta": {
+    "options": {
+      "linkedFile": "/views/dashboard.ejs",
+      "linkedForm": "formAddEditKyc"
     },
-    "exec": {
-        "steps": [
-            {
-                "name": "",
-                "module": "auth",
-                "action": "restrict",
-                "options": {
-                    "provider": "security",
-                    "permissions": [
-                        "write"
-                    ],
-                    "loginUrl": "/login",
-                    "forbiddenUrl": "/403-forbidden"
-                }
+    "$_POST": [
+      {
+        "type": "file",
+        "fieldName": "profile",
+        "options": {
+          "rules": {}
+        },
+        "name": "profile",
+        "sub": [
+          {
+            "type": "text",
+            "name": "name"
+          },
+          {
+            "type": "text",
+            "name": "type"
+          },
+          {
+            "type": "number",
+            "name": "size"
+          },
+          {
+            "type": "text",
+            "name": "error"
+          }
+        ],
+        "outputType": "file"
+      },
+      {
+        "type": "file",
+        "fieldName": "pan_card",
+        "name": "pan_card",
+        "sub": [
+          {
+            "type": "text",
+            "name": "name"
+          },
+          {
+            "type": "text",
+            "name": "type"
+          },
+          {
+            "type": "number",
+            "name": "size"
+          },
+          {
+            "type": "text",
+            "name": "error"
+          }
+        ],
+        "outputType": "file"
+      },
+      {
+        "type": "file",
+        "fieldName": "front_aadhar",
+        "name": "front_aadhar",
+        "sub": [
+          {
+            "type": "text",
+            "name": "name"
+          },
+          {
+            "type": "text",
+            "name": "type"
+          },
+          {
+            "type": "number",
+            "name": "size"
+          },
+          {
+            "type": "text",
+            "name": "error"
+          }
+        ],
+        "outputType": "file"
+      },
+      {
+        "type": "file",
+        "fieldName": "back_aadhar",
+        "name": "back_aadhar",
+        "sub": [
+          {
+            "type": "text",
+            "name": "name"
+          },
+          {
+            "type": "text",
+            "name": "type"
+          },
+          {
+            "type": "number",
+            "name": "size"
+          },
+          {
+            "type": "text",
+            "name": "error"
+          }
+        ],
+        "outputType": "file"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "GetUser",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_user_kyc",
+                "column": "id",
+                "alias": "CountId",
+                "aggregate": "COUNT"
+              }
+            ],
+            "table": {
+              "name": "t_user_kyc"
             },
-            {
-                "name": "identity",
-                "module": "auth",
-                "action": "identify",
-                "options": {
-                    "provider": "security"
-                },
-                "output": false,
-                "meta": []
-            },
-            {
-                "name": "type",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                    "value": "{{$_POST.profile}}"
-                },
-                "meta": [
-                    {
-                        "name": "name",
-                        "type": "text"
-                    },
-                    {
-                        "name": "type",
-                        "type": "text"
-                    },
-                    {
-                        "name": "size",
-                        "type": "number"
-                    },
-                    {
-                        "name": "error",
-                        "type": "text"
+            "primary": "id",
+            "joins": [],
+            "groupBy": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "t_user_kyc.user_id",
+                  "field": "t_user_kyc.user_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "t_user_kyc",
+                    "column": "user_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "user_id"
                     }
-                ],
-                "outputType": "text",
-                "output": true
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
             },
-            {
-                "name": "type",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                    "value": "{{$_POST.profile.name}}"
-                },
-                "meta": [],
-                "outputType": "text",
-                "output": true
-            },
-            {
-                "name": "GetUser",
+            "query": "SELECT COUNT(id) AS CountId\nFROM t_user_kyc\nWHERE user_id = :P1 /* {{identity}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ]
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "number",
+            "name": "CountId"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{GetUser.CountId>0}}",
+          "then": {
+            "steps": [
+              {
+                "name": "GetImage",
                 "module": "dbconnector",
                 "action": "single",
                 "options": {
-                    "connection": "postgres_gcpServer",
-                    "sql": {
-                        "type": "SELECT",
-                        "columns": [
-                            {
-                                "table": "t_user_kyc",
-                                "column": "id",
-                                "alias": "CountId",
-                                "aggregate": "COUNT"
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "SELECT",
+                    "columns": [
+                      {
+                        "table": "t_user_kyc",
+                        "column": "profile_pic"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "pan_card"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "aadhar_front"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "aadhar_back"
+                      }
+                    ],
+                    "table": {
+                      "name": "t_user_kyc"
+                    },
+                    "primary": "id",
+                    "joins": [],
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "t_user_kyc.user_id",
+                          "field": "t_user_kyc.user_id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{identity}}",
+                          "data": {
+                            "table": "t_user_kyc",
+                            "column": "user_id",
+                            "type": "number",
+                            "columnObj": {
+                              "type": "integer",
+                              "primary": false,
+                              "unique": false,
+                              "nullable": false,
+                              "name": "user_id"
                             }
-                        ],
-                        "table": {
-                            "name": "t_user_kyc"
-                        },
-                        "primary": "id",
-                        "joins": [],
-                        "groupBy": [],
-                        "wheres": {
-                            "condition": "AND",
-                            "rules": [
-                                {
-                                    "id": "t_user_kyc.user_id",
-                                    "field": "t_user_kyc.user_id",
-                                    "type": "double",
-                                    "operator": "equal",
-                                    "value": "{{identity}}",
-                                    "data": {
-                                        "table": "t_user_kyc",
-                                        "column": "user_id",
-                                        "type": "number",
-                                        "columnObj": {
-                                            "type": "integer",
-                                            "primary": false,
-                                            "unique": false,
-                                            "nullable": false,
-                                            "name": "user_id"
-                                        }
-                                    },
-                                    "operation": "="
-                                }
-                            ],
-                            "conditional": null,
-                            "valid": true
-                        },
-                        "query": "SELECT COUNT(id) AS CountId\nFROM t_user_kyc\nWHERE user_id = :P1 /* {{identity}} */",
-                        "params": [
-                            {
-                                "operator": "equal",
-                                "type": "expression",
-                                "name": ":P1",
-                                "value": "{{identity}}"
-                            }
-                        ]
-                    }
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "SELECT profile_pic, pan_card, aadhar_front, aadhar_back\nFROM t_user_kyc\nWHERE user_id = :P1 /* {{identity}} */",
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{identity}}"
+                      }
+                    ]
+                  }
                 },
-                "output": true,
+                "output": false,
                 "meta": [
-                    {
-                        "type": "number",
-                        "name": "CountId"
-                    }
+                  {
+                    "type": "text",
+                    "name": "profile_pic"
+                  },
+                  {
+                    "type": "text",
+                    "name": "pan_card"
+                  },
+                  {
+                    "type": "text",
+                    "name": "aadhar_front"
+                  },
+                  {
+                    "type": "text",
+                    "name": "aadhar_back"
+                  }
                 ],
                 "outputType": "object"
-            },
-            {
+              },
+              {
                 "name": "",
                 "module": "core",
                 "action": "condition",
                 "options": {
-                    "if": "{{GetUser.CountId>0}}",
-                    "then": {
-                        "steps": [
-                            {
-                                "name": "",
-                                "module": "core",
-                                "action": "condition",
-                                "options": {
-                                    "if": "{{$_POST.profile&&$_POST.profile!=null&&$_POST.profile!=' '}}",
-                                    "then": {
-                                        "steps": {
-                                            "name": "ProfileEdit",
-                                            "module": "upload",
-                                            "action": "upload",
-                                            "options": {
-                                                "fields": "{{$_POST.profile}}",
-                                                "path": "/public/assets/images/profile",
-                                                "template": "{guid}{ext}",
-                                                "replaceSpace": true,
-                                                "replaceDiacritics": true,
-                                                "asciiOnly": true,
-                                                "overwrite": true,
-                                                "throwErrors": true
-                                            },
-                                            "meta": [
-                                                {
-                                                    "name": "name",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "path",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "url",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "type",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "size",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "error",
-                                                    "type": "number"
-                                                }
-                                            ],
-                                            "outputType": "file",
-                                            "output": true
-                                        }
-                                    }
-                                },
-                                "outputType": "boolean"
-                            },
-                            {
-                                "name": "",
-                                "module": "core",
-                                "action": "condition",
-                                "options": {
-                                    "if": "{{$_POST.pan_card&&$_POST.pan_card!=null&&$_POST.pan_card!=' '}}",
-                                    "then": {
-                                        "steps": {
-                                            "name": "PANEdit",
-                                            "module": "upload",
-                                            "action": "upload",
-                                            "options": {
-                                                "fields": "{{$_POST.pan_card}}",
-                                                "path": "/public/assets/images/pan",
-                                                "template": "{guid}{ext}",
-                                                "replaceSpace": true,
-                                                "replaceDiacritics": true,
-                                                "asciiOnly": true,
-                                                "overwrite": true,
-                                                "throwErrors": true
-                                            },
-                                            "meta": [
-                                                {
-                                                    "name": "name",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "path",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "url",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "type",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "size",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "error",
-                                                    "type": "number"
-                                                }
-                                            ],
-                                            "outputType": "file",
-                                            "output": true
-                                        }
-                                    }
-                                },
-                                "outputType": "boolean"
-                            },
-                            {
-                                "name": "",
-                                "module": "core",
-                                "action": "condition",
-                                "options": {
-                                    "if": "{{$_POST.front_aadhar&&$_POST.front_aadhar!=null&&$_POST.front_aadhar!=' '}}",
-                                    "then": {
-                                        "steps": {
-                                            "name": "AADHAREdit",
-                                            "module": "upload",
-                                            "action": "upload",
-                                            "options": {
-                                                "fields": "{{$_POST.front_aadhar}}",
-                                                "path": "/public/assets/images/aadhar",
-                                                "template": "{guid}{ext}",
-                                                "replaceSpace": true,
-                                                "replaceDiacritics": true,
-                                                "asciiOnly": true,
-                                                "overwrite": true,
-                                                "throwErrors": true
-                                            },
-                                            "meta": [
-                                                {
-                                                    "name": "name",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "path",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "url",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "type",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "size",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "error",
-                                                    "type": "number"
-                                                }
-                                            ],
-                                            "outputType": "file",
-                                            "output": true
-                                        }
-                                    }
-                                },
-                                "outputType": "boolean"
-                            },
-                            {
-                                "name": "",
-                                "module": "core",
-                                "action": "condition",
-                                "options": {
-                                    "if": "{{$_POST.back_aadhar&&$_POST.back_aadhar!=null&&$_POST.back_aadhar!=' '}}",
-                                    "then": {
-                                        "steps": {
-                                            "name": "AADHARBackEdit",
-                                            "module": "upload",
-                                            "action": "upload",
-                                            "options": {
-                                                "fields": "{{$_POST.back_aadhar}}",
-                                                "path": "/public/assets/images/aadhar",
-                                                "template": "{guid}{ext}",
-                                                "replaceSpace": true,
-                                                "replaceDiacritics": true,
-                                                "asciiOnly": true,
-                                                "overwrite": true,
-                                                "throwErrors": true
-                                            },
-                                            "meta": [
-                                                {
-                                                    "name": "name",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "path",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "url",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "type",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "size",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "error",
-                                                    "type": "number"
-                                                }
-                                            ],
-                                            "outputType": "file",
-                                            "output": true
-                                        }
-                                    }
-                                },
-                                "outputType": "boolean"
-                            },
-                            {
-                                "name": "KycEditUp",
-                                "module": "dbupdater",
-                                "action": "update",
-                                "options": {
-                                    "connection": "postgres_gcpServer",
-                                    "sql": {
-                                        "type": "update",
-                                        "values": [
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "profile_pic",
-                                                "type": "text",
-                                                "value": "{{'/assets/images/profile/'+ProfileEdit.name}}"
-                                            },
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "pan_card",
-                                                "type": "text",
-                                                "value": "{{'/assets/images/pan/'+PANEdit.name}}"
-                                            },
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "aadhar_front",
-                                                "type": "text",
-                                                "value": "{{'/assets/images/aadhar/'+AADHAREdit.name}}"
-                                            },
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "aadhar_back",
-                                                "type": "text",
-                                                "value": "{{'/assets/images/aadhar/'+AADHARBackEdit.name}}"
-                                            },
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "updated_by",
-                                                "type": "number",
-                                                "value": "{{identity}}"
-                                            },
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "updated_on",
-                                                "type": "datetime",
-                                                "value": "{{NOW}}"
-                                            }
-                                        ],
-                                        "table": "t_user_kyc",
-                                        "wheres": {
-                                            "condition": "AND",
-                                            "rules": [
-                                                {
-                                                    "id": "user_id",
-                                                    "field": "user_id",
-                                                    "type": "double",
-                                                    "operator": "equal",
-                                                    "value": "{{identity}}",
-                                                    "data": {
-                                                        "column": "user_id"
-                                                    },
-                                                    "operation": "="
-                                                }
-                                            ],
-                                            "conditional": null,
-                                            "valid": true
-                                        },
-                                        "returning": "id",
-                                        "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{'/assets/images/profile/'+ProfileEdit.name}} */, pan_card = :P2 /* {{'/assets/images/pan/'+PANEdit.name}} */, aadhar_front = :P3 /* {{'/assets/images/aadhar/'+AADHAREdit.name}} */, aadhar_back = :P4 /* {{'/assets/images/aadhar/'+AADHARBackEdit.name}} */, updated_by = :P5 /* {{identity}} */, updated_on = :P6 /* {{NOW}} */\nWHERE user_id = :P7 /* {{identity}} */",
-                                        "params": [
-                                            {
-                                                "name": ":P1",
-                                                "type": "expression",
-                                                "value": "{{'/assets/images/profile/'+ProfileEdit.name}}"
-                                            },
-                                            {
-                                                "name": ":P2",
-                                                "type": "expression",
-                                                "value": "{{'/assets/images/pan/'+PANEdit.name}}"
-                                            },
-                                            {
-                                                "name": ":P3",
-                                                "type": "expression",
-                                                "value": "{{'/assets/images/aadhar/'+AADHAREdit.name}}"
-                                            },
-                                            {
-                                                "name": ":P4",
-                                                "type": "expression",
-                                                "value": "{{'/assets/images/aadhar/'+AADHARBackEdit.name}}"
-                                            },
-                                            {
-                                                "name": ":P5",
-                                                "type": "expression",
-                                                "value": "{{identity}}"
-                                            },
-                                            {
-                                                "name": ":P6",
-                                                "type": "expression",
-                                                "value": "{{NOW}}"
-                                            },
-                                            {
-                                                "operator": "equal",
-                                                "type": "expression",
-                                                "name": ":P7",
-                                                "value": "{{identity}}"
-                                            }
-                                        ]
-                                    }
-                                },
-                                "meta": [
-                                    {
-                                        "name": "affected",
-                                        "type": "number"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "UpUserEdit",
-                                "module": "dbupdater",
-                                "action": "update",
-                                "options": {
-                                    "connection": "postgres_gcpServer",
-                                    "sql": {
-                                        "type": "update",
-                                        "values": [
-                                            {
-                                                "table": "m_users",
-                                                "column": "kyc_status",
-                                                "type": "text",
-                                                "value": "{{0}}"
-                                            }
-                                        ],
-                                        "table": "m_users",
-                                        "wheres": {
-                                            "condition": "AND",
-                                            "rules": [
-                                                {
-                                                    "id": "id",
-                                                    "field": "id",
-                                                    "type": "double",
-                                                    "operator": "equal",
-                                                    "value": "{{identity}}",
-                                                    "data": {
-                                                        "column": "id"
-                                                    },
-                                                    "operation": "="
-                                                }
-                                            ],
-                                            "conditional": null,
-                                            "valid": true
-                                        },
-                                        "returning": "id",
-                                        "query": "UPDATE m_users\nSET kyc_status = :P1 /* {{0}} */\nWHERE id = :P2 /* {{identity}} */",
-                                        "params": [
-                                            {
-                                                "name": ":P1",
-                                                "type": "expression",
-                                                "value": "{{0}}"
-                                            },
-                                            {
-                                                "operator": "equal",
-                                                "type": "expression",
-                                                "name": ":P2",
-                                                "value": "{{identity}}"
-                                            }
-                                        ]
-                                    }
-                                },
-                                "meta": [
-                                    {
-                                        "name": "affected",
-                                        "type": "number"
-                                    }
-                                ]
-                            }
-                        ]
+                  "if": "{{$_POST.profile&&$_POST.profile!=null&&$_POST.profile!=' '}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "ProfileEdit",
+                        "module": "upload",
+                        "action": "upload",
+                        "options": {
+                          "fields": "{{$_POST.profile}}",
+                          "path": "/public/assets/images/profile",
+                          "template": "{guid}{ext}",
+                          "replaceSpace": true,
+                          "replaceDiacritics": true,
+                          "asciiOnly": true,
+                          "overwrite": true,
+                          "throwErrors": true
+                        },
+                        "meta": [
+                          {
+                            "name": "name",
+                            "type": "text"
+                          },
+                          {
+                            "name": "path",
+                            "type": "text"
+                          },
+                          {
+                            "name": "url",
+                            "type": "text"
+                          },
+                          {
+                            "name": "type",
+                            "type": "text"
+                          },
+                          {
+                            "name": "size",
+                            "type": "text"
+                          },
+                          {
+                            "name": "error",
+                            "type": "number"
+                          }
+                        ],
+                        "outputType": "file",
+                        "output": false
+                      },
+                      {
+                        "name": "Profile",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{'/assets/images/profile/'+ProfileEdit.name}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      }
+                    ]
+                  },
+                  "else": {
+                    "steps": {
+                      "name": "Profile",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{GetImage.profile_pic}}"
+                      },
+                      "meta": [],
+                      "outputType": "text"
                     }
+                  }
                 },
                 "outputType": "boolean"
-            },
-            {
+              },
+              {
                 "name": "",
                 "module": "core",
                 "action": "condition",
                 "options": {
-                    "if": "{{GetUser.CountId<1}}",
-                    "then": {
-                        "steps": [
-                            {
-                                "name": "",
-                                "module": "core",
-                                "action": "condition",
-                                "options": {
-                                    "if": "{{$_POST.profile&&$_POST.profile!=null&&$_POST.profile!=' '}}",
-                                    "then": {
-                                        "steps": {
-                                            "name": "ProfileAdd",
-                                            "module": "upload",
-                                            "action": "upload",
-                                            "options": {
-                                                "fields": "{{$_POST.profile}}",
-                                                "path": "/public/assets/images/profile",
-                                                "template": "{guid}{ext}",
-                                                "replaceSpace": true,
-                                                "replaceDiacritics": true,
-                                                "asciiOnly": true,
-                                                "overwrite": true,
-                                                "throwErrors": true
-                                            },
-                                            "meta": [
-                                                {
-                                                    "name": "name",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "path",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "url",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "type",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "size",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "error",
-                                                    "type": "number"
-                                                }
-                                            ],
-                                            "outputType": "file",
-                                            "output": true
-                                        }
-                                    }
-                                },
-                                "outputType": "boolean"
-                            },
-                            {
-                                "name": "",
-                                "module": "core",
-                                "action": "condition",
-                                "options": {
-                                    "if": "{{$_POST.pan_card&&$_POST.pan_card!=null&&$_POST.pan_card!=' '}}",
-                                    "then": {
-                                        "steps": {
-                                            "name": "PANAdd",
-                                            "module": "upload",
-                                            "action": "upload",
-                                            "options": {
-                                                "fields": "{{$_POST.pan_card}}",
-                                                "path": "/public/assets/images/pan",
-                                                "template": "{guid}{ext}",
-                                                "replaceSpace": true,
-                                                "replaceDiacritics": true,
-                                                "asciiOnly": true,
-                                                "overwrite": true,
-                                                "throwErrors": true
-                                            },
-                                            "meta": [
-                                                {
-                                                    "name": "name",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "path",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "url",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "type",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "size",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "error",
-                                                    "type": "number"
-                                                }
-                                            ],
-                                            "outputType": "file",
-                                            "output": true
-                                        }
-                                    }
-                                },
-                                "outputType": "boolean"
-                            },
-                            {
-                                "name": "",
-                                "module": "core",
-                                "action": "condition",
-                                "options": {
-                                    "if": "{{$_POST.front_aadhar&&$_POST.front_aadhar!=null&&$_POST.front_aadhar!=' '}}",
-                                    "then": {
-                                        "steps": {
-                                            "name": "AADHARAdd",
-                                            "module": "upload",
-                                            "action": "upload",
-                                            "options": {
-                                                "fields": "{{$_POST.front_aadhar}}",
-                                                "path": "/public/assets/images/aadhar",
-                                                "template": "{guid}{ext}",
-                                                "replaceSpace": true,
-                                                "replaceDiacritics": true,
-                                                "asciiOnly": true,
-                                                "overwrite": true,
-                                                "throwErrors": true
-                                            },
-                                            "meta": [
-                                                {
-                                                    "name": "name",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "path",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "url",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "type",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "size",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "error",
-                                                    "type": "number"
-                                                }
-                                            ],
-                                            "outputType": "file",
-                                            "output": true
-                                        }
-                                    }
-                                },
-                                "outputType": "boolean"
-                            },
-                            {
-                                "name": "",
-                                "module": "core",
-                                "action": "condition",
-                                "options": {
-                                    "if": "{{$_POST.back_aadhar&&$_POST.back_aadhar!=null&&$_POST.back_aadhar!=' '}}",
-                                    "then": {
-                                        "steps": {
-                                            "name": "AADHARBackAdd",
-                                            "module": "upload",
-                                            "action": "upload",
-                                            "options": {
-                                                "fields": "{{$_POST.back_aadhar}}",
-                                                "path": "/public/assets/images/aadhar",
-                                                "template": "{guid}{ext}",
-                                                "replaceSpace": true,
-                                                "replaceDiacritics": true,
-                                                "asciiOnly": true,
-                                                "overwrite": true,
-                                                "throwErrors": true
-                                            },
-                                            "meta": [
-                                                {
-                                                    "name": "name",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "path",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "url",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "type",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "size",
-                                                    "type": "text"
-                                                },
-                                                {
-                                                    "name": "error",
-                                                    "type": "number"
-                                                }
-                                            ],
-                                            "outputType": "file",
-                                            "output": true
-                                        }
-                                    }
-                                },
-                                "outputType": "boolean"
-                            },
-                            {
-                                "name": "AddKyc",
-                                "module": "dbupdater",
-                                "action": "insert",
-                                "options": {
-                                    "connection": "postgres_gcpServer",
-                                    "sql": {
-                                        "type": "insert",
-                                        "values": [
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "user_id",
-                                                "type": "number",
-                                                "value": "{{identity}}"
-                                            },
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "profile_pic",
-                                                "type": "text",
-                                                "value": "{{'/assets/images/profile/'+ProfileAdd.name}}"
-                                            },
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "pan_card",
-                                                "type": "text",
-                                                "value": "{{'/assets/images/pan/'+PANAdd.name}}"
-                                            },
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "aadhar_front",
-                                                "type": "text",
-                                                "value": "{{'/assets/images/aadhar/'+AADHARAdd.name}}"
-                                            },
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "aadhar_back",
-                                                "type": "text",
-                                                "value": "{{'/assets/images/aadhar/'+AADHARBackAdd.name}}"
-                                            },
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "created_by",
-                                                "type": "number",
-                                                "value": "{{identity}}"
-                                            },
-                                            {
-                                                "table": "t_user_kyc",
-                                                "column": "created_on",
-                                                "type": "datetime",
-                                                "value": "{{NOW}}"
-                                            }
-                                        ],
-                                        "table": "t_user_kyc",
-                                        "returning": "id",
-                                        "query": "INSERT INTO t_user_kyc\n(user_id, profile_pic, pan_card, aadhar_front, aadhar_back, created_by, created_on) VALUES (:P1 /* {{identity}} */, :P2 /* {{'/assets/images/profile/'+ProfileAdd.name}} */, :P3 /* {{'/assets/images/pan/'+PANAdd.name}} */, :P4 /* {{'/assets/images/aadhar/'+AADHARAdd.name}} */, :P5 /* {{'/assets/images/aadhar/'+AADHARBackAdd.name}} */, :P6 /* {{identity}} */, :P7 /* {{NOW}} */)",
-                                        "params": [
-                                            {
-                                                "name": ":P1",
-                                                "type": "expression",
-                                                "value": "{{identity}}"
-                                            },
-                                            {
-                                                "name": ":P2",
-                                                "type": "expression",
-                                                "value": "{{'/assets/images/profile/'+ProfileAdd.name}}"
-                                            },
-                                            {
-                                                "name": ":P3",
-                                                "type": "expression",
-                                                "value": "{{'/assets/images/pan/'+PANAdd.name}}"
-                                            },
-                                            {
-                                                "name": ":P4",
-                                                "type": "expression",
-                                                "value": "{{'/assets/images/aadhar/'+AADHARAdd.name}}"
-                                            },
-                                            {
-                                                "name": ":P5",
-                                                "type": "expression",
-                                                "value": "{{'/assets/images/aadhar/'+AADHARBackAdd.name}}"
-                                            },
-                                            {
-                                                "name": ":P6",
-                                                "type": "expression",
-                                                "value": "{{identity}}"
-                                            },
-                                            {
-                                                "name": ":P7",
-                                                "type": "expression",
-                                                "value": "{{NOW}}"
-                                            }
-                                        ]
-                                    }
-                                },
-                                "meta": [
-                                    {
-                                        "name": "identity",
-                                        "type": "text"
-                                    },
-                                    {
-                                        "name": "affected",
-                                        "type": "number"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "UpUser",
-                                "module": "dbupdater",
-                                "action": "update",
-                                "options": {
-                                    "connection": "postgres_gcpServer",
-                                    "sql": {
-                                        "type": "update",
-                                        "values": [
-                                            {
-                                                "table": "m_users",
-                                                "column": "kyc_status",
-                                                "type": "text",
-                                                "value": "{{0}}"
-                                            }
-                                        ],
-                                        "table": "m_users",
-                                        "wheres": {
-                                            "condition": "AND",
-                                            "rules": [
-                                                {
-                                                    "id": "id",
-                                                    "field": "id",
-                                                    "type": "double",
-                                                    "operator": "equal",
-                                                    "value": "{{identity}}",
-                                                    "data": {
-                                                        "column": "id"
-                                                    },
-                                                    "operation": "="
-                                                }
-                                            ],
-                                            "conditional": null,
-                                            "valid": true
-                                        },
-                                        "returning": "id",
-                                        "query": "UPDATE m_users\nSET kyc_status = :P1 /* {{0}} */\nWHERE id = :P2 /* {{identity}} */",
-                                        "params": [
-                                            {
-                                                "name": ":P1",
-                                                "type": "expression",
-                                                "value": "{{0}}"
-                                            },
-                                            {
-                                                "operator": "equal",
-                                                "type": "expression",
-                                                "name": ":P2",
-                                                "value": "{{identity}}"
-                                            }
-                                        ]
-                                    }
-                                },
-                                "meta": [
-                                    {
-                                        "name": "affected",
-                                        "type": "number"
-                                    }
-                                ]
-                            }
-                        ]
+                  "if": "{{$_POST.pan_card&&$_POST.pan_card!=null&&$_POST.pan_card!=' '}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "PANEdit",
+                        "module": "upload",
+                        "action": "upload",
+                        "options": {
+                          "fields": "{{$_POST.pan_card}}",
+                          "path": "/public/assets/images/pan",
+                          "template": "{guid}{ext}",
+                          "replaceSpace": true,
+                          "replaceDiacritics": true,
+                          "asciiOnly": true,
+                          "overwrite": true,
+                          "throwErrors": true
+                        },
+                        "meta": [
+                          {
+                            "name": "name",
+                            "type": "text"
+                          },
+                          {
+                            "name": "path",
+                            "type": "text"
+                          },
+                          {
+                            "name": "url",
+                            "type": "text"
+                          },
+                          {
+                            "name": "type",
+                            "type": "text"
+                          },
+                          {
+                            "name": "size",
+                            "type": "text"
+                          },
+                          {
+                            "name": "error",
+                            "type": "number"
+                          }
+                        ],
+                        "outputType": "file",
+                        "output": false
+                      },
+                      {
+                        "name": "Pan",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{'/assets/images/pan/'+ProfileEdit.name}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      }
+                    ]
+                  },
+                  "else": {
+                    "steps": {
+                      "name": "Pan",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{GetImage.pan_card}}"
+                      },
+                      "meta": [],
+                      "outputType": "text"
                     }
+                  }
                 },
                 "outputType": "boolean"
-            }
-        ]
-    }
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{$_POST.front_aadhar&&$_POST.front_aadhar!=null&&$_POST.front_aadhar!=' '}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "AADHAREdit",
+                        "module": "upload",
+                        "action": "upload",
+                        "options": {
+                          "fields": "{{$_POST.front_aadhar}}",
+                          "path": "/public/assets/images/aadhar",
+                          "template": "{guid}{ext}",
+                          "replaceSpace": true,
+                          "replaceDiacritics": true,
+                          "asciiOnly": true,
+                          "overwrite": true,
+                          "throwErrors": true
+                        },
+                        "meta": [
+                          {
+                            "name": "name",
+                            "type": "text"
+                          },
+                          {
+                            "name": "path",
+                            "type": "text"
+                          },
+                          {
+                            "name": "url",
+                            "type": "text"
+                          },
+                          {
+                            "name": "type",
+                            "type": "text"
+                          },
+                          {
+                            "name": "size",
+                            "type": "text"
+                          },
+                          {
+                            "name": "error",
+                            "type": "number"
+                          }
+                        ],
+                        "outputType": "file",
+                        "output": false
+                      },
+                      {
+                        "name": "AadharFront",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{'/assets/images/aadhar/'+AADHAREdit.name}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      }
+                    ]
+                  },
+                  "else": {
+                    "steps": {
+                      "name": "AadharFront",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{GetImage.aadhar_front}}"
+                      },
+                      "meta": [],
+                      "outputType": "text"
+                    }
+                  }
+                },
+                "outputType": "boolean"
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{$_POST.back_aadhar&&$_POST.back_aadhar!=null&&$_POST.back_aadhar!=' '}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "AADHARBackEdit",
+                        "module": "upload",
+                        "action": "upload",
+                        "options": {
+                          "fields": "{{$_POST.back_aadhar}}",
+                          "path": "/public/assets/images/aadhar",
+                          "template": "{guid}{ext}",
+                          "replaceSpace": true,
+                          "replaceDiacritics": true,
+                          "asciiOnly": true,
+                          "overwrite": true,
+                          "throwErrors": true
+                        },
+                        "meta": [
+                          {
+                            "name": "name",
+                            "type": "text"
+                          },
+                          {
+                            "name": "path",
+                            "type": "text"
+                          },
+                          {
+                            "name": "url",
+                            "type": "text"
+                          },
+                          {
+                            "name": "type",
+                            "type": "text"
+                          },
+                          {
+                            "name": "size",
+                            "type": "text"
+                          },
+                          {
+                            "name": "error",
+                            "type": "number"
+                          }
+                        ],
+                        "outputType": "file",
+                        "output": false
+                      },
+                      {
+                        "name": "AadharBack",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{'/assets/images/aadhar/'+AADHARBackEdit.name}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      }
+                    ]
+                  },
+                  "else": {
+                    "steps": {
+                      "name": "AadharBack",
+                      "module": "core",
+                      "action": "setvalue",
+                      "options": {
+                        "value": "{{GetImage.aadhar_back}}"
+                      },
+                      "meta": [],
+                      "outputType": "text"
+                    }
+                  }
+                },
+                "outputType": "boolean"
+              },
+              {
+                "name": "KycEditUp",
+                "module": "dbupdater",
+                "action": "update",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "update",
+                    "values": [
+                      {
+                        "table": "t_user_kyc",
+                        "column": "profile_pic",
+                        "type": "text",
+                        "value": "{{Profile}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "pan_card",
+                        "type": "text",
+                        "value": "{{Pan}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "aadhar_front",
+                        "type": "text",
+                        "value": "{{AadharFront}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "aadhar_back",
+                        "type": "text",
+                        "value": "{{AadharBack}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "updated_by",
+                        "type": "number",
+                        "value": "{{identity}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "updated_on",
+                        "type": "datetime",
+                        "value": "{{NOW}}"
+                      }
+                    ],
+                    "table": "t_user_kyc",
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "user_id",
+                          "field": "user_id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{identity}}",
+                          "data": {
+                            "column": "user_id"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "returning": "id",
+                    "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{Profile}} */, pan_card = :P2 /* {{Pan}} */, aadhar_front = :P3 /* {{AadharFront}} */, aadhar_back = :P4 /* {{AadharBack}} */, updated_by = :P5 /* {{identity}} */, updated_on = :P6 /* {{NOW}} */\nWHERE user_id = :P7 /* {{identity}} */",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{Profile}}"
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{Pan}}"
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{AadharFront}}"
+                      },
+                      {
+                        "name": ":P4",
+                        "type": "expression",
+                        "value": "{{AadharBack}}"
+                      },
+                      {
+                        "name": ":P5",
+                        "type": "expression",
+                        "value": "{{identity}}"
+                      },
+                      {
+                        "name": ":P6",
+                        "type": "expression",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P7",
+                        "value": "{{identity}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "UpUserEdit",
+                "module": "dbupdater",
+                "action": "update",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "update",
+                    "values": [
+                      {
+                        "table": "m_users",
+                        "column": "kyc_status",
+                        "type": "text",
+                        "value": "{{0}}"
+                      }
+                    ],
+                    "table": "m_users",
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "id",
+                          "field": "id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{identity}}",
+                          "data": {
+                            "column": "id"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "returning": "id",
+                    "query": "UPDATE m_users\nSET kyc_status = :P1 /* {{0}} */\nWHERE id = :P2 /* {{identity}} */",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{0}}"
+                      },
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P2",
+                        "value": "{{identity}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{GetUser.CountId<1}}",
+          "then": {
+            "steps": [
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{$_POST.profile&&$_POST.profile!=null&&$_POST.profile!=' '}}",
+                  "then": {
+                    "steps": {
+                      "name": "ProfileAdd",
+                      "module": "upload",
+                      "action": "upload",
+                      "options": {
+                        "fields": "{{$_POST.profile}}",
+                        "path": "/public/assets/images/profile",
+                        "template": "{guid}{ext}",
+                        "replaceSpace": true,
+                        "replaceDiacritics": true,
+                        "asciiOnly": true,
+                        "overwrite": true,
+                        "throwErrors": true
+                      },
+                      "meta": [
+                        {
+                          "name": "name",
+                          "type": "text"
+                        },
+                        {
+                          "name": "path",
+                          "type": "text"
+                        },
+                        {
+                          "name": "url",
+                          "type": "text"
+                        },
+                        {
+                          "name": "type",
+                          "type": "text"
+                        },
+                        {
+                          "name": "size",
+                          "type": "text"
+                        },
+                        {
+                          "name": "error",
+                          "type": "number"
+                        }
+                      ],
+                      "outputType": "file",
+                      "output": true
+                    }
+                  }
+                },
+                "outputType": "boolean"
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{$_POST.pan_card&&$_POST.pan_card!=null&&$_POST.pan_card!=' '}}",
+                  "then": {
+                    "steps": {
+                      "name": "PANAdd",
+                      "module": "upload",
+                      "action": "upload",
+                      "options": {
+                        "fields": "{{$_POST.pan_card}}",
+                        "path": "/public/assets/images/pan",
+                        "template": "{guid}{ext}",
+                        "replaceSpace": true,
+                        "replaceDiacritics": true,
+                        "asciiOnly": true,
+                        "overwrite": true,
+                        "throwErrors": true
+                      },
+                      "meta": [
+                        {
+                          "name": "name",
+                          "type": "text"
+                        },
+                        {
+                          "name": "path",
+                          "type": "text"
+                        },
+                        {
+                          "name": "url",
+                          "type": "text"
+                        },
+                        {
+                          "name": "type",
+                          "type": "text"
+                        },
+                        {
+                          "name": "size",
+                          "type": "text"
+                        },
+                        {
+                          "name": "error",
+                          "type": "number"
+                        }
+                      ],
+                      "outputType": "file",
+                      "output": true
+                    }
+                  }
+                },
+                "outputType": "boolean"
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{$_POST.front_aadhar&&$_POST.front_aadhar!=null&&$_POST.front_aadhar!=' '}}",
+                  "then": {
+                    "steps": {
+                      "name": "AADHARAdd",
+                      "module": "upload",
+                      "action": "upload",
+                      "options": {
+                        "fields": "{{$_POST.front_aadhar}}",
+                        "path": "/public/assets/images/aadhar",
+                        "template": "{guid}{ext}",
+                        "replaceSpace": true,
+                        "replaceDiacritics": true,
+                        "asciiOnly": true,
+                        "overwrite": true,
+                        "throwErrors": true
+                      },
+                      "meta": [
+                        {
+                          "name": "name",
+                          "type": "text"
+                        },
+                        {
+                          "name": "path",
+                          "type": "text"
+                        },
+                        {
+                          "name": "url",
+                          "type": "text"
+                        },
+                        {
+                          "name": "type",
+                          "type": "text"
+                        },
+                        {
+                          "name": "size",
+                          "type": "text"
+                        },
+                        {
+                          "name": "error",
+                          "type": "number"
+                        }
+                      ],
+                      "outputType": "file",
+                      "output": true
+                    }
+                  }
+                },
+                "outputType": "boolean"
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{$_POST.back_aadhar&&$_POST.back_aadhar!=null&&$_POST.back_aadhar!=' '}}",
+                  "then": {
+                    "steps": {
+                      "name": "AADHARBackAdd",
+                      "module": "upload",
+                      "action": "upload",
+                      "options": {
+                        "fields": "{{$_POST.back_aadhar}}",
+                        "path": "/public/assets/images/aadhar",
+                        "template": "{guid}{ext}",
+                        "replaceSpace": true,
+                        "replaceDiacritics": true,
+                        "asciiOnly": true,
+                        "overwrite": true,
+                        "throwErrors": true
+                      },
+                      "meta": [
+                        {
+                          "name": "name",
+                          "type": "text"
+                        },
+                        {
+                          "name": "path",
+                          "type": "text"
+                        },
+                        {
+                          "name": "url",
+                          "type": "text"
+                        },
+                        {
+                          "name": "type",
+                          "type": "text"
+                        },
+                        {
+                          "name": "size",
+                          "type": "text"
+                        },
+                        {
+                          "name": "error",
+                          "type": "number"
+                        }
+                      ],
+                      "outputType": "file",
+                      "output": true
+                    }
+                  }
+                },
+                "outputType": "boolean"
+              },
+              {
+                "name": "AddKyc",
+                "module": "dbupdater",
+                "action": "insert",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "insert",
+                    "values": [
+                      {
+                        "table": "t_user_kyc",
+                        "column": "user_id",
+                        "type": "number",
+                        "value": "{{identity}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "profile_pic",
+                        "type": "text",
+                        "value": "{{'/assets/images/profile/'+ProfileAdd.name}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "pan_card",
+                        "type": "text",
+                        "value": "{{'/assets/images/pan/'+PANAdd.name}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "aadhar_front",
+                        "type": "text",
+                        "value": "{{'/assets/images/aadhar/'+AADHARAdd.name}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "aadhar_back",
+                        "type": "text",
+                        "value": "{{'/assets/images/aadhar/'+AADHARBackAdd.name}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "created_by",
+                        "type": "number",
+                        "value": "{{identity}}"
+                      },
+                      {
+                        "table": "t_user_kyc",
+                        "column": "created_on",
+                        "type": "datetime",
+                        "value": "{{NOW}}"
+                      }
+                    ],
+                    "table": "t_user_kyc",
+                    "returning": "id",
+                    "query": "INSERT INTO t_user_kyc\n(user_id, profile_pic, pan_card, aadhar_front, aadhar_back, created_by, created_on) VALUES (:P1 /* {{identity}} */, :P2 /* {{'/assets/images/profile/'+ProfileAdd.name}} */, :P3 /* {{'/assets/images/pan/'+PANAdd.name}} */, :P4 /* {{'/assets/images/aadhar/'+AADHARAdd.name}} */, :P5 /* {{'/assets/images/aadhar/'+AADHARBackAdd.name}} */, :P6 /* {{identity}} */, :P7 /* {{NOW}} */)",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{identity}}"
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{'/assets/images/profile/'+ProfileAdd.name}}"
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{'/assets/images/pan/'+PANAdd.name}}"
+                      },
+                      {
+                        "name": ":P4",
+                        "type": "expression",
+                        "value": "{{'/assets/images/aadhar/'+AADHARAdd.name}}"
+                      },
+                      {
+                        "name": ":P5",
+                        "type": "expression",
+                        "value": "{{'/assets/images/aadhar/'+AADHARBackAdd.name}}"
+                      },
+                      {
+                        "name": ":P6",
+                        "type": "expression",
+                        "value": "{{identity}}"
+                      },
+                      {
+                        "name": ":P7",
+                        "type": "expression",
+                        "value": "{{NOW}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "identity",
+                    "type": "text"
+                  },
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "UpUser",
+                "module": "dbupdater",
+                "action": "update",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "update",
+                    "values": [
+                      {
+                        "table": "m_users",
+                        "column": "kyc_status",
+                        "type": "text",
+                        "value": "{{0}}"
+                      }
+                    ],
+                    "table": "m_users",
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "id",
+                          "field": "id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{identity}}",
+                          "data": {
+                            "column": "id"
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "returning": "id",
+                    "query": "UPDATE m_users\nSET kyc_status = :P1 /* {{0}} */\nWHERE id = :P2 /* {{identity}} */",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{0}}"
+                      },
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P2",
+                        "value": "{{identity}}"
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
 }

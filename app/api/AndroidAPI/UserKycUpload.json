@@ -156,45 +156,6 @@
         "try": {
           "steps": [
             {
-              "name": "type",
-              "module": "core",
-              "action": "setvalue",
-              "options": {
-                "value": "{{$_POST.profile}}"
-              },
-              "meta": [
-                {
-                  "name": "name",
-                  "type": "text"
-                },
-                {
-                  "name": "type",
-                  "type": "text"
-                },
-                {
-                  "name": "size",
-                  "type": "number"
-                },
-                {
-                  "name": "error",
-                  "type": "text"
-                }
-              ],
-              "outputType": "text",
-              "output": false
-            },
-            {
-              "name": "type",
-              "module": "core",
-              "action": "setvalue",
-              "options": {
-                "value": "{{$_POST.profile.name}}"
-              },
-              "meta": [],
-              "outputType": "text",
-              "output": false
-            },
-            {
               "name": "getSalt",
               "module": "dbconnector",
               "action": "single",
@@ -605,54 +566,168 @@
                                                 "then": {
                                                   "steps": [
                                                     {
+                                                      "name": "GetImage",
+                                                      "module": "dbconnector",
+                                                      "action": "single",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "SELECT",
+                                                          "columns": [
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "profile_pic"
+                                                            },
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "pan_card"
+                                                            },
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "aadhar_front"
+                                                            },
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "aadhar_back"
+                                                            }
+                                                          ],
+                                                          "table": {
+                                                            "name": "t_user_kyc"
+                                                          },
+                                                          "primary": "id",
+                                                          "joins": [],
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "t_user_kyc.user_id",
+                                                                "field": "t_user_kyc.user_id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{identity}}",
+                                                                "data": {
+                                                                  "table": "t_user_kyc",
+                                                                  "column": "user_id",
+                                                                  "type": "number",
+                                                                  "columnObj": {
+                                                                    "type": "integer",
+                                                                    "primary": false,
+                                                                    "unique": false,
+                                                                    "nullable": false,
+                                                                    "name": "user_id"
+                                                                  }
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "query": "SELECT profile_pic, pan_card, aadhar_front, aadhar_back\nFROM t_user_kyc\nWHERE user_id = :P1 /* {{identity}} */",
+                                                          "params": [
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P1",
+                                                              "value": "{{identity}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "output": false,
+                                                      "meta": [
+                                                        {
+                                                          "type": "text",
+                                                          "name": "profile_pic"
+                                                        },
+                                                        {
+                                                          "type": "text",
+                                                          "name": "pan_card"
+                                                        },
+                                                        {
+                                                          "type": "text",
+                                                          "name": "aadhar_front"
+                                                        },
+                                                        {
+                                                          "type": "text",
+                                                          "name": "aadhar_back"
+                                                        }
+                                                      ],
+                                                      "outputType": "object"
+                                                    },
+                                                    {
                                                       "name": "",
                                                       "module": "core",
                                                       "action": "condition",
                                                       "options": {
                                                         "if": "{{$_POST.profile&&$_POST.profile!=null&&$_POST.profile!=' '}}",
                                                         "then": {
-                                                          "steps": {
-                                                            "name": "ProfileEdit",
-                                                            "module": "upload",
-                                                            "action": "upload",
-                                                            "options": {
-                                                              "fields": "{{$_POST.profile}}",
-                                                              "path": "/public/assets/images/profile",
-                                                              "template": "{guid}{ext}",
-                                                              "replaceSpace": true,
-                                                              "replaceDiacritics": true,
-                                                              "asciiOnly": true,
-                                                              "overwrite": true,
-                                                              "throwErrors": true
+                                                          "steps": [
+                                                            {
+                                                              "name": "ProfileEdit",
+                                                              "module": "upload",
+                                                              "action": "upload",
+                                                              "options": {
+                                                                "fields": "{{$_POST.profile}}",
+                                                                "path": "/public/assets/images/profile",
+                                                                "template": "{guid}{ext}",
+                                                                "replaceSpace": true,
+                                                                "replaceDiacritics": true,
+                                                                "asciiOnly": true,
+                                                                "overwrite": true,
+                                                                "throwErrors": true
+                                                              },
+                                                              "meta": [
+                                                                {
+                                                                  "name": "name",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "path",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "url",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "type",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "size",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "error",
+                                                                  "type": "number"
+                                                                }
+                                                              ],
+                                                              "outputType": "file",
+                                                              "output": false
                                                             },
-                                                            "meta": [
-                                                              {
-                                                                "name": "name",
-                                                                "type": "text"
+                                                            {
+                                                              "name": "Profile",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{'/assets/images/profile/'+ProfileEdit.name}}"
                                                               },
-                                                              {
-                                                                "name": "path",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "url",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "type",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "size",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "error",
-                                                                "type": "number"
-                                                              }
-                                                            ],
-                                                            "outputType": "file",
-                                                            "output": false
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "else": {
+                                                          "steps": {
+                                                            "name": "Profile",
+                                                            "module": "core",
+                                                            "action": "setvalue",
+                                                            "options": {
+                                                              "value": "{{GetImage.profile_pic}}"
+                                                            },
+                                                            "meta": [],
+                                                            "outputType": "text"
                                                           }
                                                         }
                                                       },
@@ -665,48 +740,72 @@
                                                       "options": {
                                                         "if": "{{$_POST.pan_card&&$_POST.pan_card!=null&&$_POST.pan_card!=' '}}",
                                                         "then": {
-                                                          "steps": {
-                                                            "name": "PANEdit",
-                                                            "module": "upload",
-                                                            "action": "upload",
-                                                            "options": {
-                                                              "fields": "{{$_POST.pan_card}}",
-                                                              "path": "/public/assets/images/pan",
-                                                              "template": "{guid}{ext}",
-                                                              "replaceSpace": true,
-                                                              "replaceDiacritics": true,
-                                                              "asciiOnly": true,
-                                                              "overwrite": true,
-                                                              "throwErrors": true
+                                                          "steps": [
+                                                            {
+                                                              "name": "PANEdit",
+                                                              "module": "upload",
+                                                              "action": "upload",
+                                                              "options": {
+                                                                "fields": "{{$_POST.pan_card}}",
+                                                                "path": "/public/assets/images/pan",
+                                                                "template": "{guid}{ext}",
+                                                                "replaceSpace": true,
+                                                                "replaceDiacritics": true,
+                                                                "asciiOnly": true,
+                                                                "overwrite": true,
+                                                                "throwErrors": true
+                                                              },
+                                                              "meta": [
+                                                                {
+                                                                  "name": "name",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "path",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "url",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "type",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "size",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "error",
+                                                                  "type": "number"
+                                                                }
+                                                              ],
+                                                              "outputType": "file",
+                                                              "output": false
                                                             },
-                                                            "meta": [
-                                                              {
-                                                                "name": "name",
-                                                                "type": "text"
+                                                            {
+                                                              "name": "Pan",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{'/assets/images/pan/'+PANEdit.name}}"
                                                               },
-                                                              {
-                                                                "name": "path",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "url",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "type",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "size",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "error",
-                                                                "type": "number"
-                                                              }
-                                                            ],
-                                                            "outputType": "file",
-                                                            "output": false
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "else": {
+                                                          "steps": {
+                                                            "name": "Pan",
+                                                            "module": "core",
+                                                            "action": "setvalue",
+                                                            "options": {
+                                                              "value": "{{GetImage.pan_card}}"
+                                                            },
+                                                            "meta": [],
+                                                            "outputType": "text"
                                                           }
                                                         }
                                                       },
@@ -719,48 +818,72 @@
                                                       "options": {
                                                         "if": "{{$_POST.front_aadhar&&$_POST.front_aadhar!=null&&$_POST.front_aadhar!=' '}}",
                                                         "then": {
-                                                          "steps": {
-                                                            "name": "AADHAREdit",
-                                                            "module": "upload",
-                                                            "action": "upload",
-                                                            "options": {
-                                                              "fields": "{{$_POST.front_aadhar}}",
-                                                              "path": "/public/assets/images/aadhar",
-                                                              "template": "{guid}{ext}",
-                                                              "replaceSpace": true,
-                                                              "replaceDiacritics": true,
-                                                              "asciiOnly": true,
-                                                              "overwrite": true,
-                                                              "throwErrors": true
+                                                          "steps": [
+                                                            {
+                                                              "name": "AADHAREdit",
+                                                              "module": "upload",
+                                                              "action": "upload",
+                                                              "options": {
+                                                                "fields": "{{$_POST.front_aadhar}}",
+                                                                "path": "/public/assets/images/aadhar",
+                                                                "template": "{guid}{ext}",
+                                                                "replaceSpace": true,
+                                                                "replaceDiacritics": true,
+                                                                "asciiOnly": true,
+                                                                "overwrite": true,
+                                                                "throwErrors": true
+                                                              },
+                                                              "meta": [
+                                                                {
+                                                                  "name": "name",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "path",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "url",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "type",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "size",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "error",
+                                                                  "type": "number"
+                                                                }
+                                                              ],
+                                                              "outputType": "file",
+                                                              "output": false
                                                             },
-                                                            "meta": [
-                                                              {
-                                                                "name": "name",
-                                                                "type": "text"
+                                                            {
+                                                              "name": "AadharFront",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{'/assets/images/aadhar/'+AADHAREdit.name}}"
                                                               },
-                                                              {
-                                                                "name": "path",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "url",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "type",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "size",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "error",
-                                                                "type": "number"
-                                                              }
-                                                            ],
-                                                            "outputType": "file",
-                                                            "output": false
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "else": {
+                                                          "steps": {
+                                                            "name": "AadharFront",
+                                                            "module": "core",
+                                                            "action": "setvalue",
+                                                            "options": {
+                                                              "value": "{{GetImage.aadhar_front}}"
+                                                            },
+                                                            "meta": [],
+                                                            "outputType": "text"
                                                           }
                                                         }
                                                       },
@@ -773,48 +896,72 @@
                                                       "options": {
                                                         "if": "{{$_POST.back_aadhar&&$_POST.back_aadhar!=null&&$_POST.back_aadhar!=' '}}",
                                                         "then": {
-                                                          "steps": {
-                                                            "name": "AADHARBackEdit",
-                                                            "module": "upload",
-                                                            "action": "upload",
-                                                            "options": {
-                                                              "fields": "{{$_POST.back_aadhar}}",
-                                                              "path": "/public/assets/images/aadhar",
-                                                              "template": "{guid}{ext}",
-                                                              "replaceSpace": true,
-                                                              "replaceDiacritics": true,
-                                                              "asciiOnly": true,
-                                                              "overwrite": true,
-                                                              "throwErrors": true
+                                                          "steps": [
+                                                            {
+                                                              "name": "AADHARBackEdit",
+                                                              "module": "upload",
+                                                              "action": "upload",
+                                                              "options": {
+                                                                "fields": "{{$_POST.back_aadhar}}",
+                                                                "path": "/public/assets/images/aadhar",
+                                                                "template": "{guid}{ext}",
+                                                                "replaceSpace": true,
+                                                                "replaceDiacritics": true,
+                                                                "asciiOnly": true,
+                                                                "overwrite": true,
+                                                                "throwErrors": true
+                                                              },
+                                                              "meta": [
+                                                                {
+                                                                  "name": "name",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "path",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "url",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "type",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "size",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "error",
+                                                                  "type": "number"
+                                                                }
+                                                              ],
+                                                              "outputType": "file",
+                                                              "output": false
                                                             },
-                                                            "meta": [
-                                                              {
-                                                                "name": "name",
-                                                                "type": "text"
+                                                            {
+                                                              "name": "AadharBack",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{'/assets/images/aadhar/'+AADHARBackEdit.name}}"
                                                               },
-                                                              {
-                                                                "name": "path",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "url",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "type",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "size",
-                                                                "type": "text"
-                                                              },
-                                                              {
-                                                                "name": "error",
-                                                                "type": "number"
-                                                              }
-                                                            ],
-                                                            "outputType": "file",
-                                                            "output": false
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "else": {
+                                                          "steps": {
+                                                            "name": "AadharBack",
+                                                            "module": "core",
+                                                            "action": "setvalue",
+                                                            "options": {
+                                                              "value": "{{GetImage.aadhar_back}}"
+                                                            },
+                                                            "meta": [],
+                                                            "outputType": "text"
                                                           }
                                                         }
                                                       },
@@ -833,25 +980,25 @@
                                                               "table": "t_user_kyc",
                                                               "column": "profile_pic",
                                                               "type": "text",
-                                                              "value": "{{'/assets/images/profile/'+ProfileEdit.name}}"
+                                                              "value": "{{Profile}}"
                                                             },
                                                             {
                                                               "table": "t_user_kyc",
                                                               "column": "pan_card",
                                                               "type": "text",
-                                                              "value": "{{'/assets/images/pan/'+PANEdit.name}}"
+                                                              "value": "{{Pan}}"
                                                             },
                                                             {
                                                               "table": "t_user_kyc",
                                                               "column": "aadhar_front",
                                                               "type": "text",
-                                                              "value": "{{'/assets/images/aadhar/'+AADHAREdit.name}}"
+                                                              "value": "{{AadharFront}}"
                                                             },
                                                             {
                                                               "table": "t_user_kyc",
                                                               "column": "aadhar_back",
                                                               "type": "text",
-                                                              "value": "{{'/assets/images/aadhar/'+AADHARBackEdit.name}}"
+                                                              "value": "{{AadharBack}}"
                                                             },
                                                             {
                                                               "table": "t_user_kyc",
@@ -886,27 +1033,27 @@
                                                             "valid": true
                                                           },
                                                           "returning": "id",
-                                                          "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{'/assets/images/profile/'+ProfileEdit.name}} */, pan_card = :P2 /* {{'/assets/images/pan/'+PANEdit.name}} */, aadhar_front = :P3 /* {{'/assets/images/aadhar/'+AADHAREdit.name}} */, aadhar_back = :P4 /* {{'/assets/images/aadhar/'+AADHARBackEdit.name}} */, updated_by = :P5 /* {{identity}} */, updated_on = :P6 /* {{NOW}} */\nWHERE user_id = :P7 /* {{identity}} */",
+                                                          "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{Profile}} */, pan_card = :P2 /* {{Pan}} */, aadhar_front = :P3 /* {{AadharFront}} */, aadhar_back = :P4 /* {{AadharBack}} */, updated_by = :P5 /* {{identity}} */, updated_on = :P6 /* {{NOW}} */\nWHERE user_id = :P7 /* {{identity}} */",
                                                           "params": [
                                                             {
                                                               "name": ":P1",
                                                               "type": "expression",
-                                                              "value": "{{'/assets/images/profile/'+ProfileEdit.name}}"
+                                                              "value": "{{Profile}}"
                                                             },
                                                             {
                                                               "name": ":P2",
                                                               "type": "expression",
-                                                              "value": "{{'/assets/images/pan/'+PANEdit.name}}"
+                                                              "value": "{{Pan}}"
                                                             },
                                                             {
                                                               "name": ":P3",
                                                               "type": "expression",
-                                                              "value": "{{'/assets/images/aadhar/'+AADHAREdit.name}}"
+                                                              "value": "{{AadharFront}}"
                                                             },
                                                             {
                                                               "name": ":P4",
                                                               "type": "expression",
-                                                              "value": "{{'/assets/images/aadhar/'+AADHARBackEdit.name}}"
+                                                              "value": "{{AadharBack}}"
                                                             },
                                                             {
                                                               "name": ":P5",
