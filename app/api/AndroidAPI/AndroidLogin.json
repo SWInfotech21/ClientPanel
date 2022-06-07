@@ -536,7 +536,7 @@
                                                       "module": "core",
                                                       "action": "setvalue",
                                                       "options": {
-                                                        "value": "UUID.md5(12345678).substr(1, 15)"
+                                                        "value": "{{UUID.md5(12345678).substr(1, 15)}}"
                                                       },
                                                       "meta": [],
                                                       "output": true,
