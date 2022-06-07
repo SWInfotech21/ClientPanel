@@ -207,7 +207,7 @@
                       "module": "core",
                       "action": "setvalue",
                       "options": {
-                        "value": "{{UUID.md5(123456).substr(1, 15)}}"
+                        "value": "{{UUID.md5(123456).substr(1, 9)}}"
                       },
                       "meta": [],
                       "outputType": "text"
