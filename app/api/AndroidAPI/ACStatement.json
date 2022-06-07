@@ -8,29 +8,30 @@
       {
         "type": "text",
         "options": {
-          "rules": {
-            "core:required": {}
-          }
+          "rules": {}
         },
         "name": "username"
       },
       {
         "type": "text",
         "options": {
-          "rules": {
-            "core:required": {}
-          }
+          "rules": {}
         },
         "name": "password"
       },
       {
         "type": "text",
         "options": {
-          "rules": {
-            "core:required": {}
-          }
+          "rules": {}
         },
         "name": "fromdate"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {}
+        },
+        "name": "todate"
       },
       {
         "type": "text",
@@ -39,7 +40,7 @@
             "core:required": {}
           }
         },
-        "name": "todate"
+        "name": "tok"
       }
     ],
     "$_SERVER": [
