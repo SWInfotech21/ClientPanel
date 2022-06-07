@@ -204,7 +204,8 @@
                 "name": ":P1",
                 "value": "{{identity}}"
               }
-            ]
+            ],
+            "primary": "id"
           }
         },
         "output": false,
@@ -334,7 +335,8 @@
                         "name": ":P2",
                         "value": "{{UserWalletBalCheck.scheme_id}}"
                       }
-                    ]
+                    ],
+                    "primary": "id"
                   }
                 },
                 "output": false,
@@ -2565,6 +2567,107 @@
                                                 "action": "setvalue",
                                                 "options": {
                                                   "value": "{{apiUtilityHub.data.rpid}}"
+                                                },
+                                                "meta": [],
+                                                "outputType": "text",
+                                                "output": true
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "outputType": "boolean"
+                                      },
+                                      {
+                                        "name": "",
+                                        "module": "core",
+                                        "action": "condition",
+                                        "options": {
+                                          "if": "{{GetOpAPICodeFwrd.api_code=='OFF'}}",
+                                          "then": {
+                                            "steps": [
+                                              {
+                                                "name": "stat",
+                                                "module": "core",
+                                                "action": "setvalue",
+                                                "options": {
+                                                  "value": 1
+                                                },
+                                                "meta": [],
+                                                "outputType": "text",
+                                                "output": false
+                                              },
+                                              {
+                                                "name": "apistatus",
+                                                "module": "core",
+                                                "action": "setvalue",
+                                                "options": {
+                                                  "value": "{{stat == 2 ? 'SUCCESS' : stat == 1 ? 'PENDING' : 'FAILED'}}"
+                                                },
+                                                "meta": [],
+                                                "outputType": "text",
+                                                "output": true
+                                              },
+                                              {
+                                                "name": "apifiredid",
+                                                "module": "core",
+                                                "action": "setvalue",
+                                                "options": {
+                                                  "value": 0
+                                                },
+                                                "meta": [],
+                                                "outputType": "text",
+                                                "output": true
+                                              },
+                                              {
+                                                "name": "remarks",
+                                                "module": "core",
+                                                "action": "setvalue",
+                                                "options": {
+                                                  "value": "Transaction Pending, Please wait until it become SUCCESS"
+                                                },
+                                                "meta": [],
+                                                "outputType": "text",
+                                                "output": true
+                                              },
+                                              {
+                                                "name": "ec",
+                                                "module": "core",
+                                                "action": "setvalue",
+                                                "options": {
+                                                  "value": 1
+                                                },
+                                                "meta": [],
+                                                "outputType": "text",
+                                                "output": true
+                                              },
+                                              {
+                                                "name": "api_log",
+                                                "module": "core",
+                                                "action": "setvalue",
+                                                "options": {
+                                                  "value": "OFF"
+                                                },
+                                                "meta": [],
+                                                "outputType": "text",
+                                                "output": false
+                                              },
+                                              {
+                                                "name": "apibalance",
+                                                "module": "core",
+                                                "action": "setvalue",
+                                                "options": {
+                                                  "value": "0\n"
+                                                },
+                                                "meta": [],
+                                                "outputType": "text",
+                                                "output": false
+                                              },
+                                              {
+                                                "name": "api_ref",
+                                                "module": "core",
+                                                "action": "setvalue",
+                                                "options": {
+                                                  "value": "0\n"
                                                 },
                                                 "meta": [],
                                                 "outputType": "text",
