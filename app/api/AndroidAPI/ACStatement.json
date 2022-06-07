@@ -36,9 +36,7 @@
       {
         "type": "text",
         "options": {
-          "rules": {
-            "core:required": {}
-          }
+          "rules": {}
         },
         "name": "tok"
       }
@@ -58,6 +56,17 @@
       "options": {
         "try": {
           "steps": [
+            {
+              "name": "done",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{$_GET.tok}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true
+            },
             {
               "name": "getSalt",
               "module": "dbconnector",
