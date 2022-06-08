@@ -478,11 +478,13 @@
                       "options": {
                         "path": "{{'/public'+GetImage.profile_pic}}"
                       },
-                      "outputType": "boolean"
+                      "outputType": "boolean",
+                      "output": true
                     }
                   }
                 },
-                "outputType": "boolean"
+                "outputType": "boolean",
+                "output": true
               }
             ]
           },
