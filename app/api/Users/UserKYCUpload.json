@@ -198,6 +198,96 @@
         "outputType": "object"
       },
       {
+        "name": "GetImage",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_user_kyc",
+                "column": "profile_pic"
+              },
+              {
+                "table": "t_user_kyc",
+                "column": "pan_card"
+              },
+              {
+                "table": "t_user_kyc",
+                "column": "aadhar_front"
+              },
+              {
+                "table": "t_user_kyc",
+                "column": "aadhar_back"
+              }
+            ],
+            "table": {
+              "name": "t_user_kyc"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "t_user_kyc.user_id",
+                  "field": "t_user_kyc.user_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "t_user_kyc",
+                    "column": "user_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "user_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT profile_pic, pan_card, aadhar_front, aadhar_back\nFROM t_user_kyc\nWHERE user_id = :P1 /* {{identity}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ]
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "text",
+            "name": "profile_pic"
+          },
+          {
+            "type": "text",
+            "name": "pan_card"
+          },
+          {
+            "type": "text",
+            "name": "aadhar_front"
+          },
+          {
+            "type": "text",
+            "name": "aadhar_back"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
         "name": "",
         "module": "core",
         "action": "condition",
@@ -205,96 +295,6 @@
           "if": "{{GetUser.CountId>0}}",
           "then": {
             "steps": [
-              {
-                "name": "GetImage",
-                "module": "dbconnector",
-                "action": "single",
-                "options": {
-                  "connection": "postgres_gcpServer",
-                  "sql": {
-                    "type": "SELECT",
-                    "columns": [
-                      {
-                        "table": "t_user_kyc",
-                        "column": "profile_pic"
-                      },
-                      {
-                        "table": "t_user_kyc",
-                        "column": "pan_card"
-                      },
-                      {
-                        "table": "t_user_kyc",
-                        "column": "aadhar_front"
-                      },
-                      {
-                        "table": "t_user_kyc",
-                        "column": "aadhar_back"
-                      }
-                    ],
-                    "table": {
-                      "name": "t_user_kyc"
-                    },
-                    "primary": "id",
-                    "joins": [],
-                    "wheres": {
-                      "condition": "AND",
-                      "rules": [
-                        {
-                          "id": "t_user_kyc.user_id",
-                          "field": "t_user_kyc.user_id",
-                          "type": "double",
-                          "operator": "equal",
-                          "value": "{{identity}}",
-                          "data": {
-                            "table": "t_user_kyc",
-                            "column": "user_id",
-                            "type": "number",
-                            "columnObj": {
-                              "type": "integer",
-                              "primary": false,
-                              "unique": false,
-                              "nullable": false,
-                              "name": "user_id"
-                            }
-                          },
-                          "operation": "="
-                        }
-                      ],
-                      "conditional": null,
-                      "valid": true
-                    },
-                    "query": "SELECT profile_pic, pan_card, aadhar_front, aadhar_back\nFROM t_user_kyc\nWHERE user_id = :P1 /* {{identity}} */",
-                    "params": [
-                      {
-                        "operator": "equal",
-                        "type": "expression",
-                        "name": ":P1",
-                        "value": "{{identity}}"
-                      }
-                    ]
-                  }
-                },
-                "output": false,
-                "meta": [
-                  {
-                    "type": "text",
-                    "name": "profile_pic"
-                  },
-                  {
-                    "type": "text",
-                    "name": "pan_card"
-                  },
-                  {
-                    "type": "text",
-                    "name": "aadhar_front"
-                  },
-                  {
-                    "type": "text",
-                    "name": "aadhar_back"
-                  }
-                ],
-                "outputType": "object"
-              },
               {
                 "name": "",
                 "module": "core",
@@ -450,7 +450,7 @@
                         "module": "core",
                         "action": "setvalue",
                         "options": {
-                          "value": "{{'/assets/images/pan/'+ProfileEdit.name}}"
+                          "value": "{{'/assets/images/pan/'+PANEdit.name}}"
                         },
                         "meta": [],
                         "outputType": "text"
