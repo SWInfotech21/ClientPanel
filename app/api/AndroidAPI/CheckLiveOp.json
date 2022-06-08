@@ -426,6 +426,17 @@
                                                     "output": true
                                                   },
                                                   {
+                                                    "name": "operator",
+                                                    "module": "core",
+                                                    "action": "setvalue",
+                                                    "options": {
+                                                      "value": "{{(apiGetLiveOp.data.Operator=='Airtel')?'Airtel':(apiGetLiveOp.data.Operator=='Jio')?'Jio':(apiGetLiveOp.data.Operator=='BSNL')?'Bsnl Special':(apiGetLiveOp.data.Operator=='Vodafone Idea')?'Vodafone-Idea':''}}"
+                                                    },
+                                                    "meta": [],
+                                                    "outputType": "text",
+                                                    "output": true
+                                                  },
+                                                  {
                                                     "name": "circle",
                                                     "module": "core",
                                                     "action": "setvalue",
