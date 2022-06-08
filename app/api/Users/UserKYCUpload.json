@@ -8,26 +8,23 @@
       {
         "type": "file",
         "fieldName": "profile",
-        "options": {
-          "rules": {}
-        },
         "name": "profile",
         "sub": [
           {
-            "type": "text",
-            "name": "name"
+            "name": "name",
+            "type": "text"
           },
           {
-            "type": "text",
-            "name": "type"
+            "name": "type",
+            "type": "text"
           },
           {
-            "type": "number",
-            "name": "size"
+            "name": "size",
+            "type": "number"
           },
           {
-            "type": "text",
-            "name": "error"
+            "name": "error",
+            "type": "text"
           }
         ],
         "outputType": "file"
@@ -38,20 +35,20 @@
         "name": "pan_card",
         "sub": [
           {
-            "type": "text",
-            "name": "name"
+            "name": "name",
+            "type": "text"
           },
           {
-            "type": "text",
-            "name": "type"
+            "name": "type",
+            "type": "text"
           },
           {
-            "type": "number",
-            "name": "size"
+            "name": "size",
+            "type": "number"
           },
           {
-            "type": "text",
-            "name": "error"
+            "name": "error",
+            "type": "text"
           }
         ],
         "outputType": "file"
@@ -62,20 +59,20 @@
         "name": "front_aadhar",
         "sub": [
           {
-            "type": "text",
-            "name": "name"
+            "name": "name",
+            "type": "text"
           },
           {
-            "type": "text",
-            "name": "type"
+            "name": "type",
+            "type": "text"
           },
           {
-            "type": "number",
-            "name": "size"
+            "name": "size",
+            "type": "number"
           },
           {
-            "type": "text",
-            "name": "error"
+            "name": "error",
+            "type": "text"
           }
         ],
         "outputType": "file"
@@ -86,20 +83,20 @@
         "name": "back_aadhar",
         "sub": [
           {
-            "type": "text",
-            "name": "name"
+            "name": "name",
+            "type": "text"
           },
           {
-            "type": "text",
-            "name": "type"
+            "name": "type",
+            "type": "text"
           },
           {
-            "type": "number",
-            "name": "size"
+            "name": "size",
+            "type": "number"
           },
           {
-            "type": "text",
-            "name": "error"
+            "name": "error",
+            "type": "text"
           }
         ],
         "outputType": "file"
@@ -449,7 +446,7 @@
                         "output": false
                       },
                       {
-                        "name": "Pan",
+                        "name": "PanCard",
                         "module": "core",
                         "action": "setvalue",
                         "options": {
@@ -483,7 +480,7 @@
                   },
                   "else": {
                     "steps": {
-                      "name": "Pan",
+                      "name": "PanCard",
                       "module": "core",
                       "action": "setvalue",
                       "options": {
@@ -713,7 +710,7 @@
                         "table": "t_user_kyc",
                         "column": "pan_card",
                         "type": "text",
-                        "value": "{{Pan}}"
+                        "value": "{{PanCard}}"
                       },
                       {
                         "table": "t_user_kyc",
@@ -760,7 +757,7 @@
                       "valid": true
                     },
                     "returning": "id",
-                    "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{Profile}} */, pan_card = :P2 /* {{Pan}} */, aadhar_front = :P3 /* {{AadharFront}} */, aadhar_back = :P4 /* {{AadharBack}} */, updated_by = :P5 /* {{identity}} */, updated_on = :P6 /* {{NOW}} */\nWHERE user_id = :P7 /* {{identity}} */",
+                    "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{Profile}} */, pan_card = :P2 /* {{PanCard}} */, aadhar_front = :P3 /* {{AadharFront}} */, aadhar_back = :P4 /* {{AadharBack}} */, updated_by = :P5 /* {{identity}} */, updated_on = :P6 /* {{NOW}} */\nWHERE user_id = :P7 /* {{identity}} */",
                     "params": [
                       {
                         "name": ":P1",
@@ -770,7 +767,7 @@
                       {
                         "name": ":P2",
                         "type": "expression",
-                        "value": "{{Pan}}"
+                        "value": "{{PanCard}}"
                       },
                       {
                         "name": ":P3",
