@@ -262,7 +262,7 @@
             ]
           }
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
             "type": "number",
@@ -373,7 +373,7 @@
             }
           }
         },
-        "output": false,
+        "output": true,
         "meta": [
           {
             "type": "text",

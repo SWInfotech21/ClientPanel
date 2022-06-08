@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "phoneno"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "getOperatorCircle",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://digitalapiproxy.paytm.com/v1/mobile/getopcirclebyrange",
+          "params": {
+            "channel": "{{'web'}}",
+            "version": "2",
+            "number": "{{$_GET.phoneno}}",
+            "child_site_id": "1",
+            "site_id": "1",
+            "locale": "en-in"
+          }
+        },
+        "output": false
+      },
+      {
+        "name": "operator_id",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{(getOperatorCircle.data.Operator=='Airtel')?25:(getOperatorCircle.data.Operator=='Jio')?28:(getOperatorCircle.data.Operator=='BSNL')?27:(getOperatorCircle.data.Operator=='Vodafone Idea')?29:''}}"
+        },
+        "meta": [],
+        "output": true,
+        "outputType": "text"
+      },
+      {
+        "name": "circle",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{getOperatorCircle.data}}"
+        },
+        "meta": [],
+        "output": true,
+        "outputType": "text"
+      }
+    ]
+  }
+}

@@ -511,7 +511,7 @@
                                                 "table": "t_login_history",
                                                 "column": "remote_ip",
                                                 "type": "text",
-                                                "value": "{{$_SERVER.REMOTE_HOST}}"
+                                                "value": "{{$_SERVER.SERVER_NAME}}"
                                               },
                                               {
                                                 "table": "t_login_history",
@@ -522,7 +522,7 @@
                                             ],
                                             "table": "t_login_history",
                                             "returning": "id",
-                                            "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time, remote_ip, login_from) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */, :P4 /* {{$_SERVER.REMOTE_HOST}} */, :P5 /* {{'Web'}} */)",
+                                            "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time, remote_ip, login_from) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */, :P4 /* {{$_SERVER.SERVER_NAME}} */, :P5 /* {{'Web'}} */)",
                                             "params": [
                                               {
                                                 "name": ":P1",
@@ -542,7 +542,7 @@
                                               {
                                                 "name": ":P4",
                                                 "type": "expression",
-                                                "value": "{{$_SERVER.REMOTE_HOST}}"
+                                                "value": "{{$_SERVER.SERVER_NAME}}"
                                               },
                                               {
                                                 "name": ":P5",
