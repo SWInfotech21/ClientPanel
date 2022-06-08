@@ -992,7 +992,7 @@
                         "table": "t_user_kyc",
                         "column": "user_id",
                         "type": "number",
-                        "value": "{{GetUser.id}}"
+                        "value": "{{GetImage.id}}"
                       },
                       {
                         "table": "t_user_kyc",
@@ -1033,12 +1033,12 @@
                     ],
                     "table": "t_user_kyc",
                     "returning": "id",
-                    "query": "INSERT INTO t_user_kyc\n(user_id, profile_pic, pan_card, aadhar_front, aadhar_back, created_by, created_on) VALUES (:P1 /* {{GetUser.id}} */, :P2 /* {{ProfilePic}} */, :P3 /* {{PanCard}} */, :P4 /* {{AadharFront}} */, :P5 /* {{AadharBack}} */, '12', :P6 /* {{NOW}} */)",
+                    "query": "INSERT INTO t_user_kyc\n(user_id, profile_pic, pan_card, aadhar_front, aadhar_back, created_by, created_on) VALUES (:P1 /* {{GetImage.id}} */, :P2 /* {{ProfilePic}} */, :P3 /* {{PanCard}} */, :P4 /* {{AadharFront}} */, :P5 /* {{AadharBack}} */, '12', :P6 /* {{NOW}} */)",
                     "params": [
                       {
                         "name": ":P1",
                         "type": "expression",
-                        "value": "{{GetUser.id}}"
+                        "value": "{{GetImage.id}}"
                       },
                       {
                         "name": ":P2",
@@ -1105,7 +1105,7 @@
                           "field": "id",
                           "type": "double",
                           "operator": "equal",
-                          "value": "{{GetUser.id}}",
+                          "value": "{{GetImage.id}}",
                           "data": {
                             "column": "id"
                           },
@@ -1116,7 +1116,7 @@
                       "valid": true
                     },
                     "returning": "id",
-                    "query": "UPDATE m_users\nSET kyc_status = :P1 /* {{1}} */\nWHERE id = :P2 /* {{GetUser.id}} */",
+                    "query": "UPDATE m_users\nSET kyc_status = :P1 /* {{1}} */\nWHERE id = :P2 /* {{GetImage.id}} */",
                     "params": [
                       {
                         "name": ":P1",
@@ -1127,7 +1127,7 @@
                         "operator": "equal",
                         "type": "expression",
                         "name": ":P2",
-                        "value": "{{GetUser.id}}"
+                        "value": "{{GetImage.id}}"
                       }
                     ]
                   }
@@ -1215,7 +1215,7 @@
                   "field": "id",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{GetUser.id}}",
+                  "value": "{{GetImage.id}}",
                   "data": {
                     "column": "id"
                   },
@@ -1226,7 +1226,7 @@
               "valid": true
             },
             "returning": "id",
-            "query": "UPDATE m_users\nSET aeps_merchant_id = :P1 /* {{$_POST.MerchantID}} */, blank3 = :P2 /* {{$_POST.ShopName}} */, pan_no = :P3 /* {{$_POST.Pan}} */, aadhar_no = :P4 /* {{$_POST.AdharNo}} */\nWHERE id = :P5 /* {{GetUser.id}} */",
+            "query": "UPDATE m_users\nSET aeps_merchant_id = :P1 /* {{$_POST.MerchantID}} */, blank3 = :P2 /* {{$_POST.ShopName}} */, pan_no = :P3 /* {{$_POST.Pan}} */, aadhar_no = :P4 /* {{$_POST.AdharNo}} */\nWHERE id = :P5 /* {{GetImage.id}} */",
             "params": [
               {
                 "name": ":P1",
@@ -1252,7 +1252,7 @@
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P5",
-                "value": "{{GetUser.id}}"
+                "value": "{{GetImage.id}}"
               }
             ]
           }
