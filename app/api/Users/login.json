@@ -518,17 +518,11 @@
                                                 "column": "login_from",
                                                 "type": "text",
                                                 "value": "{{'Web'}}"
-                                              },
-                                              {
-                                                "table": "t_login_history",
-                                                "column": "server",
-                                                "type": "text",
-                                                "value": "{{$_SERVER.SERVER_NAME}}"
                                               }
                                             ],
                                             "table": "t_login_history",
                                             "returning": "id",
-                                            "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time, remote_ip, login_from, server) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */, :P4 /* {{$_SERVER.REMOTE_HOST}} */, :P5 /* {{'Web'}} */, :P6 /* {{$_SERVER.SERVER_NAME}} */)",
+                                            "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time, remote_ip, login_from) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */, :P4 /* {{$_SERVER.REMOTE_HOST}} */, :P5 /* {{'Web'}} */)",
                                             "params": [
                                               {
                                                 "name": ":P1",
@@ -554,11 +548,6 @@
                                                 "name": ":P5",
                                                 "type": "expression",
                                                 "value": "{{'Web'}}"
-                                              },
-                                              {
-                                                "name": ":P6",
-                                                "type": "expression",
-                                                "value": "{{$_SERVER.SERVER_NAME}}"
                                               }
                                             ]
                                           }

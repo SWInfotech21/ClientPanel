@@ -29,10 +29,20 @@
         "name": "remember"
       }
     ],
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "server"
+      }
+    ],
     "$_SERVER": [
       {
         "type": "text",
         "name": "REMOTE_ADDR"
+      },
+      {
+        "type": "text",
+        "name": "REMOTE_HOST"
       }
     ]
   },
@@ -459,7 +469,18 @@
                                                 "then": {
                                                   "steps": [
                                                     {
-                                                      "name": "insert",
+                                                      "name": "tokEn",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": "{{UUID.md5(12345678).substr(1, 15)}}"
+                                                      },
+                                                      "meta": [],
+                                                      "output": true,
+                                                      "outputType": "text"
+                                                    },
+                                                    {
+                                                      "name": "AddTLoginHistory",
                                                       "module": "dbupdater",
                                                       "action": "insert",
                                                       "options": {
@@ -484,11 +505,29 @@
                                                               "column": "login_time",
                                                               "type": "datetime",
                                                               "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "table": "t_login_history",
+                                                              "column": "remote_ip",
+                                                              "type": "text",
+                                                              "value": "{{$_SERVER.REMOTE_HOST}}"
+                                                            },
+                                                            {
+                                                              "table": "t_login_history",
+                                                              "column": "login_from",
+                                                              "type": "text",
+                                                              "value": "{{'Android'}}"
+                                                            },
+                                                            {
+                                                              "table": "t_login_history",
+                                                              "column": "server",
+                                                              "type": "text",
+                                                              "value": "{{tokEn}}"
                                                             }
                                                           ],
                                                           "table": "t_login_history",
                                                           "returning": "id",
-                                                          "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */)",
+                                                          "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time, remote_ip, login_from, server) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */, :P4 /* {{$_SERVER.REMOTE_HOST}} */, :P5 /* {{'Android'}} */, :P6 /* {{tokEn}} */)",
                                                           "params": [
                                                             {
                                                               "name": ":P1",
@@ -504,6 +543,21 @@
                                                               "name": ":P3",
                                                               "type": "expression",
                                                               "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "name": ":P4",
+                                                              "type": "expression",
+                                                              "value": "{{$_SERVER.REMOTE_HOST}}"
+                                                            },
+                                                            {
+                                                              "name": ":P5",
+                                                              "type": "expression",
+                                                              "value": "{{'Android'}}"
+                                                            },
+                                                            {
+                                                              "name": ":P6",
+                                                              "type": "expression",
+                                                              "value": "{{tokEn}}"
                                                             }
                                                           ]
                                                         }
@@ -526,17 +580,6 @@
                                                       "action": "setvalue",
                                                       "options": {
                                                         "value": 200
-                                                      },
-                                                      "meta": [],
-                                                      "output": true,
-                                                      "outputType": "text"
-                                                    },
-                                                    {
-                                                      "name": "tokEn",
-                                                      "module": "core",
-                                                      "action": "setvalue",
-                                                      "options": {
-                                                        "value": "{{UUID.md5(12345678).substr(1, 15)}}"
                                                       },
                                                       "meta": [],
                                                       "output": true,
