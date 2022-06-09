@@ -2202,12 +2202,12 @@
                                                 "table": "tt_balance",
                                                 "column": "status",
                                                 "type": "text",
-                                                "value": "{{'FAILED'}}"
+                                                "value": "{{'PENDING'}}"
                                               }
                                             ],
                                             "table": "tt_balance",
                                             "returning": "id",
-                                            "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{UserWalletBalCheck.balance_amt}} */, :P5 /* {{'Bill Payment'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_POST.mobile_number+' | Amount:\\n '+$_POST.recharge_amount+' | Bill Payment | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'FAILED'}} */)",
+                                            "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{identity}} */, :P2 /* {{UserWalletBalCheck.balance_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{UserWalletBalCheck.balance_amt}} */, :P5 /* {{'Bill Payment'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{RechTrans.identity}} */, :P10 /* {{'Number: '+$_POST.mobile_number+' | Amount:\\n '+$_POST.recharge_amount+' | Bill Payment | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+RTNetAmt}} */, :P11 /* {{identity}} */, :P12 /* {{NOW}} */, :P13 /* {{RTNetAmt}} */, :P14 /* {{'PENDING'}} */)",
                                             "params": [
                                               {
                                                 "name": ":P1",
@@ -2277,7 +2277,7 @@
                                               {
                                                 "name": ":P14",
                                                 "type": "expression",
-                                                "value": "{{'FAILED'}}"
+                                                "value": "{{'PENDING'}}"
                                               }
                                             ]
                                           }
@@ -2860,7 +2860,8 @@
                                                         "name": ":P12",
                                                         "value": "{{RechTrans.identity}}"
                                                       }
-                                                    ]
+                                                    ],
+                                                    "returning": "id"
                                                   }
                                                 },
                                                 "meta": [
@@ -2930,7 +2931,8 @@
                                                         "name": ":P3",
                                                         "value": "{{DrBalanceRT.identity}}"
                                                       }
-                                                    ]
+                                                    ],
+                                                    "returning": "id"
                                                   }
                                                 },
                                                 "meta": [
@@ -3479,250 +3481,250 @@
                                                           }
                                                         ],
                                                         "output": false
-                                                      },
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                "outputType": "boolean"
+                                              },
+                                              {
+                                                "name": "",
+                                                "module": "core",
+                                                "action": "condition",
+                                                "options": {
+                                                  "if": "{{GetDTCreator.dt_creator_user_type == 3}}",
+                                                  "then": {
+                                                    "steps": [
                                                       {
-                                                        "name": "",
-                                                        "module": "core",
-                                                        "action": "condition",
+                                                        "name": "MdtBalance",
+                                                        "module": "dbupdater",
+                                                        "action": "insert",
                                                         "options": {
-                                                          "if": "{{GetDTCreator.dt_creator_user_type == 3}}",
-                                                          "then": {
-                                                            "steps": [
+                                                          "connection": "postgres_gcpServer",
+                                                          "sql": {
+                                                            "type": "insert",
+                                                            "values": [
                                                               {
-                                                                "name": "MdtBalance",
-                                                                "module": "dbupdater",
-                                                                "action": "insert",
-                                                                "options": {
-                                                                  "connection": "postgres_gcpServer",
-                                                                  "sql": {
-                                                                    "type": "insert",
-                                                                    "values": [
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "user_id",
-                                                                        "type": "number",
-                                                                        "value": "{{GetRTCreator.dt_coeator_id}}"
-                                                                      },
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "old_balance",
-                                                                        "type": "text",
-                                                                        "value": "{{GetDTCreator.dt_balance_amt}}"
-                                                                      },
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "amount",
-                                                                        "type": "text",
-                                                                        "value": "{{$_POST.recharge_amount}}"
-                                                                      },
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "netamt",
-                                                                        "type": "text",
-                                                                        "value": "{{MDTNetAmt}}"
-                                                                      },
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "new_balance",
-                                                                        "type": "text",
-                                                                        "value": "{{MDTClosingBalance}}"
-                                                                      },
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "transaction_type",
-                                                                        "type": "text",
-                                                                        "value": "{{'Bill Payment Comm'}}"
-                                                                      },
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "tr_date",
-                                                                        "type": "text",
-                                                                        "value": "{{NOW}}"
-                                                                      },
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "ip_address",
-                                                                        "type": "text",
-                                                                        "value": "{{$_SERVER.REMOTE_ADDR}}"
-                                                                      },
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "crdr_type",
-                                                                        "type": "text",
-                                                                        "value": "{{'Credit'}}"
-                                                                      },
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "pay_ref_id",
-                                                                        "type": "number",
-                                                                        "value": "{{RechTrans.identity}}"
-                                                                      },
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "remarks",
-                                                                        "type": "text",
-                                                                        "value": "{{'Number: '+$_POST.mobile_number+'  | Amount:\\n '+$_POST.recharge_amount+' | Charge Credit | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+MDTCommPer+' | Comm Val: '+MDTCommVal+' | Charge Per:\\n '+MDTChargePer+' | Charge Val: '+MDTChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+MDTNetAmt}}"
-                                                                      },
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "created_by",
-                                                                        "type": "number",
-                                                                        "value": "{{identity}}"
-                                                                      },
-                                                                      {
-                                                                        "table": "t_charge_cal",
-                                                                        "column": "created_on",
-                                                                        "type": "datetime",
-                                                                        "value": "{{NOW}}"
-                                                                      }
-                                                                    ],
-                                                                    "table": "t_charge_cal",
-                                                                    "returning": "id",
-                                                                    "query": "INSERT INTO t_charge_cal\n(user_id, old_balance, amount, netamt, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on) VALUES (:P1 /* {{GetRTCreator.dt_coeator_id}} */, :P2 /* {{GetDTCreator.dt_balance_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{MDTNetAmt}} */, :P5 /* {{MDTClosingBalance}} */, :P6 /* {{'Bill Payment Comm'}} */, :P7 /* {{NOW}} */, :P8 /* {{$_SERVER.REMOTE_ADDR}} */, :P9 /* {{'Credit'}} */, :P10 /* {{RechTrans.identity}} */, :P11 /* {{'Number: '+$_POST.mobile_number+'  | Amount:\\n '+$_POST.recharge_amount+' | Charge Credit | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+MDTCommPer+' | Comm Val: '+MDTCommVal+' | Charge Per:\\n '+MDTChargePer+' | Charge Val: '+MDTChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+MDTNetAmt}} */, :P12 /* {{identity}} */, :P13 /* {{NOW}} */)",
-                                                                    "params": [
-                                                                      {
-                                                                        "name": ":P1",
-                                                                        "type": "expression",
-                                                                        "value": "{{GetRTCreator.dt_coeator_id}}"
-                                                                      },
-                                                                      {
-                                                                        "name": ":P2",
-                                                                        "type": "expression",
-                                                                        "value": "{{GetDTCreator.dt_balance_amt}}"
-                                                                      },
-                                                                      {
-                                                                        "name": ":P3",
-                                                                        "type": "expression",
-                                                                        "value": "{{$_POST.recharge_amount}}"
-                                                                      },
-                                                                      {
-                                                                        "name": ":P4",
-                                                                        "type": "expression",
-                                                                        "value": "{{MDTNetAmt}}"
-                                                                      },
-                                                                      {
-                                                                        "name": ":P5",
-                                                                        "type": "expression",
-                                                                        "value": "{{MDTClosingBalance}}"
-                                                                      },
-                                                                      {
-                                                                        "name": ":P6",
-                                                                        "type": "expression",
-                                                                        "value": "{{'Bill Payment Comm'}}"
-                                                                      },
-                                                                      {
-                                                                        "name": ":P7",
-                                                                        "type": "expression",
-                                                                        "value": "{{NOW}}"
-                                                                      },
-                                                                      {
-                                                                        "name": ":P8",
-                                                                        "type": "expression",
-                                                                        "value": "{{$_SERVER.REMOTE_ADDR}}"
-                                                                      },
-                                                                      {
-                                                                        "name": ":P9",
-                                                                        "type": "expression",
-                                                                        "value": "{{'Credit'}}"
-                                                                      },
-                                                                      {
-                                                                        "name": ":P10",
-                                                                        "type": "expression",
-                                                                        "value": "{{RechTrans.identity}}"
-                                                                      },
-                                                                      {
-                                                                        "name": ":P11",
-                                                                        "type": "expression",
-                                                                        "value": "{{'Number: '+$_POST.mobile_number+'  | Amount:\\n '+$_POST.recharge_amount+' | Charge Credit | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+MDTCommPer+' | Comm Val: '+MDTCommVal+' | Charge Per:\\n '+MDTChargePer+' | Charge Val: '+MDTChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+MDTNetAmt}}"
-                                                                      },
-                                                                      {
-                                                                        "name": ":P12",
-                                                                        "type": "expression",
-                                                                        "value": "{{identity}}"
-                                                                      },
-                                                                      {
-                                                                        "name": ":P13",
-                                                                        "type": "expression",
-                                                                        "value": "{{NOW}}"
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                },
-                                                                "meta": [
-                                                                  {
-                                                                    "name": "identity",
-                                                                    "type": "text"
-                                                                  },
-                                                                  {
-                                                                    "name": "affected",
-                                                                    "type": "number"
-                                                                  }
-                                                                ],
-                                                                "output": false
+                                                                "table": "t_charge_cal",
+                                                                "column": "user_id",
+                                                                "type": "number",
+                                                                "value": "{{GetRTCreator.dt_coeator_id}}"
                                                               },
                                                               {
-                                                                "name": "MdtUserAmtUp",
-                                                                "module": "dbupdater",
-                                                                "action": "update",
-                                                                "options": {
-                                                                  "connection": "postgres_gcpServer",
-                                                                  "sql": {
-                                                                    "type": "update",
-                                                                    "values": [
-                                                                      {
-                                                                        "table": "m_users",
-                                                                        "column": "balance_amt",
-                                                                        "type": "text",
-                                                                        "value": "{{MDTClosingBalance}}"
-                                                                      }
-                                                                    ],
-                                                                    "table": "m_users",
-                                                                    "wheres": {
-                                                                      "condition": "AND",
-                                                                      "rules": [
-                                                                        {
-                                                                          "id": "id",
-                                                                          "field": "id",
-                                                                          "type": "double",
-                                                                          "operator": "equal",
-                                                                          "value": "{{GetRTCreator.dt_coeator_id}}",
-                                                                          "data": {
-                                                                            "column": "id"
-                                                                          },
-                                                                          "operation": "="
-                                                                        }
-                                                                      ],
-                                                                      "conditional": null,
-                                                                      "valid": true
-                                                                    },
-                                                                    "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{MDTClosingBalance}} */\nWHERE id = :P2 /* {{GetRTCreator.dt_coeator_id}} */",
-                                                                    "params": [
-                                                                      {
-                                                                        "name": ":P1",
-                                                                        "type": "expression",
-                                                                        "value": "{{MDTClosingBalance}}"
-                                                                      },
-                                                                      {
-                                                                        "operator": "equal",
-                                                                        "type": "expression",
-                                                                        "name": ":P2",
-                                                                        "value": "{{GetRTCreator.dt_coeator_id}}"
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                },
-                                                                "meta": [
-                                                                  {
-                                                                    "name": "affected",
-                                                                    "type": "number"
-                                                                  }
-                                                                ],
-                                                                "output": false
+                                                                "table": "t_charge_cal",
+                                                                "column": "old_balance",
+                                                                "type": "text",
+                                                                "value": "{{GetDTCreator.dt_balance_amt}}"
+                                                              },
+                                                              {
+                                                                "table": "t_charge_cal",
+                                                                "column": "amount",
+                                                                "type": "text",
+                                                                "value": "{{$_POST.recharge_amount}}"
+                                                              },
+                                                              {
+                                                                "table": "t_charge_cal",
+                                                                "column": "netamt",
+                                                                "type": "text",
+                                                                "value": "{{MDTNetAmt}}"
+                                                              },
+                                                              {
+                                                                "table": "t_charge_cal",
+                                                                "column": "new_balance",
+                                                                "type": "text",
+                                                                "value": "{{MDTClosingBalance}}"
+                                                              },
+                                                              {
+                                                                "table": "t_charge_cal",
+                                                                "column": "transaction_type",
+                                                                "type": "text",
+                                                                "value": "{{'Bill Payment Comm'}}"
+                                                              },
+                                                              {
+                                                                "table": "t_charge_cal",
+                                                                "column": "tr_date",
+                                                                "type": "text",
+                                                                "value": "{{NOW}}"
+                                                              },
+                                                              {
+                                                                "table": "t_charge_cal",
+                                                                "column": "ip_address",
+                                                                "type": "text",
+                                                                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                              },
+                                                              {
+                                                                "table": "t_charge_cal",
+                                                                "column": "crdr_type",
+                                                                "type": "text",
+                                                                "value": "{{'Credit'}}"
+                                                              },
+                                                              {
+                                                                "table": "t_charge_cal",
+                                                                "column": "pay_ref_id",
+                                                                "type": "number",
+                                                                "value": "{{RechTrans.identity}}"
+                                                              },
+                                                              {
+                                                                "table": "t_charge_cal",
+                                                                "column": "remarks",
+                                                                "type": "text",
+                                                                "value": "{{'Number: '+$_POST.mobile_number+'  | Amount:\\n '+$_POST.recharge_amount+' | Charge Credit | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+MDTCommPer+' | Comm Val: '+MDTCommVal+' | Charge Per:\\n '+MDTChargePer+' | Charge Val: '+MDTChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+MDTNetAmt}}"
+                                                              },
+                                                              {
+                                                                "table": "t_charge_cal",
+                                                                "column": "created_by",
+                                                                "type": "number",
+                                                                "value": "{{identity}}"
+                                                              },
+                                                              {
+                                                                "table": "t_charge_cal",
+                                                                "column": "created_on",
+                                                                "type": "datetime",
+                                                                "value": "{{NOW}}"
+                                                              }
+                                                            ],
+                                                            "table": "t_charge_cal",
+                                                            "returning": "id",
+                                                            "query": "INSERT INTO t_charge_cal\n(user_id, old_balance, amount, netamt, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on) VALUES (:P1 /* {{GetRTCreator.dt_coeator_id}} */, :P2 /* {{GetDTCreator.dt_balance_amt}} */, :P3 /* {{$_POST.recharge_amount}} */, :P4 /* {{MDTNetAmt}} */, :P5 /* {{MDTClosingBalance}} */, :P6 /* {{'Bill Payment Comm'}} */, :P7 /* {{NOW}} */, :P8 /* {{$_SERVER.REMOTE_ADDR}} */, :P9 /* {{'Credit'}} */, :P10 /* {{RechTrans.identity}} */, :P11 /* {{'Number: '+$_POST.mobile_number+'  | Amount:\\n '+$_POST.recharge_amount+' | Charge Credit | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+MDTCommPer+' | Comm Val: '+MDTCommVal+' | Charge Per:\\n '+MDTChargePer+' | Charge Val: '+MDTChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+MDTNetAmt}} */, :P12 /* {{identity}} */, :P13 /* {{NOW}} */)",
+                                                            "params": [
+                                                              {
+                                                                "name": ":P1",
+                                                                "type": "expression",
+                                                                "value": "{{GetRTCreator.dt_coeator_id}}"
+                                                              },
+                                                              {
+                                                                "name": ":P2",
+                                                                "type": "expression",
+                                                                "value": "{{GetDTCreator.dt_balance_amt}}"
+                                                              },
+                                                              {
+                                                                "name": ":P3",
+                                                                "type": "expression",
+                                                                "value": "{{$_POST.recharge_amount}}"
+                                                              },
+                                                              {
+                                                                "name": ":P4",
+                                                                "type": "expression",
+                                                                "value": "{{MDTNetAmt}}"
+                                                              },
+                                                              {
+                                                                "name": ":P5",
+                                                                "type": "expression",
+                                                                "value": "{{MDTClosingBalance}}"
+                                                              },
+                                                              {
+                                                                "name": ":P6",
+                                                                "type": "expression",
+                                                                "value": "{{'Bill Payment Comm'}}"
+                                                              },
+                                                              {
+                                                                "name": ":P7",
+                                                                "type": "expression",
+                                                                "value": "{{NOW}}"
+                                                              },
+                                                              {
+                                                                "name": ":P8",
+                                                                "type": "expression",
+                                                                "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                                              },
+                                                              {
+                                                                "name": ":P9",
+                                                                "type": "expression",
+                                                                "value": "{{'Credit'}}"
+                                                              },
+                                                              {
+                                                                "name": ":P10",
+                                                                "type": "expression",
+                                                                "value": "{{RechTrans.identity}}"
+                                                              },
+                                                              {
+                                                                "name": ":P11",
+                                                                "type": "expression",
+                                                                "value": "{{'Number: '+$_POST.mobile_number+'  | Amount:\\n '+$_POST.recharge_amount+' | Charge Credit | Ref. Id:\\n '+RechTrans.identity+' | Comm Per: '+MDTCommPer+' | Comm Val: '+MDTCommVal+' | Charge Per:\\n '+MDTChargePer+' | Charge Val: '+MDTChargeVal+' | GST: 00.00 | TDS: 00.00 | Net Comm. Amt. '+MDTNetAmt}}"
+                                                              },
+                                                              {
+                                                                "name": ":P12",
+                                                                "type": "expression",
+                                                                "value": "{{identity}}"
+                                                              },
+                                                              {
+                                                                "name": ":P13",
+                                                                "type": "expression",
+                                                                "value": "{{NOW}}"
                                                               }
                                                             ]
                                                           }
                                                         },
-                                                        "outputType": "boolean"
+                                                        "meta": [
+                                                          {
+                                                            "name": "identity",
+                                                            "type": "text"
+                                                          },
+                                                          {
+                                                            "name": "affected",
+                                                            "type": "number"
+                                                          }
+                                                        ],
+                                                        "output": false
+                                                      },
+                                                      {
+                                                        "name": "MdtUserAmtUp",
+                                                        "module": "dbupdater",
+                                                        "action": "update",
+                                                        "options": {
+                                                          "connection": "postgres_gcpServer",
+                                                          "sql": {
+                                                            "type": "update",
+                                                            "values": [
+                                                              {
+                                                                "table": "m_users",
+                                                                "column": "balance_amt",
+                                                                "type": "text",
+                                                                "value": "{{MDTClosingBalance}}"
+                                                              }
+                                                            ],
+                                                            "table": "m_users",
+                                                            "wheres": {
+                                                              "condition": "AND",
+                                                              "rules": [
+                                                                {
+                                                                  "id": "id",
+                                                                  "field": "id",
+                                                                  "type": "double",
+                                                                  "operator": "equal",
+                                                                  "value": "{{GetRTCreator.dt_coeator_id}}",
+                                                                  "data": {
+                                                                    "column": "id"
+                                                                  },
+                                                                  "operation": "="
+                                                                }
+                                                              ],
+                                                              "conditional": null,
+                                                              "valid": true
+                                                            },
+                                                            "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{MDTClosingBalance}} */\nWHERE id = :P2 /* {{GetRTCreator.dt_coeator_id}} */",
+                                                            "params": [
+                                                              {
+                                                                "name": ":P1",
+                                                                "type": "expression",
+                                                                "value": "{{MDTClosingBalance}}"
+                                                              },
+                                                              {
+                                                                "operator": "equal",
+                                                                "type": "expression",
+                                                                "name": ":P2",
+                                                                "value": "{{GetRTCreator.dt_coeator_id}}"
+                                                              }
+                                                            ]
+                                                          }
+                                                        },
+                                                        "meta": [
+                                                          {
+                                                            "name": "affected",
+                                                            "type": "number"
+                                                          }
+                                                        ],
+                                                        "output": false
                                                       }
                                                     ]
                                                   }
@@ -3907,6 +3909,65 @@
                                                   }
                                                 ],
                                                 "output": false
+                                              },
+                                              {
+                                                "name": "ttBalUp",
+                                                "module": "dbupdater",
+                                                "action": "update",
+                                                "options": {
+                                                  "connection": "postgres_gcpServer",
+                                                  "sql": {
+                                                    "type": "update",
+                                                    "values": [
+                                                      {
+                                                        "table": "tt_balance",
+                                                        "column": "status",
+                                                        "type": "text",
+                                                        "value": "{{'FAILED'}}"
+                                                      }
+                                                    ],
+                                                    "table": "tt_balance",
+                                                    "wheres": {
+                                                      "condition": "AND",
+                                                      "rules": [
+                                                        {
+                                                          "id": "id",
+                                                          "field": "id",
+                                                          "type": "double",
+                                                          "operator": "equal",
+                                                          "value": "{{DrBalanceRT.identity}}",
+                                                          "data": {
+                                                            "column": "id"
+                                                          },
+                                                          "operation": "="
+                                                        }
+                                                      ],
+                                                      "conditional": null,
+                                                      "valid": true
+                                                    },
+                                                    "returning": "id",
+                                                    "query": "UPDATE tt_balance\nSET status = :P1 /* {{'FAILED'}} */\nWHERE id = :P2 /* {{DrBalanceRT.identity}} */",
+                                                    "params": [
+                                                      {
+                                                        "name": ":P1",
+                                                        "type": "expression",
+                                                        "value": "{{'FAILED'}}"
+                                                      },
+                                                      {
+                                                        "operator": "equal",
+                                                        "type": "expression",
+                                                        "name": ":P2",
+                                                        "value": "{{DrBalanceRT.identity}}"
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                "meta": [
+                                                  {
+                                                    "name": "affected",
+                                                    "type": "number"
+                                                  }
+                                                ]
                                               },
                                               {
                                                 "name": "DrBalanceRT_Failed",
