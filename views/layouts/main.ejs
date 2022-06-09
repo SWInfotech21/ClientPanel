@@ -122,7 +122,8 @@
             <!-- Navbar-->
             <ul class="navbar-nav ml-auto ml-md-0">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" dmx-show="scLoginUser.data.LoginUserInfo.profile_pic==null||scLoginUser.data.LoginUserInfo.profile_pic==' '"><i class="fas fa-user fa-fw"></i></a>
+                    <a class="nav-link dropdown-toggle" id="usersDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" dmx-show="scLoginUser.data.LoginUserInfo.profile_pic"><img dmx-bind:src="scLoginUser.data.LoginUserInfo.profile_pic" width="20" height="20"></a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="my-profile">Profile</a><a class="dropdown-item" href="security-update">Security Update</a>
                         <a class="dropdown-item" href="login-history">Activity Log</a>

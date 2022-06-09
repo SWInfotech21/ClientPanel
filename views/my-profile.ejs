@@ -125,4 +125,23 @@
             <div class="col-12 text-center"><button class="btn btn-primary" type="submit">Submit</button></div>
         </div>
     </form>
+
+    <div class="row mx-0 mt-5">
+        <div class="col-12 col-md-6">
+            <label>Profile Image</label>
+            <img class="col-12" dmx-bind:src="scLoginUser.data.LoginUserInfo.profile_pic">
+        </div>
+        <div class="col-12 col-md-6">
+            <label>Pan Card</label>
+            <img class="col-12" dmx-bind:src="scLoginUser.data.LoginUserInfo.pan_card">
+        </div>
+        <div class="col-12 col-md-6">
+            <label>Aadhar Card Front</label>
+            <img class="col-12" dmx-bind:src="scLoginUser.data.LoginUserInfo.aadhar_front">
+        </div>
+        <div class="col-12 col-md-6">
+            <label>Aadhar Card Back</label>
+            <img class="col-12" dmx-bind:src="scLoginUser.data.LoginUserInfo.aadhar_back">
+        </div>
+    </div>
 </div>
