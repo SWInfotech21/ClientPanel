@@ -27,9 +27,7 @@
         "type": "file",
         "fieldName": "profile",
         "options": {
-          "rules": {
-            "core:required": {}
-          }
+          "rules": {}
         },
         "name": "profile",
         "sub": [
@@ -56,9 +54,7 @@
         "type": "file",
         "fieldName": "pan_card",
         "options": {
-          "rules": {
-            "core:required": {}
-          }
+          "rules": {}
         },
         "name": "pan_card",
         "sub": [
@@ -85,9 +81,7 @@
         "type": "file",
         "fieldName": "aadhar_front",
         "options": {
-          "rules": {
-            "core:required": {}
-          }
+          "rules": {}
         },
         "name": "front_aadhar",
         "sub": [
@@ -114,9 +108,7 @@
         "type": "file",
         "fieldName": "aadhar_back",
         "options": {
-          "rules": {
-            "core:required": {}
-          }
+          "rules": {}
         },
         "name": "back_aadhar",
         "sub": [
