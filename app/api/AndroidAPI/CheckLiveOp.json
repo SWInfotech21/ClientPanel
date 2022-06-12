@@ -174,7 +174,7 @@
               "options": {
                 "connection": "postgres_gcpServer",
                 "sql": {
-                  "query": "select tlh.id, tlh.\"server\" as dbtoken from t_login_history tlh where tlh.user_id=@user_id order by tlh.id desc limit 1;",
+                  "query": "select tlh.id, tlh.\"server\" as dbtoken from t_login_history tlh where tlh.user_id=@user_id and tlh.login_from='Android' order by tlh.id desc limit 1;",
                   "params": [
                     {
                       "name": "@user_id",
@@ -527,7 +527,7 @@
                     "module": "core",
                     "action": "setvalue",
                     "options": {
-                      "value": "Unauthorized User"
+                      "value": "Unauthorized User, Please update your App and Login again!"
                     },
                     "meta": [],
                     "output": true,
