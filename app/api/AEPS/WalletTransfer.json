@@ -319,233 +319,325 @@
         "output": false
       },
       {
+        "name": "GetOpComm",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_commission",
+                "column": "comm_per"
+              },
+              {
+                "table": "m_commission",
+                "column": "comm_val"
+              },
+              {
+                "table": "m_commission",
+                "column": "service_charge_per"
+              },
+              {
+                "table": "m_commission",
+                "column": "service_charge_val"
+              },
+              {
+                "table": "m_commission",
+                "column": "operator_id"
+              },
+              {
+                "table": "m_op",
+                "column": "service_id"
+              }
+            ],
+            "table": {
+              "name": "m_commission"
+            },
+            "primary": "id",
+            "joins": [
+              {
+                "table": "m_operator",
+                "column": "*",
+                "alias": "m_op",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "m_op",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "m_commission",
+                        "column": "operator_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              }
+            ],
+            "query": "SELECT m_commission.comm_per, m_commission.comm_val, m_commission.service_charge_per, m_commission.service_charge_val, m_commission.operator_id, m_op.service_id\nFROM m_commission\nLEFT JOIN m_operator AS m_op ON (m_op.id = m_commission.operator_id)\nWHERE m_commission.scheme_id = :P1 /* {{GetUserDetails.scheme_id}} */ AND m_op.operator_name = :P2 /* {{'AEPS Wallet Settlement'}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{GetUserDetails.scheme_id}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{'AEPS Wallet Settlement'}}"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_commission.scheme_id",
+                  "field": "m_commission.scheme_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{GetUserDetails.scheme_id}}",
+                  "data": {
+                    "table": "m_commission",
+                    "column": "scheme_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "scheme_id"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "m_op.operator_name",
+                  "field": "m_op.operator_name",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{'AEPS Wallet Settlement'}}",
+                  "data": {
+                    "table": "m_op",
+                    "column": "operator_name",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "primary": false,
+                      "nullable": false,
+                      "name": "operator_name"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "text",
+            "name": "comm_per"
+          },
+          {
+            "type": "text",
+            "name": "comm_val"
+          },
+          {
+            "type": "text",
+            "name": "service_charge_per"
+          },
+          {
+            "type": "text",
+            "name": "service_charge_val"
+          },
+          {
+            "type": "number",
+            "name": "operator_id"
+          },
+          {
+            "type": "number",
+            "name": "service_id"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
         "name": "",
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{AEPSLimit.toNumber()>=$_POST.WithdrawLimit.toNumber()}}",
+          "if": "{{GetOpComm.comm_per}}",
           "then": {
             "steps": [
               {
-                "name": "GetOpComm",
-                "module": "dbconnector",
-                "action": "single",
+                "name": "TransId",
+                "module": "core",
+                "action": "setvalue",
                 "options": {
-                  "connection": "postgres_gcpServer",
-                  "sql": {
-                    "type": "SELECT",
-                    "columns": [
-                      {
-                        "table": "m_commission",
-                        "column": "comm_per"
-                      },
-                      {
-                        "table": "m_commission",
-                        "column": "comm_val"
-                      },
-                      {
-                        "table": "m_commission",
-                        "column": "service_charge_per"
-                      },
-                      {
-                        "table": "m_commission",
-                        "column": "service_charge_val"
-                      },
-                      {
-                        "table": "m_commission",
-                        "column": "operator_id"
-                      },
-                      {
-                        "table": "m_op",
-                        "column": "service_id"
-                      }
-                    ],
-                    "table": {
-                      "name": "m_commission"
-                    },
-                    "primary": "id",
-                    "joins": [
-                      {
-                        "table": "m_operator",
-                        "column": "*",
-                        "alias": "m_op",
-                        "type": "LEFT",
-                        "clauses": {
-                          "condition": "AND",
-                          "rules": [
-                            {
-                              "table": "m_op",
-                              "column": "id",
-                              "operator": "equal",
-                              "value": {
-                                "table": "m_commission",
-                                "column": "operator_id"
-                              },
-                              "operation": "="
-                            }
-                          ]
-                        },
-                        "primary": "id"
-                      }
-                    ],
-                    "query": "SELECT m_commission.comm_per, m_commission.comm_val, m_commission.service_charge_per, m_commission.service_charge_val, m_commission.operator_id, m_op.service_id\nFROM m_commission\nLEFT JOIN m_operator AS m_op ON (m_op.id = m_commission.operator_id)\nWHERE m_commission.scheme_id = :P1 /* {{GetUserDetails.scheme_id}} */ AND m_op.operator_name = :P2 /* {{'AEPS Wallet Settlement'}} */",
-                    "params": [
-                      {
-                        "operator": "equal",
-                        "type": "expression",
-                        "name": ":P1",
-                        "value": "{{GetUserDetails.scheme_id}}"
-                      },
-                      {
-                        "operator": "equal",
-                        "type": "expression",
-                        "name": ":P2",
-                        "value": "{{'AEPS Wallet Settlement'}}"
-                      }
-                    ],
-                    "wheres": {
-                      "condition": "AND",
-                      "rules": [
-                        {
-                          "id": "m_commission.scheme_id",
-                          "field": "m_commission.scheme_id",
-                          "type": "double",
-                          "operator": "equal",
-                          "value": "{{GetUserDetails.scheme_id}}",
-                          "data": {
-                            "table": "m_commission",
-                            "column": "scheme_id",
-                            "type": "number",
-                            "columnObj": {
-                              "type": "integer",
-                              "primary": false,
-                              "nullable": true,
-                              "name": "scheme_id"
-                            }
-                          },
-                          "operation": "="
-                        },
-                        {
-                          "id": "m_op.operator_name",
-                          "field": "m_op.operator_name",
-                          "type": "string",
-                          "operator": "equal",
-                          "value": "{{'AEPS Wallet Settlement'}}",
-                          "data": {
-                            "table": "m_op",
-                            "column": "operator_name",
-                            "type": "text",
-                            "columnObj": {
-                              "type": "string",
-                              "primary": false,
-                              "nullable": false,
-                              "name": "operator_name"
-                            }
-                          },
-                          "operation": "="
-                        }
-                      ],
-                      "conditional": null,
-                      "valid": true
-                    }
-                  }
+                  "value": "{{NOW.md5(123456).substr(1, 12)}}"
                 },
-                "output": false,
-                "meta": [
-                  {
-                    "type": "text",
-                    "name": "comm_per"
-                  },
-                  {
-                    "type": "text",
-                    "name": "comm_val"
-                  },
-                  {
-                    "type": "text",
-                    "name": "service_charge_per"
-                  },
-                  {
-                    "type": "text",
-                    "name": "service_charge_val"
-                  },
-                  {
-                    "type": "number",
-                    "name": "operator_id"
-                  },
-                  {
-                    "type": "number",
-                    "name": "service_id"
-                  }
-                ],
-                "outputType": "object"
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "RTCommAmt",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{($_POST.WithdrawLimit.toNumber()*GetOpComm.comm_per.toNumber()/100)+GetOpComm.comm_val.toNumber()}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "RTChargeAmt",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{($_POST.WithdrawLimit.toNumber()*GetOpComm.service_charge_per.toNumber()/100)+GetOpComm.service_charge_val.toNumber()}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "RTNetAmt",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{$_POST.WithdrawLimit.toNumber()+RTCommAmt.toNumber()-RTChargeAmt.toNumber()}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "AEPSRemaining",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{GetUserDetails.aeps_balance.toNumber()-$_POST.WithdrawLimit.toNumber()}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "WalletNetAmt",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{GetUserDetails.balance_amt.toNumber()+RTNetAmt.toNumber()}}"
+                },
+                "meta": [],
+                "outputType": "text"
               },
               {
                 "name": "",
                 "module": "core",
                 "action": "condition",
                 "options": {
-                  "if": "{{GetOpComm.comm_per}}",
+                  "if": "{{AEPSLimit.toNumber()>=RTNetAmt.toNumber()}}",
                   "then": {
                     "steps": [
                       {
-                        "name": "TransId",
-                        "module": "core",
-                        "action": "setvalue",
+                        "name": "UpUser",
+                        "module": "dbupdater",
+                        "action": "update",
                         "options": {
-                          "value": "{{NOW.md5(123456).substr(1, 12)}}"
+                          "connection": "postgres_gcpServer",
+                          "sql": {
+                            "type": "update",
+                            "values": [
+                              {
+                                "table": "m_users",
+                                "column": "balance_amt",
+                                "type": "text",
+                                "value": "{{WalletNetAmt}}"
+                              },
+                              {
+                                "table": "m_users",
+                                "column": "aeps_balance",
+                                "type": "text",
+                                "value": "{{AEPSRemaining}}"
+                              },
+                              {
+                                "table": "m_users",
+                                "column": "updated_by",
+                                "type": "text",
+                                "value": "{{identity}}"
+                              },
+                              {
+                                "table": "m_users",
+                                "column": "updated_on",
+                                "type": "datetime",
+                                "value": "{{NOW}}"
+                              }
+                            ],
+                            "table": "m_users",
+                            "wheres": {
+                              "condition": "AND",
+                              "rules": [
+                                {
+                                  "id": "id",
+                                  "field": "id",
+                                  "type": "double",
+                                  "operator": "equal",
+                                  "value": "{{identity}}",
+                                  "data": {
+                                    "column": "id"
+                                  },
+                                  "operation": "="
+                                }
+                              ],
+                              "conditional": null,
+                              "valid": true
+                            },
+                            "returning": "id",
+                            "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{WalletNetAmt}} */, aeps_balance = :P2 /* {{AEPSRemaining}} */, updated_by = :P3 /* {{identity}} */, updated_on = :P4 /* {{NOW}} */\nWHERE id = :P5 /* {{identity}} */",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{WalletNetAmt}}"
+                              },
+                              {
+                                "name": ":P2",
+                                "type": "expression",
+                                "value": "{{AEPSRemaining}}"
+                              },
+                              {
+                                "name": ":P3",
+                                "type": "expression",
+                                "value": "{{identity}}"
+                              },
+                              {
+                                "name": ":P4",
+                                "type": "expression",
+                                "value": "{{NOW}}"
+                              },
+                              {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P5",
+                                "value": "{{identity}}"
+                              }
+                            ]
+                          }
                         },
-                        "meta": [],
-                        "outputType": "text"
-                      },
-                      {
-                        "name": "RTCommAmt",
-                        "module": "core",
-                        "action": "setvalue",
-                        "options": {
-                          "value": "{{($_POST.WithdrawLimit.toNumber()*GetOpComm.comm_per.toNumber()/100)+GetOpComm.comm_val.toNumber()}}"
-                        },
-                        "meta": [],
-                        "outputType": "text"
-                      },
-                      {
-                        "name": "RTChargeAmt",
-                        "module": "core",
-                        "action": "setvalue",
-                        "options": {
-                          "value": "{{($_POST.WithdrawLimit.toNumber()*GetOpComm.service_charge_per.toNumber()/100)+GetOpComm.service_charge_val.toNumber()}}"
-                        },
-                        "meta": [],
-                        "outputType": "text"
-                      },
-                      {
-                        "name": "RTNetAmt",
-                        "module": "core",
-                        "action": "setvalue",
-                        "options": {
-                          "value": "{{$_POST.WithdrawLimit.toNumber()+RTCommAmt.toNumber()-RTChargeAmt.toNumber()}}"
-                        },
-                        "meta": [],
-                        "outputType": "text"
-                      },
-                      {
-                        "name": "AEPSRemaining",
-                        "module": "core",
-                        "action": "setvalue",
-                        "options": {
-                          "value": "{{GetUserDetails.aeps_balance.toNumber()-$_POST.WithdrawLimit.toNumber()}}"
-                        },
-                        "meta": [],
-                        "outputType": "text"
-                      },
-                      {
-                        "name": "WalletNetAmt",
-                        "module": "core",
-                        "action": "setvalue",
-                        "options": {
-                          "value": "{{GetUserDetails.balance_amt.toNumber()+RTNetAmt.toNumber()}}"
-                        },
-                        "meta": [],
-                        "outputType": "text"
+                        "meta": [
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ]
                       },
                       {
                         "name": "AddAEPSTrans",
@@ -1773,127 +1865,35 @@
                             "type": "number"
                           }
                         ]
-                      },
-                      {
-                        "name": "UpUser",
-                        "module": "dbupdater",
-                        "action": "update",
-                        "options": {
-                          "connection": "postgres_gcpServer",
-                          "sql": {
-                            "type": "update",
-                            "values": [
-                              {
-                                "table": "m_users",
-                                "column": "balance_amt",
-                                "type": "text",
-                                "value": "{{WalletNetAmt}}"
-                              },
-                              {
-                                "table": "m_users",
-                                "column": "aeps_balance",
-                                "type": "text",
-                                "value": "{{AEPSRemaining}}"
-                              },
-                              {
-                                "table": "m_users",
-                                "column": "updated_by",
-                                "type": "text",
-                                "value": "{{identity}}"
-                              },
-                              {
-                                "table": "m_users",
-                                "column": "updated_on",
-                                "type": "datetime",
-                                "value": "{{NOW}}"
-                              }
-                            ],
-                            "table": "m_users",
-                            "wheres": {
-                              "condition": "AND",
-                              "rules": [
-                                {
-                                  "id": "id",
-                                  "field": "id",
-                                  "type": "double",
-                                  "operator": "equal",
-                                  "value": "{{identity}}",
-                                  "data": {
-                                    "column": "id"
-                                  },
-                                  "operation": "="
-                                }
-                              ],
-                              "conditional": null,
-                              "valid": true
-                            },
-                            "returning": "id",
-                            "query": "UPDATE m_users\nSET balance_amt = :P1 /* {{WalletNetAmt}} */, aeps_balance = :P2 /* {{AEPSRemaining}} */, updated_by = :P3 /* {{identity}} */, updated_on = :P4 /* {{NOW}} */\nWHERE id = :P5 /* {{identity}} */",
-                            "params": [
-                              {
-                                "name": ":P1",
-                                "type": "expression",
-                                "value": "{{WalletNetAmt}}"
-                              },
-                              {
-                                "name": ":P2",
-                                "type": "expression",
-                                "value": "{{AEPSRemaining}}"
-                              },
-                              {
-                                "name": ":P3",
-                                "type": "expression",
-                                "value": "{{identity}}"
-                              },
-                              {
-                                "name": ":P4",
-                                "type": "expression",
-                                "value": "{{NOW}}"
-                              },
-                              {
-                                "operator": "equal",
-                                "type": "expression",
-                                "name": ":P5",
-                                "value": "{{identity}}"
-                              }
-                            ]
-                          }
-                        },
-                        "meta": [
-                          {
-                            "name": "affected",
-                            "type": "number"
-                          }
-                        ]
-                      },
-                      {
-                        "name": "Status",
-                        "module": "core",
-                        "action": "response",
-                        "options": {
-                          "status": 200,
-                          "data": "{{'Transfer of Rs. '+$_POST.WithdrawLimit+' From AEPS Wallet to Main Wallet Successful.'}}"
-                        },
-                        "output": true
                       }
                     ]
+                  },
+                  "else": {
+                    "steps": {
+                      "name": "Resp",
+                      "module": "core",
+                      "action": "response",
+                      "options": {
+                        "status": 403,
+                        "data": "Withdraw Amount (Including Commission and Charges) must be less than or equal to current AEPS Limit"
+                      },
+                      "output": true
+                    }
                   }
                 },
                 "outputType": "boolean"
+              },
+              {
+                "name": "Status",
+                "module": "core",
+                "action": "response",
+                "options": {
+                  "status": 200,
+                  "data": "{{'Transfer of Rs. '+$_POST.WithdrawLimit+' From AEPS Wallet to Main Wallet Successful.'}}"
+                },
+                "output": true
               }
             ]
-          },
-          "else": {
-            "steps": {
-              "name": "Resp",
-              "module": "core",
-              "action": "response",
-              "options": {
-                "status": 403,
-                "data": "Withdraw Amount must be less than or equal to current AEPS Limit"
-              },
-              "output": true
-            }
           }
         },
         "outputType": "boolean"
