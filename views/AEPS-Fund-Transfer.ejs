@@ -2,6 +2,7 @@
 
 <meta name="ac:route" content="/AEPS-Fund-Transfer">
 <dmx-serverconnect id="scBeneficiary" url="api/AEPS/GetBeneficiary"></dmx-serverconnect>
+<dmx-serverconnect id="scBankList" url="api/DMT/GetBankList"></dmx-serverconnect>
 <div class="container-fluid">
     <h1 class="mt-4">AEPS Fund Transfer
         <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scLoginUser.state.executing"></span>
@@ -24,7 +25,9 @@
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label for="inputBankName" class="col-form-label">Bank Name</label>
-                                <input type="text" class="form-control" id="inputBankName" name="BankName" aria-describedby="inputBankName_help" required="">
+                                <select id="inputBankName" class="sw-select2 form-select fs-6 text-gray-500" name="BankName" required="" dmx-bind:options="content.scBankList.data.GetDBBanks" optiontext="bank_name.titlecase()" optionvalue="bank_name.titlecase()" required="">
+                                    <option value="">Select Bank</option>
+                                </select>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label for="inputBankAC" class="col-form-label">Bank Account No.</label>
