@@ -510,7 +510,7 @@
               "action": "response",
               "options": {
                 "status": 403,
-                "data": "Merchant not exist or Maximum limit of add beneficiary is 10 "
+                "data": "Merchant not exist or Maximum limit of add beneficiary is 5 "
               },
               "output": true
             }

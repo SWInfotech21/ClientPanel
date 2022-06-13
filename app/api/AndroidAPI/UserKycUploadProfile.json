@@ -1,0 +1,1125 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/login.ejs",
+      "linkedForm": "formLogin"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "username"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "password"
+      },
+      {
+        "type": "file",
+        "fieldName": "profile",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "profile",
+        "sub": [
+          {
+            "type": "text",
+            "name": "name"
+          },
+          {
+            "type": "text",
+            "name": "type"
+          },
+          {
+            "type": "number",
+            "name": "size"
+          },
+          {
+            "type": "text",
+            "name": "error"
+          }
+        ],
+        "outputType": "file"
+      }
+    ],
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "REMOTE_ADDR"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "trycatch",
+      "options": {
+        "try": {
+          "steps": [
+            {
+              "name": "getSalt",
+              "module": "dbconnector",
+              "action": "single",
+              "options": {
+                "connection": "postgres_gcpServer",
+                "sql": {
+                  "type": "SELECT",
+                  "columns": [
+                    {
+                      "table": "m_users",
+                      "column": "salt",
+                      "alias": "saltvalue"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "user_tpin"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "md_id"
+                    },
+                    {
+                      "table": "m_users",
+                      "column": "ds_id"
+                    }
+                  ],
+                  "table": {
+                    "name": "m_users"
+                  },
+                  "joins": [],
+                  "query": "SELECT salt AS saltvalue, user_tpin, id, md_id, ds_id\nFROM m_users\nWHERE user_type BETWEEN 1 AND 3 AND u_status = '1' AND blank2 = :P1 /* {{$_POST.username}} */",
+                  "params": [
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P1",
+                      "value": "{{$_POST.username}}"
+                    }
+                  ],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "m_users.user_type",
+                        "field": "m_users.user_type",
+                        "type": "double",
+                        "operator": "between",
+                        "value": [
+                          1,
+                          3
+                        ],
+                        "data": {
+                          "table": "m_users",
+                          "column": "user_type",
+                          "type": "number",
+                          "columnObj": {
+                            "type": "integer",
+                            "primary": false,
+                            "nullable": false,
+                            "name": "user_type"
+                          }
+                        },
+                        "operation": "BETWEEN"
+                      },
+                      {
+                        "id": "m_users.u_status",
+                        "field": "m_users.u_status",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "1",
+                        "data": {
+                          "table": "m_users",
+                          "column": "u_status",
+                          "type": "text",
+                          "columnObj": {
+                            "type": "string",
+                            "primary": false,
+                            "nullable": true,
+                            "name": "u_status"
+                          }
+                        },
+                        "operation": "="
+                      },
+                      {
+                        "id": "m_users.blank2",
+                        "field": "m_users.blank2",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "{{$_POST.username}}",
+                        "data": {
+                          "table": "m_users",
+                          "column": "blank2",
+                          "type": "text",
+                          "columnObj": {
+                            "type": "string",
+                            "primary": false,
+                            "nullable": true,
+                            "name": "blank2"
+                          }
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  },
+                  "primary": "id"
+                }
+              },
+              "output": false,
+              "meta": [
+                {
+                  "type": "text",
+                  "name": "saltvalue"
+                },
+                {
+                  "type": "text",
+                  "name": "user_tpin"
+                },
+                {
+                  "type": "number",
+                  "name": "id"
+                },
+                {
+                  "type": "text",
+                  "name": "md_id"
+                },
+                {
+                  "type": "text",
+                  "name": "ds_id"
+                }
+              ],
+              "outputType": "object"
+            },
+            {
+              "name": "",
+              "module": "core",
+              "action": "condition",
+              "options": {
+                "if": "{{getSalt.saltvalue}}",
+                "then": {
+                  "steps": [
+                    {
+                      "name": "GetMdt",
+                      "module": "dbconnector",
+                      "action": "single",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "SELECT",
+                          "columns": [
+                            {
+                              "table": "m_users",
+                              "column": "id",
+                              "alias": "countmdt",
+                              "aggregate": "COUNT"
+                            }
+                          ],
+                          "table": {
+                            "name": "m_users"
+                          },
+                          "joins": [],
+                          "groupBy": [],
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "m_users.id",
+                                "field": "m_users.id",
+                                "type": "double",
+                                "operator": "equal",
+                                "value": "{{getSalt.md_id.toNumber()}}",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "id",
+                                  "type": "number"
+                                },
+                                "operation": "="
+                              },
+                              {
+                                "id": "m_users.u_status",
+                                "field": "m_users.u_status",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "1",
+                                "data": {
+                                  "table": "m_users",
+                                  "column": "u_status",
+                                  "type": "text"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "query": "SELECT COUNT(id) AS countmdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.md_id.toNumber()}} */ AND u_status = '1'",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{getSalt.md_id.toNumber()}}"
+                            }
+                          ],
+                          "primary": "id"
+                        }
+                      },
+                      "output": false,
+                      "meta": [
+                        {
+                          "type": "number",
+                          "name": "countmdt"
+                        }
+                      ],
+                      "outputType": "object"
+                    },
+                    {
+                      "name": "",
+                      "module": "core",
+                      "action": "condition",
+                      "options": {
+                        "if": "{{GetMdt.countmdt > 0 || getSalt.md_id.toNumber() == 0}}",
+                        "then": {
+                          "steps": [
+                            {
+                              "name": "GetDt",
+                              "module": "dbconnector",
+                              "action": "single",
+                              "options": {
+                                "connection": "postgres_gcpServer",
+                                "sql": {
+                                  "type": "SELECT",
+                                  "columns": [
+                                    {
+                                      "table": "m_users",
+                                      "column": "id",
+                                      "alias": "countdt",
+                                      "aggregate": "COUNT"
+                                    }
+                                  ],
+                                  "table": {
+                                    "name": "m_users"
+                                  },
+                                  "joins": [],
+                                  "groupBy": [],
+                                  "wheres": {
+                                    "condition": "AND",
+                                    "rules": [
+                                      {
+                                        "id": "m_users.id",
+                                        "field": "m_users.id",
+                                        "type": "double",
+                                        "operator": "equal",
+                                        "value": "{{getSalt.ds_id.toNumber()}}",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "id",
+                                          "type": "number"
+                                        },
+                                        "operation": "="
+                                      },
+                                      {
+                                        "id": "m_users.u_status",
+                                        "field": "m_users.u_status",
+                                        "type": "string",
+                                        "operator": "equal",
+                                        "value": "1",
+                                        "data": {
+                                          "table": "m_users",
+                                          "column": "u_status",
+                                          "type": "text"
+                                        },
+                                        "operation": "="
+                                      }
+                                    ],
+                                    "conditional": null,
+                                    "valid": true
+                                  },
+                                  "query": "SELECT COUNT(id) AS countdt\nFROM m_users\nWHERE id = :P1 /* {{getSalt.ds_id.toNumber()}} */ AND u_status = '1'",
+                                  "params": [
+                                    {
+                                      "operator": "equal",
+                                      "type": "expression",
+                                      "name": ":P1",
+                                      "value": "{{getSalt.ds_id.toNumber()}}"
+                                    }
+                                  ],
+                                  "primary": "id"
+                                }
+                              },
+                              "output": false,
+                              "meta": [
+                                {
+                                  "type": "number",
+                                  "name": "countdt"
+                                }
+                              ],
+                              "outputType": "object"
+                            },
+                            {
+                              "name": "",
+                              "module": "core",
+                              "action": "condition",
+                              "options": {
+                                "if": "{{GetDt.countdt > 0 || getSalt.ds_id.toNumber() == 0}}",
+                                "then": {
+                                  "steps": [
+                                    {
+                                      "name": "identity",
+                                      "module": "auth",
+                                      "action": "login",
+                                      "options": {
+                                        "provider": "securityAndroid",
+                                        "password": "{{$_POST.password.sha256(getSalt.saltvalue)}}",
+                                        "remember": ""
+                                      },
+                                      "output": false,
+                                      "meta": []
+                                    },
+                                    {
+                                      "name": "",
+                                      "module": "core",
+                                      "action": "condition",
+                                      "options": {
+                                        "if": "{{identity}}",
+                                        "then": {
+                                          "steps": [
+                                            {
+                                              "name": "GetUser",
+                                              "module": "dbconnector",
+                                              "action": "single",
+                                              "options": {
+                                                "connection": "postgres_gcpServer",
+                                                "sql": {
+                                                  "type": "SELECT",
+                                                  "columns": [
+                                                    {
+                                                      "table": "t_user_kyc",
+                                                      "column": "id",
+                                                      "alias": "CountId",
+                                                      "aggregate": "COUNT"
+                                                    }
+                                                  ],
+                                                  "table": {
+                                                    "name": "t_user_kyc"
+                                                  },
+                                                  "primary": "id",
+                                                  "joins": [],
+                                                  "groupBy": [],
+                                                  "wheres": {
+                                                    "condition": "AND",
+                                                    "rules": [
+                                                      {
+                                                        "id": "t_user_kyc.user_id",
+                                                        "field": "t_user_kyc.user_id",
+                                                        "type": "double",
+                                                        "operator": "equal",
+                                                        "value": "{{identity}}",
+                                                        "data": {
+                                                          "table": "t_user_kyc",
+                                                          "column": "user_id",
+                                                          "type": "number",
+                                                          "columnObj": {
+                                                            "type": "integer",
+                                                            "primary": false,
+                                                            "unique": false,
+                                                            "nullable": false,
+                                                            "name": "user_id"
+                                                          }
+                                                        },
+                                                        "operation": "="
+                                                      }
+                                                    ],
+                                                    "conditional": null,
+                                                    "valid": true
+                                                  },
+                                                  "query": "SELECT COUNT(id) AS CountId\nFROM t_user_kyc\nWHERE user_id = :P1 /* {{identity}} */",
+                                                  "params": [
+                                                    {
+                                                      "operator": "equal",
+                                                      "type": "expression",
+                                                      "name": ":P1",
+                                                      "value": "{{identity}}"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "output": false,
+                                              "meta": [
+                                                {
+                                                  "type": "number",
+                                                  "name": "CountId"
+                                                }
+                                              ],
+                                              "outputType": "object"
+                                            },
+                                            {
+                                              "name": "",
+                                              "module": "core",
+                                              "action": "condition",
+                                              "options": {
+                                                "if": "{{GetUser.CountId>0}}",
+                                                "then": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "GetImage",
+                                                      "module": "dbconnector",
+                                                      "action": "single",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "SELECT",
+                                                          "columns": [
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "profile_pic"
+                                                            },
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "pan_card"
+                                                            },
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "aadhar_front"
+                                                            },
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "aadhar_back"
+                                                            }
+                                                          ],
+                                                          "table": {
+                                                            "name": "t_user_kyc"
+                                                          },
+                                                          "primary": "id",
+                                                          "joins": [],
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "t_user_kyc.user_id",
+                                                                "field": "t_user_kyc.user_id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{identity}}",
+                                                                "data": {
+                                                                  "table": "t_user_kyc",
+                                                                  "column": "user_id",
+                                                                  "type": "number",
+                                                                  "columnObj": {
+                                                                    "type": "integer",
+                                                                    "primary": false,
+                                                                    "unique": false,
+                                                                    "nullable": false,
+                                                                    "name": "user_id"
+                                                                  }
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "query": "SELECT profile_pic, pan_card, aadhar_front, aadhar_back\nFROM t_user_kyc\nWHERE user_id = :P1 /* {{identity}} */",
+                                                          "params": [
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P1",
+                                                              "value": "{{identity}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "output": false,
+                                                      "meta": [
+                                                        {
+                                                          "type": "text",
+                                                          "name": "profile_pic"
+                                                        },
+                                                        {
+                                                          "type": "text",
+                                                          "name": "pan_card"
+                                                        },
+                                                        {
+                                                          "type": "text",
+                                                          "name": "aadhar_front"
+                                                        },
+                                                        {
+                                                          "type": "text",
+                                                          "name": "aadhar_back"
+                                                        }
+                                                      ],
+                                                      "outputType": "object"
+                                                    },
+                                                    {
+                                                      "name": "",
+                                                      "module": "core",
+                                                      "action": "condition",
+                                                      "options": {
+                                                        "if": "{{$_POST.profile&&$_POST.profile!=null&&$_POST.profile!=' '}}",
+                                                        "then": {
+                                                          "steps": [
+                                                            {
+                                                              "name": "ProfileEdit",
+                                                              "module": "upload",
+                                                              "action": "upload",
+                                                              "options": {
+                                                                "fields": "{{$_POST.profile}}",
+                                                                "path": "/public/assets/images/profile",
+                                                                "template": "{guid}{ext}",
+                                                                "replaceSpace": true,
+                                                                "replaceDiacritics": true,
+                                                                "asciiOnly": true,
+                                                                "overwrite": true,
+                                                                "throwErrors": true
+                                                              },
+                                                              "meta": [
+                                                                {
+                                                                  "name": "name",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "path",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "url",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "type",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "size",
+                                                                  "type": "text"
+                                                                },
+                                                                {
+                                                                  "name": "error",
+                                                                  "type": "number"
+                                                                }
+                                                              ],
+                                                              "outputType": "file",
+                                                              "output": false
+                                                            },
+                                                            {
+                                                              "name": "Profile",
+                                                              "module": "core",
+                                                              "action": "setvalue",
+                                                              "options": {
+                                                                "value": "{{'/assets/images/profile/'+ProfileEdit.name}}"
+                                                              },
+                                                              "meta": [],
+                                                              "outputType": "text"
+                                                            },
+                                                            {
+                                                              "name": "fileExists",
+                                                              "module": "fs",
+                                                              "action": "exists",
+                                                              "options": {
+                                                                "path": "{{'/public'+GetImage.profile_pic}}",
+                                                                "then": {
+                                                                  "steps": {
+                                                                    "name": "fileRemove",
+                                                                    "module": "fs",
+                                                                    "action": "remove",
+                                                                    "options": {
+                                                                      "path": "{{'/public'+GetImage.profile_pic}}"
+                                                                    },
+                                                                    "outputType": "boolean"
+                                                                  }
+                                                                }
+                                                              },
+                                                              "outputType": "boolean"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "else": {
+                                                          "steps": {
+                                                            "name": "Profile",
+                                                            "module": "core",
+                                                            "action": "setvalue",
+                                                            "options": {
+                                                              "value": "{{GetImage.profile_pic}}"
+                                                            },
+                                                            "meta": [],
+                                                            "outputType": "text"
+                                                          }
+                                                        }
+                                                      },
+                                                      "outputType": "boolean"
+                                                    },
+                                                    {
+                                                      "name": "KycEditUp",
+                                                      "module": "dbupdater",
+                                                      "action": "update",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "update",
+                                                          "values": [
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "profile_pic",
+                                                              "type": "text",
+                                                              "value": "{{Profile}}"
+                                                            },
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "updated_by",
+                                                              "type": "number",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "updated_on",
+                                                              "type": "datetime",
+                                                              "value": "{{NOW}}"
+                                                            }
+                                                          ],
+                                                          "table": "t_user_kyc",
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "user_id",
+                                                                "field": "user_id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{identity}}",
+                                                                "data": {
+                                                                  "column": "user_id"
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "returning": "id",
+                                                          "query": "UPDATE t_user_kyc\nSET profile_pic = :P1 /* {{Profile}} */, updated_by = :P2 /* {{identity}} */, updated_on = :P3 /* {{NOW}} */\nWHERE user_id = :P4 /* {{identity}} */",
+                                                          "params": [
+                                                            {
+                                                              "name": ":P1",
+                                                              "type": "expression",
+                                                              "value": "{{Profile}}"
+                                                            },
+                                                            {
+                                                              "name": ":P2",
+                                                              "type": "expression",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "name": ":P3",
+                                                              "type": "expression",
+                                                              "value": "{{NOW}}"
+                                                            },
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P4",
+                                                              "value": "{{identity}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "name": "UpUserEdit",
+                                                      "module": "dbupdater",
+                                                      "action": "update",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "update",
+                                                          "values": [
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "kyc_status",
+                                                              "type": "text",
+                                                              "value": "{{0}}"
+                                                            }
+                                                          ],
+                                                          "table": "m_users",
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "id",
+                                                                "field": "id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{identity}}",
+                                                                "data": {
+                                                                  "column": "id"
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "returning": "id",
+                                                          "query": "UPDATE m_users\nSET kyc_status = :P1 /* {{0}} */\nWHERE id = :P2 /* {{identity}} */",
+                                                          "params": [
+                                                            {
+                                                              "name": ":P1",
+                                                              "type": "expression",
+                                                              "value": "{{0}}"
+                                                            },
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P2",
+                                                              "value": "{{identity}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "name": "Status",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": 200
+                                                      },
+                                                      "meta": [],
+                                                      "output": true,
+                                                      "outputType": "text"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "outputType": "boolean"
+                                            },
+                                            {
+                                              "name": "",
+                                              "module": "core",
+                                              "action": "condition",
+                                              "options": {
+                                                "if": "{{GetUser.CountId<1}}",
+                                                "then": {
+                                                  "steps": [
+                                                    {
+                                                      "name": "",
+                                                      "module": "core",
+                                                      "action": "condition",
+                                                      "options": {
+                                                        "if": "{{$_POST.profile&&$_POST.profile!=null&&$_POST.profile!=' '}}",
+                                                        "then": {
+                                                          "steps": {
+                                                            "name": "ProfileAdd",
+                                                            "module": "upload",
+                                                            "action": "upload",
+                                                            "options": {
+                                                              "fields": "{{$_POST.profile}}",
+                                                              "path": "/public/assets/images/profile",
+                                                              "template": "{guid}{ext}",
+                                                              "replaceSpace": true,
+                                                              "replaceDiacritics": true,
+                                                              "asciiOnly": true,
+                                                              "overwrite": true,
+                                                              "throwErrors": true
+                                                            },
+                                                            "meta": [
+                                                              {
+                                                                "name": "name",
+                                                                "type": "text"
+                                                              },
+                                                              {
+                                                                "name": "path",
+                                                                "type": "text"
+                                                              },
+                                                              {
+                                                                "name": "url",
+                                                                "type": "text"
+                                                              },
+                                                              {
+                                                                "name": "type",
+                                                                "type": "text"
+                                                              },
+                                                              {
+                                                                "name": "size",
+                                                                "type": "text"
+                                                              },
+                                                              {
+                                                                "name": "error",
+                                                                "type": "number"
+                                                              }
+                                                            ],
+                                                            "outputType": "file",
+                                                            "output": false
+                                                          }
+                                                        }
+                                                      },
+                                                      "outputType": "boolean"
+                                                    },
+                                                    {
+                                                      "name": "AddKyc",
+                                                      "module": "dbupdater",
+                                                      "action": "insert",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "insert",
+                                                          "values": [
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "user_id",
+                                                              "type": "number",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "profile_pic",
+                                                              "type": "text",
+                                                              "value": "{{'/assets/images/profile/'+ProfileAdd.name}}"
+                                                            },
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "created_by",
+                                                              "type": "number",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "table": "t_user_kyc",
+                                                              "column": "created_on",
+                                                              "type": "datetime",
+                                                              "value": "{{NOW}}"
+                                                            }
+                                                          ],
+                                                          "table": "t_user_kyc",
+                                                          "returning": "id",
+                                                          "query": "INSERT INTO t_user_kyc\n(user_id, profile_pic, created_by, created_on) VALUES (:P1 /* {{identity}} */, :P2 /* {{'/assets/images/profile/'+ProfileAdd.name}} */, :P3 /* {{identity}} */, :P4 /* {{NOW}} */)",
+                                                          "params": [
+                                                            {
+                                                              "name": ":P1",
+                                                              "type": "expression",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "name": ":P2",
+                                                              "type": "expression",
+                                                              "value": "{{'/assets/images/profile/'+ProfileAdd.name}}"
+                                                            },
+                                                            {
+                                                              "name": ":P3",
+                                                              "type": "expression",
+                                                              "value": "{{identity}}"
+                                                            },
+                                                            {
+                                                              "name": ":P4",
+                                                              "type": "expression",
+                                                              "value": "{{NOW}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "identity",
+                                                          "type": "text"
+                                                        },
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "name": "UpUserAdd",
+                                                      "module": "dbupdater",
+                                                      "action": "update",
+                                                      "options": {
+                                                        "connection": "postgres_gcpServer",
+                                                        "sql": {
+                                                          "type": "update",
+                                                          "values": [
+                                                            {
+                                                              "table": "m_users",
+                                                              "column": "kyc_status",
+                                                              "type": "text",
+                                                              "value": "{{0}}"
+                                                            }
+                                                          ],
+                                                          "table": "m_users",
+                                                          "wheres": {
+                                                            "condition": "AND",
+                                                            "rules": [
+                                                              {
+                                                                "id": "id",
+                                                                "field": "id",
+                                                                "type": "double",
+                                                                "operator": "equal",
+                                                                "value": "{{identity}}",
+                                                                "data": {
+                                                                  "column": "id"
+                                                                },
+                                                                "operation": "="
+                                                              }
+                                                            ],
+                                                            "conditional": null,
+                                                            "valid": true
+                                                          },
+                                                          "returning": "id",
+                                                          "query": "UPDATE m_users\nSET kyc_status = :P1 /* {{0}} */\nWHERE id = :P2 /* {{identity}} */",
+                                                          "params": [
+                                                            {
+                                                              "name": ":P1",
+                                                              "type": "expression",
+                                                              "value": "{{0}}"
+                                                            },
+                                                            {
+                                                              "operator": "equal",
+                                                              "type": "expression",
+                                                              "name": ":P2",
+                                                              "value": "{{identity}}"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      "meta": [
+                                                        {
+                                                          "name": "affected",
+                                                          "type": "number"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "name": "Status",
+                                                      "module": "core",
+                                                      "action": "setvalue",
+                                                      "options": {
+                                                        "value": 200
+                                                      },
+                                                      "meta": [],
+                                                      "output": true,
+                                                      "outputType": "text"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "outputType": "boolean"
+                                            }
+                                          ]
+                                        },
+                                        "else": {
+                                          "steps": {
+                                            "name": "Resp",
+                                            "module": "core",
+                                            "action": "setvalue",
+                                            "options": {
+                                              "value": "Password Mismatched"
+                                            },
+                                            "meta": [],
+                                            "output": true,
+                                            "outputType": "text"
+                                          }
+                                        }
+                                      },
+                                      "outputType": "boolean"
+                                    }
+                                  ]
+                                },
+                                "else": {
+                                  "steps": {
+                                    "name": "Resp",
+                                    "module": "core",
+                                    "action": "setvalue",
+                                    "options": {
+                                      "value": "Your Distributor(DT) inactive, Please contact technical support team"
+                                    },
+                                    "meta": [],
+                                    "outputType": "text",
+                                    "output": true
+                                  }
+                                }
+                              },
+                              "outputType": "boolean"
+                            }
+                          ]
+                        },
+                        "else": {
+                          "steps": {
+                            "name": "Resp",
+                            "module": "core",
+                            "action": "setvalue",
+                            "options": {
+                              "value": "Your Master Distributor(MDT) inactive, Please contact technical support team"
+                            },
+                            "meta": [],
+                            "output": true,
+                            "outputType": "text"
+                          }
+                        }
+                      },
+                      "outputType": "boolean"
+                    }
+                  ]
+                },
+                "else": {
+                  "steps": {
+                    "name": "Resp",
+                    "module": "core",
+                    "action": "setvalue",
+                    "options": {
+                      "value": "User does not exists or user inactive, Please contact technical support team"
+                    },
+                    "meta": [],
+                    "outputType": "text",
+                    "output": true
+                  }
+                }
+              },
+              "outputType": "boolean",
+              "output": false
+            }
+          ]
+        },
+        "catch": {
+          "steps": {
+            "name": "Resp",
+            "module": "core",
+            "action": "setvalue",
+            "options": {
+              "value": "Do not even try to do this, we are watching & recording your wrong activity!"
+            },
+            "meta": [],
+            "output": true,
+            "outputType": "text"
+          }
+        }
+      }
+    }
+  }
+}
