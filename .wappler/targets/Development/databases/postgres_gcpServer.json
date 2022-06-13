@@ -1355,6 +1355,13 @@
               "nullable": true
             }
           }
+        },
+        "sub": {
+          "m_api_forward": "api_id"
+        },
+        "refs": {
+          "t_op_api": "api_id",
+          "t_random_root": "api_id"
         }
       },
       "m_api_forward": {
@@ -1489,7 +1496,8 @@
               "unique": false
             }
           }
-        }
+        },
+        "parent": "m_api"
       },
       "m_bank": {
         "db": {
@@ -1790,6 +1798,15 @@
               "nullable": true
             }
           }
+        },
+        "refs": {
+          "m_api_forward": "operator_id",
+          "m_commission": "operator_id",
+          "t_op_api": "op_id",
+          "t_op_api_rel": "op_id",
+          "t_random_root": "op_id",
+          "tt_aeps_trans": "op_id",
+          "tt_recharge_trans": "op_id"
         }
       },
       "m_recharge_plan": {
@@ -1802,6 +1819,7 @@
           "schema": "public"
         },
         "refs": {
+          "m_commission": "scheme_id",
           "m_users": "scheme_id"
         }
       },
@@ -1902,6 +1920,11 @@
               "nullable": true
             }
           }
+        },
+        "refs": {
+          "t_random_root": "service_id",
+          "tt_aeps_trans": "service_id",
+          "tt_recharge_trans": "service_id"
         }
       },
       "m_signup": {
@@ -2044,6 +2067,10 @@
               "nullable": true
             }
           }
+        },
+        "refs": {
+          "android_sliding_image": "user_type",
+          "m_users": "user_type"
         }
       },
       "m_users": {
@@ -2398,6 +2425,22 @@
               "nullable": true
             }
           }
+        },
+        "refs": {
+          "cc_pageaccess": "ccuser_id",
+          "dump_api_token": "user_id",
+          "payment_request": "pay_user_id",
+          "t_api_token": "user_id",
+          "t_charge_aeps_cal": "user_id",
+          "t_charge_cal": "user_id",
+          "t_login_history": "user_id",
+          "t_sms_log": "user_id",
+          "t_ticket": "user_id",
+          "t_user_kyc": "user_id",
+          "tt_aeps_balance": "user_id",
+          "tt_aeps_trans": "user_id",
+          "tt_balance": "user_id",
+          "tt_recharge_trans": "user_id"
         }
       },
       "payment_request": {
@@ -2812,6 +2855,132 @@
       "t_bank_list_beta": {
         "db": {
           "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "bank_name": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "bank_code": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "is_imps": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "is_neft": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "is_ac_verify_available": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "ifsc": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "status": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "remarks": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "created_by": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "created_on": {
+            "db": {
+              "type": "timestamp",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "blank1": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "blank2": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "blank3": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
         }
       },
       "t_bank_withdrawal": {
@@ -4906,6 +5075,10 @@
               "nullable": true
             }
           }
+        },
+        "refs": {
+          "t_charge_aeps_cal": "pay_ref_id",
+          "tt_aeps_balance": "pay_ref_id"
         }
       },
       "tt_balance": {
@@ -5566,6 +5739,11 @@
               "unique": false
             }
           }
+        },
+        "refs": {
+          "bbps_info": "pay_ref_id",
+          "t_charge_cal": "pay_ref_id",
+          "tt_balance": "pay_ref_id"
         }
       }
     },
