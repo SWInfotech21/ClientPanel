@@ -405,7 +405,7 @@
                                                       "field": "t_bank_list_beta.status",
                                                       "type": "string",
                                                       "operator": "equal",
-                                                      "value": "1",
+                                                      "value": "{{'Active'}}",
                                                       "data": {
                                                         "table": "t_bank_list_beta",
                                                         "column": "status",
@@ -425,13 +425,21 @@
                                                   "conditional": null,
                                                   "valid": true
                                                 },
-                                                "query": "SELECT bank_name, bank_code, is_imps, is_neft, is_ac_verify_available, ifsc\nFROM t_bank_list_beta\nWHERE status = '1'\nORDER BY bank_name ASC",
-                                                "params": [],
+                                                "query": "SELECT bank_name, bank_code, is_imps, is_neft, is_ac_verify_available, ifsc\nFROM t_bank_list_beta\nWHERE status = :P1 /* {{'Active'}} */\nORDER BY bank_name ASC",
+                                                "params": [
+                                                  {
+                                                    "operator": "equal",
+                                                    "type": "expression",
+                                                    "name": ":P1",
+                                                    "value": "{{'Active'}}"
+                                                  }
+                                                ],
                                                 "orders": [
                                                   {
                                                     "table": "t_bank_list_beta",
                                                     "column": "bank_name",
-                                                    "direction": "ASC"
+                                                    "direction": "ASC",
+                                                    "recid": 1
                                                   }
                                                 ]
                                               },
