@@ -1,6 +1,8 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="AEPSFundTransfer" appConnect="local" components="{dmxBootstrap5Navigation:{},dmxValidator:{},dmxBootstrap5Modal:{}}" -->
 
 <meta name="ac:route" content="/AEPS-Fund-Transfer">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <dmx-serverconnect id="scBeneficiary" url="api/AEPS/GetBeneficiary"></dmx-serverconnect>
 <dmx-serverconnect id="scBankList" url="api/DMT/GetBankList"></dmx-serverconnect>
 <div class="container-fluid">
@@ -25,7 +27,7 @@
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label for="inputBankName" class="col-form-label">Bank Name</label>
-                                <select id="inputBankName" class="sw-select2 form-select fs-6 text-gray-500" name="BankName" required="" dmx-bind:options="content.scBankList.data.GetDBBanks" optiontext="bank_name.titlecase()" optionvalue="bank_name.titlecase()" required="">
+                                <select id="inputBankName" class="sw-select2 form-select fs-6 text-gray-500 w-100" name="BankName" required="" dmx-bind:options="content.scBankList.data.GetDBBanks" optiontext="bank_name.titlecase()" optionvalue="bank_name.titlecase()" required="">
                                     <option value="">Select Bank</option>
                                 </select>
                             </div>
@@ -183,3 +185,7 @@
         </div>
     </div>
 </div>
+<script>
+    var $disabledResults = $("#inputBankName");
+    $disabledResults.select2();
+</script>
