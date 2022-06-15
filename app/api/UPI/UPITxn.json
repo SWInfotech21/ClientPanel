@@ -180,6 +180,28 @@
         "meta": [],
         "outputType": "text",
         "output": true
+      },
+      {
+        "name": "OrderId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiUPICreateURL.data.data.order_id}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "Status",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiUPICreateURL.data.status}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
       }
     ]
   }
