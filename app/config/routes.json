@@ -226,6 +226,11 @@
       "exec": "/api/PageAccess/PagesFrDTMDT"
     },
     {
+      "path": "/upi-txn-wallet",
+      "page": "upi-txn-wallet",
+      "layout": "main"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }

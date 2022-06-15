@@ -202,5 +202,9 @@
   "sales-report.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "upi-txn-wallet.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }
