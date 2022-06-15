@@ -1,0 +1,175 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/upi-txn-wallet.ejs",
+      "linkedForm": "formUPIQRGenerator"
+    },
+    "$_POST": [
+      {
+        "type": "number",
+        "fieldName": "UPIAmount",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            },
+            "core:number": {
+              "param": "",
+              "message": "Please enter a valid amount."
+            },
+            "core:maxlength": {
+              "param": "5"
+            }
+          }
+        },
+        "name": "UPIAmount"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "ReqID",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{UUID.md5(123456).substr(1, 15)}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "GetAPIKey",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_api",
+                "column": "username"
+              },
+              {
+                "table": "m_api",
+                "column": "api_password"
+              }
+            ],
+            "table": {
+              "name": "m_api"
+            },
+            "primary": "id",
+            "joins": [],
+            "query": "SELECT username, api_password\nFROM m_api\nWHERE api_type = :P1 /* {{'UPI'}} */ AND status = 1",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{'UPI'}}"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_api.api_type",
+                  "field": "m_api.api_type",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{'UPI'}}",
+                  "data": {
+                    "table": "m_api",
+                    "column": "api_type",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "maxLength": -5,
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "name": "api_type"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "m_api.status",
+                  "field": "m_api.status",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "m_api",
+                    "column": "status",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": false,
+                      "unique": false,
+                      "name": "status"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "text",
+            "name": "username"
+          },
+          {
+            "type": "text",
+            "name": "api_password"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "apiUPICreateURL",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "https://merchant.upigateway.com/api/create_order",
+          "method": "POST",
+          "dataType": "json",
+          "data": {
+            "key": "{{GetAPIKey.api_password}}",
+            "client_txn_id": "{{ReqID}}",
+            "amount": "{{$_POST.UPIAmount}}",
+            "p_info": "Recharge",
+            "customer_name": "Banti",
+            "customer_email": "swinfotech2021@gmail.com",
+            "customer_mobile": "8958148142",
+            "redirect_url": "https://swpay.in/upi-txn-wallet",
+            "udf1": "",
+            "udf2": "",
+            "udf3": ""
+          }
+        },
+        "output": true
+      }
+    ]
+  }
+}
