@@ -133,7 +133,7 @@
             }
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "text",
@@ -168,6 +168,17 @@
             "udf3": ""
           }
         },
+        "output": false
+      },
+      {
+        "name": "UPIUrl",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiUPICreateURL.data.data.payment_url}}"
+        },
+        "meta": [],
+        "outputType": "text",
         "output": true
       }
     ]
