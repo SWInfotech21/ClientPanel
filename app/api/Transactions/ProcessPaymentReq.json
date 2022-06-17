@@ -366,7 +366,8 @@
                                         "valid": true
                                       },
                                       "query": "SELECT id AS op_id, service_id\nFROM m_operator\nWHERE operator_name = 'Wallet Credit' AND status = 1",
-                                      "params": []
+                                      "params": [],
+                                      "primary": "id"
                                     }
                                   },
                                   "output": false,
