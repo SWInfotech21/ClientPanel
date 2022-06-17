@@ -1,0 +1,279 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "amount"
+      },
+      {
+        "type": "text",
+        "name": "client_txn_id"
+      },
+      {
+        "type": "text",
+        "name": "createdAt"
+      },
+      {
+        "type": "text",
+        "name": "customer_email"
+      },
+      {
+        "type": "text",
+        "name": "customer_mobile"
+      },
+      {
+        "type": "text",
+        "name": "customer_name"
+      },
+      {
+        "type": "text",
+        "name": "customer_vpa"
+      },
+      {
+        "type": "text",
+        "name": "id"
+      },
+      {
+        "type": "text",
+        "name": "p_info"
+      },
+      {
+        "type": "text",
+        "name": "redirect_url"
+      },
+      {
+        "type": "text",
+        "name": "remark"
+      },
+      {
+        "type": "text",
+        "name": "status"
+      },
+      {
+        "type": "text",
+        "name": "txnAt"
+      },
+      {
+        "type": "text",
+        "name": "udf1"
+      },
+      {
+        "type": "text",
+        "name": "udf2"
+      },
+      {
+        "type": "text",
+        "name": "udf3"
+      },
+      {
+        "type": "text",
+        "name": "upi_txn_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "insert",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "postgres_gcpServer",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "api_response",
+              "column": "user_id",
+              "type": "text",
+              "value": "{{$_POST.customer_name}}"
+            },
+            {
+              "table": "api_response",
+              "column": "recharge_mobile",
+              "type": "text",
+              "value": "{{$_POST.customer_mobile}}"
+            },
+            {
+              "table": "api_response",
+              "column": "operator",
+              "type": "text",
+              "value": "{{$_POST.p_info}}"
+            },
+            {
+              "table": "api_response",
+              "column": "amount",
+              "type": "text",
+              "value": "{{$_POST.amount}}"
+            },
+            {
+              "table": "api_response",
+              "column": "status",
+              "type": "text",
+              "value": "{{$_POST.status}}"
+            },
+            {
+              "table": "api_response",
+              "column": "order_id",
+              "type": "text",
+              "value": "{{$_POST.client_txn_id}}"
+            },
+            {
+              "table": "api_response",
+              "column": "balance",
+              "type": "text",
+              "value": "{{$_POST.amount}}"
+            },
+            {
+              "table": "api_response",
+              "column": "apirefid",
+              "type": "text",
+              "value": "{{$_POST.id}}"
+            },
+            {
+              "table": "api_response",
+              "column": "remarks",
+              "type": "text",
+              "value": "{{$_POST.remark}}"
+            },
+            {
+              "table": "api_response",
+              "column": "blank1",
+              "type": "text",
+              "value": "{{$_POST.txnAt}}"
+            },
+            {
+              "table": "api_response",
+              "column": "blank2",
+              "type": "text",
+              "value": "{{$_POST.udf3}}"
+            },
+            {
+              "table": "api_response",
+              "column": "field1",
+              "type": "text",
+              "value": "{{$_POST.udf1}}"
+            },
+            {
+              "table": "api_response",
+              "column": "field2",
+              "type": "text",
+              "value": "{{$_POST.udf2}}"
+            },
+            {
+              "table": "api_response",
+              "column": "time",
+              "type": "datetime",
+              "value": "{{NOW}}"
+            },
+            {
+              "table": "api_response",
+              "column": "live_id",
+              "type": "text",
+              "value": "{{$_POST.upi_txn_id}}"
+            },
+            {
+              "table": "api_response",
+              "column": "ec",
+              "type": "text",
+              "value": "{{$_POST.customer_vpa}}"
+            }
+          ],
+          "table": "api_response",
+          "query": "INSERT INTO api_response\n(user_id, recharge_mobile, operator, amount, status, order_id, balance, apirefid, remarks, blank1, blank2, field1, field2, time, live_id, ec) VALUES (:P1 /* {{$_POST.customer_name}} */, :P2 /* {{$_POST.customer_mobile}} */, :P3 /* {{$_POST.p_info}} */, :P4 /* {{$_POST.amount}} */, :P5 /* {{$_POST.status}} */, :P6 /* {{$_POST.client_txn_id}} */, :P7 /* {{$_POST.amount}} */, :P8 /* {{$_POST.id}} */, :P9 /* {{$_POST.remark}} */, :P10 /* {{$_POST.txnAt}} */, :P11 /* {{$_POST.udf3}} */, :P12 /* {{$_POST.udf1}} */, :P13 /* {{$_POST.udf2}} */, :P14 /* {{NOW}} */, :P15 /* {{$_POST.upi_txn_id}} */, :P16 /* {{$_POST.customer_vpa}} */)",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.customer_name}}"
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.customer_mobile}}"
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.p_info}}"
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_POST.amount}}"
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{$_POST.status}}"
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{$_POST.client_txn_id}}"
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.amount}}"
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{$_POST.id}}"
+            },
+            {
+              "name": ":P9",
+              "type": "expression",
+              "value": "{{$_POST.remark}}"
+            },
+            {
+              "name": ":P10",
+              "type": "expression",
+              "value": "{{$_POST.txnAt}}"
+            },
+            {
+              "name": ":P11",
+              "type": "expression",
+              "value": "{{$_POST.udf3}}"
+            },
+            {
+              "name": ":P12",
+              "type": "expression",
+              "value": "{{$_POST.udf1}}"
+            },
+            {
+              "name": ":P13",
+              "type": "expression",
+              "value": "{{$_POST.udf2}}"
+            },
+            {
+              "name": ":P14",
+              "type": "expression",
+              "value": "{{NOW}}"
+            },
+            {
+              "name": ":P15",
+              "type": "expression",
+              "value": "{{$_POST.upi_txn_id}}"
+            },
+            {
+              "name": ":P16",
+              "type": "expression",
+              "value": "{{$_POST.customer_vpa}}"
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}
