@@ -370,11 +370,17 @@
                         "field": "m_operator.operator_name",
                         "type": "string",
                         "operator": "equal",
-                        "value": "Wallet Credit",
+                        "value": "UPI Add Money",
                         "data": {
                           "table": "m_operator",
                           "column": "operator_name",
-                          "type": "text"
+                          "type": "text",
+                          "columnObj": {
+                            "type": "string",
+                            "primary": false,
+                            "nullable": false,
+                            "name": "operator_name"
+                          }
                         },
                         "operation": "="
                       },
@@ -387,7 +393,13 @@
                         "data": {
                           "table": "m_operator",
                           "column": "status",
-                          "type": "number"
+                          "type": "number",
+                          "columnObj": {
+                            "type": "integer",
+                            "primary": false,
+                            "nullable": false,
+                            "name": "status"
+                          }
                         },
                         "operation": "="
                       }
@@ -395,7 +407,7 @@
                     "conditional": null,
                     "valid": true
                   },
-                  "query": "SELECT id AS op_id, service_id\nFROM m_operator\nWHERE operator_name = 'Wallet Credit' AND status = 1",
+                  "query": "SELECT id AS op_id, service_id\nFROM m_operator\nWHERE operator_name = 'UPI Add Money' AND status = 1",
                   "params": [],
                   "primary": "id"
                 }
@@ -1019,6 +1031,60 @@
                         }
                       ],
                       "output": false
+                    },
+                    {
+                      "name": "UpPaymentReq",
+                      "module": "dbupdater",
+                      "action": "update",
+                      "options": {
+                        "connection": "postgres_gcpServer",
+                        "sql": {
+                          "type": "update",
+                          "values": [
+                            {
+                              "table": "payment_request",
+                              "column": "status",
+                              "type": "number",
+                              "value": "2"
+                            }
+                          ],
+                          "table": "payment_request",
+                          "wheres": {
+                            "condition": "AND",
+                            "rules": [
+                              {
+                                "id": "tr_no",
+                                "field": "tr_no",
+                                "type": "string",
+                                "operator": "equal",
+                                "value": "{{$_POST.client_txn_id}}",
+                                "data": {
+                                  "column": "tr_no"
+                                },
+                                "operation": "="
+                              }
+                            ],
+                            "conditional": null,
+                            "valid": true
+                          },
+                          "returning": "id",
+                          "query": "UPDATE payment_request\nSET status = '2'\nWHERE tr_no = :P1 /* {{$_POST.client_txn_id}} */",
+                          "params": [
+                            {
+                              "operator": "equal",
+                              "type": "expression",
+                              "name": ":P1",
+                              "value": "{{$_POST.client_txn_id}}"
+                            }
+                          ]
+                        }
+                      },
+                      "meta": [
+                        {
+                          "name": "affected",
+                          "type": "number"
+                        }
+                      ]
                     },
                     {
                       "name": "CrBalRechTrans",
