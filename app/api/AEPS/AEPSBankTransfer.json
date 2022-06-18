@@ -295,7 +295,8 @@
             "type": "text"
           }
         ],
-        "outputType": "array"
+        "outputType": "array",
+        "disabled": true
       },
       {
         "name": "AEPSBal",
@@ -363,7 +364,8 @@
           }
         ],
         "outputType": "text",
-        "output": false
+        "output": false,
+        "disabled": true
       },
       {
         "name": "AEPSLimit",
@@ -415,7 +417,8 @@
           }
         ],
         "outputType": "text",
-        "output": false
+        "output": false,
+        "disabled": true
       },
       {
         "name": "GetOpComm",
@@ -945,7 +948,7 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{AEPSLimit.toNumber()>=RTNetAmt.toNumber()}}",
+          "if": "{{AEPSBal.toNumber()>=RTNetAmt.toNumber()}}",
           "then": {
             "steps": [
               {
