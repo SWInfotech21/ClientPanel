@@ -104,7 +104,7 @@
                             </div>
                             <div class="form-group mb-0">
                                 <label for="inputCurrentLimit" class="col-form-label">Current Aeps Limit</label>
-                                <input type="text" class="form-control" id="inputCurrentLimit" aria-describedby="inputCurrentLimit_help" required="" readonly="true" disabled="true" dmx-bind:value="content.scBeneficiary.data.aeps_balance.toFixed(2)">
+                                <input type="text" class="form-control" id="inputCurrentLimit" aria-describedby="inputCurrentLimit_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance">
                             </div>
                             <div class="form-group mb-0">
                                 <label for="inputWithdrawLimit" class="col-form-label">Withdrawal Amount</label>
@@ -125,8 +125,9 @@
                             </div>
                             <div class="form-group mb-0">
                                 <label for="inputCurrentLimitBank" class="col-form-label">Current Aeps Limit</label>
-                                <input type="text" class="form-control" id="inputCurrentLimitBank" aria-describedby="inputCurrentLimitbank_help" required="" readonly="true" disabled="true" dmx-bind:value="content.scBeneficiary.data.aeps_balance.toFixed(2)">
+                                <input type="text" class="form-control" id="inputCurrentLimitBank" aria-describedby="inputCurrentLimitbank_help" required="" readonly="true" disabled="true" dmx-bind:value="scLoginUser.data.LoginUserInfo.aeps_balance">
                             </div>
+                            <!-- content.scBeneficiary.data.aeps_balance.toFixed(2) -->
                             <div class="form-group mb-0">
                                 <label for="inputSelectBank" class="col-form-label">Select Beneficiary</label>
                                 <select type="text" class="form-control form-select" id="inputSelectBank" name="BenefIdBank" aria-describedby="inputSelectBank_help" required="" dmx-bind:options="content.scBeneficiary.data.ViewBenef" optiontext="benef_name" optionvalue="benef_id">
