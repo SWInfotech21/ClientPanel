@@ -1285,7 +1285,7 @@
                               "table": "tt_recharge_trans",
                               "column": "transaction_by",
                               "type": "number",
-                              "value": "{{GetPayReqDetails.pay_user_id}}"
+                              "value": "{{GetPayReqDetails.req_user_id}}"
                             },
                             {
                               "table": "tt_recharge_trans",
@@ -1368,7 +1368,7 @@
                           ],
                           "table": "tt_recharge_trans",
                           "returning": "id",
-                          "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, opening_balance, amount, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, tr_mode, tr_type, status, tr_id, reason, api_logs, is_processed, operator_ref, api_ref, revert_trans, ip_address, api_response_id, process_mode, live, tr_date, transaction_by, extra1, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt) VALUES (:P1 /* {{GetOperatorId.op_id}} */, :P2 /* {{GetOperatorId.service_id}} */, '0', :P3 /* {{GetSchToUser.to_user_id}} */, :P4 /* {{GetSchToUser.user_mobile}} */, :P5 /* {{GetSchToUser.user_fname}} */, :P6 /* {{GetSchToUser.balance_amt}} */, :P7 /* {{$_POST.amount}} */, :P8 /* {{GetCommision.comm_per}} */, :P9 /* {{GetCommision.comm_val}} */, :P10 /* {{GetCommAmt}} */, :P11 /* {{GetCommision.service_charge_val}} */, :P12 /* {{GetCommision.service_charge_per}} */, :P13 /* {{GetChargeAmt}} */, :P14 /* {{netAmt}} */, :P15 /* {{CrClosingBal}} */, :P16 /* {{'Web'}} */, :P17 /* {{'Cash'}} */, :P18 /* {{($_POST.status=='success')?'SUCCESS':($_POST.status=='pending')?'PENDING':'FAILED'}} */, :P19 /* {{$_POST.client_txn_id}} */, :P20 /* {{'Wallet balance Rs.'+$_POST.amount+'  updated by '+GetDebitUser.user_fname+' to '+GetSchToUser.user_fname+' Using UPI Live Txn'}} */, :P21 /* {{'UPIG'}} */, :P22 /* {{$_POST.id}} */, :P23 /* {{$_POST.remark}} */, :P24 /* {{$_POST.upi_txn_id}} */, :P25 /* {{$_POST.customer_vpa}} */, :P26 /* {{$_SERVER.REMOTE_ADDR}} */, '0', :P27 /* {{'P2A'}} */, :P28 /* {{'Live'}} */, :P29 /* {{NOW}} */, :P30 /* {{GetPayReqDetails.pay_user_id}} */, :P31 /* {{$_POST.id}} */, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0')",
+                          "query": "INSERT INTO tt_recharge_trans\n(op_id, service_id, api_id, user_id, user_number, details, opening_balance, amount, comm_per, comm_val, comm_amt, other_charge, charge_per, charge_amt, net_amt, closing_balance, tr_mode, tr_type, status, tr_id, reason, api_logs, is_processed, operator_ref, api_ref, revert_trans, ip_address, api_response_id, process_mode, live, tr_date, transaction_by, extra1, dtcommper, dtcommval, dtcommamt, dtchargeper, dtchargeval, dtchargeamt, mdtcommper, mdtcommval, mdtcommamt, mdtchargeper, mdtchargeval, mdtchargeamt) VALUES (:P1 /* {{GetOperatorId.op_id}} */, :P2 /* {{GetOperatorId.service_id}} */, '0', :P3 /* {{GetSchToUser.to_user_id}} */, :P4 /* {{GetSchToUser.user_mobile}} */, :P5 /* {{GetSchToUser.user_fname}} */, :P6 /* {{GetSchToUser.balance_amt}} */, :P7 /* {{$_POST.amount}} */, :P8 /* {{GetCommision.comm_per}} */, :P9 /* {{GetCommision.comm_val}} */, :P10 /* {{GetCommAmt}} */, :P11 /* {{GetCommision.service_charge_val}} */, :P12 /* {{GetCommision.service_charge_per}} */, :P13 /* {{GetChargeAmt}} */, :P14 /* {{netAmt}} */, :P15 /* {{CrClosingBal}} */, :P16 /* {{'Web'}} */, :P17 /* {{'Cash'}} */, :P18 /* {{($_POST.status=='success')?'SUCCESS':($_POST.status=='pending')?'PENDING':'FAILED'}} */, :P19 /* {{$_POST.client_txn_id}} */, :P20 /* {{'Wallet balance Rs.'+$_POST.amount+'  updated by '+GetDebitUser.user_fname+' to '+GetSchToUser.user_fname+' Using UPI Live Txn'}} */, :P21 /* {{'UPIG'}} */, :P22 /* {{$_POST.id}} */, :P23 /* {{$_POST.remark}} */, :P24 /* {{$_POST.upi_txn_id}} */, :P25 /* {{$_POST.customer_vpa}} */, :P26 /* {{$_SERVER.REMOTE_ADDR}} */, '0', :P27 /* {{'P2A'}} */, :P28 /* {{'Live'}} */, :P29 /* {{NOW}} */, :P30 /* {{GetPayReqDetails.req_user_id}} */, :P31 /* {{$_POST.id}} */, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0')",
                           "params": [
                             {
                               "name": ":P1",
@@ -1518,7 +1518,7 @@
                             {
                               "name": ":P30",
                               "type": "expression",
-                              "value": "{{GetPayReqDetails.pay_user_id}}"
+                              "value": "{{GetPayReqDetails.req_user_id}}"
                             },
                             {
                               "name": ":P31",
@@ -1613,7 +1613,7 @@
                               "table": "tt_balance",
                               "column": "created_by",
                               "type": "number",
-                              "value": "{{GetPayReqDetails.pay_user_id}}"
+                              "value": "{{GetPayReqDetails.req_user_id}}"
                             },
                             {
                               "table": "tt_balance",
@@ -1636,7 +1636,7 @@
                           ],
                           "table": "tt_balance",
                           "returning": "id",
-                          "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{GetSchToUser.to_user_id}} */, :P2 /* {{GetSchToUser.balance_amt}} */, :P3 /* {{$_POST.amount}} */, :P4 /* {{CrClosingBal}} */, :P5 /* {{'Wallet Credit'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{CrBalRechTrans.identity}} */, :P10 /* {{'Number:  '+GetSchToUser.user_mobile+' | Amount: \\n'+$_POST.amount+' | Wallet Credit | Ref. Id:\\n '+CrBalRechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+netAmt}} */, :P11 /* {{GetPayReqDetails.pay_user_id}} */, :P12 /* {{NOW}} */, :P13 /* {{netAmt}} */, :P14 /* {{($_POST.status=='success')?'SUCCESS':($_POST.status=='pending')?'PENDING':'FAILED'}} */)",
+                          "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{GetSchToUser.to_user_id}} */, :P2 /* {{GetSchToUser.balance_amt}} */, :P3 /* {{$_POST.amount}} */, :P4 /* {{CrClosingBal}} */, :P5 /* {{'Wallet Credit'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Credit'}} */, :P9 /* {{CrBalRechTrans.identity}} */, :P10 /* {{'Number:  '+GetSchToUser.user_mobile+' | Amount: \\n'+$_POST.amount+' | Wallet Credit | Ref. Id:\\n '+CrBalRechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+netAmt}} */, :P11 /* {{GetPayReqDetails.req_user_id}} */, :P12 /* {{NOW}} */, :P13 /* {{netAmt}} */, :P14 /* {{($_POST.status=='success')?'SUCCESS':($_POST.status=='pending')?'PENDING':'FAILED'}} */)",
                           "params": [
                             {
                               "name": ":P1",
@@ -1691,7 +1691,7 @@
                             {
                               "name": ":P11",
                               "type": "expression",
-                              "value": "{{GetPayReqDetails.pay_user_id}}"
+                              "value": "{{GetPayReqDetails.req_user_id}}"
                             },
                             {
                               "name": ":P12",
@@ -1795,7 +1795,7 @@
                               "table": "tt_balance",
                               "column": "created_by",
                               "type": "number",
-                              "value": "{{GetPayReqDetails.pay_user_id}}"
+                              "value": "{{GetPayReqDetails.req_user_id}}"
                             },
                             {
                               "table": "tt_balance",
@@ -1818,7 +1818,7 @@
                           ],
                           "table": "tt_balance",
                           "returning": "id",
-                          "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{GetPayReqDetails.pay_user_id}} */, :P2 /* {{GetDebitUser.balance_amt}} */, :P3 /* {{$_POST.amount}} */, :P4 /* {{DrClosingBal}} */, :P5 /* {{'Wallet Debit'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{CrBalRechTrans.identity}} */, :P10 /* {{'Number: '+GetDebitUser.user_mobile+' | Amount:\\n '+$_POST.amount+' | Wallet Debit | Ref. Id:\\n '+CrBalRechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+netAmt}} */, :P11 /* {{GetPayReqDetails.pay_user_id}} */, :P12 /* {{NOW}} */, :P13 /* {{netAmt}} */, :P14 /* {{'SUCCESS'}} */)",
+                          "query": "INSERT INTO tt_balance\n(user_id, old_balance, amount, new_balance, transaction_type, tr_date, ip_address, crdr_type, pay_ref_id, remarks, created_by, created_on, netamt, status) VALUES (:P1 /* {{GetPayReqDetails.pay_user_id}} */, :P2 /* {{GetDebitUser.balance_amt}} */, :P3 /* {{$_POST.amount}} */, :P4 /* {{DrClosingBal}} */, :P5 /* {{'Wallet Debit'}} */, :P6 /* {{NOW}} */, :P7 /* {{$_SERVER.REMOTE_ADDR}} */, :P8 /* {{'Debit'}} */, :P9 /* {{CrBalRechTrans.identity}} */, :P10 /* {{'Number: '+GetDebitUser.user_mobile+' | Amount:\\n '+$_POST.amount+' | Wallet Debit | Ref. Id:\\n '+CrBalRechTrans.identity+' | Comm Per: '+GetCommision.comm_per+' | Comm Val: '+GetCommision.comm_val+' | Charge Per: '+GetCommision.service_charge_per+' | Charge Val: '+GetCommision.service_charge_val+' | GST: 00.00 | TDS: 00.00 | Net Amt. '+netAmt}} */, :P11 /* {{GetPayReqDetails.req_user_id}} */, :P12 /* {{NOW}} */, :P13 /* {{netAmt}} */, :P14 /* {{'SUCCESS'}} */)",
                           "params": [
                             {
                               "name": ":P1",
@@ -1873,7 +1873,7 @@
                             {
                               "name": ":P11",
                               "type": "expression",
-                              "value": "{{GetPayReqDetails.pay_user_id}}"
+                              "value": "{{GetPayReqDetails.req_user_id}}"
                             },
                             {
                               "name": ":P12",
