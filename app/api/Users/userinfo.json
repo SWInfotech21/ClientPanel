@@ -346,7 +346,7 @@
       {
         "name": "ActiveServices",
         "module": "dbconnector",
-        "action": "select",
+        "action": "paged",
         "options": {
           "sql": {
             "type": "SELECT",
@@ -429,7 +429,8 @@
               {
                 "table": "t_service_scheme_control",
                 "column": "service_id",
-                "direction": "ASC"
+                "direction": "ASC",
+                "recid": 1
               }
             ]
           },
@@ -438,15 +439,70 @@
         "output": true,
         "meta": [
           {
-            "type": "number",
-            "name": "service_id"
+            "name": "offset",
+            "type": "number"
           },
           {
-            "type": "number",
-            "name": "status"
+            "name": "limit",
+            "type": "number"
+          },
+          {
+            "name": "total",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "type": "object",
+            "sub": [
+              {
+                "name": "offset",
+                "type": "object",
+                "sub": [
+                  {
+                    "name": "first",
+                    "type": "number"
+                  },
+                  {
+                    "name": "prev",
+                    "type": "number"
+                  },
+                  {
+                    "name": "next",
+                    "type": "number"
+                  },
+                  {
+                    "name": "last",
+                    "type": "number"
+                  }
+                ]
+              },
+              {
+                "name": "current",
+                "type": "number"
+              },
+              {
+                "name": "total",
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "name": "data",
+            "type": "array",
+            "sub": [
+              {
+                "type": "number",
+                "name": "service_id"
+              },
+              {
+                "type": "number",
+                "name": "status"
+              }
+            ]
           }
         ],
-        "outputType": "array"
+        "outputType": "object",
+        "type": "dbconnector_paged_select"
       },
       {
         "name": "UsageAmt",
