@@ -369,6 +369,101 @@
                                 "meta": []
                               },
                               {
+                                "name": "Status",
+                                "module": "core",
+                                "action": "setvalue",
+                                "options": {
+                                  "value": 200
+                                },
+                                "meta": [],
+                                "outputType": "text",
+                                "output": true
+                              },
+                              {
+                                "name": "insert",
+                                "module": "dbupdater",
+                                "action": "insert",
+                                "options": {
+                                  "connection": "postgres_gcpServer",
+                                  "sql": {
+                                    "type": "insert",
+                                    "values": [
+                                      {
+                                        "table": "t_login_history",
+                                        "column": "user_id",
+                                        "type": "text",
+                                        "value": "{{getSalt.id}}"
+                                      },
+                                      {
+                                        "table": "t_login_history",
+                                        "column": "ip_address",
+                                        "type": "text",
+                                        "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                      },
+                                      {
+                                        "table": "t_login_history",
+                                        "column": "login_time",
+                                        "type": "datetime",
+                                        "value": "{{NOW}}"
+                                      },
+                                      {
+                                        "table": "t_login_history",
+                                        "column": "remote_ip",
+                                        "type": "text",
+                                        "value": "{{$_SERVER.SERVER_NAME}}"
+                                      },
+                                      {
+                                        "table": "t_login_history",
+                                        "column": "login_from",
+                                        "type": "text",
+                                        "value": "{{'Web'}}"
+                                      }
+                                    ],
+                                    "table": "t_login_history",
+                                    "returning": "id",
+                                    "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time, remote_ip, login_from) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */, :P4 /* {{$_SERVER.SERVER_NAME}} */, :P5 /* {{'Web'}} */)",
+                                    "params": [
+                                      {
+                                        "name": ":P1",
+                                        "type": "expression",
+                                        "value": "{{getSalt.id}}"
+                                      },
+                                      {
+                                        "name": ":P2",
+                                        "type": "expression",
+                                        "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                      },
+                                      {
+                                        "name": ":P3",
+                                        "type": "expression",
+                                        "value": "{{NOW}}"
+                                      },
+                                      {
+                                        "name": ":P4",
+                                        "type": "expression",
+                                        "value": "{{$_SERVER.SERVER_NAME}}"
+                                      },
+                                      {
+                                        "name": ":P5",
+                                        "type": "expression",
+                                        "value": "{{'Web'}}"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "meta": [
+                                  {
+                                    "name": "identity",
+                                    "type": "text"
+                                  },
+                                  {
+                                    "name": "affected",
+                                    "type": "number"
+                                  }
+                                ],
+                                "output": false
+                              },
+                              {
                                 "name": "GetIpRecord",
                                 "module": "dbconnector",
                                 "action": "single",
@@ -459,7 +554,8 @@
                                     "name": "CountIp"
                                   }
                                 ],
-                                "outputType": "object"
+                                "outputType": "object",
+                                "disabled": true
                               },
                               {
                                 "name": "",
@@ -468,103 +564,16 @@
                                 "options": {
                                   "if": "{{GetIpRecord.CountIp>0}}",
                                   "then": {
-                                    "steps": [
-                                      {
-                                        "name": "Status",
-                                        "module": "core",
-                                        "action": "setvalue",
-                                        "options": {
-                                          "value": 200
-                                        },
-                                        "meta": [],
-                                        "outputType": "text",
-                                        "output": true
+                                    "steps": {
+                                      "name": "abc",
+                                      "module": "core",
+                                      "action": "setvalue",
+                                      "options": {
+                                        "value": "pqr"
                                       },
-                                      {
-                                        "name": "insert",
-                                        "module": "dbupdater",
-                                        "action": "insert",
-                                        "options": {
-                                          "connection": "postgres_gcpServer",
-                                          "sql": {
-                                            "type": "insert",
-                                            "values": [
-                                              {
-                                                "table": "t_login_history",
-                                                "column": "user_id",
-                                                "type": "text",
-                                                "value": "{{getSalt.id}}"
-                                              },
-                                              {
-                                                "table": "t_login_history",
-                                                "column": "ip_address",
-                                                "type": "text",
-                                                "value": "{{$_SERVER.REMOTE_ADDR}}"
-                                              },
-                                              {
-                                                "table": "t_login_history",
-                                                "column": "login_time",
-                                                "type": "datetime",
-                                                "value": "{{NOW}}"
-                                              },
-                                              {
-                                                "table": "t_login_history",
-                                                "column": "remote_ip",
-                                                "type": "text",
-                                                "value": "{{$_SERVER.SERVER_NAME}}"
-                                              },
-                                              {
-                                                "table": "t_login_history",
-                                                "column": "login_from",
-                                                "type": "text",
-                                                "value": "{{'Web'}}"
-                                              }
-                                            ],
-                                            "table": "t_login_history",
-                                            "returning": "id",
-                                            "query": "INSERT INTO t_login_history\n(user_id, ip_address, login_time, remote_ip, login_from) VALUES (:P1 /* {{getSalt.id}} */, :P2 /* {{$_SERVER.REMOTE_ADDR}} */, :P3 /* {{NOW}} */, :P4 /* {{$_SERVER.SERVER_NAME}} */, :P5 /* {{'Web'}} */)",
-                                            "params": [
-                                              {
-                                                "name": ":P1",
-                                                "type": "expression",
-                                                "value": "{{getSalt.id}}"
-                                              },
-                                              {
-                                                "name": ":P2",
-                                                "type": "expression",
-                                                "value": "{{$_SERVER.REMOTE_ADDR}}"
-                                              },
-                                              {
-                                                "name": ":P3",
-                                                "type": "expression",
-                                                "value": "{{NOW}}"
-                                              },
-                                              {
-                                                "name": ":P4",
-                                                "type": "expression",
-                                                "value": "{{$_SERVER.SERVER_NAME}}"
-                                              },
-                                              {
-                                                "name": ":P5",
-                                                "type": "expression",
-                                                "value": "{{'Web'}}"
-                                              }
-                                            ]
-                                          }
-                                        },
-                                        "meta": [
-                                          {
-                                            "name": "identity",
-                                            "type": "text"
-                                          },
-                                          {
-                                            "name": "affected",
-                                            "type": "number"
-                                          }
-                                        ],
-                                        "output": false
-                                      }
-                                    ]
+                                      "meta": [],
+                                      "outputType": "text"
+                                    }
                                   },
                                   "else": {
                                     "steps": [
@@ -1177,7 +1186,8 @@
                                     ]
                                   }
                                 },
-                                "outputType": "boolean"
+                                "outputType": "boolean",
+                                "disabled": true
                               }
                             ]
                           },
