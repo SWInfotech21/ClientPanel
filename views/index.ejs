@@ -747,17 +747,22 @@
 
                 <div class="col-lg-8 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
 
-                    <form action="#" method="post" role="form" class="php-email-form">
+                    <form id="formContact" is="dmx-serverconnect-form" method="post" action="api/Users/" dmx-on:success="formContact.reset()" dmx-on:unauthorized="Notification.danger(lastError.response)" dmx-on:forbidden="Notification.danger(lastError.response)" role="form" class="php-email-form">
                         <div class="row">
                             <div class="col-md-6 form-group">
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                                <input type="text" name="user_name" class="form-control" id="name" placeholder="Your Name" required>
                             </div>
                             <div class="col-md-6 form-group mt-3 mt-md-0">
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                                <input type="email" class="form-control" name="user_email" id="email" placeholder="Your Email" required>
                             </div>
                         </div>
-                        <div class="form-group mt-3">
-                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <input type="text" name="user_mobile" class="form-control" id="user_mobile" placeholder="Your Mobile" required>
+                            </div>
+                            <div class="col-md-6 form-group mt-3 mt-md-0">
+                                <input type="text" class="form-control" name="msg_subject" id="subject" placeholder="Subject" required>
+                            </div>
                         </div>
                         <div class="form-group mt-3">
                             <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>

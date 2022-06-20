@@ -831,43 +831,56 @@
                                         "outputType": "object"
                                       },
                                       {
-                                        "name": "apiOTP",
-                                        "module": "api",
-                                        "action": "send",
+                                        "name": "",
+                                        "module": "core",
+                                        "action": "condition",
                                         "options": {
-                                          "url": "{{GetAPI.api_url}}",
-                                          "params": {
-                                            "user": "{{GetAPI.username}}",
-                                            "key": "{{GetAPI.api_password}}",
-                                            "mobile": "{{$_POST.Mobile}}",
-                                            "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}",
-                                            "senderid": "{{GetAPI.senderid}}",
-                                            "accusage": "1",
-                                            "entityid": "{{GetAPI.entityid}}",
-                                            "tempid": "{{GetAPI.templateid}}"
+                                          "if": "{{GetAPI.api_password}}",
+                                          "then": {
+                                            "steps": [
+                                              {
+                                                "name": "apiOTP",
+                                                "module": "api",
+                                                "action": "send",
+                                                "options": {
+                                                  "url": "{{GetAPI.api_url}}",
+                                                  "params": {
+                                                    "user": "{{GetAPI.username}}",
+                                                    "key": "{{GetAPI.api_password}}",
+                                                    "mobile": "{{$_POST.Mobile}}",
+                                                    "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}",
+                                                    "senderid": "{{GetAPI.senderid}}",
+                                                    "accusage": "1",
+                                                    "entityid": "{{GetAPI.entityid}}",
+                                                    "tempid": "{{GetAPI.templateid}}"
+                                                  }
+                                                },
+                                                "output": false
+                                              },
+                                              {
+                                                "name": "api_status",
+                                                "module": "core",
+                                                "action": "setvalue",
+                                                "options": {
+                                                  "value": "{{apiOTP.status}}"
+                                                },
+                                                "meta": [],
+                                                "outputType": "text"
+                                              },
+                                              {
+                                                "name": "api_response",
+                                                "module": "core",
+                                                "action": "setvalue",
+                                                "options": {
+                                                  "value": "{{apiOTP.data}}"
+                                                },
+                                                "meta": [],
+                                                "outputType": "text"
+                                              }
+                                            ]
                                           }
                                         },
-                                        "output": false
-                                      },
-                                      {
-                                        "name": "api_status",
-                                        "module": "core",
-                                        "action": "setvalue",
-                                        "options": {
-                                          "value": "{{apiOTP.status}}"
-                                        },
-                                        "meta": [],
-                                        "outputType": "text"
-                                      },
-                                      {
-                                        "name": "api_response",
-                                        "module": "core",
-                                        "action": "setvalue",
-                                        "options": {
-                                          "value": "{{apiOTP.data}}"
-                                        },
-                                        "meta": [],
-                                        "outputType": "text"
+                                        "outputType": "boolean"
                                       },
                                       {
                                         "name": "RecordSmsLog",
@@ -1147,19 +1160,30 @@
                                         "outputType": "object"
                                       },
                                       {
-                                        "name": "apiWhatsapp",
-                                        "module": "api",
-                                        "action": "send",
+                                        "name": "",
+                                        "module": "core",
+                                        "action": "condition",
                                         "options": {
-                                          "url": "{{GetWhatsappAPI.api_url}}",
-                                          "params": {
-                                            "api_token": "{{GetWhatsappAPI.api_password}}",
-                                            "mobile": "{{91+$_POST.Mobile}}",
-                                            "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}"
-                                          },
-                                          "method": "POST"
+                                          "if": "{{GetWhatsappAPI.api_password}}",
+                                          "then": {
+                                            "steps": {
+                                              "name": "apiWhatsapp",
+                                              "module": "api",
+                                              "action": "send",
+                                              "options": {
+                                                "url": "{{GetWhatsappAPI.api_url}}",
+                                                "params": {
+                                                  "api_token": "{{GetWhatsappAPI.api_password}}",
+                                                  "mobile": "{{91+$_POST.Mobile}}",
+                                                  "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}"
+                                                },
+                                                "method": "POST"
+                                              },
+                                              "output": false
+                                            }
+                                          }
                                         },
-                                        "output": false
+                                        "outputType": "boolean"
                                       },
                                       {
                                         "name": "Status",
