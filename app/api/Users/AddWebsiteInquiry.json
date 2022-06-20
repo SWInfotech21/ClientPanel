@@ -203,6 +203,17 @@
               }
             ]
           }
+        },
+        "else": {
+          "steps": {
+            "name": "Resp",
+            "module": "core",
+            "action": "response",
+            "options": {
+              "status": 403,
+              "data": "Invalid Inquiry"
+            }
+          }
         }
       },
       "outputType": "boolean"
