@@ -2036,35 +2036,42 @@
               "type": "increments",
               "default": "",
               "primary": true,
-              "nullable": false
+              "nullable": false,
+              "unique": true
             }
           },
           "type_name": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "user_type": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": false
+              "nullable": false,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "status": {
             "db": {
               "type": "integer",
               "primary": false,
-              "nullable": false
+              "nullable": false,
+              "unique": false
             }
           },
           "time": {
             "db": {
               "type": "timestamp",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "unique": false
             }
           }
         },
@@ -2152,10 +2159,14 @@
           },
           "user_type": {
             "db": {
-              "type": "integer",
+              "type": "reference",
               "primary": false,
               "nullable": false,
-              "unique": false
+              "unique": false,
+              "references": "id",
+              "inTable": "m_user_type",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
             }
           },
           "md_id": {
@@ -3884,6 +3895,79 @@
           }
         }
       },
+      "t_service_scheme_control": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id": {
+            "db": {
+              "type": "increments",
+              "default": "",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "service_id": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "scheme_id": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "status": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "remarks": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "created_by": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "created_on": {
+            "db": {
+              "type": "timestamp",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "updated_on": {
+            "db": {
+              "type": "timestamp",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        }
+      },
       "t_sms_api_details": {
         "db": {
           "schema": "public"
@@ -4234,10 +4318,14 @@
           },
           "user_id": {
             "db": {
-              "type": "integer",
+              "type": "reference",
               "primary": false,
               "unique": false,
-              "nullable": false
+              "nullable": false,
+              "references": "id",
+              "inTable": "m_users",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
             }
           },
           "profile_pic": {
