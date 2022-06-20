@@ -380,43 +380,129 @@
                 "output": false
               },
               {
-                "name": "apiOTP",
-                "module": "api",
-                "action": "send",
+                "name": "insertOTP",
+                "module": "dbupdater",
+                "action": "insert",
                 "options": {
-                  "url": "{{GetAPI.api_url}}",
-                  "params": {
-                    "user": "{{GetAPI.username}}",
-                    "key": "{{GetAPI.api_password}}",
-                    "mobile": "{{$_POST.forgot_mobile}}",
-                    "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}",
-                    "senderid": "{{GetAPI.senderid}}",
-                    "accusage": "1",
-                    "entityid": "{{GetAPI.entityid}}",
-                    "tempid": "{{GetAPI.templateid}}"
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "insert",
+                    "values": [
+                      {
+                        "table": "forgot_otp",
+                        "column": "mobile",
+                        "type": "text",
+                        "value": "{{$_POST.forgot_mobile}}"
+                      },
+                      {
+                        "table": "forgot_otp",
+                        "column": "otp",
+                        "type": "text",
+                        "value": "{{OTP}}"
+                      },
+                      {
+                        "table": "forgot_otp",
+                        "column": "entytime",
+                        "type": "datetime",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "table": "forgot_otp",
+                        "column": "status",
+                        "type": "number",
+                        "value": "{{1}}"
+                      }
+                    ],
+                    "table": "forgot_otp",
+                    "returning": "id",
+                    "query": "INSERT INTO forgot_otp\n(mobile, otp, entytime, status) VALUES (:P1 /* {{$_POST.forgot_mobile}} */, :P2 /* {{OTP}} */, :P3 /* {{NOW}} */, :P4 /* {{1}} */)",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{$_POST.forgot_mobile}}"
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{OTP}}"
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{NOW}}"
+                      },
+                      {
+                        "name": ":P4",
+                        "type": "expression",
+                        "value": "{{1}}"
+                      }
+                    ]
                   }
                 },
+                "meta": [
+                  {
+                    "name": "identity",
+                    "type": "text"
+                  },
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ],
                 "output": false
               },
               {
-                "name": "api_status",
+                "name": "",
                 "module": "core",
-                "action": "setvalue",
+                "action": "condition",
                 "options": {
-                  "value": "{{apiOTP.status}}"
+                  "if": "{{GetAPI.username}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "apiOTP",
+                        "module": "api",
+                        "action": "send",
+                        "options": {
+                          "url": "{{GetAPI.api_url}}",
+                          "params": {
+                            "user": "{{GetAPI.username}}",
+                            "key": "{{GetAPI.api_password}}",
+                            "mobile": "{{$_POST.forgot_mobile}}",
+                            "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}",
+                            "senderid": "{{GetAPI.senderid}}",
+                            "accusage": "1",
+                            "entityid": "{{GetAPI.entityid}}",
+                            "tempid": "{{GetAPI.templateid}}"
+                          }
+                        },
+                        "output": false
+                      },
+                      {
+                        "name": "api_status",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{apiOTP.status}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "api_response",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{apiOTP.data}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      }
+                    ]
+                  }
                 },
-                "meta": [],
-                "outputType": "text"
-              },
-              {
-                "name": "api_response",
-                "module": "core",
-                "action": "setvalue",
-                "options": {
-                  "value": "{{apiOTP.data}}"
-                },
-                "meta": [],
-                "outputType": "text"
+                "outputType": "boolean"
               },
               {
                 "name": "RecordSmsLog",
@@ -530,79 +616,6 @@
                         "name": ":P9",
                         "type": "expression",
                         "value": "{{'Android'}}"
-                      }
-                    ]
-                  }
-                },
-                "meta": [
-                  {
-                    "name": "identity",
-                    "type": "text"
-                  },
-                  {
-                    "name": "affected",
-                    "type": "number"
-                  }
-                ],
-                "output": false
-              },
-              {
-                "name": "insertOTP",
-                "module": "dbupdater",
-                "action": "insert",
-                "options": {
-                  "connection": "postgres_gcpServer",
-                  "sql": {
-                    "type": "insert",
-                    "values": [
-                      {
-                        "table": "forgot_otp",
-                        "column": "mobile",
-                        "type": "text",
-                        "value": "{{$_POST.forgot_mobile}}"
-                      },
-                      {
-                        "table": "forgot_otp",
-                        "column": "otp",
-                        "type": "text",
-                        "value": "{{OTP}}"
-                      },
-                      {
-                        "table": "forgot_otp",
-                        "column": "entytime",
-                        "type": "datetime",
-                        "value": "{{NOW}}"
-                      },
-                      {
-                        "table": "forgot_otp",
-                        "column": "status",
-                        "type": "number",
-                        "value": "{{1}}"
-                      }
-                    ],
-                    "table": "forgot_otp",
-                    "returning": "id",
-                    "query": "INSERT INTO forgot_otp\n(mobile, otp, entytime, status) VALUES (:P1 /* {{$_POST.forgot_mobile}} */, :P2 /* {{OTP}} */, :P3 /* {{NOW}} */, :P4 /* {{1}} */)",
-                    "params": [
-                      {
-                        "name": ":P1",
-                        "type": "expression",
-                        "value": "{{$_POST.forgot_mobile}}"
-                      },
-                      {
-                        "name": ":P2",
-                        "type": "expression",
-                        "value": "{{OTP}}"
-                      },
-                      {
-                        "name": ":P3",
-                        "type": "expression",
-                        "value": "{{NOW}}"
-                      },
-                      {
-                        "name": ":P4",
-                        "type": "expression",
-                        "value": "{{1}}"
                       }
                     ]
                   }
@@ -747,19 +760,30 @@
                 "outputType": "object"
               },
               {
-                "name": "apiWhatsapp",
-                "module": "api",
-                "action": "send",
+                "name": "",
+                "module": "core",
+                "action": "condition",
                 "options": {
-                  "url": "{{GetWhatsappAPI.api_url}}",
-                  "params": {
-                    "api_token": "{{GetWhatsappAPI.api_password}}",
-                    "mobile": "{{91+$_POST.forgot_mobile}}",
-                    "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}"
-                  },
-                  "method": "POST"
+                  "if": "{{GetWhatsappAPI.api_password}}",
+                  "then": {
+                    "steps": {
+                      "name": "apiWhatsapp",
+                      "module": "api",
+                      "action": "send",
+                      "options": {
+                        "url": "{{GetWhatsappAPI.api_url}}",
+                        "params": {
+                          "api_token": "{{GetWhatsappAPI.api_password}}",
+                          "mobile": "{{91+$_POST.forgot_mobile}}",
+                          "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}"
+                        },
+                        "method": "POST"
+                      },
+                      "output": false
+                    }
+                  }
                 },
-                "output": false
+                "outputType": "boolean"
               },
               {
                 "name": "Status",
