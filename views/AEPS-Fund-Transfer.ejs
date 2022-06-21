@@ -147,6 +147,10 @@
                                 <label for="inputWithdrawLimitBank" class="col-form-label">Withdrawal Amount</label>
                                 <input type="number" class="form-control" id="inputWithdrawAmtBank" name="WithdrawAmtBank" aria-describedby="inputWithdrawLimitBank_help" required="" dmx-bind:max="content.formBankTransfer.inputCurrentLimitBank.value">
                             </div>
+                            <div class="form-group mb-0">
+                                <label for="inputWithdrawTPIN" class="col-form-label">T-Pin</label>
+                                <input type="number" class="form-control" id="inputWithdrawTPIN" name="WithdrawTPIN" aria-describedby="inputWithdrawTPIN_help" required="">
+                            </div>
                             <div class="col text-center mt-3"><button type="submit" class="btn btn-primary pull-left px-5" dmx-bind:disabled="state.executing" id="btnBankTrans">Submit<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
                         </form>
                     </div>
