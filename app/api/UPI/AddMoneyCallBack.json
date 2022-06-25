@@ -1,0 +1,315 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "status"
+      },
+      {
+        "type": "text",
+        "name": "txnid"
+      },
+      {
+        "type": "text",
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "phone"
+      },
+      {
+        "type": "text",
+        "name": "firstname"
+      },
+      {
+        "type": "text",
+        "name": "key"
+      },
+      {
+        "type": "text",
+        "name": "error"
+      },
+      {
+        "type": "text",
+        "name": "card_type"
+      },
+      {
+        "type": "text",
+        "name": "cardnum"
+      },
+      {
+        "type": "text",
+        "name": "name_on_card"
+      },
+      {
+        "type": "text",
+        "name": "net_amount_debit"
+      },
+      {
+        "type": "text",
+        "name": "cash_back_percentage"
+      },
+      {
+        "type": "text",
+        "name": "deduction_percentage"
+      },
+      {
+        "type": "text",
+        "name": "productinfo"
+      },
+      {
+        "type": "text",
+        "name": "hash"
+      },
+      {
+        "type": "text",
+        "name": "error_Message"
+      },
+      {
+        "type": "text",
+        "name": "upi_va"
+      },
+      {
+        "type": "text",
+        "name": "phone"
+      },
+      {
+        "type": "text",
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "net_amount_debit"
+      },
+      {
+        "type": "text",
+        "name": "txnid"
+      },
+      {
+        "type": "text",
+        "name": "deduction_percentage"
+      },
+      {
+        "type": "text",
+        "name": "error"
+      },
+      {
+        "type": "text",
+        "name": "cash_back_percentage"
+      },
+      {
+        "type": "text",
+        "name": "name_on_card"
+      },
+      {
+        "type": "text",
+        "name": "cardnum"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "insert",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "postgres_gcpServer",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "api_response",
+              "column": "user_id",
+              "type": "text",
+              "value": "{{110}}"
+            },
+            {
+              "table": "api_response",
+              "column": "recharge_mobile",
+              "type": "text",
+              "value": "{{$_POST.phone}}"
+            },
+            {
+              "table": "api_response",
+              "column": "operator",
+              "type": "text",
+              "value": "{{$_POST.email}}"
+            },
+            {
+              "table": "api_response",
+              "column": "amount",
+              "type": "text",
+              "value": "{{$_POST.net_amount_debit}}"
+            },
+            {
+              "table": "api_response",
+              "column": "status",
+              "type": "text",
+              "value": "{{$_POST.status}}"
+            },
+            {
+              "table": "api_response",
+              "column": "order_id",
+              "type": "text",
+              "value": "{{$_POST.txnid}}"
+            },
+            {
+              "table": "api_response",
+              "column": "balance",
+              "type": "text",
+              "value": "{{$_POST.deduction_percentage}}"
+            },
+            {
+              "table": "api_response",
+              "column": "ec",
+              "type": "text",
+              "value": "{{$_POST.error}}"
+            },
+            {
+              "table": "api_response",
+              "column": "apirefid",
+              "type": "text",
+              "value": "{{$_POST.cash_back_percentage}}"
+            },
+            {
+              "table": "api_response",
+              "column": "remarks",
+              "type": "text",
+              "value": "{{$_POST.hash}}"
+            },
+            {
+              "table": "api_response",
+              "column": "blank1",
+              "type": "text",
+              "value": "{{$_POST.name_on_card}}"
+            },
+            {
+              "table": "api_response",
+              "column": "blank2",
+              "type": "text",
+              "value": "{{$_POST.upi_va}}"
+            },
+            {
+              "table": "api_response",
+              "column": "field1",
+              "type": "text",
+              "value": "{{$_POST.productinfo}}"
+            },
+            {
+              "table": "api_response",
+              "column": "field2",
+              "type": "text",
+              "value": "{{$_POST.deduction_percentage}}"
+            },
+            {
+              "table": "api_response",
+              "column": "time",
+              "type": "datetime",
+              "value": "{{NOW}}"
+            },
+            {
+              "table": "api_response",
+              "column": "live_id",
+              "type": "text",
+              "value": "{{$_POST.cardnum}}"
+            }
+          ],
+          "table": "api_response",
+          "query": "INSERT INTO api_response\n(user_id, recharge_mobile, operator, amount, status, order_id, balance, ec, apirefid, remarks, blank1, blank2, field1, field2, time, live_id) VALUES (:P1 /* {{110}} */, :P2 /* {{$_POST.phone}} */, :P3 /* {{$_POST.email}} */, :P4 /* {{$_POST.net_amount_debit}} */, :P5 /* {{$_POST.status}} */, :P6 /* {{$_POST.txnid}} */, :P7 /* {{$_POST.deduction_percentage}} */, :P8 /* {{$_POST.error}} */, :P9 /* {{$_POST.cash_back_percentage}} */, :P10 /* {{$_POST.hash}} */, :P11 /* {{$_POST.name_on_card}} */, :P12 /* {{$_POST.upi_va}} */, :P13 /* {{$_POST.productinfo}} */, :P14 /* {{$_POST.deduction_percentage}} */, :P15 /* {{NOW}} */, :P16 /* {{$_POST.cardnum}} */)",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{110}}"
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.phone}}"
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.email}}"
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_POST.net_amount_debit}}"
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{$_POST.status}}"
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{$_POST.txnid}}"
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.deduction_percentage}}"
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{$_POST.error}}"
+            },
+            {
+              "name": ":P9",
+              "type": "expression",
+              "value": "{{$_POST.cash_back_percentage}}"
+            },
+            {
+              "name": ":P10",
+              "type": "expression",
+              "value": "{{$_POST.hash}}"
+            },
+            {
+              "name": ":P11",
+              "type": "expression",
+              "value": "{{$_POST.name_on_card}}"
+            },
+            {
+              "name": ":P12",
+              "type": "expression",
+              "value": "{{$_POST.upi_va}}"
+            },
+            {
+              "name": ":P13",
+              "type": "expression",
+              "value": "{{$_POST.productinfo}}"
+            },
+            {
+              "name": ":P14",
+              "type": "expression",
+              "value": "{{$_POST.deduction_percentage}}"
+            },
+            {
+              "name": ":P15",
+              "type": "expression",
+              "value": "{{NOW}}"
+            },
+            {
+              "name": ":P16",
+              "type": "expression",
+              "value": "{{$_POST.cardnum}}"
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

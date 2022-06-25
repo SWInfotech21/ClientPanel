@@ -100,78 +100,64 @@
                   "type": "SELECT",
                   "columns": [
                     {
-                      "table": "payment_request",
+                      "table": "payment_req_self",
                       "column": "pay_user_id"
                     },
                     {
-                      "table": "payment_request",
+                      "table": "payment_req_self",
                       "column": "req_user_id"
                     },
                     {
-                      "table": "payment_request",
+                      "table": "payment_req_self",
+                      "column": "user_name"
+                    },
+                    {
+                      "table": "payment_req_self",
+                      "column": "req_email"
+                    },
+                    {
+                      "table": "payment_req_self",
+                      "column": "req_mobile"
+                    },
+                    {
+                      "table": "payment_req_self",
                       "column": "amount"
                     },
                     {
-                      "table": "payment_request",
-                      "column": "tr_date"
-                    },
-                    {
-                      "table": "payment_request",
-                      "column": "tr_time"
-                    },
-                    {
-                      "table": "payment_request",
-                      "column": "tr_no"
-                    },
-                    {
-                      "table": "payment_request",
-                      "column": "utr_no"
-                    },
-                    {
-                      "table": "payment_request",
+                      "table": "payment_req_self",
                       "column": "payment_mode"
                     },
                     {
-                      "table": "payment_request",
-                      "column": "cash_type"
+                      "table": "payment_req_self",
+                      "column": "pay_type"
                     },
                     {
-                      "table": "payment_request",
-                      "column": "remarks"
+                      "table": "payment_req_self",
+                      "column": "response"
+                    },
+                    {
+                      "table": "payment_req_self",
+                      "column": "message"
+                    },
+                    {
+                      "table": "payment_req_self",
+                      "column": "order_id"
+                    },
+                    {
+                      "table": "payment_req_self",
+                      "column": "api_id"
+                    },
+                    {
+                      "table": "payment_req_self",
+                      "column": "status"
                     }
                   ],
                   "table": {
-                    "name": "payment_request"
+                    "name": "payment_req_self"
                   },
                   "primary": "id",
                   "joins": [],
-                  "wheres": {
-                    "condition": "AND",
-                    "rules": [
-                      {
-                        "id": "payment_request.tr_no",
-                        "field": "payment_request.tr_no",
-                        "type": "string",
-                        "operator": "equal",
-                        "value": "{{$_POST.client_txn_id}}",
-                        "data": {
-                          "table": "payment_request",
-                          "column": "tr_no",
-                          "type": "text",
-                          "columnObj": {
-                            "type": "string",
-                            "primary": false,
-                            "nullable": true,
-                            "name": "tr_no"
-                          }
-                        },
-                        "operation": "="
-                      }
-                    ],
-                    "conditional": null,
-                    "valid": true
-                  },
-                  "query": "SELECT pay_user_id, req_user_id, amount, tr_date, tr_time, tr_no, utr_no, payment_mode, cash_type, remarks\nFROM payment_request\nWHERE tr_no = :P1 /* {{$_POST.client_txn_id}} */",
+                  "query": "SELECT pay_user_id, req_user_id, user_name, req_email, req_mobile, amount, payment_mode, pay_type, response, message, order_id, api_id, status\nFROM payment_req_self\nWHERE client_req_id = :P1 /* {{$_POST.client_txn_id}} */",
                   "params": [
                     {
                       "operator": "equal",
@@ -179,7 +165,35 @@
                       "name": ":P1",
                       "value": "{{$_POST.client_txn_id}}"
                     }
-                  ]
+                  ],
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "payment_req_self.client_req_id",
+                        "field": "payment_req_self.client_req_id",
+                        "type": "string",
+                        "operator": "equal",
+                        "value": "{{$_POST.client_txn_id}}",
+                        "data": {
+                          "table": "payment_req_self",
+                          "column": "client_req_id",
+                          "type": "text",
+                          "columnObj": {
+                            "type": "string",
+                            "maxLength": -5,
+                            "primary": false,
+                            "unique": false,
+                            "nullable": true,
+                            "name": "client_req_id"
+                          }
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  }
                 }
               },
               "output": false,
@@ -194,23 +208,19 @@
                 },
                 {
                   "type": "text",
+                  "name": "user_name"
+                },
+                {
+                  "type": "text",
+                  "name": "req_email"
+                },
+                {
+                  "type": "text",
+                  "name": "req_mobile"
+                },
+                {
+                  "type": "text",
                   "name": "amount"
-                },
-                {
-                  "type": "date",
-                  "name": "tr_date"
-                },
-                {
-                  "type": "time",
-                  "name": "tr_time"
-                },
-                {
-                  "type": "text",
-                  "name": "tr_no"
-                },
-                {
-                  "type": "text",
-                  "name": "utr_no"
                 },
                 {
                   "type": "text",
@@ -218,11 +228,27 @@
                 },
                 {
                   "type": "text",
-                  "name": "cash_type"
+                  "name": "pay_type"
                 },
                 {
                   "type": "text",
-                  "name": "remarks"
+                  "name": "response"
+                },
+                {
+                  "type": "text",
+                  "name": "message"
+                },
+                {
+                  "type": "text",
+                  "name": "order_id"
+                },
+                {
+                  "type": "text",
+                  "name": "api_id"
+                },
+                {
+                  "type": "number",
+                  "name": "status"
                 }
               ],
               "outputType": "object"
@@ -709,210 +735,6 @@
                       "outputType": "text"
                     },
                     {
-                      "name": "insert",
-                      "module": "dbupdater",
-                      "action": "insert",
-                      "options": {
-                        "connection": "postgres_gcpServer",
-                        "sql": {
-                          "type": "insert",
-                          "values": [
-                            {
-                              "table": "api_response",
-                              "column": "user_id",
-                              "type": "text",
-                              "value": "{{$_POST.customer_name}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "recharge_mobile",
-                              "type": "text",
-                              "value": "{{$_POST.customer_mobile}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "operator",
-                              "type": "text",
-                              "value": "{{$_POST.p_info}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "amount",
-                              "type": "text",
-                              "value": "{{$_POST.amount}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "status",
-                              "type": "text",
-                              "value": "{{($_POST.status=='success')?'SUCCESS':($_POST.status=='pending')?'PENDING':'FAILED'}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "order_id",
-                              "type": "text",
-                              "value": "{{$_POST.client_txn_id}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "balance",
-                              "type": "text",
-                              "value": "{{$_POST.amount}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "apirefid",
-                              "type": "text",
-                              "value": "{{$_POST.id}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "remarks",
-                              "type": "text",
-                              "value": "{{$_POST.remark}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "blank1",
-                              "type": "text",
-                              "value": "{{$_POST.txnAt}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "blank2",
-                              "type": "text",
-                              "value": "{{$_POST.udf3}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "field1",
-                              "type": "text",
-                              "value": "{{$_POST.udf1}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "field2",
-                              "type": "text",
-                              "value": "{{$_POST.udf2}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "time",
-                              "type": "datetime",
-                              "value": "{{NOW}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "live_id",
-                              "type": "text",
-                              "value": "{{$_POST.upi_txn_id}}"
-                            },
-                            {
-                              "table": "api_response",
-                              "column": "ec",
-                              "type": "text",
-                              "value": "{{$_POST.customer_vpa}}"
-                            }
-                          ],
-                          "table": "api_response",
-                          "query": "INSERT INTO api_response\n(user_id, recharge_mobile, operator, amount, status, order_id, balance, apirefid, remarks, blank1, blank2, field1, field2, time, live_id, ec) VALUES (:P1 /* {{$_POST.customer_name}} */, :P2 /* {{$_POST.customer_mobile}} */, :P3 /* {{$_POST.p_info}} */, :P4 /* {{$_POST.amount}} */, :P5 /* {{($_POST.status=='success')?'SUCCESS':($_POST.status=='pending')?'PENDING':'FAILED'}} */, :P6 /* {{$_POST.client_txn_id}} */, :P7 /* {{$_POST.amount}} */, :P8 /* {{$_POST.id}} */, :P9 /* {{$_POST.remark}} */, :P10 /* {{$_POST.txnAt}} */, :P11 /* {{$_POST.udf3}} */, :P12 /* {{$_POST.udf1}} */, :P13 /* {{$_POST.udf2}} */, :P14 /* {{NOW}} */, :P15 /* {{$_POST.upi_txn_id}} */, :P16 /* {{$_POST.customer_vpa}} */)",
-                          "params": [
-                            {
-                              "name": ":P1",
-                              "type": "expression",
-                              "value": "{{$_POST.customer_name}}"
-                            },
-                            {
-                              "name": ":P2",
-                              "type": "expression",
-                              "value": "{{$_POST.customer_mobile}}"
-                            },
-                            {
-                              "name": ":P3",
-                              "type": "expression",
-                              "value": "{{$_POST.p_info}}"
-                            },
-                            {
-                              "name": ":P4",
-                              "type": "expression",
-                              "value": "{{$_POST.amount}}"
-                            },
-                            {
-                              "name": ":P5",
-                              "type": "expression",
-                              "value": "{{($_POST.status=='success')?'SUCCESS':($_POST.status=='pending')?'PENDING':'FAILED'}}"
-                            },
-                            {
-                              "name": ":P6",
-                              "type": "expression",
-                              "value": "{{$_POST.client_txn_id}}"
-                            },
-                            {
-                              "name": ":P7",
-                              "type": "expression",
-                              "value": "{{$_POST.amount}}"
-                            },
-                            {
-                              "name": ":P8",
-                              "type": "expression",
-                              "value": "{{$_POST.id}}"
-                            },
-                            {
-                              "name": ":P9",
-                              "type": "expression",
-                              "value": "{{$_POST.remark}}"
-                            },
-                            {
-                              "name": ":P10",
-                              "type": "expression",
-                              "value": "{{$_POST.txnAt}}"
-                            },
-                            {
-                              "name": ":P11",
-                              "type": "expression",
-                              "value": "{{$_POST.udf3}}"
-                            },
-                            {
-                              "name": ":P12",
-                              "type": "expression",
-                              "value": "{{$_POST.udf1}}"
-                            },
-                            {
-                              "name": ":P13",
-                              "type": "expression",
-                              "value": "{{$_POST.udf2}}"
-                            },
-                            {
-                              "name": ":P14",
-                              "type": "expression",
-                              "value": "{{NOW}}"
-                            },
-                            {
-                              "name": ":P15",
-                              "type": "expression",
-                              "value": "{{$_POST.upi_txn_id}}"
-                            },
-                            {
-                              "name": ":P16",
-                              "type": "expression",
-                              "value": "{{$_POST.customer_vpa}}"
-                            }
-                          ]
-                        }
-                      },
-                      "meta": [
-                        {
-                          "name": "identity",
-                          "type": "text"
-                        },
-                        {
-                          "name": "affected",
-                          "type": "number"
-                        }
-                      ],
-                      "disabled": true
-                    },
-                    {
                       "name": "BalUpCreditUser",
                       "module": "dbupdater",
                       "action": "update",
@@ -1042,24 +864,24 @@
                           "type": "update",
                           "values": [
                             {
-                              "table": "payment_request",
+                              "table": "payment_req_self",
                               "column": "status",
                               "type": "number",
-                              "value": "2"
+                              "value": "{{2}}"
                             }
                           ],
-                          "table": "payment_request",
+                          "table": "payment_req_self",
                           "wheres": {
                             "condition": "AND",
                             "rules": [
                               {
-                                "id": "tr_no",
-                                "field": "tr_no",
+                                "id": "client_req_id",
+                                "field": "client_req_id",
                                 "type": "string",
                                 "operator": "equal",
                                 "value": "{{$_POST.client_txn_id}}",
                                 "data": {
-                                  "column": "tr_no"
+                                  "column": "client_req_id"
                                 },
                                 "operation": "="
                               }
@@ -1068,12 +890,17 @@
                             "valid": true
                           },
                           "returning": "id",
-                          "query": "UPDATE payment_request\nSET status = '2'\nWHERE tr_no = :P1 /* {{$_POST.client_txn_id}} */",
+                          "query": "UPDATE payment_req_self\nSET status = :P1 /* {{2}} */\nWHERE client_req_id = :P2 /* {{$_POST.client_txn_id}} */",
                           "params": [
+                            {
+                              "name": ":P1",
+                              "type": "expression",
+                              "value": "{{2}}"
+                            },
                             {
                               "operator": "equal",
                               "type": "expression",
-                              "name": ":P1",
+                              "name": ":P2",
                               "value": "{{$_POST.client_txn_id}}"
                             }
                           ]

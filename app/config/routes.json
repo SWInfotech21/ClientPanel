@@ -231,6 +231,11 @@
       "layout": "main"
     },
     {
+      "path": "/add-money-wallet",
+      "page": "add-money-wallet",
+      "layout": "main"
+    },
+    {
       "path": "*",
       "page": "404-not-found"
     }

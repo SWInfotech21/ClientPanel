@@ -1,0 +1,51 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="addmoneywallet" appConnect="local" components="{dmxBootstrap5Navigation:{}}" -->
+<meta name="ac:route" content="/add-money-wallet">
+<div class="container-fluid">
+    <h1 class="mt-4">Add Money to Wallet By using Credit/ Debit Card
+        <span class="border-3 ms-2 spinner-border spinner-border-sm" role="status" dmx-show="scLoginUser.state.executing"></span>
+    </h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Add Money using Credit or Debit Card / {{scLoginUser.data.LoginUserInfo.user_id}} / {{scLoginUser.data.LoginUserInfo.id}}</li>
+    </ol>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-qrcode mr-1"></i>
+                    Add Money to Update Wallet Balance
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <form id="formAddMoney" method="post" action="api/UPI/AddMoneyLink" is="dmx-serverconnect-form" dmx-on:success="formAddMoney.reset();browserMain.goto(content.formAddMoney.data.AddMoneyUrl)" dmx-on:error="scNotif.warning(formAddMoney.lastError.response)" dmx-on:unauthorized="scNotif.warning(formAddMoney.lastError.response)" dmx-on:forbidden="scNotif.warning(formAddMoney.lastError.response)" dmx-on:invalid="scNotif.warning(formAddMoney.lastError.response)">
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">Amount (in Rs.)</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-rupee-sign"></i>
+                                        </div>
+                                    </div>
+                                    <input type="number" class="form-control" id="inpAmount" name="Amount" placeholder="Enter Amount" maxlength="8" required="" title="Enter Amount" autocomplete="off" data-rule-number="" data-msg-number="Please enter a valid amount.">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="text-monospace col-3 pe-0">Message</label>
+                                <div class="input-group mb-2 col-9 ps-0">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-primary text-light">
+                                            <i class="fas fa-rupee-sign"></i>
+                                        </div>
+                                    </div>
+                                    <textarea type="text" class="form-control" id="inpMessage" name="Message" placeholder="Enter Message" maxlength="200" required="" title="Enter Message" autocomplete="off"></textarea>
+                                </div>
+                            </div>
+                            <div class="col text-center">
+                                <button type="submit" class="btn btn-primary pull-left px-5" dmx-bind:disabled="state.executing" id="btnmrecharge">Pay Now<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

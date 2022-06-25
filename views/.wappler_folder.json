@@ -206,5 +206,9 @@
   "upi-txn-wallet.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "add-money-wallet.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

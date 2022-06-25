@@ -23,142 +23,6 @@
           }
         },
         "name": "UPIAmount"
-      },
-      {
-        "type": "number",
-        "name": "id"
-      },
-      {
-        "type": "number",
-        "name": "service_id"
-      },
-      {
-        "type": "number",
-        "name": "operator_id"
-      },
-      {
-        "type": "number",
-        "name": "api_id"
-      },
-      {
-        "type": "number",
-        "name": "api_status"
-      },
-      {
-        "type": "number",
-        "name": "random_sequence"
-      },
-      {
-        "type": "text",
-        "name": "random"
-      },
-      {
-        "type": "text",
-        "name": "api_blank3"
-      },
-      {
-        "type": "text",
-        "name": "api_blank4"
-      },
-      {
-        "type": "text",
-        "name": "created_by"
-      },
-      {
-        "type": "datetime",
-        "name": "created_on"
-      },
-      {
-        "type": "text",
-        "name": "updated_by"
-      },
-      {
-        "type": "datetime",
-        "name": "updated_on"
-      },
-      {
-        "type": "text",
-        "name": "deleted_by"
-      },
-      {
-        "type": "datetime",
-        "name": "deleted_on"
-      },
-      {
-        "type": "number",
-        "name": "pay_user_id"
-      },
-      {
-        "type": "number",
-        "name": "req_user_id"
-      },
-      {
-        "type": "text",
-        "name": "amount"
-      },
-      {
-        "type": "date",
-        "name": "tr_date"
-      },
-      {
-        "type": "time",
-        "name": "tr_time"
-      },
-      {
-        "type": "text",
-        "name": "tr_no"
-      },
-      {
-        "type": "text",
-        "name": "bank_name"
-      },
-      {
-        "type": "text",
-        "name": "branch_name"
-      },
-      {
-        "type": "text",
-        "name": "cheque_no"
-      },
-      {
-        "type": "text",
-        "name": "utr_no"
-      },
-      {
-        "type": "text",
-        "name": "payment_mode"
-      },
-      {
-        "type": "text",
-        "name": "cash_type"
-      },
-      {
-        "type": "text",
-        "name": "remarks"
-      },
-      {
-        "type": "number",
-        "name": "status"
-      },
-      {
-        "type": "text",
-        "name": "blank1"
-      },
-      {
-        "type": "text",
-        "name": "blank2"
-      },
-      {
-        "type": "text",
-        "name": "blank3"
-      },
-      {
-        "type": "datetime",
-        "name": "request_time"
-      },
-      {
-        "type": "datetime",
-        "name": "response_time"
       }
     ]
   },
@@ -350,7 +214,7 @@
             ]
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "text",
@@ -373,8 +237,8 @@
             "amount": "{{$_POST.UPIAmount}}",
             "p_info": "Recharge",
             "customer_name": "{{GetUserDetails.user_id}}",
-            "customer_email": "swinfotech2021@gmail.com",
-            "customer_mobile": "8958148142",
+            "customer_email": "admin@swpay.in",
+            "customer_mobile": "6396562967",
             "redirect_url": "https://swpay.in/upi-txn-wallet",
             "udf1": "",
             "udf2": "",
@@ -382,15 +246,6 @@
           }
         },
         "output": false
-      },
-      {
-        "name": "abc",
-        "module": "core",
-        "action": "redirect",
-        "options": {
-          "url": "{{apiUPICreateURL.data.data.payment_url}}"
-        },
-        "disabled": true
       },
       {
         "name": "UPIUrl",
@@ -412,7 +267,7 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": false
       },
       {
         "name": "Status",
@@ -423,7 +278,18 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true
+        "output": false
+      },
+      {
+        "name": "Response",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiUPICreateURL.data.msg}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": false
       },
       {
         "name": "DBStatus",
@@ -445,82 +311,105 @@
             "type": "insert",
             "values": [
               {
-                "table": "payment_request",
+                "table": "payment_req_self",
                 "column": "pay_user_id",
                 "type": "number",
                 "value": "{{12}}"
               },
               {
-                "table": "payment_request",
+                "table": "payment_req_self",
                 "column": "req_user_id",
                 "type": "number",
                 "value": "{{identity}}"
               },
               {
-                "table": "payment_request",
+                "table": "payment_req_self",
+                "column": "user_name",
+                "type": "text",
+                "value": "{{GetUserDetails.user_id}}"
+              },
+              {
+                "table": "payment_req_self",
+                "column": "req_email",
+                "type": "text",
+                "value": "{{'admin@swpay.in'}}"
+              },
+              {
+                "table": "payment_req_self",
+                "column": "req_mobile",
+                "type": "text",
+                "value": "{{6396562967}}"
+              },
+              {
+                "table": "payment_req_self",
                 "column": "amount",
                 "type": "text",
                 "value": "{{$_POST.UPIAmount}}"
               },
               {
-                "table": "payment_request",
-                "column": "tr_date",
-                "type": "date",
-                "value": "{{NOW}}"
+                "table": "payment_req_self",
+                "column": "message",
+                "type": "text",
+                "value": "{{'QR code request for Amount of Rs. '+$_POST.UPIAmount}}"
               },
               {
-                "table": "payment_request",
-                "column": "tr_no",
+                "table": "payment_req_self",
+                "column": "payment_url",
+                "type": "text",
+                "value": "{{UPIUrl}}"
+              },
+              {
+                "table": "payment_req_self",
+                "column": "client_req_id",
                 "type": "text",
                 "value": "{{ReqID}}"
               },
               {
-                "table": "payment_request",
-                "column": "utr_no",
+                "table": "payment_req_self",
+                "column": "order_id",
                 "type": "text",
-                "value": "{{OrderId}}",
-                "condition": "{{OrderId}}"
+                "value": "{{OrderId}}"
               },
               {
-                "table": "payment_request",
+                "table": "payment_req_self",
+                "column": "api_id",
+                "type": "text",
+                "value": "{{$_POST.api_id}}",
+                "condition": "{{$_POST.api_id}}"
+              },
+              {
+                "table": "payment_req_self",
                 "column": "payment_mode",
                 "type": "text",
                 "value": "{{'UPI'}}"
               },
               {
-                "table": "payment_request",
-                "column": "cash_type",
+                "table": "payment_req_self",
+                "column": "pay_type",
                 "type": "text",
                 "value": "{{'UPI Live Transaction'}}"
               },
               {
-                "table": "payment_request",
-                "column": "remarks",
-                "type": "text",
-                "value": "{{'QR code requested for Amount Rs. '+$_POST.UPIAmount}}"
-              },
-              {
-                "table": "payment_request",
+                "table": "payment_req_self",
                 "column": "status",
                 "type": "number",
                 "value": "{{DBStatus}}"
               },
               {
-                "table": "payment_request",
+                "table": "payment_req_self",
                 "column": "request_time",
                 "type": "datetime",
                 "value": "{{NOW}}"
               },
               {
-                "table": "payment_request",
-                "column": "blank1",
+                "table": "payment_req_self",
+                "column": "response",
                 "type": "text",
-                "value": "{{UPIUrl}}",
-                "condition": "{{UPIUrl}}"
+                "value": "{{Response}}"
               }
             ],
-            "table": "payment_request",
-            "query": "INSERT INTO payment_request\n(pay_user_id, req_user_id, amount, tr_date, tr_no, utr_no, payment_mode, cash_type, remarks, status, request_time, blank1) VALUES (:P1 /* {{12}} */, :P2 /* {{identity}} */, :P3 /* {{$_POST.UPIAmount}} */, :P4 /* {{NOW}} */, :P5 /* {{ReqID}} */, :P6 /* {{OrderId}} */, :P7 /* {{'UPI'}} */, :P8 /* {{'UPI Live Transaction'}} */, :P9 /* {{'QR code requested for Amount Rs. '+$_POST.UPIAmount}} */, :P10 /* {{DBStatus}} */, :P11 /* {{NOW}} */, :P12 /* {{UPIUrl}} */)",
+            "table": "payment_req_self",
+            "query": "INSERT INTO payment_req_self\n(pay_user_id, req_user_id, user_name, req_email, req_mobile, amount, message, payment_url, client_req_id, order_id, api_id, payment_mode, pay_type, status, request_time, response) VALUES (:P1 /* {{12}} */, :P2 /* {{identity}} */, :P3 /* {{GetUserDetails.user_id}} */, :P4 /* {{'admin@swpay.in'}} */, :P5 /* {{6396562967}} */, :P6 /* {{$_POST.UPIAmount}} */, :P7 /* {{'QR code request for Amount of Rs. '+$_POST.UPIAmount}} */, :P8 /* {{UPIUrl}} */, :P9 /* {{ReqID}} */, :P10 /* {{OrderId}} */, :P11 /* {{$_POST.api_id}} */, :P12 /* {{'UPI'}} */, :P13 /* {{'UPI Live Transaction'}} */, :P14 /* {{DBStatus}} */, :P15 /* {{NOW}} */, :P16 /* {{Response}} */)",
             "params": [
               {
                 "name": ":P1",
@@ -535,52 +424,72 @@
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST.UPIAmount}}"
+                "value": "{{GetUserDetails.user_id}}"
               },
               {
                 "name": ":P4",
                 "type": "expression",
-                "value": "{{NOW}}"
+                "value": "{{'admin@swpay.in'}}"
               },
               {
                 "name": ":P5",
                 "type": "expression",
-                "value": "{{ReqID}}"
+                "value": "{{6396562967}}"
               },
               {
                 "name": ":P6",
                 "type": "expression",
-                "value": "{{OrderId}}"
+                "value": "{{$_POST.UPIAmount}}"
               },
               {
                 "name": ":P7",
                 "type": "expression",
-                "value": "{{'UPI'}}"
+                "value": "{{'QR code request for Amount of Rs. '+$_POST.UPIAmount}}"
               },
               {
                 "name": ":P8",
                 "type": "expression",
-                "value": "{{'UPI Live Transaction'}}"
+                "value": "{{UPIUrl}}"
               },
               {
                 "name": ":P9",
                 "type": "expression",
-                "value": "{{'QR code requested for Amount Rs. '+$_POST.UPIAmount}}"
+                "value": "{{ReqID}}"
               },
               {
                 "name": ":P10",
                 "type": "expression",
-                "value": "{{DBStatus}}"
+                "value": "{{OrderId}}"
               },
               {
                 "name": ":P11",
                 "type": "expression",
-                "value": "{{NOW}}"
+                "value": "{{$_POST.api_id}}"
               },
               {
                 "name": ":P12",
                 "type": "expression",
-                "value": "{{UPIUrl}}"
+                "value": "{{'UPI'}}"
+              },
+              {
+                "name": ":P13",
+                "type": "expression",
+                "value": "{{'UPI Live Transaction'}}"
+              },
+              {
+                "name": ":P14",
+                "type": "expression",
+                "value": "{{DBStatus}}"
+              },
+              {
+                "name": ":P15",
+                "type": "expression",
+                "value": "{{NOW}}"
+              },
+              {
+                "name": ":P16",
+                "type": "expression",
+                "value": "{{Response}}"
               }
             ],
             "returning": "id"
