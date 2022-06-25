@@ -624,6 +624,17 @@
                                               "output": true
                                             },
                                             {
+                                              "name": "Response",
+                                              "module": "core",
+                                              "action": "setvalue",
+                                              "options": {
+                                                "value": "{{apiUPICreateURL.data.msg}}"
+                                              },
+                                              "meta": [],
+                                              "outputType": "text",
+                                              "output": true
+                                            },
+                                            {
                                               "name": "DBStatus",
                                               "module": "core",
                                               "action": "setvalue",
@@ -725,7 +736,7 @@
                                                       "table": "payment_req_self",
                                                       "column": "response",
                                                       "type": "text",
-                                                      "value": "{{$_POST.response}}"
+                                                      "value": "{{Response}}"
                                                     },
                                                     {
                                                       "table": "payment_req_self",
@@ -741,7 +752,7 @@
                                                     }
                                                   ],
                                                   "table": "payment_req_self",
-                                                  "query": "INSERT INTO payment_req_self\n(pay_user_id, req_user_id, user_name, req_email, req_mobile, amount, message, payment_url, client_req_id, order_id, api_id, payment_mode, pay_type, response, status, request_time) VALUES (:P1 /* {{12}} */, :P2 /* {{identity}} */, :P3 /* {{GetUserDetails.user_id}} */, :P4 /* {{'admin@swpay.in'}} */, :P5 /* {{6396562967}} */, :P6 /* {{$_POST.UPIAmount}} */, :P7 /* {{'QR code request for Amount of Rs. '+$_POST.UPIAmount}} */, :P8 /* {{UPIUrl}} */, :P9 /* {{ReqID}} */, :P10 /* {{OrderId}} */, :P11 /* {{$_POST.api_id}} */, :P12 /* {{'UPI'}} */, :P13 /* {{'UPI Live Transaction'}} */, :P14 /* {{$_POST.response}} */, :P15 /* {{DBStatus}} */, :P16 /* {{NOW}} */)",
+                                                  "query": "INSERT INTO payment_req_self\n(pay_user_id, req_user_id, user_name, req_email, req_mobile, amount, message, payment_url, client_req_id, order_id, api_id, payment_mode, pay_type, response, status, request_time) VALUES (:P1 /* {{12}} */, :P2 /* {{identity}} */, :P3 /* {{GetUserDetails.user_id}} */, :P4 /* {{'admin@swpay.in'}} */, :P5 /* {{6396562967}} */, :P6 /* {{$_POST.UPIAmount}} */, :P7 /* {{'QR code request for Amount of Rs. '+$_POST.UPIAmount}} */, :P8 /* {{UPIUrl}} */, :P9 /* {{ReqID}} */, :P10 /* {{OrderId}} */, :P11 /* {{$_POST.api_id}} */, :P12 /* {{'UPI'}} */, :P13 /* {{'UPI Live Transaction'}} */, :P14 /* {{Response}} */, :P15 /* {{DBStatus}} */, :P16 /* {{NOW}} */)",
                                                   "params": [
                                                     {
                                                       "name": ":P1",
@@ -811,7 +822,7 @@
                                                     {
                                                       "name": ":P14",
                                                       "type": "expression",
-                                                      "value": "{{$_POST.response}}"
+                                                      "value": "{{Response}}"
                                                     },
                                                     {
                                                       "name": ":P15",
