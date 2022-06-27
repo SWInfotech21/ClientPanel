@@ -264,119 +264,151 @@
               "type": "integer",
               "default": "",
               "primary": false,
-              "nullable": false
+              "nullable": false,
+              "unique": false
             }
           },
           "user_id": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": false
+              "nullable": false,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "recharge_mobile": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": false
+              "nullable": false,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "operator": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": false
+              "nullable": false,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "amount": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": false
+              "nullable": false,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "status": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "order_id": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": false
+              "nullable": false,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "balance": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "ec": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "apirefid": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "remarks": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "blank1": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "blank2": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "field1": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "field2": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "maxLength": -5,
+              "unique": false
             }
           },
           "time": {
             "db": {
               "type": "timestamp",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "unique": false
             }
           },
           "live_id": {
             "db": {
               "type": "string",
               "primary": false,
-              "nullable": true
+              "nullable": true,
+              "maxLength": -5,
+              "unique": false
             }
           }
         }
