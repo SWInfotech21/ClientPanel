@@ -393,463 +393,487 @@
                                       "options": {
                                         "if": "{{identity}}",
                                         "then": {
-                                          "steps": [
-                                            {
-                                              "name": "ReqID",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{UUID.md5(123456).substr(1, 15)}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text"
-                                            },
-                                            {
-                                              "name": "GetAPIKey",
-                                              "module": "dbconnector",
-                                              "action": "single",
-                                              "options": {
-                                                "connection": "postgres_gcpServer",
-                                                "sql": {
-                                                  "type": "SELECT",
-                                                  "columns": [
-                                                    {
-                                                      "table": "m_api",
-                                                      "column": "username"
+                                          "steps": {
+                                            "name": "",
+                                            "module": "core",
+                                            "action": "condition",
+                                            "options": {
+                                              "if": "{{$_POST.UPIAmount>=100}}",
+                                              "then": {
+                                                "steps": [
+                                                  {
+                                                    "name": "ReqID",
+                                                    "module": "core",
+                                                    "action": "setvalue",
+                                                    "options": {
+                                                      "value": "{{UUID.md5(123456).substr(1, 15)}}"
                                                     },
-                                                    {
-                                                      "table": "m_api",
-                                                      "column": "api_password"
-                                                    }
-                                                  ],
-                                                  "table": {
-                                                    "name": "m_api"
+                                                    "meta": [],
+                                                    "outputType": "text"
                                                   },
-                                                  "primary": "id",
-                                                  "joins": [],
-                                                  "query": "SELECT username, api_password\nFROM m_api\nWHERE api_type = :P1 /* {{'UPI'}} */ AND status = 1",
-                                                  "params": [
-                                                    {
-                                                      "operator": "equal",
-                                                      "type": "expression",
-                                                      "name": ":P1",
-                                                      "value": "{{'UPI'}}"
-                                                    }
-                                                  ],
-                                                  "wheres": {
-                                                    "condition": "AND",
-                                                    "rules": [
-                                                      {
-                                                        "id": "m_api.api_type",
-                                                        "field": "m_api.api_type",
-                                                        "type": "string",
-                                                        "operator": "equal",
-                                                        "value": "{{'UPI'}}",
-                                                        "data": {
-                                                          "table": "m_api",
-                                                          "column": "api_type",
-                                                          "type": "text",
-                                                          "columnObj": {
-                                                            "type": "string",
-                                                            "maxLength": -5,
-                                                            "primary": false,
-                                                            "unique": false,
-                                                            "nullable": true,
-                                                            "name": "api_type"
+                                                  {
+                                                    "name": "GetAPIKey",
+                                                    "module": "dbconnector",
+                                                    "action": "single",
+                                                    "options": {
+                                                      "connection": "postgres_gcpServer",
+                                                      "sql": {
+                                                        "type": "SELECT",
+                                                        "columns": [
+                                                          {
+                                                            "table": "m_api",
+                                                            "column": "username"
+                                                          },
+                                                          {
+                                                            "table": "m_api",
+                                                            "column": "api_password"
                                                           }
+                                                        ],
+                                                        "table": {
+                                                          "name": "m_api"
                                                         },
-                                                        "operation": "="
+                                                        "primary": "id",
+                                                        "joins": [],
+                                                        "query": "SELECT username, api_password\nFROM m_api\nWHERE api_type = :P1 /* {{'UPI'}} */ AND status = 1",
+                                                        "params": [
+                                                          {
+                                                            "operator": "equal",
+                                                            "type": "expression",
+                                                            "name": ":P1",
+                                                            "value": "{{'UPI'}}"
+                                                          }
+                                                        ],
+                                                        "wheres": {
+                                                          "condition": "AND",
+                                                          "rules": [
+                                                            {
+                                                              "id": "m_api.api_type",
+                                                              "field": "m_api.api_type",
+                                                              "type": "string",
+                                                              "operator": "equal",
+                                                              "value": "{{'UPI'}}",
+                                                              "data": {
+                                                                "table": "m_api",
+                                                                "column": "api_type",
+                                                                "type": "text",
+                                                                "columnObj": {
+                                                                  "type": "string",
+                                                                  "maxLength": -5,
+                                                                  "primary": false,
+                                                                  "unique": false,
+                                                                  "nullable": true,
+                                                                  "name": "api_type"
+                                                                }
+                                                              },
+                                                              "operation": "="
+                                                            },
+                                                            {
+                                                              "id": "m_api.status",
+                                                              "field": "m_api.status",
+                                                              "type": "double",
+                                                              "operator": "equal",
+                                                              "value": 1,
+                                                              "data": {
+                                                                "table": "m_api",
+                                                                "column": "status",
+                                                                "type": "number",
+                                                                "columnObj": {
+                                                                  "type": "integer",
+                                                                  "primary": false,
+                                                                  "nullable": false,
+                                                                  "unique": false,
+                                                                  "name": "status"
+                                                                }
+                                                              },
+                                                              "operation": "="
+                                                            }
+                                                          ],
+                                                          "conditional": null,
+                                                          "valid": true
+                                                        }
+                                                      }
+                                                    },
+                                                    "output": false,
+                                                    "meta": [
+                                                      {
+                                                        "type": "text",
+                                                        "name": "username"
                                                       },
                                                       {
-                                                        "id": "m_api.status",
-                                                        "field": "m_api.status",
-                                                        "type": "double",
-                                                        "operator": "equal",
-                                                        "value": 1,
-                                                        "data": {
-                                                          "table": "m_api",
-                                                          "column": "status",
-                                                          "type": "number",
-                                                          "columnObj": {
-                                                            "type": "integer",
-                                                            "primary": false,
-                                                            "nullable": false,
-                                                            "unique": false,
-                                                            "name": "status"
-                                                          }
-                                                        },
-                                                        "operation": "="
+                                                        "type": "text",
+                                                        "name": "api_password"
                                                       }
                                                     ],
-                                                    "conditional": null,
-                                                    "valid": true
-                                                  }
-                                                }
-                                              },
-                                              "output": false,
-                                              "meta": [
-                                                {
-                                                  "type": "text",
-                                                  "name": "username"
-                                                },
-                                                {
-                                                  "type": "text",
-                                                  "name": "api_password"
-                                                }
-                                              ],
-                                              "outputType": "object"
-                                            },
-                                            {
-                                              "name": "GetUserDetails",
-                                              "module": "dbconnector",
-                                              "action": "single",
-                                              "options": {
-                                                "connection": "postgres_gcpServer",
-                                                "sql": {
-                                                  "type": "SELECT",
-                                                  "columns": [
-                                                    {
-                                                      "table": "m_users",
-                                                      "column": "user_id"
-                                                    }
-                                                  ],
-                                                  "table": {
-                                                    "name": "m_users"
+                                                    "outputType": "object"
                                                   },
-                                                  "primary": "id",
-                                                  "joins": [],
-                                                  "wheres": {
-                                                    "condition": "AND",
-                                                    "rules": [
+                                                  {
+                                                    "name": "GetUserDetails",
+                                                    "module": "dbconnector",
+                                                    "action": "single",
+                                                    "options": {
+                                                      "connection": "postgres_gcpServer",
+                                                      "sql": {
+                                                        "type": "SELECT",
+                                                        "columns": [
+                                                          {
+                                                            "table": "m_users",
+                                                            "column": "user_id"
+                                                          }
+                                                        ],
+                                                        "table": {
+                                                          "name": "m_users"
+                                                        },
+                                                        "primary": "id",
+                                                        "joins": [],
+                                                        "wheres": {
+                                                          "condition": "AND",
+                                                          "rules": [
+                                                            {
+                                                              "id": "m_users.id",
+                                                              "field": "m_users.id",
+                                                              "type": "double",
+                                                              "operator": "equal",
+                                                              "value": "{{identity}}",
+                                                              "data": {
+                                                                "table": "m_users",
+                                                                "column": "id",
+                                                                "type": "number",
+                                                                "columnObj": {
+                                                                  "type": "increments",
+                                                                  "default": "",
+                                                                  "primary": true,
+                                                                  "nullable": false,
+                                                                  "unique": true,
+                                                                  "name": "id"
+                                                                }
+                                                              },
+                                                              "operation": "="
+                                                            }
+                                                          ],
+                                                          "conditional": null,
+                                                          "valid": true
+                                                        },
+                                                        "query": "SELECT user_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
+                                                        "params": [
+                                                          {
+                                                            "operator": "equal",
+                                                            "type": "expression",
+                                                            "name": ":P1",
+                                                            "value": "{{identity}}"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "output": false,
+                                                    "meta": [
                                                       {
-                                                        "id": "m_users.id",
-                                                        "field": "m_users.id",
-                                                        "type": "double",
-                                                        "operator": "equal",
-                                                        "value": "{{identity}}",
-                                                        "data": {
-                                                          "table": "m_users",
-                                                          "column": "id",
-                                                          "type": "number",
-                                                          "columnObj": {
-                                                            "type": "increments",
-                                                            "default": "",
-                                                            "primary": true,
-                                                            "nullable": false,
-                                                            "unique": true,
-                                                            "name": "id"
-                                                          }
-                                                        },
-                                                        "operation": "="
+                                                        "type": "text",
+                                                        "name": "user_id"
                                                       }
                                                     ],
-                                                    "conditional": null,
-                                                    "valid": true
+                                                    "outputType": "object"
                                                   },
-                                                  "query": "SELECT user_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */",
-                                                  "params": [
-                                                    {
-                                                      "operator": "equal",
-                                                      "type": "expression",
-                                                      "name": ":P1",
-                                                      "value": "{{identity}}"
-                                                    }
-                                                  ]
+                                                  {
+                                                    "name": "apiUPICreateURL",
+                                                    "module": "api",
+                                                    "action": "send",
+                                                    "options": {
+                                                      "url": "https://merchant.upigateway.com/api/create_order",
+                                                      "method": "POST",
+                                                      "dataType": "json",
+                                                      "data": {
+                                                        "key": "{{GetAPIKey.api_password}}",
+                                                        "client_txn_id": "{{ReqID}}",
+                                                        "amount": "{{$_POST.UPIAmount}}",
+                                                        "p_info": "Recharge",
+                                                        "customer_name": "{{GetUserDetails.user_id}}",
+                                                        "customer_email": "swinfotech2021@gmail.com",
+                                                        "customer_mobile": "8958148142",
+                                                        "redirect_url": "https://swpay.in/upi-txn-wallet",
+                                                        "udf1": "",
+                                                        "udf2": "",
+                                                        "udf3": ""
+                                                      }
+                                                    },
+                                                    "output": false
+                                                  },
+                                                  {
+                                                    "name": "UPIUrl",
+                                                    "module": "core",
+                                                    "action": "setvalue",
+                                                    "options": {
+                                                      "value": "{{apiUPICreateURL.data.data.payment_url}}"
+                                                    },
+                                                    "meta": [],
+                                                    "outputType": "text",
+                                                    "output": true
+                                                  },
+                                                  {
+                                                    "name": "OrderId",
+                                                    "module": "core",
+                                                    "action": "setvalue",
+                                                    "options": {
+                                                      "value": "{{apiUPICreateURL.data.data.order_id}}"
+                                                    },
+                                                    "meta": [],
+                                                    "outputType": "text",
+                                                    "output": true
+                                                  },
+                                                  {
+                                                    "name": "Status",
+                                                    "module": "core",
+                                                    "action": "setvalue",
+                                                    "options": {
+                                                      "value": "{{apiUPICreateURL.data.status}}"
+                                                    },
+                                                    "meta": [],
+                                                    "outputType": "text",
+                                                    "output": true
+                                                  },
+                                                  {
+                                                    "name": "Response",
+                                                    "module": "core",
+                                                    "action": "setvalue",
+                                                    "options": {
+                                                      "value": "{{apiUPICreateURL.data.msg}}"
+                                                    },
+                                                    "meta": [],
+                                                    "outputType": "text",
+                                                    "output": true
+                                                  },
+                                                  {
+                                                    "name": "DBStatus",
+                                                    "module": "core",
+                                                    "action": "setvalue",
+                                                    "options": {
+                                                      "value": "{{(Status==true)?1:3}}"
+                                                    },
+                                                    "meta": [],
+                                                    "outputType": "text"
+                                                  },
+                                                  {
+                                                    "name": "AddUPIPaymentReq",
+                                                    "module": "dbupdater",
+                                                    "action": "insert",
+                                                    "options": {
+                                                      "connection": "postgres_gcpServer",
+                                                      "sql": {
+                                                        "type": "insert",
+                                                        "values": [
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "pay_user_id",
+                                                            "type": "number",
+                                                            "value": "{{12}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "req_user_id",
+                                                            "type": "number",
+                                                            "value": "{{identity}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "user_name",
+                                                            "type": "text",
+                                                            "value": "{{GetUserDetails.user_id}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "req_email",
+                                                            "type": "text",
+                                                            "value": "{{'admin@swpay.in'}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "req_mobile",
+                                                            "type": "text",
+                                                            "value": "{{6396562967}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "amount",
+                                                            "type": "text",
+                                                            "value": "{{$_POST.UPIAmount}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "message",
+                                                            "type": "text",
+                                                            "value": "{{'QR code request for Amount of Rs. '+$_POST.UPIAmount}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "payment_url",
+                                                            "type": "text",
+                                                            "value": "{{UPIUrl}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "client_req_id",
+                                                            "type": "text",
+                                                            "value": "{{ReqID}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "order_id",
+                                                            "type": "text",
+                                                            "value": "{{OrderId}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "api_id",
+                                                            "type": "text",
+                                                            "value": "{{$_POST.api_id}}",
+                                                            "condition": "{{$_POST.api_id}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "payment_mode",
+                                                            "type": "text",
+                                                            "value": "{{'UPI'}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "pay_type",
+                                                            "type": "text",
+                                                            "value": "{{'UPI Live Transaction'}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "response",
+                                                            "type": "text",
+                                                            "value": "{{Response}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "status",
+                                                            "type": "number",
+                                                            "value": "{{DBStatus}}"
+                                                          },
+                                                          {
+                                                            "table": "payment_req_self",
+                                                            "column": "request_time",
+                                                            "type": "datetime",
+                                                            "value": "{{NOW}}"
+                                                          }
+                                                        ],
+                                                        "table": "payment_req_self",
+                                                        "query": "INSERT INTO payment_req_self\n(pay_user_id, req_user_id, user_name, req_email, req_mobile, amount, message, payment_url, client_req_id, order_id, api_id, payment_mode, pay_type, response, status, request_time) VALUES (:P1 /* {{12}} */, :P2 /* {{identity}} */, :P3 /* {{GetUserDetails.user_id}} */, :P4 /* {{'admin@swpay.in'}} */, :P5 /* {{6396562967}} */, :P6 /* {{$_POST.UPIAmount}} */, :P7 /* {{'QR code request for Amount of Rs. '+$_POST.UPIAmount}} */, :P8 /* {{UPIUrl}} */, :P9 /* {{ReqID}} */, :P10 /* {{OrderId}} */, :P11 /* {{$_POST.api_id}} */, :P12 /* {{'UPI'}} */, :P13 /* {{'UPI Live Transaction'}} */, :P14 /* {{Response}} */, :P15 /* {{DBStatus}} */, :P16 /* {{NOW}} */)",
+                                                        "params": [
+                                                          {
+                                                            "name": ":P1",
+                                                            "type": "expression",
+                                                            "value": "{{12}}"
+                                                          },
+                                                          {
+                                                            "name": ":P2",
+                                                            "type": "expression",
+                                                            "value": "{{identity}}"
+                                                          },
+                                                          {
+                                                            "name": ":P3",
+                                                            "type": "expression",
+                                                            "value": "{{GetUserDetails.user_id}}"
+                                                          },
+                                                          {
+                                                            "name": ":P4",
+                                                            "type": "expression",
+                                                            "value": "{{'admin@swpay.in'}}"
+                                                          },
+                                                          {
+                                                            "name": ":P5",
+                                                            "type": "expression",
+                                                            "value": "{{6396562967}}"
+                                                          },
+                                                          {
+                                                            "name": ":P6",
+                                                            "type": "expression",
+                                                            "value": "{{$_POST.UPIAmount}}"
+                                                          },
+                                                          {
+                                                            "name": ":P7",
+                                                            "type": "expression",
+                                                            "value": "{{'QR code request for Amount of Rs. '+$_POST.UPIAmount}}"
+                                                          },
+                                                          {
+                                                            "name": ":P8",
+                                                            "type": "expression",
+                                                            "value": "{{UPIUrl}}"
+                                                          },
+                                                          {
+                                                            "name": ":P9",
+                                                            "type": "expression",
+                                                            "value": "{{ReqID}}"
+                                                          },
+                                                          {
+                                                            "name": ":P10",
+                                                            "type": "expression",
+                                                            "value": "{{OrderId}}"
+                                                          },
+                                                          {
+                                                            "name": ":P11",
+                                                            "type": "expression",
+                                                            "value": "{{$_POST.api_id}}"
+                                                          },
+                                                          {
+                                                            "name": ":P12",
+                                                            "type": "expression",
+                                                            "value": "{{'UPI'}}"
+                                                          },
+                                                          {
+                                                            "name": ":P13",
+                                                            "type": "expression",
+                                                            "value": "{{'UPI Live Transaction'}}"
+                                                          },
+                                                          {
+                                                            "name": ":P14",
+                                                            "type": "expression",
+                                                            "value": "{{Response}}"
+                                                          },
+                                                          {
+                                                            "name": ":P15",
+                                                            "type": "expression",
+                                                            "value": "{{DBStatus}}"
+                                                          },
+                                                          {
+                                                            "name": ":P16",
+                                                            "type": "expression",
+                                                            "value": "{{NOW}}"
+                                                          }
+                                                        ],
+                                                        "returning": "id"
+                                                      }
+                                                    },
+                                                    "meta": [
+                                                      {
+                                                        "name": "identity",
+                                                        "type": "text"
+                                                      },
+                                                      {
+                                                        "name": "affected",
+                                                        "type": "number"
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              "else": {
+                                                "steps": {
+                                                  "name": "Resp",
+                                                  "module": "core",
+                                                  "action": "setvalue",
+                                                  "options": {
+                                                    "value": "Amount must be greater than or equal to Rs. 100"
+                                                  },
+                                                  "meta": [],
+                                                  "output": true,
+                                                  "outputType": "text"
                                                 }
-                                              },
-                                              "output": false,
-                                              "meta": [
-                                                {
-                                                  "type": "text",
-                                                  "name": "user_id"
-                                                }
-                                              ],
-                                              "outputType": "object"
+                                              }
                                             },
-                                            {
-                                              "name": "apiUPICreateURL",
-                                              "module": "api",
-                                              "action": "send",
-                                              "options": {
-                                                "url": "https://merchant.upigateway.com/api/create_order",
-                                                "method": "POST",
-                                                "dataType": "json",
-                                                "data": {
-                                                  "key": "{{GetAPIKey.api_password}}",
-                                                  "client_txn_id": "{{ReqID}}",
-                                                  "amount": "{{$_POST.UPIAmount}}",
-                                                  "p_info": "Recharge",
-                                                  "customer_name": "{{GetUserDetails.user_id}}",
-                                                  "customer_email": "swinfotech2021@gmail.com",
-                                                  "customer_mobile": "8958148142",
-                                                  "redirect_url": "https://swpay.in/upi-txn-wallet",
-                                                  "udf1": "",
-                                                  "udf2": "",
-                                                  "udf3": ""
-                                                }
-                                              },
-                                              "output": false
-                                            },
-                                            {
-                                              "name": "UPIUrl",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{apiUPICreateURL.data.data.payment_url}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text",
-                                              "output": true
-                                            },
-                                            {
-                                              "name": "OrderId",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{apiUPICreateURL.data.data.order_id}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text",
-                                              "output": true
-                                            },
-                                            {
-                                              "name": "Status",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{apiUPICreateURL.data.status}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text",
-                                              "output": true
-                                            },
-                                            {
-                                              "name": "Response",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{apiUPICreateURL.data.msg}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text",
-                                              "output": true
-                                            },
-                                            {
-                                              "name": "DBStatus",
-                                              "module": "core",
-                                              "action": "setvalue",
-                                              "options": {
-                                                "value": "{{(Status==true)?1:3}}"
-                                              },
-                                              "meta": [],
-                                              "outputType": "text"
-                                            },
-                                            {
-                                              "name": "AddUPIPaymentReq",
-                                              "module": "dbupdater",
-                                              "action": "insert",
-                                              "options": {
-                                                "connection": "postgres_gcpServer",
-                                                "sql": {
-                                                  "type": "insert",
-                                                  "values": [
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "pay_user_id",
-                                                      "type": "number",
-                                                      "value": "{{12}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "req_user_id",
-                                                      "type": "number",
-                                                      "value": "{{identity}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "user_name",
-                                                      "type": "text",
-                                                      "value": "{{GetUserDetails.user_id}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "req_email",
-                                                      "type": "text",
-                                                      "value": "{{'admin@swpay.in'}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "req_mobile",
-                                                      "type": "text",
-                                                      "value": "{{6396562967}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "amount",
-                                                      "type": "text",
-                                                      "value": "{{$_POST.UPIAmount}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "message",
-                                                      "type": "text",
-                                                      "value": "{{'QR code request for Amount of Rs. '+$_POST.UPIAmount}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "payment_url",
-                                                      "type": "text",
-                                                      "value": "{{UPIUrl}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "client_req_id",
-                                                      "type": "text",
-                                                      "value": "{{ReqID}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "order_id",
-                                                      "type": "text",
-                                                      "value": "{{OrderId}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "api_id",
-                                                      "type": "text",
-                                                      "value": "{{$_POST.api_id}}",
-                                                      "condition": "{{$_POST.api_id}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "payment_mode",
-                                                      "type": "text",
-                                                      "value": "{{'UPI'}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "pay_type",
-                                                      "type": "text",
-                                                      "value": "{{'UPI Live Transaction'}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "response",
-                                                      "type": "text",
-                                                      "value": "{{Response}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "status",
-                                                      "type": "number",
-                                                      "value": "{{DBStatus}}"
-                                                    },
-                                                    {
-                                                      "table": "payment_req_self",
-                                                      "column": "request_time",
-                                                      "type": "datetime",
-                                                      "value": "{{NOW}}"
-                                                    }
-                                                  ],
-                                                  "table": "payment_req_self",
-                                                  "query": "INSERT INTO payment_req_self\n(pay_user_id, req_user_id, user_name, req_email, req_mobile, amount, message, payment_url, client_req_id, order_id, api_id, payment_mode, pay_type, response, status, request_time) VALUES (:P1 /* {{12}} */, :P2 /* {{identity}} */, :P3 /* {{GetUserDetails.user_id}} */, :P4 /* {{'admin@swpay.in'}} */, :P5 /* {{6396562967}} */, :P6 /* {{$_POST.UPIAmount}} */, :P7 /* {{'QR code request for Amount of Rs. '+$_POST.UPIAmount}} */, :P8 /* {{UPIUrl}} */, :P9 /* {{ReqID}} */, :P10 /* {{OrderId}} */, :P11 /* {{$_POST.api_id}} */, :P12 /* {{'UPI'}} */, :P13 /* {{'UPI Live Transaction'}} */, :P14 /* {{Response}} */, :P15 /* {{DBStatus}} */, :P16 /* {{NOW}} */)",
-                                                  "params": [
-                                                    {
-                                                      "name": ":P1",
-                                                      "type": "expression",
-                                                      "value": "{{12}}"
-                                                    },
-                                                    {
-                                                      "name": ":P2",
-                                                      "type": "expression",
-                                                      "value": "{{identity}}"
-                                                    },
-                                                    {
-                                                      "name": ":P3",
-                                                      "type": "expression",
-                                                      "value": "{{GetUserDetails.user_id}}"
-                                                    },
-                                                    {
-                                                      "name": ":P4",
-                                                      "type": "expression",
-                                                      "value": "{{'admin@swpay.in'}}"
-                                                    },
-                                                    {
-                                                      "name": ":P5",
-                                                      "type": "expression",
-                                                      "value": "{{6396562967}}"
-                                                    },
-                                                    {
-                                                      "name": ":P6",
-                                                      "type": "expression",
-                                                      "value": "{{$_POST.UPIAmount}}"
-                                                    },
-                                                    {
-                                                      "name": ":P7",
-                                                      "type": "expression",
-                                                      "value": "{{'QR code request for Amount of Rs. '+$_POST.UPIAmount}}"
-                                                    },
-                                                    {
-                                                      "name": ":P8",
-                                                      "type": "expression",
-                                                      "value": "{{UPIUrl}}"
-                                                    },
-                                                    {
-                                                      "name": ":P9",
-                                                      "type": "expression",
-                                                      "value": "{{ReqID}}"
-                                                    },
-                                                    {
-                                                      "name": ":P10",
-                                                      "type": "expression",
-                                                      "value": "{{OrderId}}"
-                                                    },
-                                                    {
-                                                      "name": ":P11",
-                                                      "type": "expression",
-                                                      "value": "{{$_POST.api_id}}"
-                                                    },
-                                                    {
-                                                      "name": ":P12",
-                                                      "type": "expression",
-                                                      "value": "{{'UPI'}}"
-                                                    },
-                                                    {
-                                                      "name": ":P13",
-                                                      "type": "expression",
-                                                      "value": "{{'UPI Live Transaction'}}"
-                                                    },
-                                                    {
-                                                      "name": ":P14",
-                                                      "type": "expression",
-                                                      "value": "{{Response}}"
-                                                    },
-                                                    {
-                                                      "name": ":P15",
-                                                      "type": "expression",
-                                                      "value": "{{DBStatus}}"
-                                                    },
-                                                    {
-                                                      "name": ":P16",
-                                                      "type": "expression",
-                                                      "value": "{{NOW}}"
-                                                    }
-                                                  ],
-                                                  "returning": "id"
-                                                }
-                                              },
-                                              "meta": [
-                                                {
-                                                  "name": "identity",
-                                                  "type": "text"
-                                                },
-                                                {
-                                                  "name": "affected",
-                                                  "type": "number"
-                                                }
-                                              ]
-                                            }
-                                          ]
+                                            "outputType": "boolean"
+                                          }
                                         },
                                         "else": {
                                           "steps": {

@@ -370,11 +370,17 @@
                               "column": "kyc_status",
                               "type": "text",
                               "value": "{{3}}"
+                            },
+                            {
+                              "table": "m_users",
+                              "column": "user_tpin",
+                              "type": "text",
+                              "value": "{{1234}}"
                             }
                           ],
                           "table": "m_users",
                           "returning": "id",
-                          "query": "INSERT INTO m_users\n(user_id, user_fname, user_lname, user_mobile, user_email, password, salt, user_type, md_id, ds_id, u_status, scheme_id, ip, cap_amt, balance_amt, balance_outstanding, aeps_limit, aeps_balance, created_by, created_on, blank1, blank2, address, pin, kyc_status) VALUES (:P1 /* {{UniqueId}} */, :P2 /* {{$_GET.user_name}} */, :P3 /* {{'https://github.com/cdo.png'}} */, :P4 /* {{$_GET.mobile}} */, :P5 /* {{$_GET.email}} */, :P6 /* {{password.sha256(NOW)}} */, :P7 /* {{NOW}} */, '3', '0', '0', :P8 /* {{1}} */, '7', :P9 /* {{$_SERVER.REMOTE_ADDR}} */, '0', '0', '0', '0', '0', '12', :P10 /* {{NOW}} */, :P11 /* {{password}} */, :P12 /* {{$_GET.mobile}} */, :P13 /* {{$_GET.address}} */, :P14 /* {{$_GET.pin}} */, :P15 /* {{3}} */)",
+                          "query": "INSERT INTO m_users\n(user_id, user_fname, user_lname, user_mobile, user_email, password, salt, user_type, md_id, ds_id, u_status, scheme_id, ip, cap_amt, balance_amt, balance_outstanding, aeps_limit, aeps_balance, created_by, created_on, blank1, blank2, address, pin, kyc_status, user_tpin) VALUES (:P1 /* {{UniqueId}} */, :P2 /* {{$_GET.user_name}} */, :P3 /* {{'https://github.com/cdo.png'}} */, :P4 /* {{$_GET.mobile}} */, :P5 /* {{$_GET.email}} */, :P6 /* {{password.sha256(NOW)}} */, :P7 /* {{NOW}} */, '3', '0', '0', :P8 /* {{1}} */, '7', :P9 /* {{$_SERVER.REMOTE_ADDR}} */, '0', '0', '0', '0', '0', '12', :P10 /* {{NOW}} */, :P11 /* {{password}} */, :P12 /* {{$_GET.mobile}} */, :P13 /* {{$_GET.address}} */, :P14 /* {{$_GET.pin}} */, :P15 /* {{3}} */, :P16 /* {{1234}} */)",
                           "params": [
                             {
                               "name": ":P1",
@@ -450,6 +456,11 @@
                               "name": ":P15",
                               "type": "expression",
                               "value": "{{3}}"
+                            },
+                            {
+                              "name": ":P16",
+                              "type": "expression",
+                              "value": "{{1234}}"
                             }
                           ]
                         }
