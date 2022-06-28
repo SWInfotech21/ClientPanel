@@ -870,6 +870,17 @@
                                                                 "type": "number"
                                                               }
                                                             ]
+                                                          },
+                                                          {
+                                                            "name": "Status",
+                                                            "module": "core",
+                                                            "action": "setvalue",
+                                                            "options": {
+                                                              "value": 200
+                                                            },
+                                                            "meta": [],
+                                                            "output": true,
+                                                            "outputType": "text"
                                                           }
                                                         ]
                                                       }
