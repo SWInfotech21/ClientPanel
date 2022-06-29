@@ -70,7 +70,7 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{$_POST.Amount}}",
+          "if": "{{$_POST.Amount>=100}}",
           "then": {
             "steps": [
               {
@@ -560,7 +560,7 @@
               "module": "core",
               "action": "setvalue",
               "options": {
-                "value": "Please Enter Correct Amount"
+                "value": "Please enter an Amount more than 100"
               },
               "meta": [],
               "outputType": "text",
