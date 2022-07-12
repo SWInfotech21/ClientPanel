@@ -96,11 +96,6 @@
       "exec": "/api/PageAccess/PageForRT"
     },
     {
-      "path": "/recharges",
-      "page": "recharges",
-      "layout": "main"
-    },
-    {
       "path": "/403-forbidden",
       "page": "403-forbidden"
     },

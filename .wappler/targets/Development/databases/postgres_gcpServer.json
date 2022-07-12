@@ -3875,10 +3875,14 @@
           },
           "op_id": {
             "db": {
-              "type": "integer",
+              "type": "reference",
               "primary": false,
               "nullable": false,
-              "unique": false
+              "unique": false,
+              "references": "id",
+              "inTable": "m_operator",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
             }
           },
           "api_code1": {
