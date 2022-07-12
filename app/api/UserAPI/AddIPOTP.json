@@ -1,292 +1,458 @@
-[
-  {
-    "name": "",
-    "module": "auth",
-    "action": "restrict",
-    "options": {
-      "provider": "security",
-      "permissions": [
-        "write"
-      ],
-      "loginUrl": "/login",
-      "forbiddenUrl": "/403-forbidden"
-    }
-  },
-  {
-    "name": "identity",
-    "module": "auth",
-    "action": "identify",
-    "options": {
-      "provider": "security"
-    },
-    "output": false,
-    "meta": []
-  },
-  {
-    "name": "OTP",
-    "module": "core",
-    "action": "setvalue",
-    "options": {
-      "value": "{{NOW.formatDate(\"sshhmm\")}}"
-    },
-    "meta": [],
-    "outputType": "text"
-  },
-  {
-    "name": "ip_otp",
-    "module": "core",
-    "action": "setsession",
-    "options": {
-      "value": "{{OTP}}"
-    }
-  },
-  {
-    "name": "GetUserDetails",
-    "module": "dbconnector",
-    "action": "single",
-    "options": {
-      "connection": "postgres_gcpServer",
-      "sql": {
-        "type": "SELECT",
-        "columns": [
-          {
-            "table": "m_users",
-            "column": "user_mobile"
-          }
-        ],
-        "table": {
-          "name": "m_users",
-          "alias": "m_users"
-        },
-        "primary": "id",
-        "joins": [],
-        "wheres": {
-          "condition": "AND",
-          "rules": [
-            {
-              "id": "m_users.id",
-              "field": "m_users.id",
-              "type": "double",
-              "operator": "equal",
-              "value": "{{identity}}",
-              "data": {
-                "table": "m_users",
-                "column": "id",
-                "type": "number",
-                "columnObj": {
-                  "type": "increments",
-                  "default": "",
-                  "primary": true,
-                  "nullable": false,
-                  "name": "id"
-                }
-              },
-              "operation": "="
-            }
-          ],
-          "conditional": null,
-          "valid": true
-        },
-        "query": "SELECT user_mobile\nFROM m_users AS m_users\nWHERE id = :P1 /* {{identity}} */",
-        "params": [
-          {
-            "operator": "equal",
-            "type": "expression",
-            "name": ":P1",
-            "value": "{{identity}}"
-          }
-        ]
-      }
-    },
-    "output": false,
-    "meta": [
+{
+  "meta": {
+    "$_POST": [
       {
         "type": "text",
-        "name": "user_mobile"
-      }
-    ],
-    "outputType": "object"
-  },
-  {
-    "name": "GetSMSAPI",
-    "module": "dbconnector",
-    "action": "single",
-    "options": {
-      "connection": "postgres_gcpServer",
-      "sql": {
-        "type": "SELECT",
-        "columns": [],
-        "table": {
-          "name": "m_api",
-          "alias": "m_api"
-        },
-        "primary": "id",
-        "joins": [],
-        "wheres": {
-          "condition": "AND",
-          "rules": [
-            {
-              "id": "m_api.api_type",
-              "field": "m_api.api_type",
-              "type": "string",
-              "operator": "equal",
-              "value": "{{'SMS'}}",
-              "data": {
-                "table": "m_api",
-                "column": "api_type",
-                "type": "text",
-                "columnObj": {
-                  "type": "string",
-                  "maxLength": -5,
-                  "primary": false,
-                  "unique": false,
-                  "nullable": true,
-                  "name": "api_type"
-                }
-              },
-              "operation": "="
-            },
-            {
-              "id": "m_api.status",
-              "field": "m_api.status",
-              "type": "double",
-              "operator": "equal",
-              "value": 1,
-              "data": {
-                "table": "m_api",
-                "column": "status",
-                "type": "number",
-                "columnObj": {
-                  "type": "integer",
-                  "primary": false,
-                  "nullable": false,
-                  "unique": false,
-                  "name": "status"
-                }
-              },
-              "operation": "="
-            }
-          ],
-          "conditional": null,
-          "valid": true
-        },
-        "query": "SELECT *\nFROM m_api AS m_api\nWHERE api_type = :P1 /* {{'SMS'}} */ AND status = 1",
-        "params": [
-          {
-            "operator": "equal",
-            "type": "expression",
-            "name": ":P1",
-            "value": "{{'SMS'}}"
-          }
-        ]
-      }
-    },
-    "output": false,
-    "meta": [
-      {
-        "type": "number",
-        "name": "id"
+        "name": "sms_message"
       },
       {
         "type": "text",
-        "name": "api_name"
+        "name": "sms_type"
       },
       {
-        "type": "text",
-        "name": "api_code"
-      },
-      {
-        "type": "text",
-        "name": "username"
-      },
-      {
-        "type": "text",
-        "name": "api_password"
-      },
-      {
-        "type": "number",
+        "type": "boolean",
         "name": "status"
       },
       {
         "type": "text",
-        "name": "blank1"
-      },
-      {
-        "type": "text",
-        "name": "blank2"
-      },
-      {
-        "type": "text",
-        "name": "blank3"
-      },
-      {
-        "type": "text",
-        "name": "blank4"
-      },
-      {
-        "type": "number",
-        "name": "created_by"
-      },
-      {
-        "type": "datetime",
-        "name": "created_on"
-      },
-      {
-        "type": "number",
-        "name": "updated_by"
-      },
-      {
-        "type": "datetime",
-        "name": "updated_on"
-      },
-      {
-        "type": "number",
-        "name": "deleted_by"
-      },
-      {
-        "type": "datetime",
-        "name": "deleted_on"
-      },
-      {
-        "type": "text",
-        "name": "api_type"
-      },
-      {
-        "type": "text",
-        "name": "senderid"
-      },
-      {
-        "type": "text",
-        "name": "entityid"
-      },
-      {
-        "type": "text",
-        "name": "templateid"
-      },
-      {
-        "type": "text",
-        "name": "api_url"
+        "name": "response"
       }
     ],
-    "outputType": "object"
-  },
-  {
-    "name": "apiOTP",
-    "module": "api",
-    "action": "send",
-    "options": {
-      "url": "{{GetSMSAPI.api_url}}",
-      "params": {
-        "user": "{{GetSMSAPI.username}}",
-        "key": "{{GetSMSAPI.api_password}}",
-        "mobile": "{{GetUserDetails.user_mobile}}",
-        "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}",
-        "senderid": "{{GetSMSAPI.senderid}}",
-        "accusage": "1",
-        "entiityid": "{{GetSMSAPI.entityid}}",
-        "templateid": "{{GetSMSAPI.templateid}}"
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "REMOTE_ADDR"
       }
-    },
-    "output": false
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "security"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "OTP",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{NOW.formatDate(\"ssmmss\")}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "ip_otp",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{OTP}}"
+        }
+      },
+      {
+        "name": "GetUserDetails",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "m_users",
+                "column": "user_mobile"
+              }
+            ],
+            "table": {
+              "name": "m_users",
+              "alias": "m_users"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_users.id",
+                  "field": "m_users.id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "m_users",
+                    "column": "id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "default": "",
+                      "primary": true,
+                      "nullable": false,
+                      "name": "id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT user_mobile\nFROM m_users AS m_users\nWHERE id = :P1 /* {{identity}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}"
+              }
+            ]
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "text",
+            "name": "user_mobile"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "GetSMSAPI",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [],
+            "table": {
+              "name": "m_api",
+              "alias": "m_api"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "m_api.api_type",
+                  "field": "m_api.api_type",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{'SMS'}}",
+                  "data": {
+                    "table": "m_api",
+                    "column": "api_type",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "maxLength": -5,
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "name": "api_type"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "m_api.status",
+                  "field": "m_api.status",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "m_api",
+                    "column": "status",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": false,
+                      "unique": false,
+                      "name": "status"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT *\nFROM m_api AS m_api\nWHERE api_type = :P1 /* {{'SMS'}} */ AND status = 1",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{'SMS'}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "text",
+            "name": "api_name"
+          },
+          {
+            "type": "text",
+            "name": "api_code"
+          },
+          {
+            "type": "text",
+            "name": "username"
+          },
+          {
+            "type": "text",
+            "name": "api_password"
+          },
+          {
+            "type": "number",
+            "name": "status"
+          },
+          {
+            "type": "text",
+            "name": "blank1"
+          },
+          {
+            "type": "text",
+            "name": "blank2"
+          },
+          {
+            "type": "text",
+            "name": "blank3"
+          },
+          {
+            "type": "text",
+            "name": "blank4"
+          },
+          {
+            "type": "number",
+            "name": "created_by"
+          },
+          {
+            "type": "datetime",
+            "name": "created_on"
+          },
+          {
+            "type": "number",
+            "name": "updated_by"
+          },
+          {
+            "type": "datetime",
+            "name": "updated_on"
+          },
+          {
+            "type": "number",
+            "name": "deleted_by"
+          },
+          {
+            "type": "datetime",
+            "name": "deleted_on"
+          },
+          {
+            "type": "text",
+            "name": "api_type"
+          },
+          {
+            "type": "text",
+            "name": "senderid"
+          },
+          {
+            "type": "text",
+            "name": "entityid"
+          },
+          {
+            "type": "text",
+            "name": "templateid"
+          },
+          {
+            "type": "text",
+            "name": "api_url"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "apiOTP",
+        "module": "api",
+        "action": "send",
+        "options": {
+          "url": "{{GetSMSAPI.api_url}}",
+          "params": {
+            "user": "{{GetSMSAPI.username}}",
+            "key": "{{GetSMSAPI.api_password}}",
+            "mobile": "{{GetUserDetails.user_mobile}}",
+            "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}",
+            "senderid": "{{GetSMSAPI.senderid}}",
+            "accusage": "1",
+            "entiityid": "{{GetSMSAPI.entityid}}",
+            "templateid": "{{GetSMSAPI.templateid}}"
+          }
+        },
+        "output": false
+      },
+      {
+        "name": "status",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiOTP.status}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "Response",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{apiOTP.data}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "RecordSMSLog",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "t_sms_log",
+                "column": "sms_message",
+                "type": "text",
+                "value": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}"
+              },
+              {
+                "table": "t_sms_log",
+                "column": "sender_mobile",
+                "type": "text",
+                "value": "{{GetUserDetails.user_mobile}}"
+              },
+              {
+                "table": "t_sms_log",
+                "column": "created_on",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "t_sms_log",
+                "column": "sms_type",
+                "type": "text",
+                "value": "{{'API User IP Update SMS'}}"
+              },
+              {
+                "table": "t_sms_log",
+                "column": "ip_address",
+                "type": "text",
+                "value": "{{$_SERVER.REMOTE_ADDR}}"
+              },
+              {
+                "table": "t_sms_log",
+                "column": "status",
+                "type": "boolean",
+                "value": "{{status}}"
+              },
+              {
+                "table": "t_sms_log",
+                "column": "response",
+                "type": "text",
+                "value": "{{Response}}"
+              },
+              {
+                "table": "t_sms_log",
+                "column": "user_id",
+                "type": "number",
+                "value": "{{identity}}"
+              }
+            ],
+            "table": "t_sms_log",
+            "returning": "id",
+            "query": "INSERT INTO t_sms_log\n(sms_message, sender_mobile, created_on, sms_type, ip_address, status, response, user_id) VALUES (:P1 /* {{'Your one time password is '+OTP+'\\nRegards S W Pays'}} */, :P2 /* {{GetUserDetails.user_mobile}} */, :P3 /* {{NOW}} */, :P4 /* {{'API User IP Update SMS'}} */, :P5 /* {{$_SERVER.REMOTE_ADDR}} */, :P6 /* {{status}} */, :P7 /* {{Response}} */, :P8 /* {{identity}} */)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{GetUserDetails.user_mobile}}"
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{NOW}}"
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{'API User IP Update SMS'}}"
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_SERVER.REMOTE_ADDR}}"
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{status}}"
+              },
+              {
+                "name": ":P7",
+                "type": "expression",
+                "value": "{{Response}}"
+              },
+              {
+                "name": ":P8",
+                "type": "expression",
+                "value": "{{identity}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
   }
-]
+}
