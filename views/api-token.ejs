@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="apitoken" appConnect="local" components="{dmxDataTraversal:{},dmxAutocomplete:{}}" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="apitoken" appConnect="local" components="{dmxDataTraversal:{},dmxAutocomplete:{},dmxBootstrap5Navigation:{},dmxBootstrap5Modal:{}}" -->
 <meta name="ac:route" content="/api-token">
 <dmx-value id="varToken" dmx-bind:value="0"></dmx-value>
 <dmx-serverconnect id="scFetchToken" url="api/UserAPI/GetAPIToken"></dmx-serverconnect>
@@ -59,8 +59,7 @@
                 <table class="table table-striped table-bordered table-hover table-sm">
                     <thead>
                         <tr>
-                            <th>Sl. No.</th>
-                            <th>Token</th>
+                            <th>API Token</th>
                             <th>IP. Address1</th>
                             <th>IP. Address2</th>
                             <th>IP. Address3</th>
@@ -69,7 +68,6 @@
                     </thead>
                     <tbody dmx-generator="bs5table" id="tableRepeat1">
                         <tr>
-                            <td>{{$index+1}}</td>
                             <td dmx-text="content.scFetchToken.data.FetchToken.api_token"></td>
                             <td dmx-text="content.scFetchToken.data.FetchToken.ip_address1"></td>
                             <td dmx-text="content.scFetchToken.data.FetchToken.ip_address2"></td>

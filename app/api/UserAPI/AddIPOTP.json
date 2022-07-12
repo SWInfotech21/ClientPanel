@@ -209,7 +209,7 @@
             ]
           }
         },
-        "output": true,
+        "output": false,
         "meta": [
           {
             "type": "number",
@@ -323,7 +323,7 @@
                     "templateid": "{{GetSMSAPI.templateid}}"
                   }
                 },
-                "output": true
+                "output": false
               },
               {
                 "name": "status",
