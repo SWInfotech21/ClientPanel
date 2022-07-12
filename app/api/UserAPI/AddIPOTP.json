@@ -299,43 +299,56 @@
         "outputType": "object"
       },
       {
-        "name": "apiOTP",
-        "module": "api",
-        "action": "send",
+        "name": "",
+        "module": "core",
+        "action": "condition",
         "options": {
-          "url": "{{GetSMSAPI.api_url}}",
-          "params": {
-            "user": "{{GetSMSAPI.username}}",
-            "key": "{{GetSMSAPI.api_password}}",
-            "mobile": "{{GetUserDetails.user_mobile}}",
-            "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}",
-            "senderid": "{{GetSMSAPI.senderid}}",
-            "accusage": "1",
-            "entiityid": "{{GetSMSAPI.entityid}}",
-            "templateid": "{{GetSMSAPI.templateid}}"
+          "if": "{{GetSMSAPI.api_password}}",
+          "then": {
+            "steps": [
+              {
+                "name": "apiOTP",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "url": "{{GetSMSAPI.api_url}}",
+                  "params": {
+                    "user": "{{GetSMSAPI.username}}",
+                    "key": "{{GetSMSAPI.api_password}}",
+                    "mobile": "{{GetUserDetails.user_mobile}}",
+                    "message": "{{'Your one time password is '+OTP+'\\nRegards S W Pays'}}",
+                    "senderid": "{{GetSMSAPI.senderid}}",
+                    "accusage": "1",
+                    "entiityid": "{{GetSMSAPI.entityid}}",
+                    "templateid": "{{GetSMSAPI.templateid}}"
+                  }
+                },
+                "output": true
+              },
+              {
+                "name": "status",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiOTP.status}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "Response",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiOTP.data}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              }
+            ]
           }
         },
-        "output": false
-      },
-      {
-        "name": "status",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{apiOTP.status}}"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "Response",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{apiOTP.data}}"
-        },
-        "meta": [],
-        "outputType": "text"
+        "outputType": "boolean"
       },
       {
         "name": "RecordSMSLog",
@@ -380,7 +393,7 @@
                 "table": "t_sms_log",
                 "column": "status",
                 "type": "boolean",
-                "value": "{{status}}"
+                "value": "{{status==200?1:0}}"
               },
               {
                 "table": "t_sms_log",
@@ -397,7 +410,7 @@
             ],
             "table": "t_sms_log",
             "returning": "id",
-            "query": "INSERT INTO t_sms_log\n(sms_message, sender_mobile, created_on, sms_type, ip_address, status, response, user_id) VALUES (:P1 /* {{'Your one time password is '+OTP+'\\nRegards S W Pays'}} */, :P2 /* {{GetUserDetails.user_mobile}} */, :P3 /* {{NOW}} */, :P4 /* {{'API User IP Update SMS'}} */, :P5 /* {{$_SERVER.REMOTE_ADDR}} */, :P6 /* {{status}} */, :P7 /* {{Response}} */, :P8 /* {{identity}} */)",
+            "query": "INSERT INTO t_sms_log\n(sms_message, sender_mobile, created_on, sms_type, ip_address, status, response, user_id) VALUES (:P1 /* {{'Your one time password is '+OTP+'\\nRegards S W Pays'}} */, :P2 /* {{GetUserDetails.user_mobile}} */, :P3 /* {{NOW}} */, :P4 /* {{'API User IP Update SMS'}} */, :P5 /* {{$_SERVER.REMOTE_ADDR}} */, :P6 /* {{status==200?1:0}} */, :P7 /* {{Response}} */, :P8 /* {{identity}} */)",
             "params": [
               {
                 "name": ":P1",
@@ -427,7 +440,7 @@
               {
                 "name": ":P6",
                 "type": "expression",
-                "value": "{{status}}"
+                "value": "{{status==200?1:0}}"
               },
               {
                 "name": ":P7",
