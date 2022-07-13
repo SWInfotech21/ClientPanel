@@ -945,6 +945,11 @@
                                                                       "column": "api_code8"
                                                                     },
                                                                     {
+                                                                      "table": "t_op_api_rel",
+                                                                      "column": "api_code9",
+                                                                      "alias": "payone"
+                                                                    },
+                                                                    {
                                                                       "table": "m_api_fwd",
                                                                       "column": "service_id"
                                                                     },
@@ -1013,10 +1018,11 @@
                                                                             "operation": "="
                                                                           }
                                                                         ]
-                                                                      }
+                                                                      },
+                                                                      "primary": "id"
                                                                     }
                                                                   ],
-                                                                  "query": "SELECT t_op_api_rel.api_code1, t_op_api_rel.api_code2, t_op_api_rel.api_code3, t_op_api_rel.api_code4, t_op_api_rel.api_code5, t_op_api_rel.api_code6, t_op_api_rel.api_code7, t_op_api_rel.api_code8, m_api_fwd.service_id, m_api_fwd.api_id, m_api.api_name, m_api.api_code, m_api.username, m_api.api_password\nFROM t_op_api_rel\nLEFT JOIN m_api_forward AS m_api_fwd ON (m_api_fwd.operator_id = t_op_api_rel.op_id) LEFT JOIN m_api AS m_api ON (m_api.id = m_api_fwd.api_id)\nWHERE t_op_api_rel.op_id = :P1 /* {{$_GET.op_code}} */ AND m_api.status = 1",
+                                                                  "query": "SELECT t_op_api_rel.api_code1, t_op_api_rel.api_code2, t_op_api_rel.api_code3, t_op_api_rel.api_code4, t_op_api_rel.api_code5, t_op_api_rel.api_code6, t_op_api_rel.api_code7, t_op_api_rel.api_code8, t_op_api_rel.api_code9 AS payone, m_api_fwd.service_id, m_api_fwd.api_id, m_api.api_name, m_api.api_code, m_api.username, m_api.api_password\nFROM t_op_api_rel\nLEFT JOIN m_api_forward AS m_api_fwd ON (m_api_fwd.operator_id = t_op_api_rel.op_id) LEFT JOIN m_api AS m_api ON (m_api.id = m_api_fwd.api_id)\nWHERE t_op_api_rel.op_id = :P1 /* {{$_GET.op_code}} */ AND m_api.status = 1",
                                                                   "params": [
                                                                     {
                                                                       "operator": "equal",
@@ -1057,7 +1063,8 @@
                                                                     ],
                                                                     "conditional": null,
                                                                     "valid": true
-                                                                  }
+                                                                  },
+                                                                  "primary": "id"
                                                                 }
                                                               },
                                                               "output": false,
@@ -1093,6 +1100,10 @@
                                                                 {
                                                                   "type": "text",
                                                                   "name": "api_code8"
+                                                                },
+                                                                {
+                                                                  "type": "text",
+                                                                  "name": "payone"
                                                                 },
                                                                 {
                                                                   "type": "number",
@@ -2878,6 +2889,147 @@
                                                                                       "action": "setvalue",
                                                                                       "options": {
                                                                                         "value": "{{apiUtilityHub.data.rpid}}"
+                                                                                      },
+                                                                                      "meta": [],
+                                                                                      "outputType": "text",
+                                                                                      "output": true
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              },
+                                                                              "outputType": "boolean"
+                                                                            },
+                                                                            {
+                                                                              "name": "",
+                                                                              "module": "core",
+                                                                              "action": "condition",
+                                                                              "options": {
+                                                                                "if": "{{GetOpAPICodeFwrd.api_code=='POB'}}",
+                                                                                "then": {
+                                                                                  "steps": [
+                                                                                    {
+                                                                                      "name": "apiPayOne",
+                                                                                      "module": "api",
+                                                                                      "action": "send",
+                                                                                      "options": {
+                                                                                        "url": "https://www.payoneapi.com/RechargeAPI/RechargeAPI.aspx",
+                                                                                        "params": {
+                                                                                          "MobileNo": "{{6396090835}}",
+                                                                                          "REFMOBILENO": "{{$_GET.mobile_number}}",
+                                                                                          "APIKey": "{{GetOpAPICodeFwrd.api_password}}",
+                                                                                          "CUSTNO": "{{$_GET.account}}",
+                                                                                          "AMT": "{{$_GET.recharge_amount}}",
+                                                                                          "SERCODE": "{{GetOpAPICodeFwrd.payone}}",
+                                                                                          "REQTYPE": "{{'BILLPAY'}}",
+                                                                                          "REFNO": "{{TransactionId}}",
+                                                                                          "FIELD1": "",
+                                                                                          "FIELD2": "",
+                                                                                          "FIELD3": "",
+                                                                                          "FIELD4": "",
+                                                                                          "STV": "0",
+                                                                                          "PCODE": "{{380054}}",
+                                                                                          "LAT": "{{23.1003}}",
+                                                                                          "LONG": "{{72.5005}}",
+                                                                                          "RESPTYPE": "{{'JSON'}}"
+                                                                                        },
+                                                                                        "method": "POST"
+                                                                                      },
+                                                                                      "output": true
+                                                                                    },
+                                                                                    {
+                                                                                      "name": "Data",
+                                                                                      "module": "core",
+                                                                                      "action": "setvalue",
+                                                                                      "options": {
+                                                                                        "value": "{{apiPayOne.data.parseJSON()}}"
+                                                                                      },
+                                                                                      "meta": [],
+                                                                                      "outputType": "text",
+                                                                                      "output": true
+                                                                                    },
+                                                                                    {
+                                                                                      "name": "stat",
+                                                                                      "module": "core",
+                                                                                      "action": "setvalue",
+                                                                                      "options": {
+                                                                                        "value": "{{Data.STATUSCODE}}"
+                                                                                      },
+                                                                                      "meta": [],
+                                                                                      "outputType": "text",
+                                                                                      "output": false
+                                                                                    },
+                                                                                    {
+                                                                                      "name": "apistatus",
+                                                                                      "module": "core",
+                                                                                      "action": "setvalue",
+                                                                                      "options": {
+                                                                                        "value": "{{(stat==0)? 'SUCCESS' : (stat==1)? 'PENDING' : 'FAILED'}}"
+                                                                                      },
+                                                                                      "meta": [],
+                                                                                      "outputType": "text",
+                                                                                      "output": true
+                                                                                    },
+                                                                                    {
+                                                                                      "name": "apifiredid",
+                                                                                      "module": "core",
+                                                                                      "action": "setvalue",
+                                                                                      "options": {
+                                                                                        "value": "{{Data.TRNID}}"
+                                                                                      },
+                                                                                      "meta": [],
+                                                                                      "outputType": "text",
+                                                                                      "output": true
+                                                                                    },
+                                                                                    {
+                                                                                      "name": "remarks",
+                                                                                      "module": "core",
+                                                                                      "action": "setvalue",
+                                                                                      "options": {
+                                                                                        "value": "{{Data.STATUSMSG}}"
+                                                                                      },
+                                                                                      "meta": [],
+                                                                                      "outputType": "text",
+                                                                                      "output": true
+                                                                                    },
+                                                                                    {
+                                                                                      "name": "ec",
+                                                                                      "module": "core",
+                                                                                      "action": "setvalue",
+                                                                                      "options": {
+                                                                                        "value": "{{Data.TRNSTATUS}}"
+                                                                                      },
+                                                                                      "meta": [],
+                                                                                      "outputType": "text",
+                                                                                      "output": true
+                                                                                    },
+                                                                                    {
+                                                                                      "name": "api_log",
+                                                                                      "module": "core",
+                                                                                      "action": "setvalue",
+                                                                                      "options": {
+                                                                                        "value": "POB"
+                                                                                      },
+                                                                                      "meta": [],
+                                                                                      "outputType": "text",
+                                                                                      "output": false
+                                                                                    },
+                                                                                    {
+                                                                                      "name": "apibalance",
+                                                                                      "module": "core",
+                                                                                      "action": "setvalue",
+                                                                                      "options": {
+                                                                                        "value": "{{Data.BAL}}"
+                                                                                      },
+                                                                                      "meta": [],
+                                                                                      "outputType": "text",
+                                                                                      "output": false
+                                                                                    },
+                                                                                    {
+                                                                                      "name": "api_ref",
+                                                                                      "module": "core",
+                                                                                      "action": "setvalue",
+                                                                                      "options": {
+                                                                                        "value": "{{Data.OPRID}}"
                                                                                       },
                                                                                       "meta": [],
                                                                                       "outputType": "text",

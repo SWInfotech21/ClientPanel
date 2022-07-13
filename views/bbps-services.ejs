@@ -100,18 +100,18 @@
                                 <div class="col-12 col-lg-6 pl-lg-0 pr-lg-2 px-0">
                                     <div class="form-group">
                                         <label class="sw-font-12 sw-font-weight-600">Customer Account Number</label>
-                                        <input type="text" class="form-control" name="CustomerId" id="CustomerId" placeholder="Enter Customer Account Number/ Id" required>
+                                        <input type="text" class="form-control" name="CustomerId" id="CustomerId" placeholder="Enter Customer Account Number/ Id" required="">
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6 pl-lg-2 pr-lg-0 px-0">
                                     <div class="form-group">
                                         <label class="sw-font-12 sw-font-weight-600">Mobile Number </label>
-                                        <input type="number" id="CustMobile" class="form-control" name="CustMobile" max="" data-rule-max="10" required>
+                                        <input type="number" id="CustMobile" class="form-control" name="CustMobile" max="" data-rule-max="10" required="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex justify-content-end w-100 my-3">
-                                    <button class="btn sw-btn-dark px-5" dmx-on:click="flowElecBill.run(); CustomerId.value ? varTab.setValue('Payment') : ''; dsAppInfo.update({$id: 1},{customerIndex: $index+1, customerId: CustomerId.value, mobile: CustMobile.value})" dmx-bind:disabled="scFetchBill.state.executing" type="submit">Fetch Bill<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="scFetchBill.state.executing"></span></button>
+                                    <button class="btn sw-btn-dark px-5" dmx-on:click="CustomerId.value ? varTab.setValue('Payment') : ''; dsAppInfo.update({$id: 1},{customerIndex: $index+1, customerId: CustomerId.value, mobile: CustMobile.value});flowElecBill.run();" dmx-bind:disabled="scFetchBill.state.executing" type="submit">Fetch Bill<span class="spinner-border spinner-border-sm ml-2" role="status" dmx-show="scFetchBill.state.executing"></span></button>
                                 </div>
                             </div>
                         </div>
@@ -125,36 +125,36 @@
     <img src="assets/images/loader.gif" height="300" width="300" class="mt-5">
     <!-- <span class="spinner-border" role="status" style="width: 3rem; height: 3rem; color: #20c997;"></span> -->
 </div>
-<div id="crPayment" is="dmx-if" dmx-bind:condition="varTab.value == 'Payment' && content.scFetchBill.data.api.data">
+<div id="crPayment" is="dmx-if" dmx-bind:condition="varTab.value == 'Payment' && content.scFetchBill.data.Data">
     <form id="formAddBillPayment" is="dmx-serverconnect-form" action="api/Recharge/MultiBillBbps" dmx-populate="" method="post" dmx-on:success="modalBillPayment.show()" dmx-on:error="varTab.setValue('Paid')" dmx-on:unauthorized="varTab.setValue('Paid')" dmx-on:forbidden="varTab.setValue('Paid')">
-        <input type="hidden" id="account" name="account" dmx-bind:value="{{content.scFetchBill.data.api.data.account}}">
+        <input type="hidden" id="account" name="account" dmx-bind:value="{{content.scFetchBill.data.Account}}">
         <input type="hidden" id="op_code" name="op_code" dmx-bind:value="{{content.dsAppInfo.data[0].op_id}}">
-        <input type="hidden" id="dueamount" name="recharge_amount" dmx-bind:value="{{content.scFetchBill.data.api.data.dueamount}}"><input type="hidden" id="mobile_number" name="mobile_number" dmx-bind:value="{{content.dsAppInfo.data[0].mobile}}">
-        <input type="hidden" id="agentid" name="agentid" dmx-bind:value="{{content.scFetchBill.data.api.data.agentid}}">
-        <input type="hidden" id="billnumber" name="billnumber" dmx-bind:value="{{content.scFetchBill.data.api.data.billnumber}}">
-        <input type="hidden" id="billdate" name="billdate" dmx-bind:value="{{content.scFetchBill.data.api.data.billdate}}">
-        <input type="hidden" id="duedate" name="duedate" dmx-bind:value="{{content.scFetchBill.data.api.data.duedate}}">
-        <input type="hidden" id="customername" name="customername" dmx-bind:value="{{content.scFetchBill.data.api.data.customername}}">
-        <input type="hidden" id="apibillid" name="apibillid" dmx-bind:value="{{content.scFetchBill.data.api.data.fetchBillID}}">
+        <input type="hidden" id="dueamount" name="recharge_amount" dmx-bind:value="{{content.scFetchBill.data.DueAmt}}"><input type="hidden" id="mobile_number" name="mobile_number" dmx-bind:value="{{content.dsAppInfo.data[0].mobile}}">
+        <input type="hidden" id="agentid" name="agentid" dmx-bind:value="{{content.scFetchBill.data.AgentId}}">
+        <input type="hidden" id="billnumber" name="billnumber" dmx-bind:value="{{content.scFetchBill.data.BillNo}}">
+        <input type="hidden" id="billdate" name="billdate" dmx-bind:value="{{content.scFetchBill.data.BillDate}}">
+        <input type="hidden" id="duedate" name="duedate" dmx-bind:value="{{content.scFetchBill.data.DueDate}}">
+        <input type="hidden" id="customername" name="customername" dmx-bind:value="{{content.scFetchBill.data.CustName}}">
+        <input type="hidden" id="apibillid" name="apibillid" dmx-bind:value="{{content.scFetchBill.data.FetchBillId}}">
 
-        <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100" dmx-show="(content.scFetchBill.data.api.data.status == 2 || content.scFetchBill.data.api.data.status == 1 ) && !scFetchBill.state.executing">
+        <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100" dmx-show="(content.scFetchBill.data.Status == 2 || content.scFetchBill.data.Status == 1 ) && !scFetchBill.state.executing">
             <div class="d-flex w-100 align-items-center p-3 sw-patient-card-header">
                 <img class="sw-avatar sw-img-render" src="assets/images/icons/user-icon.png" height="72" width="72">
                 <div class="d-flex flex-column justify-content-start pl-3">
                     <h5 class="mb-2 font-weight-bold">
-                        {{content.scFetchBill.data.api.data.customername}}
+                        {{content.scFetchBill.data.CustName}}
                     </h5>
                     <p class="sw-font-14 mb-1">
-                        Account No.: {{content.scFetchBill.data.api.data.account}}
+                        Account No.: {{content.scFetchBill.data.Account}}
                     </p>
                 </div>
             </div>
             <div class="d-flex w-100 align-items-start border-bottom p-3 sw-patient-card-body">
                 <i class="fas fa-money-bill mr-3 sw-text-secondary"></i>
                 <div class="d-flex flex-column justify-content-start">
-                    <label class="sw-label-color font-weight-bold">Bill Amount: Rs. {{content.scFetchBill.data.api.data.dueamount}}</label>
+                    <label class="sw-label-color font-weight-bold">Bill Amount: Rs. {{content.scFetchBill.data.DueAmt}}</label>
                     <p class="m-0 text-break">
-                        Bill Date: {{content.scFetchBill.data.api.data.billdate}}
+                        Bill Date: {{content.scFetchBill.data.BillDate}}
                     </p>
                 </div>
             </div>
@@ -162,9 +162,9 @@
                 <i class="fas fa-calendar mr-3 sw-text-secondary"></i>
                 <div class="d-flex flex-column justify-content-start">
                     <p class="m-0">
-                        Bill No. {{content.scFetchBill.data.api.data.billnumber}}
+                        Bill No. {{content.scFetchBill.data.BillNo}}
                     </p>
-                    <label class="sw-label-color font-weight-bold">Due Date: {{content.scFetchBill.data.api.data.duedate}}</label>
+                    <label class="sw-label-color font-weight-bold">Due Date: {{content.scFetchBill.data.DueDate}}</label>
 
                 </div>
             </div>
@@ -178,22 +178,22 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100" dmx-show="content.scFetchBill.data.api.data.status == 3 && !scFetchBill.state.executing">
+        <div class="d-flex justify-content-between flex-wrap mt-2 px-2 w-100" dmx-show="content.scFetchBill.data.Status == 3 && !scFetchBill.state.executing">
             <div class="d-flex w-100 align-items-center p-3 sw-patient-card-header">
                 <img class="sw-avatar sw-img-render" src="assets/images/icons/user-icon.svg" height="72" width="72">
                 <div class="d-flex flex-column justify-content-start pl-3">
                     <h5 class="mb-2 font-weight-bold">
-                        {{content.scFetchBill.data.api.data.account}}
+                        {{content.scFetchBill.data.Account}}
                     </h5>
                     <p class="sw-font-14 mb-1">
-                        Operator: {{content.scFetchBill.data.api.data.agentid}}
+                        Operator: {{content.scFetchBill.data.AgentId}}
                     </p>
                 </div>
             </div>
             <div class="d-flex w-100 align-items-start p-3 border-bottom sw-patient-card-body">
                 <i class="fas fa-calendar mr-3 sw-text-secondary"></i>
                 <div class="d-flex flex-column justify-content-start">
-                    <label class="sw-label-color font-weight-bold">Remarks: {{content.scFetchBill.data.api.data.msg}}</label>
+                    <label class="sw-label-color font-weight-bold">Remarks: {{content.scFetchBill.data.Msg}}</label>
 
                 </div>
             </div>
@@ -351,7 +351,7 @@
                             </div>
                             <div class="flex-md-column px-2">
                                 <p class="sw-font-14 sw-font-weight-600 mb-1 text-secondary">
-                                    Amount: Rs. {{content.scFetchBill.data.api.data.dueamount}}</p>
+                                    Amount: Rs. {{content.scFetchBill.data.DueAmt}}</p>
                             </div>
                         </div>
                     </div>

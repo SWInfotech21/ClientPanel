@@ -1,149 +1,807 @@
 {
-    "meta": {
-        "$_GET": [
-            {
-                "type": "text",
-                "options": {
-                    "rules": {
-                        "core:required": {}
-                    }
-                },
-                "name": "op_id"
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "op_id"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "account"
+      },
+      {
+        "type": "text",
+        "name": "mobile"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "security",
+          "permissions": [
+            "write"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/403-forbidden"
+        }
+      },
+      {
+        "name": "ReqId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{UUID.md5(123456).substr(1, 15)}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "GetOpCode",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_op_api_rel",
+                "column": "api_code1",
+                "alias": "ouropcode"
+              },
+              {
+                "table": "t_op_api_rel",
+                "column": "api_code7",
+                "alias": "utilityopcode"
+              },
+              {
+                "table": "t_op_api_rel",
+                "column": "api_code8",
+                "alias": "payone"
+              }
+            ],
+            "table": {
+              "name": "t_op_api_rel"
             },
-            {
-                "type": "text",
-                "options": {
-                    "rules": {
-                        "core:required": {}
-                    }
-                },
-                "name": "account"
-            },
-            {
-                "type": "text",
-                "name": "mobile"
-            }
-        ]
-    },
-    "exec": {
-        "steps": [
-            {
-                "name": "",
-                "module": "auth",
-                "action": "restrict",
-                "options": {
-                    "provider": "security",
-                    "permissions": [
-                        "write"
-                    ],
-                    "loginUrl": "/login",
-                    "forbiddenUrl": "/403-forbidden"
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "t_op_api_rel.op_id",
+                  "field": "t_op_api_rel.op_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.op_id}}",
+                  "data": {
+                    "table": "t_op_api_rel",
+                    "column": "op_id",
+                    "type": "number"
+                  },
+                  "operation": "="
                 }
+              ],
+              "conditional": null,
+              "valid": true
             },
-            {
-                "name": "ReqId",
+            "query": "SELECT api_code1 AS ouropcode, api_code7 AS utilityopcode, api_code8 AS payone\nFROM t_op_api_rel\nWHERE op_id = :P1 /* {{$_GET.op_id}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.op_id}}"
+              }
+            ],
+            "primary": "id"
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "text",
+            "name": "ouropcode"
+          },
+          {
+            "type": "text",
+            "name": "utilityopcode"
+          },
+          {
+            "type": "text",
+            "name": "payone"
+          }
+        ],
+        "outputType": "object",
+        "disabled": true
+      },
+      {
+        "name": "GetOpAPICodeFwrd",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "postgres_gcpServer",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "t_op_api_rel",
+                "column": "api_code1",
+                "alias": "ouropcode"
+              },
+              {
+                "table": "t_op_api_rel",
+                "column": "api_code7",
+                "alias": "utilityopcode"
+              },
+              {
+                "table": "t_op_api_rel",
+                "column": "api_code9",
+                "alias": "payone"
+              },
+              {
+                "table": "m_api_fwd",
+                "column": "service_id"
+              },
+              {
+                "table": "m_api_fwd",
+                "column": "api_id"
+              },
+              {
+                "table": "m_api",
+                "column": "api_name"
+              },
+              {
+                "table": "m_api",
+                "column": "api_code"
+              },
+              {
+                "table": "m_api",
+                "column": "username"
+              },
+              {
+                "table": "m_api",
+                "column": "api_password"
+              }
+            ],
+            "table": {
+              "name": "t_op_api_rel"
+            },
+            "joins": [
+              {
+                "table": "m_api_forward",
+                "column": "*",
+                "alias": "m_api_fwd",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "m_api_fwd",
+                      "column": "operator_id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "t_op_api_rel",
+                        "column": "op_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                }
+              },
+              {
+                "table": "m_api",
+                "column": "*",
+                "alias": "m_api",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "m_api",
+                      "column": "id",
+                      "operator": "equal",
+                      "value": {
+                        "table": "m_api_fwd",
+                        "column": "api_id"
+                      },
+                      "operation": "="
+                    }
+                  ]
+                },
+                "primary": "id"
+              }
+            ],
+            "query": "SELECT t_op_api_rel.api_code1 AS ouropcode, t_op_api_rel.api_code7 AS utilityopcode, t_op_api_rel.api_code9 AS payone, m_api_fwd.service_id, m_api_fwd.api_id, m_api.api_name, m_api.api_code, m_api.username, m_api.api_password\nFROM t_op_api_rel\nLEFT JOIN m_api_forward AS m_api_fwd ON (m_api_fwd.operator_id = t_op_api_rel.op_id) LEFT JOIN m_api AS m_api ON (m_api.id = m_api_fwd.api_id)\nWHERE t_op_api_rel.op_id = :P1 /* {{$_GET.op_id}} */ AND m_api.status = 1",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.op_id}}"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "t_op_api_rel.op_id",
+                  "field": "t_op_api_rel.op_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.op_id}}",
+                  "data": {
+                    "table": "t_op_api_rel",
+                    "column": "op_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "nullable": false,
+                      "unique": false,
+                      "references": "id",
+                      "inTable": "m_operator",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "op_id"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "m_api.status",
+                  "field": "m_api.status",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "m_api",
+                    "column": "status",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": false,
+                      "unique": false,
+                      "name": "status"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "primary": "id"
+          }
+        },
+        "output": false,
+        "meta": [
+          {
+            "type": "text",
+            "name": "ouropcode"
+          },
+          {
+            "type": "text",
+            "name": "utilityopcode"
+          },
+          {
+            "type": "text",
+            "name": "payone"
+          },
+          {
+            "type": "number",
+            "name": "service_id"
+          },
+          {
+            "type": "number",
+            "name": "api_id"
+          },
+          {
+            "type": "text",
+            "name": "api_name"
+          },
+          {
+            "type": "text",
+            "name": "api_code"
+          },
+          {
+            "type": "text",
+            "name": "username"
+          },
+          {
+            "type": "text",
+            "name": "api_password"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{GetOpAPICodeFwrd.api_code=='UH'}}",
+          "then": {
+            "steps": [
+              {
+                "name": "apiUH",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "url": "https://utilityhub.app/API/FetchBill",
+                  "params": {
+                    "UserID": "{{214}}",
+                    "Token": "{{'879cfb7ae02677efe36abde00dc77fac'}}",
+                    "Account": "{{$_GET.account}}",
+                    "Amount": "0",
+                    "SPKey": "{{GetOpCode.utilityopcode}}",
+                    "APIRequestID": "{{ReqId}}",
+                    "Optional1": "",
+                    "Optional2": "",
+                    "Optional3": "",
+                    "Optional4": "",
+                    "GEOCode": "{{'23.8530,87.9727'}}",
+                    "CustomerNumber": "{{$_GET.mobile}}",
+                    "Pincode": "{{243601}}",
+                    "Format": "1"
+                  }
+                },
+                "output": false
+              },
+              {
+                "name": "Data",
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                    "value": "{{UUID.md5(123456).substr(1, 15)}}"
+                  "value": "{{apiUH.data}}"
                 },
                 "meta": [],
-                "outputType": "text"
-            },
-            {
-                "name": "GetOpCode",
-                "module": "dbconnector",
-                "action": "single",
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Account",
+                "module": "core",
+                "action": "setvalue",
                 "options": {
-                    "connection": "postgres_gcpServer",
-                    "sql": {
-                        "type": "SELECT",
-                        "columns": [
-                            {
-                                "table": "t_op_api_rel",
-                                "column": "api_code1",
-                                "alias": "ouropcode"
-                            },
-                            {
-                                "table": "t_op_api_rel",
-                                "column": "api_code7",
-                                "alias": "utilityopcode"
-                            }
-                        ],
-                        "table": {
-                            "name": "t_op_api_rel"
-                        },
-                        "joins": [],
-                        "wheres": {
-                            "condition": "AND",
-                            "rules": [
-                                {
-                                    "id": "t_op_api_rel.op_id",
-                                    "field": "t_op_api_rel.op_id",
-                                    "type": "double",
-                                    "operator": "equal",
-                                    "value": "{{$_GET.op_id}}",
-                                    "data": {
-                                        "table": "t_op_api_rel",
-                                        "column": "op_id",
-                                        "type": "number"
-                                    },
-                                    "operation": "="
-                                }
-                            ],
-                            "conditional": null,
-                            "valid": true
-                        },
-                        "query": "SELECT api_code1 AS ouropcode, api_code7 AS utilityopcode\nFROM t_op_api_rel\nWHERE op_id = :P1 /* {{$_GET.op_id}} */",
-                        "params": [
-                            {
-                                "operator": "equal",
-                                "type": "expression",
-                                "name": ":P1",
-                                "value": "{{$_GET.op_id}}"
-                            }
-                        ],
-                        "primary": "id"
-                    }
+                  "value": "{{apiUH.data.account}}"
                 },
-                "output": false,
-                "meta": [
-                    {
-                        "type": "text",
-                        "name": "ouropcode"
-                    },
-                    {
-                        "type": "text",
-                        "name": "utilityopcode"
-                    }
-                ],
-                "outputType": "object"
-            },
-            {
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "DueAmt",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiUH.data.dueamount}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "AgentId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiUH.data.agentid}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "BillNo",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiUH.data.billnumber}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "BillDate",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiUH.data.billdate}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "DueDate",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiUH.data.duedate}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "CustName",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiUH.data.customername}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "FetchBillId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiUH.data.fetchBillID}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Status",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiUH.data.status}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Msg",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiUH.data.msg}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{GetOpAPICodeFwrd.api_code=='POB'}}",
+          "then": {
+            "steps": [
+              {
+                "name": "apiPOB",
+                "module": "api",
+                "action": "send",
+                "options": {
+                  "method": "POST",
+                  "url": "https://www.payoneapi.com/RechargeAPI/RechargeAPI.aspx",
+                  "params": {
+                    "MobileNo": "{{6396090835}}",
+                    "REFMOBILENO": "{{$_GET.mobile}}",
+                    "APIKey": "{{GetOpAPICodeFwrd.api_password}}",
+                    "REQTYPE": "{{'BILLINFO'}}",
+                    "RESPTYPE": "{{'JSON'}}",
+                    "CUSTNO": "{{$_GET.account}}",
+                    "SERCODE": "{{GetOpAPICodeFwrd.payone}}",
+                    "AMT": "0",
+                    "STV": "0",
+                    "FIELD1": "",
+                    "FIELD2": "",
+                    "FIELD3": "",
+                    "FIELD4": "",
+                    "FIELD5": "",
+                    "PCODE": "{{380054}}",
+                    "LAT": "{{23.1003}}",
+                    "LONG": "{{72.5501}}"
+                  }
+                },
+                "output": false
+              },
+              {
+                "name": "Data",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiPOB.data.parseJSON()}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Account",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{$_GET.account}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "DueAmt",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{Data.BILLAMT}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "AgentId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiUH.data.agentid}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "BillNo",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{Data.BILLNO}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "BillDate",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{Data.BILLDATE}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "DueDate",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{Data.BILLDUEDATE}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "CustName",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{Data.CUSTNAME}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "FetchBillId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{apiUH.data.fetchBillID}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Status",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{(Data.STATUSCODE==0)?1:3}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Msg",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{Data.STATUSMSG}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              }
+            ]
+          },
+          "else": {
+            "steps": [
+              {
                 "name": "api",
                 "module": "api",
                 "action": "send",
                 "options": {
-                    "url": "https://utilityhub.app/API/FetchBill",
-                    "params": {
-                        "UserID": "{{214}}",
-                        "Token": "{{'879cfb7ae02677efe36abde00dc77fac'}}",
-                        "Account": "{{$_GET.account}}",
-                        "Amount": "0",
-                        "SPKey": "{{GetOpCode.utilityopcode}}",
-                        "APIRequestID": "{{ReqId}}",
-                        "Optional1": "",
-                        "Optional2": "",
-                        "Optional3": "",
-                        "Optional4": "",
-                        "GEOCode": "{{'23.8530,87.9727'}}",
-                        "CustomerNumber": "{{$_GET.mobile}}",
-                        "Pincode": "{{243601}}",
-                        "Format": "1"
-                    }
+                  "url": "https://utilityhub.app/API/FetchBill",
+                  "params": {
+                    "UserID": "{{214}}",
+                    "Token": "{{'879cfb7ae02677efe36abde00dc77fac'}}",
+                    "Account": "{{$_GET.account}}",
+                    "Amount": "0",
+                    "SPKey": "{{GetOpCode.utilityopcode}}",
+                    "APIRequestID": "{{ReqId}}",
+                    "Optional1": "",
+                    "Optional2": "",
+                    "Optional3": "",
+                    "Optional4": "",
+                    "GEOCode": "{{'23.8530,87.9727'}}",
+                    "CustomerNumber": "{{$_GET.mobile}}",
+                    "Pincode": "{{243601}}",
+                    "Format": "1"
+                  }
                 },
+                "output": false
+              },
+              {
+                "name": "Data",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data}}"
+                },
+                "meta": [],
+                "outputType": "text",
                 "output": true
-            }
-        ]
-    }
+              },
+              {
+                "name": "Account",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data.account}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "DueAmt",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data.dueamount}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "AgentId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data.agentid}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "BillNo",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data.billnumber}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "BillDate",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data.billdate}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "DueDate",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data.duedate}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "CustName",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data.customername}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "FetchBillId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data.fetchBillID}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Status",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data.status}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "Msg",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{api.data.msg}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
 }
