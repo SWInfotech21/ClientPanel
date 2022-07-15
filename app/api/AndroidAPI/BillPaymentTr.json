@@ -2963,7 +2963,7 @@
                                                                                       "module": "core",
                                                                                       "action": "setvalue",
                                                                                       "options": {
-                                                                                        "value": "{{(stat==0)? 'SUCCESS' : (stat==1)? 'PENDING' : 'FAILED'}}"
+                                                                                        "value": "{{(stat==1)? 'SUCCESS' : (stat==0)? 'PENDING' : (stat==6)? 'PENDING' : 'FAILED'}}"
                                                                                       },
                                                                                       "meta": [],
                                                                                       "outputType": "text",
