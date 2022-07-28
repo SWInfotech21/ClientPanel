@@ -83,6 +83,14 @@
               {
                 "table": "m_users",
                 "column": "user_mobile"
+              },
+              {
+                "table": "m_users",
+                "column": "md_id"
+              },
+              {
+                "table": "m_users",
+                "column": "ds_id"
               }
             ],
             "table": {
@@ -139,7 +147,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "SELECT balance_amt, aeps_balance, scheme_id, user_id AS RT_id, aeps_merchant_id, user_mobile\nFROM m_users\nWHERE id = :P1 /* {{identity}} */ AND u_status = '1'",
+            "query": "SELECT balance_amt, aeps_balance, scheme_id, user_id AS RT_id, aeps_merchant_id, user_mobile, md_id, ds_id\nFROM m_users\nWHERE id = :P1 /* {{identity}} */ AND u_status = '1'",
             "params": [
               {
                 "operator": "equal",
@@ -175,6 +183,14 @@
           {
             "type": "text",
             "name": "user_mobile"
+          },
+          {
+            "type": "text",
+            "name": "md_id"
+          },
+          {
+            "type": "text",
+            "name": "ds_id"
           }
         ],
         "outputType": "object"
@@ -262,6 +278,14 @@
           {
             "name": "user_mobile",
             "type": "text"
+          },
+          {
+            "name": "md_id",
+            "type": "text"
+          },
+          {
+            "name": "ds_id",
+            "type": "text"
           }
         ],
         "outputType": "text",
@@ -314,6 +338,14 @@
           },
           {
             "name": "user_mobile",
+            "type": "text"
+          },
+          {
+            "name": "md_id",
+            "type": "text"
+          },
+          {
+            "name": "ds_id",
             "type": "text"
           }
         ],
@@ -541,6 +573,862 @@
                 },
                 "meta": [],
                 "outputType": "text"
+              },
+              {
+                "name": "GetRTCreator",
+                "module": "dbconnector",
+                "action": "single",
+                "options": {
+                  "connection": "postgres_gcpServer",
+                  "sql": {
+                    "type": "SELECT",
+                    "columns": [
+                      {
+                        "table": "m_users",
+                        "column": "user_fname",
+                        "alias": "dt_user_name"
+                      },
+                      {
+                        "table": "m_users",
+                        "column": "user_mobile",
+                        "alias": "dt_user_mobile"
+                      },
+                      {
+                        "table": "m_users",
+                        "column": "user_type",
+                        "alias": "dt_user_type"
+                      },
+                      {
+                        "table": "m_users",
+                        "column": "scheme_id",
+                        "alias": "dt_scheme_id"
+                      },
+                      {
+                        "table": "m_users",
+                        "column": "balance_amt",
+                        "alias": "dt_main_bal"
+                      },
+                      {
+                        "table": "m_users",
+                        "column": "aeps_balance",
+                        "alias": "dt_aeps_bal"
+                      }
+                    ],
+                    "table": {
+                      "name": "m_users"
+                    },
+                    "primary": "id",
+                    "joins": [],
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "m_users.id",
+                          "field": "m_users.id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{GetUserDetails.ds_id}}",
+                          "data": {
+                            "table": "m_users",
+                            "column": "id",
+                            "type": "number",
+                            "columnObj": {
+                              "type": "increments",
+                              "default": "",
+                              "primary": true,
+                              "nullable": false,
+                              "unique": true,
+                              "name": "id"
+                            }
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "SELECT user_fname AS dt_user_name, user_mobile AS dt_user_mobile, user_type AS dt_user_type, scheme_id AS dt_scheme_id, balance_amt AS dt_main_bal, aeps_balance AS dt_aeps_bal\nFROM m_users\nWHERE id = :P1 /* {{GetUserDetails.ds_id}} */",
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{GetUserDetails.ds_id}}"
+                      }
+                    ]
+                  }
+                },
+                "output": false,
+                "meta": [
+                  {
+                    "type": "text",
+                    "name": "dt_user_name"
+                  },
+                  {
+                    "type": "text",
+                    "name": "dt_user_mobile"
+                  },
+                  {
+                    "type": "number",
+                    "name": "dt_user_type"
+                  },
+                  {
+                    "type": "number",
+                    "name": "dt_scheme_id"
+                  },
+                  {
+                    "type": "text",
+                    "name": "dt_main_bal"
+                  },
+                  {
+                    "type": "text",
+                    "name": "dt_aeps_bal"
+                  }
+                ],
+                "outputType": "object"
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{GetRTCreator.dt_user_type==2}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "GetDTCommision",
+                        "module": "dbconnector",
+                        "action": "single",
+                        "options": {
+                          "connection": "postgres_gcpServer",
+                          "sql": {
+                            "type": "SELECT",
+                            "columns": [
+                              {
+                                "table": "m_commission",
+                                "column": "comm_per",
+                                "alias": "dt_comm_per"
+                              },
+                              {
+                                "table": "m_commission",
+                                "column": "comm_val",
+                                "alias": "dt_comm_val"
+                              },
+                              {
+                                "table": "m_commission",
+                                "column": "service_charge_per",
+                                "alias": "dt_charge_per"
+                              },
+                              {
+                                "table": "m_commission",
+                                "column": "service_charge_val",
+                                "alias": "dt_charge_val"
+                              }
+                            ],
+                            "table": {
+                              "name": "m_commission"
+                            },
+                            "primary": "id",
+                            "joins": [],
+                            "wheres": {
+                              "condition": "AND",
+                              "rules": [
+                                {
+                                  "id": "m_commission.operator_id",
+                                  "field": "m_commission.operator_id",
+                                  "type": "double",
+                                  "operator": "equal",
+                                  "value": "{{GetOpComm.operator_id}}",
+                                  "data": {
+                                    "table": "m_commission",
+                                    "column": "operator_id",
+                                    "type": "number",
+                                    "columnObj": {
+                                      "type": "integer",
+                                      "primary": false,
+                                      "nullable": false,
+                                      "name": "operator_id"
+                                    }
+                                  },
+                                  "operation": "="
+                                },
+                                {
+                                  "id": "m_commission.scheme_id",
+                                  "field": "m_commission.scheme_id",
+                                  "type": "double",
+                                  "operator": "equal",
+                                  "value": "{{GetRTCreator.dt_scheme_id}}",
+                                  "data": {
+                                    "table": "m_commission",
+                                    "column": "scheme_id",
+                                    "type": "number",
+                                    "columnObj": {
+                                      "type": "integer",
+                                      "primary": false,
+                                      "nullable": true,
+                                      "name": "scheme_id"
+                                    }
+                                  },
+                                  "operation": "="
+                                }
+                              ],
+                              "conditional": null,
+                              "valid": true
+                            },
+                            "query": "SELECT comm_per AS dt_comm_per, comm_val AS dt_comm_val, service_charge_per AS dt_charge_per, service_charge_val AS dt_charge_val\nFROM m_commission\nWHERE operator_id = :P1 /* {{GetOpComm.operator_id}} */ AND scheme_id = :P2 /* {{GetRTCreator.dt_scheme_id}} */",
+                            "params": [
+                              {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P1",
+                                "value": "{{GetOpComm.operator_id}}"
+                              },
+                              {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P2",
+                                "value": "{{GetRTCreator.dt_scheme_id}}"
+                              }
+                            ]
+                          }
+                        },
+                        "output": false,
+                        "meta": [
+                          {
+                            "type": "text",
+                            "name": "dt_comm_per"
+                          },
+                          {
+                            "type": "text",
+                            "name": "dt_comm_val"
+                          },
+                          {
+                            "type": "text",
+                            "name": "dt_charge_per"
+                          },
+                          {
+                            "type": "text",
+                            "name": "dt_charge_val"
+                          }
+                        ],
+                        "outputType": "object"
+                      },
+                      {
+                        "name": "DTCom_per",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{GetDTCommision.dt_comm_per}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTCom_val",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{GetDTCommision.dt_comm_val}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTCommTotal",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{($_POST.WithdrawLimit.toNumber()*DTCom_per.toNumber()/100)+DTCom_val.toNumber()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTCommAmt",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{DTCommTotal.toNumber()-RTCommAmt.toNumber()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTCharge_per",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{GetDTCommision.dt_charge_per}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTCharge_val",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{GetDTCommision.dt_charge_val}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTChargeTotal",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{($_POST.WithdrawLimit.toNumber()*DTCharge_per/100)+DTCharge_val.toNumber()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTChargeAmt",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{DTChargeTotal.toNumber()-RTChargeAmt.toNumber()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTNetAmt",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{DTCommAmt.toNumber()-DTChargeAmt.toNumber()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTClosingBalance",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{GetRTCreator.dt_aeps_bal.toNumber()+DTNetAmt.toNumber()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "GetDTCreator",
+                        "module": "dbconnector",
+                        "action": "single",
+                        "options": {
+                          "connection": "postgres_gcpServer",
+                          "sql": {
+                            "type": "SELECT",
+                            "columns": [
+                              {
+                                "table": "m_users",
+                                "column": "user_fname",
+                                "alias": "mdt_user_name"
+                              },
+                              {
+                                "table": "m_users",
+                                "column": "user_mobile",
+                                "alias": "mdt_mobile"
+                              },
+                              {
+                                "table": "m_users",
+                                "column": "scheme_id",
+                                "alias": "mdt_scheme_id"
+                              },
+                              {
+                                "table": "m_users",
+                                "column": "user_type",
+                                "alias": "mdt_user_type"
+                              },
+                              {
+                                "table": "m_users",
+                                "column": "balance_amt",
+                                "alias": "mdt_main_bal"
+                              },
+                              {
+                                "table": "m_users",
+                                "column": "aeps_balance",
+                                "alias": "mdt_aeps_bal"
+                              }
+                            ],
+                            "table": {
+                              "name": "m_users"
+                            },
+                            "primary": "id",
+                            "joins": [],
+                            "wheres": {
+                              "condition": "AND",
+                              "rules": [
+                                {
+                                  "id": "m_users.id",
+                                  "field": "m_users.id",
+                                  "type": "double",
+                                  "operator": "equal",
+                                  "value": "{{GetUserDetails.md_id}}",
+                                  "data": {
+                                    "table": "m_users",
+                                    "column": "id",
+                                    "type": "number",
+                                    "columnObj": {
+                                      "type": "increments",
+                                      "default": "",
+                                      "primary": true,
+                                      "nullable": false,
+                                      "unique": true,
+                                      "name": "id"
+                                    }
+                                  },
+                                  "operation": "="
+                                }
+                              ],
+                              "conditional": null,
+                              "valid": true
+                            },
+                            "query": "SELECT user_fname AS mdt_user_name, user_mobile AS mdt_mobile, scheme_id AS mdt_scheme_id, user_type AS mdt_user_type, balance_amt AS mdt_main_bal, aeps_balance AS mdt_aeps_bal\nFROM m_users\nWHERE id = :P1 /* {{GetUserDetails.md_id}} */",
+                            "params": [
+                              {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P1",
+                                "value": "{{GetUserDetails.md_id}}"
+                              }
+                            ]
+                          }
+                        },
+                        "output": false,
+                        "meta": [
+                          {
+                            "type": "text",
+                            "name": "mdt_user_name"
+                          },
+                          {
+                            "type": "text",
+                            "name": "mdt_mobile"
+                          },
+                          {
+                            "type": "number",
+                            "name": "mdt_scheme_id"
+                          },
+                          {
+                            "type": "number",
+                            "name": "mdt_user_type"
+                          },
+                          {
+                            "type": "text",
+                            "name": "mdt_main_bal"
+                          },
+                          {
+                            "type": "text",
+                            "name": "mdt_aeps_bal"
+                          }
+                        ],
+                        "outputType": "object"
+                      }
+                    ]
+                  },
+                  "else": {
+                    "steps": [
+                      {
+                        "name": "DTCom_per",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTCom_val",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTCommAmt",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTCharge_per",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTCharge_val",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTChargeAmt",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTNetAmt",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "DTClosingBalance",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{GetRTCreator.dt_aeps_bal}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      }
+                    ]
+                  }
+                },
+                "outputType": "boolean"
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{GetDTCreator.mdt_user_type==1}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "GetMDTCommision",
+                        "module": "dbconnector",
+                        "action": "single",
+                        "options": {
+                          "connection": "postgres_gcpServer",
+                          "sql": {
+                            "type": "SELECT",
+                            "columns": [
+                              {
+                                "table": "m_commission",
+                                "column": "comm_per",
+                                "alias": "mdt_comm_per"
+                              },
+                              {
+                                "table": "m_commission",
+                                "column": "comm_val",
+                                "alias": "mdt_comm_val"
+                              },
+                              {
+                                "table": "m_commission",
+                                "column": "service_charge_per",
+                                "alias": "mdt_charge_per"
+                              },
+                              {
+                                "table": "m_commission",
+                                "column": "service_charge_val",
+                                "alias": "mdt_charge_val"
+                              }
+                            ],
+                            "table": {
+                              "name": "m_commission"
+                            },
+                            "primary": "id",
+                            "joins": [],
+                            "wheres": {
+                              "condition": "AND",
+                              "rules": [
+                                {
+                                  "id": "m_commission.operator_id",
+                                  "field": "m_commission.operator_id",
+                                  "type": "double",
+                                  "operator": "equal",
+                                  "value": "{{GetOpComm.operator_id}}",
+                                  "data": {
+                                    "table": "m_commission",
+                                    "column": "operator_id",
+                                    "type": "number",
+                                    "columnObj": {
+                                      "type": "integer",
+                                      "primary": false,
+                                      "nullable": false,
+                                      "name": "operator_id"
+                                    }
+                                  },
+                                  "operation": "="
+                                },
+                                {
+                                  "id": "m_commission.scheme_id",
+                                  "field": "m_commission.scheme_id",
+                                  "type": "double",
+                                  "operator": "equal",
+                                  "value": "{{GetDTCreator.mdt_scheme_id}}",
+                                  "data": {
+                                    "table": "m_commission",
+                                    "column": "scheme_id",
+                                    "type": "number",
+                                    "columnObj": {
+                                      "type": "integer",
+                                      "primary": false,
+                                      "nullable": true,
+                                      "name": "scheme_id"
+                                    }
+                                  },
+                                  "operation": "="
+                                }
+                              ],
+                              "conditional": null,
+                              "valid": true
+                            },
+                            "query": "SELECT comm_per AS mdt_comm_per, comm_val AS mdt_comm_val, service_charge_per AS mdt_charge_per, service_charge_val AS mdt_charge_val\nFROM m_commission\nWHERE operator_id = :P1 /* {{GetOpComm.operator_id}} */ AND scheme_id = :P2 /* {{GetDTCreator.mdt_scheme_id}} */",
+                            "params": [
+                              {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P1",
+                                "value": "{{GetOpComm.operator_id}}"
+                              },
+                              {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P2",
+                                "value": "{{GetDTCreator.mdt_scheme_id}}"
+                              }
+                            ]
+                          }
+                        },
+                        "output": false,
+                        "meta": [
+                          {
+                            "type": "text",
+                            "name": "mdt_comm_per"
+                          },
+                          {
+                            "type": "text",
+                            "name": "mdt_comm_val"
+                          },
+                          {
+                            "type": "text",
+                            "name": "mdt_charge_per"
+                          },
+                          {
+                            "type": "text",
+                            "name": "mdt_charge_val"
+                          }
+                        ],
+                        "outputType": "object"
+                      },
+                      {
+                        "name": "MDTCom_per",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{GetMDTCommision.mdt_comm_per}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTCom_val",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{GetMDTCommision.mdt_comm_val}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTCommTotal",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{($_POST.WithdrawLimit.toNumber()*MDTCom_per.toNumber()/100)+MDTCom_val.toNumber()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTCommAmt",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{MDTCommTotal.toNumber()-DTCommAmt.toNumber()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTCharge_per",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{GetMDTCommision.mdt_charge_per}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTCharge_val",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{GetMDTCommision.mdt_charge_val}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTChargeTotal",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{($_POST.WithdrawLimit.toNumber()*MDTCharge_per/100)+MDTCharge_val.toNumber()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTChargeAmt",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{MDTChargeTotal.toNumber()-DTChargeAmt.toNumber()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTNetAmt",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{MDTCommAmt.toNumber()-MDTChargeAmt.toNumber()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTClosingBalance",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{GetDTCreator.mdt_aeps_bal.toNumber()+MDTNetAmt.toNumber()}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      }
+                    ]
+                  },
+                  "else": {
+                    "steps": [
+                      {
+                        "name": "MDTCom_per",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTCom_val",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTCommAmt",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTCharge_per",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTCharge_val",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTChargeAmt",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTNetAmt",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "0\n"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "MDTClosingBalance",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{GetDTCreator.mdt_aeps_bal}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      }
+                    ]
+                  }
+                },
+                "outputType": "boolean"
               },
               {
                 "name": "",
@@ -853,73 +1741,73 @@
                                 "table": "tt_aeps_trans",
                                 "column": "dt_comm_per",
                                 "type": "text",
-                                "value": "0"
+                                "value": "{{DTCom_per}}"
                               },
                               {
                                 "table": "tt_aeps_trans",
                                 "column": "dt_comm_val",
                                 "type": "text",
-                                "value": "0"
+                                "value": "{{DTCom_val}}"
                               },
                               {
                                 "table": "tt_aeps_trans",
                                 "column": "dt_comm_amt",
                                 "type": "text",
-                                "value": "0"
+                                "value": "{{DTCommAmt}}"
                               },
                               {
                                 "table": "tt_aeps_trans",
                                 "column": "dt_charge_per",
                                 "type": "text",
-                                "value": "0"
+                                "value": "{{DTCharge_per}}"
                               },
                               {
                                 "table": "tt_aeps_trans",
                                 "column": "dt_charge_val",
                                 "type": "text",
-                                "value": "0"
+                                "value": "{{DTCharge_val}}"
                               },
                               {
                                 "table": "tt_aeps_trans",
                                 "column": "dt_charge_amount",
                                 "type": "text",
-                                "value": "0"
+                                "value": "{{DTChargeAmt}}"
                               },
                               {
                                 "table": "tt_aeps_trans",
                                 "column": "mdt_comm_per",
                                 "type": "text",
-                                "value": "0"
+                                "value": "{{MDTCom_per}}"
                               },
                               {
                                 "table": "tt_aeps_trans",
                                 "column": "mdt_comm_val",
                                 "type": "text",
-                                "value": "0"
+                                "value": "{{MDTCom_val}}"
                               },
                               {
                                 "table": "tt_aeps_trans",
                                 "column": "mdt_comm_amt",
                                 "type": "text",
-                                "value": "0"
+                                "value": "{{MDTCommAmt}}"
                               },
                               {
                                 "table": "tt_aeps_trans",
                                 "column": "mdt_charge_per",
                                 "type": "text",
-                                "value": "0"
+                                "value": "{{MDTCharge_per}}"
                               },
                               {
                                 "table": "tt_aeps_trans",
                                 "column": "mdt_charge_val",
                                 "type": "text",
-                                "value": "0"
+                                "value": "{{MDTCharge_val}}"
                               },
                               {
                                 "table": "tt_aeps_trans",
                                 "column": "mdt_charge_amt",
                                 "type": "text",
-                                "value": "0"
+                                "value": "{{MDTChargeAmt}}"
                               },
                               {
                                 "table": "tt_aeps_trans",
@@ -948,7 +1836,7 @@
                             ],
                             "table": "tt_aeps_trans",
                             "returning": "id",
-                            "query": "INSERT INTO tt_aeps_trans\n(service_id, op_id, api_id, user_id, user_rt_id, merchant_id, amount, op_bal, comm_per, comm_val, comm_amt, charge_per, charge_val, charge_amt, net_amt, closing_bal, tr_mode, tr_type, status, tr_id, reason, api_logs, is_processed, operator_ref, api_ref, revert_trans, ip_address, api_response_time, process_mode, live, tr_date, trans_by, ec, dt_comm_per, dt_comm_val, dt_comm_amt, dt_charge_per, dt_charge_val, dt_charge_amount, mdt_comm_per, mdt_comm_val, mdt_comm_amt, mdt_charge_per, mdt_charge_val, mdt_charge_amt, bank_name, service_api, api_tnx_date, aeps_number) VALUES (:P1 /* {{GetOpComm.service_id}} */, :P2 /* {{GetOpComm.operator_id}} */, '0', :P3 /* {{identity}} */, :P4 /* {{GetUserDetails.RT_id}} */, :P5 /* {{GetUserDetails.user_mobile}} */, :P6 /* {{$_POST.WithdrawLimit}} */, :P7 /* {{GetUserDetails.aeps_balance}} */, :P8 /* {{GetOpComm.comm_per}} */, :P9 /* {{GetOpComm.comm_val}} */, :P10 /* {{RTCommAmt}} */, :P11 /* {{GetOpComm.service_charge_per}} */, :P12 /* {{GetOpComm.service_charge_val}} */, :P13 /* {{RTChargeAmt}} */, :P14 /* {{RTNetAmt}} */, :P15 /* {{AEPSRemaining}} */, :P16 /* {{'Web'}} */, :P17 /* {{'Cash'}} */, :P18 /* {{'SUCCESS'}} */, :P19 /* {{TransId}} */, :P20 /* {{'Self Transfer of Rs. '+$_POST.WithdrawLimit+' from AEPS Wallet to Main Wallet Balance | Comm. Amt. '+RTCommAmt+' | Charge Amt. '+RTChargeAmt+' | Net Amt. '+RTNetAmt+' | AEPS Wallet Remaining '+AEPSRemaining+' | Net Main Wallet Balance '+WalletNetAmt}} */, :P21 /* {{'AEEP'}} */, '0', '0', '0', '0', :P22 /* {{$_SERVER.REMOTE_ADDR}} */, '0', :P23 /* {{'A2C'}} */, :P24 /* {{'Push'}} */, :P25 /* {{NOW}} */, :P26 /* {{identity}} */, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', :P27 /* {{GetUserDetails.user_mobile}} */)",
+                            "query": "INSERT INTO tt_aeps_trans\n(service_id, op_id, api_id, user_id, user_rt_id, merchant_id, amount, op_bal, comm_per, comm_val, comm_amt, charge_per, charge_val, charge_amt, net_amt, closing_bal, tr_mode, tr_type, status, tr_id, reason, api_logs, is_processed, operator_ref, api_ref, revert_trans, ip_address, api_response_time, process_mode, live, tr_date, trans_by, ec, dt_comm_per, dt_comm_val, dt_comm_amt, dt_charge_per, dt_charge_val, dt_charge_amount, mdt_comm_per, mdt_comm_val, mdt_comm_amt, mdt_charge_per, mdt_charge_val, mdt_charge_amt, bank_name, service_api, api_tnx_date, aeps_number) VALUES (:P1 /* {{GetOpComm.service_id}} */, :P2 /* {{GetOpComm.operator_id}} */, '0', :P3 /* {{identity}} */, :P4 /* {{GetUserDetails.RT_id}} */, :P5 /* {{GetUserDetails.user_mobile}} */, :P6 /* {{$_POST.WithdrawLimit}} */, :P7 /* {{GetUserDetails.aeps_balance}} */, :P8 /* {{GetOpComm.comm_per}} */, :P9 /* {{GetOpComm.comm_val}} */, :P10 /* {{RTCommAmt}} */, :P11 /* {{GetOpComm.service_charge_per}} */, :P12 /* {{GetOpComm.service_charge_val}} */, :P13 /* {{RTChargeAmt}} */, :P14 /* {{RTNetAmt}} */, :P15 /* {{AEPSRemaining}} */, :P16 /* {{'Web'}} */, :P17 /* {{'Cash'}} */, :P18 /* {{'SUCCESS'}} */, :P19 /* {{TransId}} */, :P20 /* {{'Self Transfer of Rs. '+$_POST.WithdrawLimit+' from AEPS Wallet to Main Wallet Balance | Comm. Amt. '+RTCommAmt+' | Charge Amt. '+RTChargeAmt+' | Net Amt. '+RTNetAmt+' | AEPS Wallet Remaining '+AEPSRemaining+' | Net Main Wallet Balance '+WalletNetAmt}} */, :P21 /* {{'AEEP'}} */, '0', '0', '0', '0', :P22 /* {{$_SERVER.REMOTE_ADDR}} */, '0', :P23 /* {{'A2C'}} */, :P24 /* {{'Push'}} */, :P25 /* {{NOW}} */, :P26 /* {{identity}} */, '0', :P27 /* {{DTCom_per}} */, :P28 /* {{DTCom_val}} */, :P29 /* {{DTCommAmt}} */, :P30 /* {{DTCharge_per}} */, :P31 /* {{DTCharge_val}} */, :P32 /* {{DTChargeAmt}} */, :P33 /* {{MDTCom_per}} */, :P34 /* {{MDTCom_val}} */, :P35 /* {{MDTCommAmt}} */, :P36 /* {{MDTCharge_per}} */, :P37 /* {{MDTCharge_val}} */, :P38 /* {{MDTChargeAmt}} */, '0', '0', '0', :P39 /* {{GetUserDetails.user_mobile}} */)",
                             "params": [
                               {
                                 "name": ":P1",
@@ -1082,6 +1970,66 @@
                               },
                               {
                                 "name": ":P27",
+                                "type": "expression",
+                                "value": "{{DTCom_per}}"
+                              },
+                              {
+                                "name": ":P28",
+                                "type": "expression",
+                                "value": "{{DTCom_val}}"
+                              },
+                              {
+                                "name": ":P29",
+                                "type": "expression",
+                                "value": "{{DTCommAmt}}"
+                              },
+                              {
+                                "name": ":P30",
+                                "type": "expression",
+                                "value": "{{DTCharge_per}}"
+                              },
+                              {
+                                "name": ":P31",
+                                "type": "expression",
+                                "value": "{{DTCharge_val}}"
+                              },
+                              {
+                                "name": ":P32",
+                                "type": "expression",
+                                "value": "{{DTChargeAmt}}"
+                              },
+                              {
+                                "name": ":P33",
+                                "type": "expression",
+                                "value": "{{MDTCom_per}}"
+                              },
+                              {
+                                "name": ":P34",
+                                "type": "expression",
+                                "value": "{{MDTCom_val}}"
+                              },
+                              {
+                                "name": ":P35",
+                                "type": "expression",
+                                "value": "{{MDTCommAmt}}"
+                              },
+                              {
+                                "name": ":P36",
+                                "type": "expression",
+                                "value": "{{MDTCharge_per}}"
+                              },
+                              {
+                                "name": ":P37",
+                                "type": "expression",
+                                "value": "{{MDTCharge_val}}"
+                              },
+                              {
+                                "name": ":P38",
+                                "type": "expression",
+                                "value": "{{MDTChargeAmt}}"
+                              },
+                              {
+                                "name": ":P39",
                                 "type": "expression",
                                 "value": "{{GetUserDetails.user_mobile}}"
                               }
@@ -1868,6 +2816,470 @@
                             "type": "number"
                           }
                         ]
+                      },
+                      {
+                        "name": "",
+                        "module": "core",
+                        "action": "condition",
+                        "options": {
+                          "if": "{{GetRTCreator.dt_user_type==2}}",
+                          "then": {
+                            "steps": [
+                              {
+                                "name": "AddDTCommAEPSCal",
+                                "module": "dbupdater",
+                                "action": "insert",
+                                "options": {
+                                  "connection": "postgres_gcpServer",
+                                  "sql": {
+                                    "type": "insert",
+                                    "values": [
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "user_id",
+                                        "type": "number",
+                                        "value": "{{GetUserDetails.ds_id}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "pay_ref_id",
+                                        "type": "number",
+                                        "value": "{{AddAEPSTrans.identity}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "crdr_type",
+                                        "type": "text",
+                                        "value": "{{'Credit'}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "old_bal",
+                                        "type": "text",
+                                        "value": "{{GetRTCreator.dt_aeps_bal}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "amount",
+                                        "type": "text",
+                                        "value": "{{$_POST.WithdrawLimit}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "net_amt",
+                                        "type": "text",
+                                        "value": "{{DTNetAmt}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "new_bal",
+                                        "type": "text",
+                                        "value": "{{DTClosingBalance}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "tr_type",
+                                        "type": "text",
+                                        "value": "{{'AEPS Comm'}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "tr_date",
+                                        "type": "datetime",
+                                        "value": "{{NOW}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "ip_address",
+                                        "type": "text",
+                                        "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "remarks",
+                                        "type": "text",
+                                        "value": "{{'Merchant Id: '+GetUserDetails.aeps_merchant_id+' | Txn. Ref. Id: '+TransId+' | Amt. '+$_POST.WithdrawLimit+' | Id: '+AddAEPSTrans.identity+' | Comm. Amt.:  '+DTCommAmt+' | Charge Amt. '+DTChargeAmt+' | Net Amt.: '+DTNetAmt}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "created_by",
+                                        "type": "number",
+                                        "value": "{{identity}}"
+                                      }
+                                    ],
+                                    "table": "t_charge_aeps_cal",
+                                    "returning": "id",
+                                    "query": "INSERT INTO t_charge_aeps_cal\n(user_id, pay_ref_id, crdr_type, old_bal, amount, net_amt, new_bal, tr_type, tr_date, ip_address, remarks, created_by) VALUES (:P1 /* {{GetUserDetails.ds_id}} */, :P2 /* {{AddAEPSTrans.identity}} */, :P3 /* {{'Credit'}} */, :P4 /* {{GetRTCreator.dt_aeps_bal}} */, :P5 /* {{$_POST.WithdrawLimit}} */, :P6 /* {{DTNetAmt}} */, :P7 /* {{DTClosingBalance}} */, :P8 /* {{'AEPS Comm'}} */, :P9 /* {{NOW}} */, :P10 /* {{$_SERVER.REMOTE_ADDR}} */, :P11 /* {{'Merchant Id: '+GetUserDetails.aeps_merchant_id+' | Txn. Ref. Id: '+TransId+' | Amt. '+$_POST.WithdrawLimit+' | Id: '+AddAEPSTrans.identity+' | Comm. Amt.:  '+DTCommAmt+' | Charge Amt. '+DTChargeAmt+' | Net Amt.: '+DTNetAmt}} */, :P12 /* {{identity}} */)",
+                                    "params": [
+                                      {
+                                        "name": ":P1",
+                                        "type": "expression",
+                                        "value": "{{GetUserDetails.ds_id}}"
+                                      },
+                                      {
+                                        "name": ":P2",
+                                        "type": "expression",
+                                        "value": "{{AddAEPSTrans.identity}}"
+                                      },
+                                      {
+                                        "name": ":P3",
+                                        "type": "expression",
+                                        "value": "{{'Credit'}}"
+                                      },
+                                      {
+                                        "name": ":P4",
+                                        "type": "expression",
+                                        "value": "{{GetRTCreator.dt_aeps_bal}}"
+                                      },
+                                      {
+                                        "name": ":P5",
+                                        "type": "expression",
+                                        "value": "{{$_POST.WithdrawLimit}}"
+                                      },
+                                      {
+                                        "name": ":P6",
+                                        "type": "expression",
+                                        "value": "{{DTNetAmt}}"
+                                      },
+                                      {
+                                        "name": ":P7",
+                                        "type": "expression",
+                                        "value": "{{DTClosingBalance}}"
+                                      },
+                                      {
+                                        "name": ":P8",
+                                        "type": "expression",
+                                        "value": "{{'AEPS Comm'}}"
+                                      },
+                                      {
+                                        "name": ":P9",
+                                        "type": "expression",
+                                        "value": "{{NOW}}"
+                                      },
+                                      {
+                                        "name": ":P10",
+                                        "type": "expression",
+                                        "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                      },
+                                      {
+                                        "name": ":P11",
+                                        "type": "expression",
+                                        "value": "{{'Merchant Id: '+GetUserDetails.aeps_merchant_id+' | Txn. Ref. Id: '+TransId+' | Amt. '+$_POST.WithdrawLimit+' | Id: '+AddAEPSTrans.identity+' | Comm. Amt.:  '+DTCommAmt+' | Charge Amt. '+DTChargeAmt+' | Net Amt.: '+DTNetAmt}}"
+                                      },
+                                      {
+                                        "name": ":P12",
+                                        "type": "expression",
+                                        "value": "{{identity}}"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "meta": [
+                                  {
+                                    "name": "identity",
+                                    "type": "text"
+                                  },
+                                  {
+                                    "name": "affected",
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "UpDTUserBal",
+                                "module": "dbupdater",
+                                "action": "update",
+                                "options": {
+                                  "connection": "postgres_gcpServer",
+                                  "sql": {
+                                    "type": "update",
+                                    "values": [
+                                      {
+                                        "table": "m_users",
+                                        "column": "aeps_balance",
+                                        "type": "text",
+                                        "value": "{{DTClosingBalance}}"
+                                      }
+                                    ],
+                                    "table": "m_users",
+                                    "wheres": {
+                                      "condition": "AND",
+                                      "rules": [
+                                        {
+                                          "id": "id",
+                                          "field": "id",
+                                          "type": "double",
+                                          "operator": "equal",
+                                          "value": "{{GetUserDetails.ds_id}}",
+                                          "data": {
+                                            "column": "id"
+                                          },
+                                          "operation": "="
+                                        }
+                                      ],
+                                      "conditional": null,
+                                      "valid": true
+                                    },
+                                    "returning": "id",
+                                    "query": "UPDATE m_users\nSET aeps_balance = :P1 /* {{DTClosingBalance}} */\nWHERE id = :P2 /* {{GetUserDetails.ds_id}} */",
+                                    "params": [
+                                      {
+                                        "name": ":P1",
+                                        "type": "expression",
+                                        "value": "{{DTClosingBalance}}"
+                                      },
+                                      {
+                                        "operator": "equal",
+                                        "type": "expression",
+                                        "name": ":P2",
+                                        "value": "{{GetUserDetails.ds_id}}"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "meta": [
+                                  {
+                                    "name": "affected",
+                                    "type": "number"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        "outputType": "boolean"
+                      },
+                      {
+                        "name": "",
+                        "module": "core",
+                        "action": "condition",
+                        "options": {
+                          "if": "{{GetDTCreator.mdt_user_type==1}}",
+                          "then": {
+                            "steps": [
+                              {
+                                "name": "AddMDTCommAEPSCal",
+                                "module": "dbupdater",
+                                "action": "insert",
+                                "options": {
+                                  "connection": "postgres_gcpServer",
+                                  "sql": {
+                                    "type": "insert",
+                                    "values": [
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "user_id",
+                                        "type": "number",
+                                        "value": "{{GetUserDetails.md_id}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "pay_ref_id",
+                                        "type": "number",
+                                        "value": "{{AddAEPSTrans.identity}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "crdr_type",
+                                        "type": "text",
+                                        "value": "{{'Credit'}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "old_bal",
+                                        "type": "text",
+                                        "value": "{{GetDTCreator.mdt_aeps_bal}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "amount",
+                                        "type": "text",
+                                        "value": "{{$_POST.WithdrawLimit}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "net_amt",
+                                        "type": "text",
+                                        "value": "{{MDTNetAmt}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "new_bal",
+                                        "type": "text",
+                                        "value": "{{MDTClosingBalance}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "tr_type",
+                                        "type": "text",
+                                        "value": "{{'AEPS Comm'}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "tr_date",
+                                        "type": "datetime",
+                                        "value": "{{NOW}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "ip_address",
+                                        "type": "text",
+                                        "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "remarks",
+                                        "type": "text",
+                                        "value": "{{'Merchant Id: '+GetUserDetails.aeps_merchant_id+' | Txn. Ref. Id: '+TransId+' | Amt. '+$_POST.WithdrawLimit+' | Id: '+AddAEPSTrans.identity+' | Comm. Amt.:  '+MDTCommAmt+' | Charge Amt. '+MDTChargeAmt+' | Net Amt.: '+MDTNetAmt}}"
+                                      },
+                                      {
+                                        "table": "t_charge_aeps_cal",
+                                        "column": "created_by",
+                                        "type": "number",
+                                        "value": "{{identity}}"
+                                      }
+                                    ],
+                                    "table": "t_charge_aeps_cal",
+                                    "returning": "id",
+                                    "query": "INSERT INTO t_charge_aeps_cal\n(user_id, pay_ref_id, crdr_type, old_bal, amount, net_amt, new_bal, tr_type, tr_date, ip_address, remarks, created_by) VALUES (:P1 /* {{GetUserDetails.md_id}} */, :P2 /* {{AddAEPSTrans.identity}} */, :P3 /* {{'Credit'}} */, :P4 /* {{GetDTCreator.mdt_aeps_bal}} */, :P5 /* {{$_POST.WithdrawLimit}} */, :P6 /* {{MDTNetAmt}} */, :P7 /* {{MDTClosingBalance}} */, :P8 /* {{'AEPS Comm'}} */, :P9 /* {{NOW}} */, :P10 /* {{$_SERVER.REMOTE_ADDR}} */, :P11 /* {{'Merchant Id: '+GetUserDetails.aeps_merchant_id+' | Txn. Ref. Id: '+TransId+' | Amt. '+$_POST.WithdrawLimit+' | Id: '+AddAEPSTrans.identity+' | Comm. Amt.:  '+MDTCommAmt+' | Charge Amt. '+MDTChargeAmt+' | Net Amt.: '+MDTNetAmt}} */, :P12 /* {{identity}} */)",
+                                    "params": [
+                                      {
+                                        "name": ":P1",
+                                        "type": "expression",
+                                        "value": "{{GetUserDetails.md_id}}"
+                                      },
+                                      {
+                                        "name": ":P2",
+                                        "type": "expression",
+                                        "value": "{{AddAEPSTrans.identity}}"
+                                      },
+                                      {
+                                        "name": ":P3",
+                                        "type": "expression",
+                                        "value": "{{'Credit'}}"
+                                      },
+                                      {
+                                        "name": ":P4",
+                                        "type": "expression",
+                                        "value": "{{GetDTCreator.mdt_aeps_bal}}"
+                                      },
+                                      {
+                                        "name": ":P5",
+                                        "type": "expression",
+                                        "value": "{{$_POST.WithdrawLimit}}"
+                                      },
+                                      {
+                                        "name": ":P6",
+                                        "type": "expression",
+                                        "value": "{{MDTNetAmt}}"
+                                      },
+                                      {
+                                        "name": ":P7",
+                                        "type": "expression",
+                                        "value": "{{MDTClosingBalance}}"
+                                      },
+                                      {
+                                        "name": ":P8",
+                                        "type": "expression",
+                                        "value": "{{'AEPS Comm'}}"
+                                      },
+                                      {
+                                        "name": ":P9",
+                                        "type": "expression",
+                                        "value": "{{NOW}}"
+                                      },
+                                      {
+                                        "name": ":P10",
+                                        "type": "expression",
+                                        "value": "{{$_SERVER.REMOTE_ADDR}}"
+                                      },
+                                      {
+                                        "name": ":P11",
+                                        "type": "expression",
+                                        "value": "{{'Merchant Id: '+GetUserDetails.aeps_merchant_id+' | Txn. Ref. Id: '+TransId+' | Amt. '+$_POST.WithdrawLimit+' | Id: '+AddAEPSTrans.identity+' | Comm. Amt.:  '+MDTCommAmt+' | Charge Amt. '+MDTChargeAmt+' | Net Amt.: '+MDTNetAmt}}"
+                                      },
+                                      {
+                                        "name": ":P12",
+                                        "type": "expression",
+                                        "value": "{{identity}}"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "meta": [
+                                  {
+                                    "name": "identity",
+                                    "type": "text"
+                                  },
+                                  {
+                                    "name": "affected",
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "UpMDTUserBal",
+                                "module": "dbupdater",
+                                "action": "update",
+                                "options": {
+                                  "connection": "postgres_gcpServer",
+                                  "sql": {
+                                    "type": "update",
+                                    "values": [
+                                      {
+                                        "table": "m_users",
+                                        "column": "aeps_balance",
+                                        "type": "text",
+                                        "value": "{{MDTClosingBalance}}"
+                                      }
+                                    ],
+                                    "table": "m_users",
+                                    "wheres": {
+                                      "condition": "AND",
+                                      "rules": [
+                                        {
+                                          "id": "id",
+                                          "field": "id",
+                                          "type": "double",
+                                          "operator": "equal",
+                                          "value": "{{GetUserDetails.md_id}}",
+                                          "data": {
+                                            "column": "id"
+                                          },
+                                          "operation": "="
+                                        }
+                                      ],
+                                      "conditional": null,
+                                      "valid": true
+                                    },
+                                    "returning": "id",
+                                    "query": "UPDATE m_users\nSET aeps_balance = :P1 /* {{MDTClosingBalance}} */\nWHERE id = :P2 /* {{GetUserDetails.md_id}} */",
+                                    "params": [
+                                      {
+                                        "name": ":P1",
+                                        "type": "expression",
+                                        "value": "{{MDTClosingBalance}}"
+                                      },
+                                      {
+                                        "operator": "equal",
+                                        "type": "expression",
+                                        "name": ":P2",
+                                        "value": "{{GetUserDetails.md_id}}"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "meta": [
+                                  {
+                                    "name": "affected",
+                                    "type": "number"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        "outputType": "boolean"
                       }
                     ]
                   },
